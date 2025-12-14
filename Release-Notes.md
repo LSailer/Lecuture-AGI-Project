@@ -6,3 +6,5 @@
 - CR: Added visualization plots for the distribution of agent voting.
 - CR: Integrated a parser to convert LLM responses into valid environment actions.
 - CR: Enhanced the Tower of Hanoi environment to validate moves and states.
+- CR: Renamed directory 'LLAMA' to 'LLM' for clarity.
+- CR: Added README with installation and usage instructions.

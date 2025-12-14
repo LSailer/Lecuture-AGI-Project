@@ -5,7 +5,7 @@ load_dotenv()
 
 
 class LLM:
-    def __init__(self, model_id="LLAMA/model", device="cpu") -> None:
+    def __init__(self, model_id="LLM/model", device="cpu") -> None:
         print(f"LLM initialized with model {model_id} on device {device}")
         self.pipe = pipeline("text-generation", model=model_id, device=device)
     
