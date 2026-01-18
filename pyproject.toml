@@ -1,5 +1,5 @@
 [project]
-name = "continuous-learning-exploration"
+name = "lecture_agi_project"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -9,5 +9,7 @@ dependencies = [
     "llama-stack>=0.3.3",
     "matplotlib>=3.10.7",
     "torch>=2.9.1",
-    "transformers>=4.57.3",
+    "transformers @ git+https://github.com/huggingface/transformers.git",
 ]
+
+
