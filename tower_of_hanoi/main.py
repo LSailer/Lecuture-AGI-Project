@@ -6,16 +6,22 @@ import torch
 import matplotlib.pyplot as plt
 import os
 
+
 def main(margin_k=2):
     if not os.path.exists("output"):
         os.makedirs("output")
     if os.path.exists("output/log.csv"):
         os.remove("output/log.csv")
 
-    mps_device = "mps" if torch.backends.mps.is_available() else "cpu"
+    if torch.cuda.is_available():
+        device = "cuda"
+    elif torch.backends.mps.is_available():
+        device = "mps"
+    else:
+        device = "cpu"
 
     game = TowerOfHanoi(num_disks=3)
-    agent = Agent(environment=game, device=mps_device)
+    agent = Agent(environment=game, device=device)
 
     print("Initial State:", game.get_state())
     previous_move = "None"
@@ -28,21 +34,31 @@ def main(margin_k=2):
         second_best_value = -1
         number_agents_per_step = 0
         max_number_agents_per_step = 10
-        current_step += 1    
-        while best_value <= second_best_value + margin_k and number_agents_per_step < max_number_agents_per_step:
+        current_step += 1
+        while (
+            best_value <= second_best_value + margin_k
+            and number_agents_per_step < max_number_agents_per_step
+        ):
             number_agents_per_step += 1
             try:
-                action, state = agent.execute_decompose_prompt(previous_move, current_state, step=current_step, agent_num=number_agents_per_step)
+                action, state = agent.execute_decompose_prompt(
+                    previous_move,
+                    current_state,
+                    step=current_step,
+                    agent_num=number_agents_per_step,
+                )
                 if isinstance(action, list):
                     action = tuple(action)
-                
+
                 action_voting[action] = action_voting.get(action, 0) + 1
 
                 # Update best and second best values
                 top_two = heapq.nlargest(2, action_voting.items(), key=lambda x: x[1])
                 if top_two:
                     best_action, best_value = top_two[0]
-                    second_best_value = top_two[1][1] if len(top_two) > 1 else best_value
+                    second_best_value = (
+                        top_two[1][1] if len(top_two) > 1 else best_value
+                    )
             except ValueError as e:
                 print("Error parsing LLM response:", e)
                 continue
@@ -69,5 +85,7 @@ def main(margin_k=2):
         print("Current State:", game.get_state())
 
     print("Puzzle Solved!")
+
+
 if __name__ == "__main__":
     main()

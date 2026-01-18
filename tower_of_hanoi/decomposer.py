@@ -4,12 +4,14 @@ from llm import LLM
 from tower_of_hanoi import TowerOfHanoi
 import csv
 import os
+
+
 class Agent:
     def __init__(self, environment: TowerOfHanoi, device="cpu"):
-        self.SYSTEM_PROMPT  =f"""
+        self.SYSTEM_PROMPT = f"""
         You are a helpful assistant. Solve this puzzle for me.
-        There are three pegs and n disks of different sizes stacked on the first peg. The disks are
-        numbered from 1 (smallest) to n (largest). Disk moves in this puzzle should follow:
+        There are three pegs and {environment.num_disks} disks of different sizes stacked on the first peg. The disks are
+        numbered from 1 (smallest) to {environment.num_disks} (largest). Disk moves in this puzzle should follow:
         1. Only one disk can be moved at a time.
         2. Each move consists of taking the upper disk from one stack and placing it on top of
         another stack.
@@ -30,8 +32,9 @@ class Agent:
         self.llm = LLM(device=device)
         self.output_parser = Parser(environment)
 
-    def execute_decompose_prompt(self, previous_move: str, current_state: str, step: int = 0, agent_num: int = 0):
-        
+    def execute_decompose_prompt(
+        self, previous_move: str, current_state: str, step: int = 0, agent_num: int = 0
+    ):
         USER_TEMPLATE = f"""
         Rules:
         - Only one disk can be moved at a time.
@@ -48,8 +51,8 @@ class Agent:
         Based on the previous move and current state, find the single next move that follows the procedure and the resulting next state.
         """
         response = self.llm.generate(self.SYSTEM_PROMPT, USER_TEMPLATE)
-        content = response[-1]["content"] # type: ignore
-        
+        content = response[-1]["content"]  # type: ignore
+
         action = "None"
         parsed_state = "None"
         error_message = "None"
@@ -63,17 +66,29 @@ class Agent:
         log_file = "output/log.csv"
         os.makedirs("output", exist_ok=True)
         file_exists = os.path.isfile(log_file)
-        
-        with open(log_file, mode='a', newline='') as f:
+
+        with open(log_file, mode="a", newline="") as f:
             writer = csv.writer(f)
             if not file_exists:
-                writer.writerow(["step", "number_agent", "response", "predicted_action", "predicted_state", "error_message"])
-            writer.writerow([step, agent_num, content, action, parsed_state, error_message])
+                writer.writerow(
+                    [
+                        "step",
+                        "number_agent",
+                        "response",
+                        "predicted_action",
+                        "predicted_state",
+                        "error_message",
+                    ]
+                )
+            writer.writerow(
+                [step, agent_num, content, action, parsed_state, error_message]
+            )
 
         if error_message != "None":
             raise ValueError(error_message)
 
         return action, parsed_state
+
 
 if __name__ == "__main__":
     device = "mps" if torch.backends.mps.is_available() else "cpu"
