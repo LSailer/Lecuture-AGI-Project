@@ -1,7 +1,7 @@
-
 import ast
 import re
-from tower_of_hanoi import TowerOfHanoi
+from environment import TowerOfHanoi
+
 
 class Parser:
     def __init__(self, environment: TowerOfHanoi) -> None:
@@ -11,7 +11,7 @@ class Parser:
         move_pat = re.compile(r"(?is)\bmove\b\s*=\s*(\[[^\[\]]*\])")
         state_pat = re.compile(
             r"(?is)\bnext_state\b\s*=\s*(\[\s*\[[^\[\]]*\]\s*,\s*\[[^\[\]]*\]\s*,\s*\[[^\[\]]*\]\s*\])"
-        )   
+        )
 
         move_matches = list(move_pat.finditer(response))
         state_matches = list(state_pat.finditer(response))
@@ -21,7 +21,7 @@ class Parser:
 
         if not move_str or not state_str:
             raise ValueError("Could not find move or next_state in the response.")
-        try: 
+        try:
             move = ast.literal_eval(move_str)
             state = ast.literal_eval(state_str)
             move = tuple(move)
@@ -29,11 +29,12 @@ class Parser:
 
         except Exception as e:
             raise ValueError(f"Error parsing move or next_state") from e
-        
-        return self.environment.validate_move(move), self.environment.is_valid_state(state)
+
+        return self.environment.validate_move(move), self.environment.is_valid_state(
+            state
+        )
 
 
-        
 if __name__ == "__main__":
     environment = TowerOfHanoi(num_disks=3)
     parser = Parser(environment)

@@ -18,7 +18,7 @@ class LLM:
         system_prompt: str,
         user_prompt: str,
         max_new_tokens: int = 750,
-        temperature: float = 0.1,
+        temperature: float = 0.5,
     ) -> str:
         message = [
             {"role": "system", "content": system_prompt},

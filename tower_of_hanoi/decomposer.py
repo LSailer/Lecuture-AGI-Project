@@ -1,7 +1,7 @@
 import torch
 from parser import Parser
 from llm import LLM
-from tower_of_hanoi import TowerOfHanoi
+from environment import TowerOfHanoi
 import csv
 import os
 
@@ -31,24 +31,41 @@ class Agent:
         """
         self.llm = LLM(device=device)
         self.output_parser = Parser(environment)
+        self.num_disks = environment.num_disks
 
     def execute_decompose_prompt(
         self, previous_move: str, current_state: str, step: int = 0, agent_num: int = 0
     ):
+        # Determine direction based on number of disks (parity)
+        # If N is EVEN: Clockwise (0 -> 1 -> 2 -> 0)
+        # If N is ODD: Counter-clockwise (0 -> 2 -> 1 -> 0)
+        if self.num_disks % 2 == 0:
+            direction_string = "0 -> 1 -> 2 -> 0"
+        else:
+            direction_string = "0 -> 2 -> 1 -> 0"
+
         USER_TEMPLATE = f"""
-        Rules:
-        - Only one disk can be moved at a time.
-        - Only the top disk from any stack can be moved.
-        - A larger disk may not be placed on top of a smaller disk.
-        For all moves, follow the standard Tower of Hanoi procedure:
-        If the previous move did not move disk 1, move disk 1 clockwise one peg (0 -> 1 -> 2 -> 0).
-        If the previous move did move disk 1, make the only legal move that does not involve moving
-        disk1.
-        Use these clear steps to find the next move given the previous move and current state.
-        
+        Current State Analysis:
+        1. Identify the TOP disk on each peg (the last number in each list).
+        2. Identify where Disk 1 is located.
+
+        Decision Rules:
+        - Rule A: If the 'Previous move' was NOT Disk 1 (or was 'None'), you MUST move Disk 1.
+          -> Direction: Move Disk 1 to the next peg in sequence {direction_string}.
+             (Sequence: {direction_string})
+
+        - Rule B: If the 'Previous move' WAS Disk 1, you MUST move a different disk (NOT Disk 1).
+          -> Look at the top disks of the two pegs that do NOT have Disk 1.
+          -> Make the only legal move between those two pegs (remember: smaller disk on larger only).
+
+        Task:
         Previous move: {previous_move}
         Current state: {current_state}
-        Based on the previous move and current state, find the single next move that follows the procedure and the resulting next state.
+
+        Think step-by-step:
+        1. Which rule applies (A or B)?
+        2. If Rule B: What are the top disks on the other pegs? Which move is legal?
+        3. Output the move and next state.
         """
         response = self.llm.generate(self.SYSTEM_PROMPT, USER_TEMPLATE)
         content = response[-1]["content"]  # type: ignore

@@ -33,7 +33,7 @@ def main(margin_k=2):
         best_value = 0
         second_best_value = 0
         number_agents_per_step = 0
-        max_number_agents_per_step = 10
+        max_number_agents_per_step = 15
         current_step += 1
         while (
             best_value <= second_best_value + margin_k
@@ -59,9 +59,7 @@ def main(margin_k=2):
 
                 if top_two:
                     best_action, best_value = top_two[0]
-                    second_best_value = (
-                        top_two[1][1] if len(top_two) > 1 else 0
-                    )
+                    second_best_value = top_two[1][1] if len(top_two) > 1 else 0
             except ValueError as e:
                 print("Error parsing LLM response:", e)
                 continue
