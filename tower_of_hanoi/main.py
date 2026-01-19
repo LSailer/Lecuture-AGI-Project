@@ -52,11 +52,11 @@ def main(margin_k=2):
                 print(
                     f"Agent {number_agents_per_step} predicted move: {action}, resulting state: {state}"
                 )
-                action_voting[action] = action_voting.get(action, 1) + 1
+                action_voting[action] = action_voting.get(action, 0) + 1
 
                 # Update best and second best values
                 top_two = heapq.nlargest(2, action_voting.items(), key=lambda x: x[1])
-                breakpoint()
+
                 if top_two:
                     best_action, best_value = top_two[0]
                     second_best_value = (
@@ -86,8 +86,6 @@ def main(margin_k=2):
             break
         previous_move = str(best_action)
         print("Current State:", game.get_state())
-
-    print("Puzzle Solved!")
 
 
 if __name__ == "__main__":
