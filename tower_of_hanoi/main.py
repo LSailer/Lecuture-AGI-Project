@@ -30,8 +30,8 @@ def main(margin_k=2):
     while not game.is_solved() and current_step < max_steps:
         current_state = str(game.get_state())
         action_voting = {}
-        best_value = -1
-        second_best_value = -1
+        best_value = 0
+        second_best_value = 0
         number_agents_per_step = 0
         max_number_agents_per_step = 10
         current_step += 1
@@ -49,15 +49,18 @@ def main(margin_k=2):
                 )
                 if isinstance(action, list):
                     action = tuple(action)
-
-                action_voting[action] = action_voting.get(action, 0) + 1
+                print(
+                    f"Agent {number_agents_per_step} predicted move: {action}, resulting state: {state}"
+                )
+                action_voting[action] = action_voting.get(action, 1) + 1
 
                 # Update best and second best values
                 top_two = heapq.nlargest(2, action_voting.items(), key=lambda x: x[1])
+                breakpoint()
                 if top_two:
                     best_action, best_value = top_two[0]
                     second_best_value = (
-                        top_two[1][1] if len(top_two) > 1 else best_value
+                        top_two[1][1] if len(top_two) > 1 else 0
                     )
             except ValueError as e:
                 print("Error parsing LLM response:", e)
