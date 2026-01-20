@@ -1,6 +1,6 @@
 import ast
 import re
-from environment import TowerOfHanoi
+from enviroment import TowerOfHanoi
 
 
 class Parser:

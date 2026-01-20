@@ -1,7 +1,7 @@
 import torch
 from parser import Parser
 from llm import LLM
-from environment import TowerOfHanoi
+from enviroment import TowerOfHanoi
 import csv
 import os
 

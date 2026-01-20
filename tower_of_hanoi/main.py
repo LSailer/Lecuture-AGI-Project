@@ -1,6 +1,6 @@
 import heapq
 from llm import LLM
-from tower_of_hanoi import TowerOfHanoi
+from enviroment import TowerOfHanoi
 from decomposer import Agent
 import torch
 import matplotlib.pyplot as plt
@@ -25,7 +25,7 @@ def main(margin_k=2):
 
     print("Initial State:", game.get_state())
     previous_move = "None"
-    max_steps = 10
+    max_steps = 1000
     current_step = 0
     while not game.is_solved() and current_step < max_steps:
         current_state = str(game.get_state())
