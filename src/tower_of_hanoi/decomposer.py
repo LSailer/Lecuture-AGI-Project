@@ -1,7 +1,7 @@
 import torch
-from parser import Parser
-from llm import LLM
-from enviroment import TowerOfHanoi
+from .parser import Parser
+from utils.llm import LLM
+from .enviroment import TowerOfHanoi
 import csv
 import os
 
