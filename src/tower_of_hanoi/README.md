@@ -1,61 +1,49 @@
-# Lecture-AGI-Project
+# Tower of Hanoi
 
-This project implements a Tower of Hanoi solver using an LLM-based agent with decomposition strategies.
+Classic disk-stacking puzzle with 3 pegs and N disks.
 
-## Prerequisites
+## Environment (`enviroment.py`)
 
-- **Python**: >= 3.13
-- **Hugging Face Account**: You need a valid token to download models (e.g., Llama 3.2).
+**Class:** `TowerOfHanoi(num_disks)`
 
-## Installation
-
-1.  **Install Dependencies**:
-    This project uses `uv` for dependency management.
-
-    ```bash
-    uv sync
-    ```
-
-    _Alternatively, using pip:_
-
-    ```bash
-    pip install -e .
-    pip install python-dotenv huggingface_hub
-    ```
-
-## Configuration
-
-1.  Create a `.env` file in the root directory.
-2.  Add your Hugging Face token to `.env`:
-
-    ```env
-    HF_TOKEN=hf_...
-    ```
-
-    > **Note**: Ensure you have access to the model defined in `LLM/download.py` (default: `meta-llama/Llama-3.2-3B-Instruct`) on Hugging Face. You may need to accept the license agreement on the model card page.
-
-## Usage
-
-### 1. Download the LLM
-
-First, download the model weights to the local directory.
-
-```bash
-python LLM/download.py
+**State format:** List of 3 lists (one per peg), each containing disk numbers sorted largest-to-smallest from bottom to top.
+```python
+# 3 disks, all on peg 0:
+[[3, 2, 1], [], []]
 ```
 
-This will download the model to `LLM/model`.
-
-### 2. Run the Simulation
-
-Run the main script from the root directory:
-
-```bash
-python tower_of_hanoi/main.py
+**Move format:** `(disk, from_peg, to_peg)`
+```python
+game = TowerOfHanoi(3)
+game.move_disk(1, 0, 2)  # Move disk 1 from peg 0 to peg 2
 ```
 
-This will:
+**Validation rules:**
+- Only the top disk on a peg can be moved
+- A larger disk cannot be placed on a smaller disk
 
-- Initialize the Tower of Hanoi environment.
-- Start the LLM-based agent.
-- Log progress and save action distribution plots to the `output/` folder.
+**Goal:** All disks on peg 2. Optimal solution length is 2^n - 1 moves.
+
+**Interface:**
+- `get_state()` - returns current tower state
+- `apply_move(action)` - applies a `(disk, from, to)` move
+- `validate_move(move)` - raises `ValueError` on illegal moves
+- `is_valid_state(state)` - validates a proposed state
+- `is_solved()` - checks if all disks are on peg 2
+- `reset()` - resets to initial state
+
+## Prompts (`prompts.py`)
+
+The LLM prompt uses a parity-aware alternating strategy:
+- **Even N:** Disk 1 moves clockwise (0 -> 1 -> 2 -> 0)
+- **Odd N:** Disk 1 moves counter-clockwise (0 -> 2 -> 1 -> 0)
+
+Decision rules in the user prompt:
+- **Rule A:** If previous move was not Disk 1, move Disk 1 in its direction sequence.
+- **Rule B:** If previous move was Disk 1, make the only legal move between the other two pegs.
+
+**LLM output patterns:**
+```
+move = [disk_id, from_peg, to_peg]
+next_state = [[...], [...], [...]]
+```

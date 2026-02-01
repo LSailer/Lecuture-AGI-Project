@@ -105,6 +105,9 @@ class SlidingPuzzle:
     def get_state(self):
         return self.state
 
+    def apply_move(self, action):
+        self.move_tile(action[0], action[1])
+
     def reset(self):
         self.state = self.goal_state.copy()
 
