@@ -20,12 +20,12 @@ def main(margin_k=2):
     else:
         device = "cpu"
 
-    game = TowerOfHanoi(num_disks=3)
+    game = TowerOfHanoi(num_disks=20)
     agent = Agent(environment=game, device=device)
 
     print("Initial State:", game.get_state())
     previous_move = "None"
-    max_steps = 1000
+    max_steps = 1048575 
     current_step = 0
     while not game.is_solved() and current_step < max_steps:
         current_state = str(game.get_state())
@@ -66,17 +66,17 @@ def main(margin_k=2):
 
         # Save Plot distribution of action_voting here with the current step number
         if action_voting:
-            plt.figure()
-            actions_str = [str(k) for k in action_voting.keys()]
-            counts = list(action_voting.values())
-            plt.bar(actions_str, counts)
-            plt.title(f"Action Distribution Step {current_step}")
-            plt.xlabel("Actions")
-            plt.xticks(rotation=45)
-            plt.ylabel("Votes")
-            plt.tight_layout()
-            plt.savefig(f"output/step_{current_step}_distribution.png")
-            plt.close()
+            # plt.figure()
+            # actions_str = [str(k) for k in action_voting.keys()]
+            # counts = list(action_voting.values())
+            # plt.bar(actions_str, counts)
+            # plt.title(f"Action Distribution Step {current_step}")
+            # plt.xlabel("Actions")
+            # plt.xticks(rotation=45)
+            # plt.ylabel("Votes")
+            # plt.tight_layout()
+            # plt.savefig(f"output/step_{current_step}_distribution.png")
+            # plt.close()
 
             game.move_disk(best_action[0], best_action[1], best_action[2])
         else:

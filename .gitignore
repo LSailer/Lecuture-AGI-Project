@@ -208,3 +208,6 @@ __marimo__/
 
 LLM/model/
 LLM/model*
+*.png
+*.out
+*.err
