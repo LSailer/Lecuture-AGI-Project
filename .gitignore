@@ -211,3 +211,6 @@ LLM/model*
 
 logs
 output/log.csv
+*.png
+*.out
+*.err
