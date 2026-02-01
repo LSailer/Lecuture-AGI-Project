@@ -9,7 +9,8 @@
 #SBATCH --gres=gpu:1
 #SBATCH --partition=gpu_h100_il
 
-uv run tower_of_hanoi/main.py --margin_k 3
+uv run src/main.py --game tower_of_hanoi --margin_k 3
+#uv run src/main.py --game sliding_puzzle --margin_k 3
 
 # Slurm Commands
 # module load devel/python/3.10.5

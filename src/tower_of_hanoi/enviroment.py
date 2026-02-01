@@ -36,6 +36,9 @@ class TowerOfHanoi:
     def get_state(self):
         return self.towers
 
+    def apply_move(self, action):
+        self.move_disk(action[0], action[1], action[2])
+
     def reset(self):
         self.towers = [list(range(self.num_disks, 0, -1)), [], []]
 
