@@ -5,4 +5,10 @@ max_agents_per_step: 20
 output_dir: output
 
 # Game-specific
-initial_state: [15,14,13,12,11,10, 9, 8, 7, 6, 5, 4, 3, 1, 2, 0]
+#initial_state: [15,14,13,12,11,10, 9, 8, 7, 6, 5, 4, 3, 1, 2, 0]
+initial_state: [0, 1, 2, 3, 7, 6, 5, 4, 8, 9, 10, 11, 15, 14, 13, 12]
+# Fallback config
+max_fallback_retries: 3
+fallback_api: gemini # "gemini" | "local" | "both"
+fallback_local_model: deepseek-ai/DeepSeek-R1-Distill-Qwen-32B
+gemini_model: gemini-2.5-flash

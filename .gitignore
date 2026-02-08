@@ -214,3 +214,6 @@ output/log.csv
 *.png
 *.out
 *.err
+.DS_Store
+
+wandb/
