@@ -12,6 +12,8 @@ from utils.decomposer import Agent
 from utils.fallback import FailedPrediction
 import wandb
 import matplotlib.pyplot as plt  # noqa: F401
+import json
+from datetime import datetime
 
 # Add src to path for imports
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -304,6 +306,7 @@ def main() -> None:
 
     previous_move = "None"
     current_step = 0
+    game_history = []
 
     while not game.is_solved() and current_step < max_steps:
         current_state = game.get_state()
@@ -319,6 +322,26 @@ def main() -> None:
             margin_k=margin_k,
             predictions_table=predictions_table,
         )
+
+        step_data = {
+            "step": current_step,
+            "current_state": str(current_state),
+            "processed_state": str(game.get_state())
+            if hasattr(game, "get_state")
+            else str(current_state),
+            "agent_votes": {str(k): v for k, v in action_voting.items()},
+            "best_action": str(best_action),
+            "failed_predictions": [
+                {
+                    "agent_id": f.get("agent_id"),
+                    "action": str(f.get("action")),
+                    "state": str(f.get("state")),
+                    "error": f.get("error"),
+                }
+                for f in failed_predictions
+            ],
+        }
+        game_history.append(step_data)
 
         if action_voting:
             game.apply_move(best_action)
@@ -379,6 +402,26 @@ def main() -> None:
     # Save custom log files
     wandb.save(os.path.join(output_dir, "failures.csv"))
     wandb.save(os.path.join(output_dir, "debug_prompts.md"))
+
+    # Save detailed JSON log for visualization
+    experiments_dir = os.path.join(output_dir, "experiments")
+    if not os.path.exists(experiments_dir):
+        os.makedirs(experiments_dir)
+
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    json_filename = f"experiment_{timestamp}_{config['game']}.json"
+    json_path = os.path.join(experiments_dir, json_filename)
+
+    # Wrap game_history with metadata for webapp
+    experiment_data = {
+        "game_type": config['game'],
+        "steps": game_history
+    }
+
+    with open(json_path, "w") as f:
+        json.dump(experiment_data, f, indent=2)
+
+    print(f"Experiment log saved to: {json_path}")
 
     wandb.finish()
 

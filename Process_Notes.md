@@ -101,3 +101,235 @@ All modified/created files are fully typed:
 3. **Fallback trigger:** Set `max_agents_per_step: 1` and break parsing -- verify fallback engages, `debug_prompts.md` populates, retries respect `max_fallback_retries`
 4. **Batch inference:** Time 3-disk solve with sequential vs batch voting -- measure speedup
 5. **Fallback chain:** Block Gemini API (invalid key) -- verify local DeepSeek loads and takes over
+
+---
+
+## Feature: Modern React Visualization Webapp
+
+**Branch:** `feature/visualization-webapp`
+**Date:** 2026-02-09
+
+---
+
+### Problem Statement
+
+The existing vanilla JavaScript web app (`web/`) provided basic experiment visualization but lacked:
+1. **Modern architecture** -- no component reusability, state management, or type safety
+2. **Routing** -- couldn't share links to specific experiments or have a proper landing page
+3. **Build pipeline** -- no bundling, minification, or production optimization
+4. **Developer experience** -- no hot module replacement, TypeScript support, or modern tooling
+
+---
+
+### Decisions Made
+
+#### 1. Tech Stack: Vite + React 18 + TypeScript + Tailwind CSS v4
+
+- **Vite** for fast development server with HMR and optimized production builds
+- **React 18** with TypeScript for component architecture and type safety
+- **Tailwind CSS v4** (@tailwindcss/vite) for styling with dark theme (slate palette)
+- **React Router v6** for client-side routing (landing page + experiment viewer)
+- **No backend required** -- JSON data bundled directly via `import.meta.glob`
+
+#### 2. Architecture: Component-Based with Hooks
+
+**Type System:**
+- `types/experiment.ts` defines all interfaces: `RawStep`, `DisplayStep`, `Experiment`, `GameState`, `GameType`
+- Full type safety from data loading through rendering
+
+**Data Layer:**
+- `data/index.ts` uses `import.meta.glob` to auto-discover all JSON files in `src/data/experiments/`
+- `parseState()` converts Python-stringified states (tuples, single quotes) to JavaScript objects
+- `parseExperimentMetadata()` extracts game type, date, and display name from filename pattern
+
+**Hooks:**
+- `usePlayback()` manages currentStepIndex, isPlaying state, play/pause/next/prev/goToStep with 1-second interval
+- `useKeyboardShortcuts()` registers keydown listeners for ←/→ arrows and Space bar
+
+**Components:**
+- **Visualizations:** `TowerOfHanoiRenderer` (SVG with colored disks), `SlidingPuzzleRenderer` (CSS grid), `GameStage` (dispatcher)
+- **Controls:** `PlaybackControls` (buttons + slider + step counter)
+- **Layout:** `Sidebar` (experiment list grouped by game type), `DetailsPanel` (votes + failures with color coding)
+- **Pages:** `LandingPage` (experiment cards grid), `ExperimentPage` (3-column viewer layout)
+
+#### 3. Visualization Design
+
+**Tower of Hanoi:**
+- 3 vertical rods with colored disks (red → orange → yellow → green → blue → violet → pink)
+- Disk width proportional to size (30px + size × 20px)
+- Disk numbers displayed on each disk
+- CSS flexbox with `flex-col-reverse` for bottom-to-top stacking
+
+**Sliding Puzzle:**
+- CSS Grid with dynamic size based on puzzle dimensions
+- 64px tiles with centered numbers
+- Empty tile (0) rendered as transparent
+- Dark slate background matching theme
+
+#### 4. User Experience
+
+**Landing Page:**
+- Grid of experiment cards showing game type, name, date, and step count
+- Click any card to navigate to experiment viewer
+- Responsive layout (1-3 columns based on screen width)
+
+**Experiment Viewer:**
+- 3-column layout: sidebar (250px) | main visualization (flex) | details (300px)
+- Full-height (100vh) app-like interface
+- Playback controls with play/pause, prev/next, slider, and step counter
+- Keyboard shortcuts: ←/→ for step navigation, Space for play/pause
+- Auto-play advances every 1 second, stops at end
+
+**Details Panel:**
+- Chosen action highlighted with green border
+- Agent votes sorted by count (descending)
+- Failed predictions with red border showing agent ID and error
+- Color-coded for quick visual scanning
+
+#### 5. Build & Development
+
+**Development:**
+- `npm run dev` starts Vite dev server with HMR on http://localhost:5173/
+- Fast refresh preserves component state during edits
+- TypeScript compilation in watch mode
+
+**Production:**
+- `npm run build` creates optimized bundle in `webapp/dist/`
+- Tree-shaking, minification, and code splitting
+- CSS purging removes unused Tailwind classes
+- Assets hashed for cache busting
+
+---
+
+### Files Created
+
+| File | Purpose |
+|------|---------|
+| `webapp/vite.config.ts` | Vite configuration with React and Tailwind plugins |
+| `webapp/tsconfig.json` / `tsconfig.app.json` | TypeScript configuration |
+| `webapp/package.json` | Dependencies and scripts |
+| `webapp/index.html` | HTML entry point with Inter font |
+| `webapp/src/index.css` | Tailwind directives and custom scrollbar styles |
+| `webapp/src/types/experiment.ts` | All TypeScript interfaces |
+| `webapp/src/utils/parseState.ts` | Python state string parser |
+| `webapp/src/utils/experimentMetadata.ts` | Filename metadata extractor |
+| `webapp/src/data/index.ts` | Experiment loader with import.meta.glob |
+| `webapp/src/data/experiments/*.json` | Copied experiment data (3 Tower of Hanoi runs) |
+| `webapp/src/hooks/usePlayback.ts` | Playback state management hook |
+| `webapp/src/hooks/useKeyboardShortcuts.ts` | Keyboard event handler hook |
+| `webapp/src/components/visualizations/TowerOfHanoiRenderer.tsx` | Tower of Hanoi SVG renderer |
+| `webapp/src/components/visualizations/SlidingPuzzleRenderer.tsx` | Sliding Puzzle CSS grid renderer |
+| `webapp/src/components/visualizations/GameStage.tsx` | Game type dispatcher |
+| `webapp/src/components/common/PlaybackControls.tsx` | Playback UI controls |
+| `webapp/src/components/layout/Sidebar.tsx` | Experiment list sidebar |
+| `webapp/src/components/layout/DetailsPanel.tsx` | Step details panel |
+| `webapp/src/components/pages/LandingPage.tsx` | Home page with experiment cards |
+| `webapp/src/components/pages/ExperimentPage.tsx` | Main experiment viewer |
+| `webapp/src/App.tsx` | Router setup |
+| `webapp/src/main.tsx` | React entry point |
+
+---
+
+### Directory Structure
+
+```
+webapp/
+├── index.html
+├── package.json
+├── vite.config.ts
+├── tsconfig.json
+├── src/
+│   ├── main.tsx
+│   ├── App.tsx
+│   ├── index.css
+│   ├── types/
+│   │   └── experiment.ts
+│   ├── data/
+│   │   ├── experiments/
+│   │   │   └── *.json
+│   │   └── index.ts
+│   ├── utils/
+│   │   ├── parseState.ts
+│   │   └── experimentMetadata.ts
+│   ├── hooks/
+│   │   ├── usePlayback.ts
+│   │   └── useKeyboardShortcuts.ts
+│   └── components/
+│       ├── layout/
+│       │   ├── Sidebar.tsx
+│       │   └── DetailsPanel.tsx
+│       ├── common/
+│       │   └── PlaybackControls.tsx
+│       ├── visualizations/
+│       │   ├── GameStage.tsx
+│       │   ├── TowerOfHanoiRenderer.tsx
+│       │   └── SlidingPuzzleRenderer.tsx
+│       └── pages/
+│           ├── LandingPage.tsx
+│           └── ExperimentPage.tsx
+```
+
+---
+
+### Dependencies
+
+```json
+{
+  "dependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-router-dom": "^7.13.0",
+    "tailwindcss": "^4.1.18",
+    "@tailwindcss/vite": "^4.1.18"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^5.1.1",
+    "typescript": "~5.9.3",
+    "vite": "^7.3.1"
+  }
+}
+```
+
+---
+
+### Data Flow
+
+1. **App Initialization:** `loadExperiments()` in `data/index.ts` runs at module load
+   - `import.meta.glob` discovers all JSON files
+   - Each file is processed: parse metadata, create Step 0 from first `current_state`, map remaining steps from `processed_state`
+   - Returns array of `Experiment` objects sorted by date
+
+2. **Landing Page:** Displays experiment cards, each links to `/experiment/:filename`
+
+3. **Experiment Viewer:**
+   - URL param `:filename` used to find experiment in array
+   - `usePlayback()` hook manages step index and play/pause state
+   - `useKeyboardShortcuts()` connects keyboard events to playback actions
+   - Current step's `parsedState` rendered by `GameStage` → specific renderer
+   - `DetailsPanel` shows step's votes and failures
+
+---
+
+### Verification Checklist
+
+✅ **Build:** `npm run build` succeeds with no errors
+✅ **Dev Server:** `npm run dev` starts on http://localhost:5173/
+✅ **Landing Page:** Shows 3 Tower of Hanoi experiment cards
+✅ **Navigation:** Click card → navigates to experiment viewer
+✅ **Visualization:** Tower of Hanoi disks render correctly with colors and numbers
+✅ **Playback:** Play auto-advances, pause stops, slider seeks
+✅ **Controls:** Prev/Next buttons work, disabled at boundaries
+✅ **Keyboard:** ←/→ navigate steps, Space toggles play/pause
+✅ **Details Panel:** Shows chosen action (green), votes sorted by count, failures (red)
+✅ **Type Safety:** All components fully typed, no TypeScript errors
+
+---
+
+### Future Enhancements
+
+- Add Sliding Puzzle experiment data and verify rendering
+- Implement experiment comparison view (side-by-side)
+- Add export functionality (GIF/video of playback)
+- Chart/graph visualizations for agent vote distributions
+- Filter/search experiments by date, game type, or success rate
+- Dark/light theme toggle

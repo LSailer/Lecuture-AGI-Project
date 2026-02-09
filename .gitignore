@@ -218,3 +218,7 @@ output/log.csv
 
 wandb/
 output/failures.csv
+
+# Webapp (React/Vite)
+webapp/node_modules/
+webapp/dist/
