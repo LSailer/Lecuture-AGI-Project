@@ -6,7 +6,8 @@ output_dir: output
 
 # Game-specific
 #initial_state: [15,14,13,12,11,10, 9, 8, 7, 6, 5, 4, 3, 1, 2, 0]
-initial_state: [0, 1, 2, 3, 7, 6, 5, 4, 8, 9, 10, 11, 15, 14, 13, 12]
+# initial_state: [0, 1, 2, 3,6,7,8,4,5,14,10,12,9,13,11,15]
+initial_state: [0, 1, 2, 5, 6, 3, 4, 7, 8]
 # Fallback config
 max_fallback_retries: 3
 fallback_api: gemini # "gemini" | "local" | "both"

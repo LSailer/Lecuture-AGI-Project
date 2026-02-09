@@ -261,9 +261,12 @@ def main() -> None:
 
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
-    log_path = os.path.join(output_dir, "log.csv")
-    if os.path.exists(log_path):
-        os.remove(log_path)
+
+    # Clean up old logs
+    for filename in ["failures.csv", "debug_prompts.md", "log.csv"]:
+        path = os.path.join(output_dir, filename)
+        if os.path.exists(path):
+            os.remove(path)
 
     if torch.cuda.is_available():
         device = "cuda"
@@ -334,8 +337,6 @@ def main() -> None:
                     agent.system_prompt,
                     user_prompt,
                     failed_predictions,
-                    current_state=current_state,
-                    previous_move=previous_move,
                     step=current_step,
                     retry=fallback_retry,
                 )
@@ -374,6 +375,11 @@ def main() -> None:
     # Log final metrics to WandB
     wandb.log({"predictions": predictions_table})
     wandb.log({"total_steps": current_step, "solved": game.is_solved()})
+
+    # Save custom log files
+    wandb.save(os.path.join(output_dir, "failures.csv"))
+    wandb.save(os.path.join(output_dir, "debug_prompts.md"))
+
     wandb.finish()
 
 

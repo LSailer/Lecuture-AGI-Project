@@ -57,6 +57,7 @@ class Agent:
             )
         except Exception as e:
             error_message = str(e)
+        if error_message != "None":
             # Track failures to failures.csv
             failures_file = os.path.join("output", "failures.csv")
             os.makedirs("output", exist_ok=True)
@@ -64,12 +65,13 @@ class Agent:
             with open(failures_file, mode="a", newline="") as ff:
                 fw = csv.writer(ff)
                 if not failures_exists:
-                    fw.writerow(["timestamp", "current_state", "agent_id"])
+                    fw.writerow(["timestamp", "current_state", "agent_id", "response"])
                 fw.writerow(
                     [
                         datetime.now().isoformat(),
                         current_state,
                         f"{step}:{agent_num}",
+                        response_content,
                     ]
                 )
 
@@ -82,28 +84,6 @@ class Agent:
                 if not valid_exists:
                     vw.writerow(["step", "agent_num", "action", "parsed_state"])
                 vw.writerow([step, agent_num, action, parsed_state])
-
-        # Log to CSV
-        log_file = "output/log.csv"
-        os.makedirs("output", exist_ok=True)
-        file_exists = os.path.isfile(log_file)
-
-        with open(log_file, mode="a", newline="") as f:
-            writer = csv.writer(f)
-            if not file_exists:
-                writer.writerow(
-                    [
-                        "step",
-                        "number_agent",
-                        "response",
-                        "predicted_action",
-                        "predicted_state",
-                        "error_message",
-                    ]
-                )
-            writer.writerow(
-                [step, agent_num, response_content, action, parsed_state, error_message]
-            )
 
         if error_message != "None":
             raise ValueError(error_message)
