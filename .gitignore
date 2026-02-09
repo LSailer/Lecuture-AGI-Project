@@ -214,3 +214,11 @@ output/log.csv
 *.png
 *.out
 *.err
+.DS_Store
+
+wandb/
+output/failures.csv
+
+# Webapp (React/Vite)
+webapp/node_modules/
+webapp/dist/

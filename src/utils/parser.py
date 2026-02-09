@@ -1,12 +1,23 @@
+from typing import Any, Callable
+import re
+
+
 class Parser:
-    def __init__(self, environment, move_pattern, state_pattern, parse_move_fn, parse_state_fn):
+    def __init__(
+        self,
+        environment: Any,
+        move_pattern: re.Pattern[str],
+        state_pattern: re.Pattern[str],
+        parse_move_fn: Callable[[re.Match[str]], Any],
+        parse_state_fn: Callable[[re.Match[str]], Any],
+    ) -> None:
         self.environment = environment
         self.move_pattern = move_pattern
         self.state_pattern = state_pattern
         self.parse_move_fn = parse_move_fn
         self.parse_state_fn = parse_state_fn
 
-    def parse_action_state(self, response: str):
+    def parse_action_state(self, response: str) -> tuple[Any, Any]:
         move_matches = list(self.move_pattern.finditer(response))
         state_matches = list(self.state_pattern.finditer(response))
 

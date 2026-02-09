@@ -16,14 +16,16 @@
       "type": "debugpy",
       "request": "launch",
       "program": "src/main.py",
-      "console": "integratedTerminal"
+      "console": "integratedTerminal",
+      "args": ["--game", "tower_of_hanoi"]
     },
     {
       "name": "Run Sliding Puzzle",
       "type": "debugpy",
       "request": "launch",
-      "program": "sliding_puzzle/main.py",
-      "console": "integratedTerminal"
+      "program": "src/main.py",
+      "console": "integratedTerminal",
+      "args": ["--game", "sliding_puzzle"]
     }
   ]
 }
