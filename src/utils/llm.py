@@ -1,6 +1,8 @@
+import asyncio
 from typing import Any
 
 from dotenv import load_dotenv
+import ollama
 import torch
 from transformers import pipeline
 
@@ -56,6 +58,58 @@ class LLM:
             temperature=temperature,
         )
         return [r[0]["generated_text"] for r in results]
+
+
+class OllamaLLM:
+    def __init__(self, model_id: str = "qwen3:8b") -> None:
+        self.model_id = model_id
+        print(f"OllamaLLM initialized with model {model_id}")
+
+    def generate(
+        self,
+        system_prompt: str,
+        user_prompt: str,
+        max_new_tokens: int = 750,
+        temperature: float = 0.5,
+    ) -> list[Message]:
+        messages: Conversation = [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt},
+        ]
+        response = ollama.chat(
+            model=self.model_id,
+            messages=messages,
+            options={"num_predict": max_new_tokens, "temperature": temperature},
+        )
+        return messages + [{"role": "assistant", "content": response.message.content}]
+
+    def generate_batch(
+        self,
+        messages_list: list[Conversation],
+        max_new_tokens: int = 750,
+        temperature: float = 0.5,
+    ) -> list[list[Message]]:
+        async def _run_all() -> list[list[Message]]:
+            client = ollama.AsyncClient()
+
+            async def _single(messages: Conversation) -> list[Message]:
+                response = await client.chat(
+                    model=self.model_id,
+                    messages=messages,
+                    options={"num_predict": max_new_tokens, "temperature": temperature},
+                )
+                return messages + [{"role": "assistant", "content": response.message.content}]
+
+            return list(await asyncio.gather(*[_single(m) for m in messages_list]))
+
+        return asyncio.run(_run_all())
+
+
+def create_llm(config: dict, device: str) -> "LLM | OllamaLLM":
+    backend = config.get("llm_backend", "huggingface")
+    if backend == "ollama":
+        return OllamaLLM(model_id=config.get("ollama_model", "qwen3:8b"))
+    return LLM(model_id=config.get("model_id", "LLM/model"), device=device)
 
 
 if __name__ == "__main__":

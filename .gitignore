@@ -214,7 +214,7 @@ output/log.csv
 *.png
 *.out
 *.err
-.DS_Store
+*.DS_Store
 
 wandb/
 output/failures.csv
@@ -222,3 +222,7 @@ output/failures.csv
 # Webapp (React/Vite)
 webapp/node_modules/
 webapp/dist/
+GEMINI.md
+
+CLAUDE.md
+LLM/.DS_Store
