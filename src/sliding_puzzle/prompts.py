@@ -9,6 +9,7 @@ STATE_PATTERN = re.compile(r"(?is)\bnext_state\b\s*=\s*(\[[^\[\]]+\])")
 def get_system_prompt(environment):
     return """
 You are a helpful assistant solving a sliding puzzle (8-puzzle).
+Be concise. No unnecessary explanation. Output only what is required.
 
 The puzzle is a 3x3 grid with tiles numbered 1-8 and one empty space (0).
 Goal: Arrange tiles in order [1, 2, 3, 4, 5, 6, 7, 8, 0]
