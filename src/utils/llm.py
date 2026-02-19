@@ -36,7 +36,7 @@ class LLM:
         result: Any = self.pipe(
             message,
             max_new_tokens=max_new_tokens,
-            do_sample=False,
+            do_sample=True,
             temperature=temperature,
         )
         return result[0]["generated_text"]

@@ -5,7 +5,7 @@ max_agents_per_step: 3
 output_dir: output
 
 # Game-specific
-num_disks: 3
+num_disks: 20
 
 # Fallback config
 max_fallback_retries: 3

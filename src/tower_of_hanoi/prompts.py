@@ -11,7 +11,7 @@ STATE_PATTERN = re.compile(
 def get_system_prompt(environment):
     return f"""
         You are a helpful assistant. Solve this puzzle for me.
-        Be concise. No unnecessary explanation. Output only what is required.
+        In all interactions and commit messages be extremely concise and sacrifice grammar for the sake of concision.
 
         There are three pegs and {environment.num_disks} disks of different sizes stacked on the first peg. The disks are
         numbered from 1 (smallest) to {environment.num_disks} (largest). 
