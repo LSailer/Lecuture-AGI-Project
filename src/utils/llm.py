@@ -52,7 +52,7 @@ class LLM:
             messages_list,
             batch_size=len(messages_list),
             max_new_tokens=max_new_tokens,
-            do_sample=False,
+            do_sample=True,
             temperature=temperature,
         )
         return [r[0]["generated_text"] for r in results]
