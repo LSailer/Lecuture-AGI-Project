@@ -222,3 +222,7 @@ output/failures.csv
 # Webapp (React/Vite)
 webapp/node_modules/
 webapp/dist/
+
+.gemini/
+gha-creds-*.json
+.github/
