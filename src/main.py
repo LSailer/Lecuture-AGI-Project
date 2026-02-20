@@ -45,7 +45,7 @@ def create_agent(config: dict[str, Any], game: Any, device: str) -> Agent:
         from sliding_puzzle import prompts
     else:
         raise ValueError(f"Unknown game: {game_name}")
-    return Agent(environment=game, prompts_module=prompts, device=device)
+    return Agent(environment=game, prompts_module=prompts, device=device, config=config)
 
 
 def load_config(args: argparse.Namespace) -> dict[str, Any]:
@@ -270,7 +270,9 @@ def main() -> None:
         if os.path.exists(path):
             os.remove(path)
 
-    if torch.cuda.is_available():
+    if config.get("llm_backend") == "ollama":
+        device = "cpu"
+    elif torch.cuda.is_available():
         device = "cuda"
     elif torch.backends.mps.is_available():
         device = "mps"

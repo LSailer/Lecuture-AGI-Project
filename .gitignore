@@ -214,7 +214,7 @@ output/log.csv
 *.png
 *.out
 *.err
-.DS_Store
+*.DS_Store
 
 wandb/
 output/failures.csv
@@ -226,3 +226,7 @@ webapp/dist/
 .gemini/
 gha-creds-*.json
 .github/
+GEMINI.md
+
+CLAUDE.md
+LLM/.DS_Store

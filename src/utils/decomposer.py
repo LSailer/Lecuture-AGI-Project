@@ -1,7 +1,7 @@
 from typing import Any
 from types import ModuleType
 
-from utils.llm import LLM, Conversation, Message
+from utils.llm import LLM, OllamaLLM, create_llm, Conversation, Message
 from utils.parser import Parser
 import csv
 import os
@@ -10,12 +10,16 @@ from datetime import datetime
 
 class Agent:
     def __init__(
-        self, environment: Any, prompts_module: ModuleType, device: str = "cpu"
+        self,
+        environment: Any,
+        prompts_module: ModuleType,
+        device: str = "cpu",
+        config: dict | None = None,
     ) -> None:
         self.environment = environment
         self.prompts = prompts_module
         self.system_prompt: str = prompts_module.get_system_prompt(environment)
-        self.llm = LLM(device=device)
+        self.llm: LLM | OllamaLLM = create_llm(config, device) if config is not None else LLM(device=device)
         self.output_parser = Parser(
             environment=environment,
             move_pattern=prompts_module.MOVE_PATTERN,
