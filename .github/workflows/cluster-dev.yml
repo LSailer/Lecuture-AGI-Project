@@ -8,7 +8,7 @@ on:
     types: [closed]
 
 env:
-  REPO_PATH: ${{ github.workspace }}/../../../lecture_agi
+  REPO_PATH: $HOME/Lecuture-AGI-Project
 
 jobs:
   submit-slurm-job:
