@@ -28,7 +28,7 @@ jobs:
           echo "Waiting for SLURM job $JOB_ID to finish..."
 
           while squeue -j $JOB_ID -h 2>/dev/null | grep -q "$JOB_ID"; do
-            echo "Job $JOB_ID still running — checking again in 30s..."
+            echo "Job $JOB_ID still running — checking again in 5 minutes..."
             sleep 300
           done
 
