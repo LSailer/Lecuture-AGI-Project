@@ -7,10 +7,10 @@
 #SBATCH --cpus-per-task=2
 #SBATCH --mem=127G
 #SBATCH --gres=gpu:1
-#SBATCH --partition=gpu_a100_il
+#SBATCH --partition=dev_gpu_a100_il
 
-uv run src/main.py --game tower_of_hanoi --margin_k 3
-#uv run src/main.py --game sliding_puzzle --margin_k 3
+#uv run src/main.py --game tower_of_hanoi --margin_k 3
+uv run src/main.py --game sliding_puzzle --margin_k 3
 
 # Slurm Commands
 # module load devel/python/3.10.5
