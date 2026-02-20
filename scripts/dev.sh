@@ -2,12 +2,12 @@
 #SBATCH --job-name=RunSimulation
 #SBATCH --output=logs/slurm-%j.out
 #SBATCH --error=logs/slurm-%j.err
-#SBATCH --time=00:20:00
+#SBATCH --time=00:30:00
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
 #SBATCH --mem=127G
 #SBATCH --gres=gpu:1
-#SBATCH --partition=dev_gpu_a100_il
+#SBATCH --partition=dev_gpu_h100
 
 #uv run src/main.py --game tower_of_hanoi --margin_k 3
 uv run src/main.py --game sliding_puzzle --margin_k 3
