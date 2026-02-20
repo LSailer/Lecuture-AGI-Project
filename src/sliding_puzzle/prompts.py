@@ -2,7 +2,8 @@ import ast
 import re
 
 
-MOVE_PATTERN = re.compile(r"(?is)\bmove\b\s*=\s*\[(\d+),\s*[\"'](\w+)[\"']\]")
+MOVE_PATTERN = re.compile(r"(?is)\bmove\b\s*=\s*\[(\d+),\s*(\d+)\]")
+DIRECTION_MAP = {0: "up", 1: "down", 2: "left", 3: "right"}
 STATE_PATTERN = re.compile(r"(?is)\bnext_state\b\s*=\s*(\[[^\[\]]+\])")
 
 
@@ -10,6 +11,7 @@ def get_system_prompt(environment):
     return """
 You are a micro-agent solving an 8-puzzle using a prioritized heuristic.
 Goal State: [1, 2, 3, 4, 5, 6, 7, 8, 0]
+Directions: 0=up, 1=down, 2=left, 3=right
 
 Micro-Agent Priority Rules (Strict Order):
 1. **Identify Target:** Find the first number $N$ (1-8) that is NOT in its correct sorted position. This is your TARGET.
@@ -22,14 +24,14 @@ Micro-Agent Priority Rules (Strict Order):
 Output Format (STRICT):
 Target: <number>
 Reasoning: <briefly justify based on Rule 2>
-move = [tile_number, "direction"]
+move = [tile_number, direction_int]
 next_state = [resulting_list]
 
 Example:
 State: [1, 2, 0, 4, 5, 3, 7, 8, 6]
 Target: 3 (1, 2 are correct. 3 is at index 5, goal is 2)
 Reasoning: 0 is at index 2 (Goal of 3). 3 is at index 5 (below 0). Move 3 up into 0.
-move = [3, "up"]
+move = [3, 0]
 next_state = [1, 2, 3, 4, 5, 0, 7, 8, 6]
 """
 
@@ -42,6 +44,7 @@ def build_user_prompt(current_state, previous_move, environment, step):
     return f"""
 Current State: {current_state}
 Previous move: {previous_move}
+Directions: 0=up, 1=down, 2=left, 3=right
 
 Task:
 1. Scan for the first misplaced number (1 -> 8). This is your Target.
@@ -53,7 +56,10 @@ Provide Target, Reasoning, and Move:
 
 def parse_move(match):
     tile = int(match.group(1))
-    direction = match.group(2)
+    direction_int = int(match.group(2))
+    direction = DIRECTION_MAP.get(direction_int)
+    if direction is None:
+        return None
     return (tile, direction)
 
 
