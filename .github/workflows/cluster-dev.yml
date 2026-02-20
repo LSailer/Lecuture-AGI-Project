@@ -1,0 +1,55 @@
+name: Run Dev on BVUni Cluster
+
+on:
+  push:
+    branches: [dev]
+  pull_request:
+    branches: [dev]
+    types: [closed]
+
+jobs:
+  submit-slurm-job:
+    runs-on: self-hosted
+    if: github.event_name == 'push' || github.event.pull_request.merged == true
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Submit SLURM job
+        id: sbatch
+        run: |
+          job_id=$(sbatch --parsable scripts/dev.sh)
+          echo "Submitted SLURM job: $job_id"
+          echo "JOB_ID=$job_id" >> $GITHUB_ENV
+
+      - name: Wait for job and report
+        run: |
+          echo "Waiting for SLURM job $JOB_ID to finish..."
+
+          while squeue -j $JOB_ID -h 2>/dev/null | grep -q "$JOB_ID"; do
+            echo "Job $JOB_ID still running — checking again in 30s..."
+            sleep 30
+          done
+
+          echo "Job $JOB_ID finished."
+
+          # Print SLURM output log if it exists
+          LOG_FILE="slurm-${JOB_ID}.out"
+          if [ -f "$LOG_FILE" ]; then
+            echo "--- SLURM Output ---"
+            cat "$LOG_FILE"
+          else
+            echo "No output file found at $LOG_FILE"
+          fi
+
+          # Check exit code from SLURM job
+          EXIT_CODE=$(sacct -j $JOB_ID --format=ExitCode --noheader | head -1 | cut -d':' -f1 | tr -d ' ')
+          echo "Job exit code: $EXIT_CODE"
+
+          if [ "$EXIT_CODE" != "0" ] && [ -n "$EXIT_CODE" ]; then
+            echo "Job failed with exit code $EXIT_CODE"
+            exit 1
+          else
+            echo "Job completed successfully."
+          fi
