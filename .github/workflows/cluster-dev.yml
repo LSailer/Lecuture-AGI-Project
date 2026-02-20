@@ -15,27 +15,40 @@ jobs:
     runs-on: self-hosted
     if: github.event_name == 'push' || github.event.pull_request.merged == true
 
-    defaults:
-      run:
-        working-directory: ${{ env.REPO_PATH }}
-
     steps:
-      - name: Pull latest changes
+      # Step 1: Checkout handles GitHub authentication automatically
+      - name: Checkout code (for auth)
+        uses: actions/checkout@v4
+        with:
+          ref: dev
+
+      # Step 2: Sync the checked-out code into the existing repo folder
+      # Preserves .env, LLM/model/, .venv/, and other local-only files
+      - name: Sync code to project folder
         run: |
-          cd $REPO_PATH
-          git pull origin dev
-          echo "Repo is up to date."
+          rsync -a --delete \
+            --exclude '.env' \
+            --exclude 'LLM/model/' \
+            --exclude '.venv/' \
+            --exclude 'logs/' \
+            --exclude 'output/' \
+            --exclude '__pycache__/' \
+            --exclude 'webapp/node_modules/' \
+            $GITHUB_WORKSPACE/ ${{ env.REPO_PATH }}/
+          echo "Code synced to ${{ env.REPO_PATH }}"
 
-
+      # Step 3: Submit the SLURM job from the project folder
       - name: Submit SLURM job
-        id: sbatch
+        working-directory: ${{ env.REPO_PATH }}
         run: |
           mkdir -p logs
           job_id=$(sbatch --parsable scripts/dev.sh)
           echo "Submitted SLURM job: $job_id"
           echo "JOB_ID=$job_id" >> $GITHUB_ENV
 
+      # Step 4: Wait for SLURM job and print logs
       - name: Wait for job and report
+        working-directory: ${{ env.REPO_PATH }}
         run: |
           echo "Waiting for SLURM job $JOB_ID to finish..."
 
