@@ -34,13 +34,22 @@ jobs:
 
           echo "Job $JOB_ID finished."
 
-          # Print SLURM output log if it exists
-          LOG_FILE="slurm-${JOB_ID}.out"
-          if [ -f "$LOG_FILE" ]; then
-            echo "--- SLURM Output ---"
-            cat "$LOG_FILE"
+          # Print SLURM output and error logs if they exist
+          OUT_FILE="logs/slurm-${JOB_ID}.out"
+          ERR_FILE="logs/slurm-${JOB_ID}.err"
+
+          if [ -f "$OUT_FILE" ]; then
+            echo "--- SLURM Output (slurm-${JOB_ID}.out) ---"
+            cat "$OUT_FILE"
           else
-            echo "No output file found at $LOG_FILE"
+            echo "No output file found at $OUT_FILE"
+          fi
+
+          if [ -f "$ERR_FILE" ]; then
+            echo "--- SLURM Errors (slurm-${JOB_ID}.err) ---"
+            cat "$ERR_FILE"
+          else
+            echo "No error file found at $ERR_FILE"
           fi
 
           # Check exit code from SLURM job

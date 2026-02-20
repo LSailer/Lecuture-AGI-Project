@@ -1,7 +1,7 @@
 #!/bin/sh
 #SBATCH --job-name=RunSimulation
-#SBATCH --output=logs/Logs%j.out
-#SBATCH --error=logs/Logs%j.err
+#SBATCH --output=logs/slurm-%j.out
+#SBATCH --error=logs/slurm-%j.err
 #SBATCH --time=00:20:00
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
