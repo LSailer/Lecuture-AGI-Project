@@ -1,6 +1,6 @@
 game: tower_of_hanoi
 margin_k: 2
-max_steps: 1000
+max_steps: 3000000
 max_agents_per_step: 3
 output_dir: output
 
