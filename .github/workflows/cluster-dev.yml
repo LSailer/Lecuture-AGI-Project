@@ -7,18 +7,30 @@ on:
     branches: [dev]
     types: [closed]
 
+env:
+  REPO_PATH: ${{ github.workspace }}/../../../lecture_agi
+
 jobs:
   submit-slurm-job:
     runs-on: self-hosted
     if: github.event_name == 'push' || github.event.pull_request.merged == true
 
+    defaults:
+      run:
+        working-directory: ${{ env.REPO_PATH }}
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Pull latest changes
+        run: |
+          cd $REPO_PATH
+          git pull origin dev
+          echo "Repo is up to date."
+
 
       - name: Submit SLURM job
         id: sbatch
         run: |
+          mkdir -p logs
           job_id=$(sbatch --parsable scripts/dev.sh)
           echo "Submitted SLURM job: $job_id"
           echo "JOB_ID=$job_id" >> $GITHUB_ENV
@@ -34,7 +46,6 @@ jobs:
 
           echo "Job $JOB_ID finished."
 
-          # Print SLURM output and error logs if they exist
           OUT_FILE="logs/slurm-${JOB_ID}.out"
           ERR_FILE="logs/slurm-${JOB_ID}.err"
 
@@ -52,7 +63,6 @@ jobs:
             echo "No error file found at $ERR_FILE"
           fi
 
-          # Check exit code from SLURM job
           EXIT_CODE=$(sacct -j $JOB_ID --format=ExitCode --noheader | head -1 | cut -d':' -f1 | tr -d ' ')
           echo "Job exit code: $EXIT_CODE"
 
