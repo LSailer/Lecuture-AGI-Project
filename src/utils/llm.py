@@ -28,17 +28,22 @@ class LLM:
         user_prompt: str,
         max_new_tokens: int = 750,
         temperature: float = 0.5,
+        do_sample: bool = False,
+        top_p: float = 1.0,
     ) -> list[Message]:
         message: Conversation = [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_prompt},
         ]
-        result: Any = self.pipe(
-            message,
-            max_new_tokens=max_new_tokens,
-            do_sample=False,
-            temperature=temperature,
-        )
+        gen_kwargs: dict[str, Any] = {
+            "max_new_tokens": max_new_tokens,
+            "do_sample": do_sample,
+        }
+        if do_sample:
+            gen_kwargs["temperature"] = temperature
+            gen_kwargs["top_p"] = top_p
+
+        result: Any = self.pipe(message, **gen_kwargs)
         return result[0]["generated_text"]
 
     def generate_batch(
@@ -46,15 +51,20 @@ class LLM:
         messages_list: list[Conversation],
         max_new_tokens: int = 750,
         temperature: float = 0.5,
+        do_sample: bool = False,
+        top_p: float = 1.0,
     ) -> list[list[Message]]:
         """Run multiple prompts through the model in a single batch."""
-        results: Any = self.pipe(
-            messages_list,
-            batch_size=len(messages_list),
-            max_new_tokens=max_new_tokens,
-            do_sample=False,
-            temperature=temperature,
-        )
+        gen_kwargs: dict[str, Any] = {
+            "batch_size": len(messages_list),
+            "max_new_tokens": max_new_tokens,
+            "do_sample": do_sample,
+        }
+        if do_sample:
+            gen_kwargs["temperature"] = temperature
+            gen_kwargs["top_p"] = top_p
+
+        results: Any = self.pipe(messages_list, **gen_kwargs)
         return [r[0]["generated_text"] for r in results]
 
 
@@ -63,5 +73,5 @@ if __name__ == "__main__":
     llm_instance = LLM(device=mps_device)
     system_prompt = "You are a helpful assistant."
     prompt = "What is the capital of France?"
-    response = llm_instance.generate(system_prompt, prompt)
+    response = llm_instance.generate(system_prompt, prompt, do_sample=False)
     print(response)

@@ -140,8 +140,14 @@ def run_voting_batch(
                 )
         batch_messages.append(messages)
 
-    # Batch inference
-    responses = agent.llm.generate_batch(batch_messages)
+    # Batch inference (MAKER-style): first vote deterministic (tau=0), remaining votes sampled (tau=0.1)
+    responses = []
+    first_messages = batch_messages[:1]
+    rest_messages = batch_messages[1:]
+    if first_messages:
+        responses.extend(agent.llm.generate_batch(first_messages, do_sample=False, temperature=0.0))
+    if rest_messages:
+        responses.extend(agent.llm.generate_batch(rest_messages, do_sample=True, temperature=0.1, top_p=0.95))
 
     # Parse each response and tally votes
     for i, response in enumerate(responses):
@@ -204,6 +210,9 @@ def run_voting_batch(
                     current_state,
                     step=current_step,
                     agent_num=agents_so_far,
+                    temperature=0.1,
+                    do_sample=True,
+                    top_p=0.95,
                 )
                 if isinstance(action, list):
                     action = tuple(action)
@@ -423,10 +432,7 @@ def main() -> None:
     json_path = os.path.join(experiments_dir, json_filename)
 
     # Wrap game_history with metadata for webapp
-    experiment_data = {
-        "game_type": config['game'],
-        "steps": game_history
-    }
+    experiment_data = {"game_type": config["game"], "steps": game_history}
 
     with open(json_path, "w") as f:
         json.dump(experiment_data, f, indent=2)

@@ -1,6 +1,6 @@
 game: nonogram
 margin_k: 3
-max_steps: 100
+max_steps: 150
 max_agents_per_step: 9
 output_dir: output
 
