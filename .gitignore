@@ -225,7 +225,7 @@ webapp/dist/
 
 .gemini/
 gha-creds-*.json
-.github/
+
 GEMINI.md
 
 CLAUDE.md
