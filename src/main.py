@@ -30,6 +30,14 @@ def create_game(config: dict[str, Any]) -> Any:
         from sliding_puzzle.enviroment import SlidingPuzzle
 
         return SlidingPuzzle(initial_state=config["initial_state"])
+    elif game_name == "nonogram":
+        from nonogram.enviroment import Nonogram
+
+        return Nonogram.from_config(
+            row_hints=config["row_hints"],
+            col_hints=config["col_hints"],
+            initial_state=config.get("initial_state"),
+        )
     else:
         raise ValueError(f"Unknown game: {game_name}")
 
@@ -43,6 +51,8 @@ def create_agent(config: dict[str, Any], game: Any, device: str) -> Agent:
         from tower_of_hanoi import prompts
     elif game_name == "sliding_puzzle":
         from sliding_puzzle import prompts
+    elif game_name == "nonogram":
+        from nonogram import prompts
     else:
         raise ValueError(f"Unknown game: {game_name}")
     return Agent(environment=game, prompts_module=prompts, device=device)
@@ -235,7 +245,7 @@ def main() -> None:
     parser.add_argument(
         "--game",
         required=True,
-        choices=["tower_of_hanoi", "sliding_puzzle"],
+        choices=["tower_of_hanoi", "sliding_puzzle", "nonogram"],
         help="Which puzzle to solve",
     )
     parser.add_argument("--config", default=None, help="Path to YAML config file")
