@@ -6,6 +6,7 @@ from utils.parser import Parser
 import csv
 import os
 from datetime import datetime
+import weave
 
 
 class Agent:
@@ -43,6 +44,7 @@ class Agent:
             {"role": "user", "content": user_prompt},
         ], user_prompt
 
+    @weave.op()
     def parse_response(
         self,
         response_content: str,

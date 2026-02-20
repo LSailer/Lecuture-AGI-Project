@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 import ollama
 import torch
 from transformers import pipeline
+import weave
 
 
 load_dotenv()
@@ -24,6 +25,7 @@ class LLM:
         else:
             self.pipe = pipeline("text-generation", model=model_id, device=device)
 
+    @weave.op()
     def generate(
         self,
         system_prompt: str,
@@ -43,6 +45,7 @@ class LLM:
         )
         return result[0]["generated_text"]
 
+    @weave.op()
     def generate_batch(
         self,
         messages_list: list[Conversation],
@@ -65,6 +68,7 @@ class OllamaLLM:
         self.model_id = model_id
         print(f"OllamaLLM initialized with model {model_id}")
 
+    @weave.op()
     def generate(
         self,
         system_prompt: str,
@@ -83,6 +87,7 @@ class OllamaLLM:
         )
         return messages + [{"role": "assistant", "content": response.message.content}]
 
+    @weave.op()
     def generate_batch(
         self,
         messages_list: list[Conversation],

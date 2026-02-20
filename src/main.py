@@ -11,6 +11,7 @@ import torch
 from utils.decomposer import Agent
 from utils.fallback import FailedPrediction
 import wandb
+import weave
 import matplotlib.pyplot as plt  # noqa: F401
 import json
 from datetime import datetime
@@ -75,6 +76,7 @@ def load_config(args: argparse.Namespace) -> dict[str, Any]:
     return config
 
 
+@weave.op()
 def run_voting_batch(
     agent: Agent,
     previous_move: str,
@@ -252,8 +254,9 @@ def main() -> None:
 
     config = load_config(args)
 
-    # Initialize WandB
+    # Initialize WandB + Weave
     wandb.init(project="lecture-agi", config=config)
+    weave.init("lecture-agi")
 
     margin_k = config["margin_k"]
     max_steps = config["max_steps"]
