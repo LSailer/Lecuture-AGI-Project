@@ -255,7 +255,27 @@ def main() -> None:
     config = load_config(args)
 
     # Initialize WandB + Weave
-    wandb.init(project="lecture-agi", config=config)
+    game_type = config["game"]
+    backend = config.get("llm_backend", "huggingface")
+
+    if game_type == "tower_of_hanoi":
+        size_str = f"d{config.get('num_disks', '?')}"
+    else:
+        n = len(config.get("initial_state", []))
+        side = int(n ** 0.5)
+        size_str = f"{side}x{side}"
+
+    timestamp = datetime.now().strftime("%m%d_%H%M")
+    run_name = f"{game_type}_{size_str}_k{config['margin_k']}_a{config['max_agents_per_step']}_{timestamp}"
+    tags = [game_type, backend]
+
+    wandb.init(
+        project="lecture-agi",
+        config=config,
+        group=game_type,
+        name=run_name,
+        tags=tags,
+    )
     weave.init("lecture-agi")
 
     margin_k = config["margin_k"]
