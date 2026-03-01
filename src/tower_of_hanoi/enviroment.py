@@ -34,7 +34,15 @@ class TowerOfHanoi:
         return len(self.towers[2]) == self.num_disks
 
     def get_state(self):
-        return self.towers
+        return [tower[:] for tower in self.towers]
+
+    def preview_move(self, action) -> list:
+        """Return resulting state after action WITHOUT mutating self."""
+        disk, from_tower, to_tower = action
+        towers = [tower[:] for tower in self.towers]
+        towers[from_tower].remove(disk)
+        towers[to_tower].append(disk)
+        return towers
 
     def apply_move(self, action):
         self.move_disk(action[0], action[1], action[2])

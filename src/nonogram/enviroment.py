@@ -131,7 +131,14 @@ class Nonogram:
         return len(self.col_hints)
 
     def get_state(self):
-        return self.grid
+        return [row[:] for row in self.grid]
+
+    def preview_move(self, action) -> list:
+        """Return resulting state after action WITHOUT mutating self."""
+        r, c, v = action
+        grid = [row[:] for row in self.grid]
+        grid[r][c] = v
+        return grid
 
     def reset(self):
         self.grid = [[-1 for _ in range(self.n_cols)] for _ in range(self.n_rows)]
