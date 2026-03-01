@@ -115,7 +115,16 @@ class SlidingPuzzle:
         return self.state == self.goal_state
 
     def get_state(self):
-        return self.state
+        return self.state[:]
+
+    def preview_move(self, action) -> list:
+        """Return resulting state after action WITHOUT mutating self."""
+        tile, direction = action
+        state = self.state[:]
+        tile_index = state.index(tile)
+        empty_index = state.index(0)
+        state[tile_index], state[empty_index] = state[empty_index], state[tile_index]
+        return state
 
     def apply_move(self, action):
         self.move_tile(action[0], action[1])
