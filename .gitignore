@@ -208,6 +208,7 @@ __marimo__/
 
 LLM/model/
 LLM/model*
+LLM/static/
 
 logs
 output/log.csv
