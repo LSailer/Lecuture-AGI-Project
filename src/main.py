@@ -4,6 +4,8 @@ import sys
 import os
 import argparse
 import heapq
+import subprocess
+from pathlib import Path
 from typing import Any
 
 import yaml
@@ -61,6 +63,19 @@ def create_agent(config: dict[str, Any], game: Any, device: str) -> Agent:
     return Agent(environment=game, prompts_module=prompts, device=device)
 
 
+def _cancel_sibling_jobs() -> None:
+    """Read active experiment job IDs and scancel them all."""
+    repo_root = Path(__file__).resolve().parent.parent
+    ids_file = repo_root / "logs" / "active_experiment_ids.txt"
+    if not ids_file.exists():
+        print("No active_experiment_ids.txt found — skipping scancel (likely local dev).")
+        return
+    job_ids = [line.strip() for line in ids_file.read_text().splitlines() if line.strip()]
+    print(f"Cancelling {len(job_ids)} sibling jobs: {job_ids}")
+    for jid in job_ids:
+        subprocess.run(["scancel", jid])
+
+
 def load_config(args: argparse.Namespace) -> dict[str, Any]:
     """Load YAML config, then apply CLI overrides."""
     config_path = args.config
@@ -79,8 +94,20 @@ def load_config(args: argparse.Namespace) -> dict[str, Any]:
         config["max_steps"] = args.max_steps
     if args.max_agents_per_step is not None:
         config["max_agents_per_step"] = args.max_agents_per_step
+    if args.temperature is not None:
+        config["temperature"] = args.temperature
+    if args.num_disks is not None:
+        config["num_disks"] = args.num_disks
 
-    # Defaults for fallback config keys
+    if args.max_state_revisits is not None:
+        config["max_state_revisits"] = args.max_state_revisits
+
+    if args.temp_escalation:
+        config["temp_escalation"] = True
+    config.setdefault("temp_escalation", False)
+
+    # Defaults
+    config.setdefault("max_state_revisits", 3)
     config.setdefault("max_fallback_retries", 3)
     config.setdefault("fallback_api", "gemini")
     config.setdefault("gemini_model", "gemini-2.5-flash")
@@ -272,6 +299,20 @@ def main() -> None:
     parser.add_argument(
         "--max_agents_per_step", type=int, default=None, help="Max agents per step"
     )
+    parser.add_argument(
+        "--temperature", type=float, default=None, help="LLM sampling temperature"
+    )
+    parser.add_argument(
+        "--num_disks", type=int, default=None, help="Number of disks (tower_of_hanoi)"
+    )
+    parser.add_argument(
+        "--temp_escalation", action="store_true", default=False,
+        help="Escalate temperature per agent (0.1, 0.2, ...)"
+    )
+    parser.add_argument(
+        "--max_state_revisits", type=int, default=None,
+        help="Cancel all jobs after a state is seen this many times (cycle detection)"
+    )
     args = parser.parse_args()
 
     config = load_config(args)
@@ -355,6 +396,7 @@ def main() -> None:
     game_history = []
     visited_states: dict[str, int] = {}
     max_state_revisits = config.get("max_state_revisits", 3)
+    cycle_detected = False
 
     # Count initial state
     visited_states[str(game.get_state())] = 1
@@ -362,6 +404,16 @@ def main() -> None:
     while not game.is_solved() and current_step < max_steps:
         current_state = game.get_state()
         current_step += 1
+
+        # Cycle detection
+        state_key = str(current_state)
+        visited_states[state_key] = visited_states.get(state_key, 0) + 1
+        if visited_states[state_key] > max_state_revisits:
+            print(f"Cycle detected: state seen {visited_states[state_key]} times. Cancelling all jobs.")
+            wandb.log({"early_stop": "cycle_detected", "cycle_state": state_key, "cycle_step": current_step})
+            _cancel_sibling_jobs()
+            cycle_detected = True
+            break
 
         fallback_retries_used = 0
 
@@ -462,7 +514,7 @@ def main() -> None:
 
     # Log final metrics to WandB
     wandb.log({"predictions": predictions_table})
-    wandb.log({"total_steps": current_step, "solved": game.is_solved()})
+    wandb.log({"total_steps": current_step, "solved": game.is_solved(), "cycle_detected": cycle_detected})
 
     # Save custom log files
     wandb.save(os.path.join(output_dir, "failures.csv"))

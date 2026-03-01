@@ -2,9 +2,9 @@ name: Run Dev on BVUni Cluster
 
 on:
   push:
-    branches: [dev-cluster]
+    branches: [dev/luca]
   pull_request:
-    branches: [dev-cluster]
+    branches: [dev/luca]
     types: [closed]
 
 env:
@@ -20,7 +20,7 @@ jobs:
       - name: Checkout code (for auth)
         uses: actions/checkout@v4
         with:
-          ref: dev-cluster
+          ref: dev/luca
 
       # Step 2: Sync the checked-out code into the existing repo folder
       # Preserves .env, LLM/model/, .venv/, and other local-only files
@@ -131,6 +131,7 @@ jobs:
             submit --job-name=sp_20a_esc $PART scripts/run.sh
 
           echo "PROD_IDS=$PROD_IDS" >> $GITHUB_ENV
+          echo "$PROD_IDS" | tr ' ' '\n' | grep -v '^$' > ${{ env.REPO_PATH }}/logs/active_experiment_ids.txt
           echo "All 18 experiment jobs submitted:$PROD_IDS"
 
       # Step 6: Cancel all experiment jobs on failure
