@@ -122,6 +122,7 @@ jobs:
             submit --job-name=sp_20a_esc $PART scripts/run.sh
 
           echo "PROD_IDS=$PROD_IDS" >> $GITHUB_ENV
+          echo "$PROD_IDS" | tr ' ' '\n' | grep -v '^$' > ${{ env.REPO_PATH }}/logs/active_experiment_ids.txt
           echo "All 18 experiment jobs submitted:$PROD_IDS"
 
       # Step 5: Cancel all experiment jobs on failure

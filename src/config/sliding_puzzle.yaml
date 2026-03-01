@@ -5,6 +5,7 @@ max_agents_per_step: 3
 output_dir: output
 temperature: 0.1
 temp_escalation: false
+max_state_revisits: 3
 
 # Game-specific
 #initial_state: [15,14,13,12,11,10, 9, 8, 7, 6, 5, 4, 3, 1, 2, 0]
