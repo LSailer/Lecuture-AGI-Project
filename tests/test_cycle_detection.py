@@ -1,8 +1,9 @@
 """Tests for cycle detection and _cancel_sibling_jobs."""
 
 import pytest
-from unittest.mock import patch, MagicMock
-from pathlib import Path
+from unittest.mock import patch
+from src.tower_of_hanoi.enviroment import TowerOfHanoi
+from src.utils import CycleDetectedError
 
 
 # --- _cancel_sibling_jobs ---
@@ -14,7 +15,6 @@ def test_cancel_sibling_jobs_reads_file_and_scancels(tmp_path):
 
     import subprocess
     with patch("subprocess.run") as mock_run:
-        # Inline the function logic to avoid importing src.main (heavy deps)
         repo_root = tmp_path
         f = repo_root / "logs" / "active_experiment_ids.txt"
         job_ids = [line.strip() for line in f.read_text().splitlines() if line.strip()]
@@ -28,7 +28,7 @@ def test_cancel_sibling_jobs_reads_file_and_scancels(tmp_path):
 
 
 def test_cancel_sibling_jobs_missing_file_skips(tmp_path):
-    """No file → no scancel calls, no exception."""
+    """No file -> no scancel calls, no exception."""
     f = tmp_path / "logs" / "active_experiment_ids.txt"
     assert not f.exists()
 
@@ -46,49 +46,86 @@ def test_cancel_sibling_jobs_ignores_blank_lines(tmp_path):
         assert mock_run.call_count == 2
 
 
-# --- cycle detection logic ---
+# --- cycle detection (integration with TowerOfHanoi) ---
 
-def test_cycle_detection_triggers_after_threshold():
-    """Simulate visited_states logic from main loop."""
-    visited_states: dict[str, int] = {}
-    max_state_revisits = 3
-    states_sequence = ["A", "B", "A", "B", "A", "B", "A"]  # A seen 4th time at idx 6
-    cycle_step = None
-
-    for i, state_key in enumerate(states_sequence):
-        visited_states[state_key] = visited_states.get(state_key, 0) + 1
-        if visited_states[state_key] > max_state_revisits:
-            cycle_step = i
-            break
-
-    assert cycle_step == 6
-    assert visited_states["A"] == 4
+def _track_state(visited, state, limit):
+    """Simulate the cycle detection logic from main.py."""
+    key = str(state)
+    visited[key] = visited.get(key, 0) + 1
+    if visited[key] > limit:
+        raise CycleDetectedError(
+            f"State visited {visited[key]} times (limit {limit}): {key}"
+        )
 
 
-def test_no_cycle_when_states_unique():
-    visited_states: dict[str, int] = {}
-    max_state_revisits = 3
-    triggered = False
+def test_cycle_detected_on_oscillation():
+    """Moves that return to the same state should trigger CycleDetectedError."""
+    env = TowerOfHanoi(3)
+    visited: dict[str, int] = {}
+    limit = 3
 
-    for state_key in ["A", "B", "C", "D", "E"]:
-        visited_states[state_key] = visited_states.get(state_key, 0) + 1
-        if visited_states[state_key] > max_state_revisits:
-            triggered = True
-            break
+    _track_state(visited, env.get_state(), limit)
 
-    assert not triggered
+    with pytest.raises(CycleDetectedError):
+        for _ in range(10):
+            env.apply_move((1, 0, 1))
+            _track_state(visited, env.get_state(), limit)
+            env.apply_move((1, 1, 0))
+            _track_state(visited, env.get_state(), limit)
 
 
-def test_cycle_respects_custom_threshold():
-    visited_states: dict[str, int] = {}
-    max_state_revisits = 1  # trigger on 2nd visit
-    triggered = False
+def test_no_error_within_limit():
+    """Revisiting a state within the limit should NOT raise."""
+    env = TowerOfHanoi(3)
+    visited: dict[str, int] = {}
+    limit = 3
 
-    for state_key in ["A", "B", "A"]:
-        visited_states[state_key] = visited_states.get(state_key, 0) + 1
-        if visited_states[state_key] > max_state_revisits:
-            triggered = True
-            break
+    _track_state(visited, env.get_state(), limit)
 
-    assert triggered
-    assert visited_states["A"] == 2
+    env.apply_move((1, 0, 1))
+    _track_state(visited, env.get_state(), limit)
+    env.apply_move((1, 1, 0))
+    _track_state(visited, env.get_state(), limit)
+
+    env.apply_move((1, 0, 1))
+    _track_state(visited, env.get_state(), limit)
+    env.apply_move((1, 1, 0))
+    _track_state(visited, env.get_state(), limit)  # 3rd visit = limit, still ok
+
+
+def test_error_on_exceeding_limit():
+    """One visit beyond the limit should raise."""
+    env = TowerOfHanoi(3)
+    visited: dict[str, int] = {}
+    limit = 2
+
+    _track_state(visited, env.get_state(), limit)
+
+    env.apply_move((1, 0, 1))
+    _track_state(visited, env.get_state(), limit)
+    env.apply_move((1, 1, 0))
+    _track_state(visited, env.get_state(), limit)
+
+    env.apply_move((1, 0, 1))
+    _track_state(visited, env.get_state(), limit)
+
+    with pytest.raises(CycleDetectedError):
+        env.apply_move((1, 1, 0))
+        _track_state(visited, env.get_state(), limit)
+
+
+def test_get_state_returns_copy():
+    """get_state() should return a copy, not a mutable reference."""
+    env = TowerOfHanoi(3)
+    state = env.get_state()
+    state[0].pop()
+    assert env.get_state() == [[3, 2, 1], [], []]
+
+
+def test_preview_move_no_mutation():
+    """preview_move() should not change internal state."""
+    env = TowerOfHanoi(3)
+    original = env.get_state()
+    preview = env.preview_move((1, 0, 2))
+    assert preview == [[3, 2], [], [1]]
+    assert env.get_state() == original

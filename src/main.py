@@ -10,6 +10,7 @@ from typing import Any
 
 import yaml
 import torch
+from utils import CycleDetectedError
 from utils.decomposer import Agent
 from utils.fallback import FailedPrediction
 import wandb
@@ -20,6 +21,7 @@ from datetime import datetime
 
 # Add src to path for imports
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
 
 
 def create_game(config: dict[str, Any]) -> Any:
@@ -114,40 +116,30 @@ def load_config(args: argparse.Namespace) -> dict[str, Any]:
 
 
 @weave.op()
-def run_voting_batch(
+def _build_batch_messages(
     agent: Agent,
     previous_move: str,
     current_state: Any,
     current_step: int,
-    batch_size: int,
-    margin_k: int,
+    count: int,
     system_prompt_override: str | None = None,
     user_prompt_override: str | None = None,
-    predictions_table: wandb.Table | None = None,
-) -> tuple[dict[Any, int], Any | None, list[FailedPrediction]]:
-    """Run a batch of agents and tally votes. Returns (action_voting, best_action, failed_predictions)."""
-    action_voting: dict[Any, int] = {}
-    failed_predictions: list[FailedPrediction] = []
-
-    # Build batch prompts — always include current game state via build_prompt()
-    batch_messages = []
-
-    # Pre-calculate visual state if needed for formatting
+) -> list:
+    """Build `count` prompt message lists for batch inference."""
     state_visual = str(current_state)
     if hasattr(agent.prompts, "_visualize_state"):
         state_visual = agent.prompts._visualize_state(current_state)
     elif hasattr(agent.environment, "visualize"):
         state_visual = agent.environment.visualize()
 
-    for _ in range(batch_size):
+    batch_messages = []
+    for _ in range(count):
         messages, _user_prompt = agent.build_prompt(
             previous_move, current_state, current_step
         )
         if system_prompt_override:
             messages[0]["content"] = system_prompt_override
-
         if user_prompt_override:
-            # Check if override is a template with placeholders
             if "{current_state}" in user_prompt_override:
                 try:
                     formatted_prompt = user_prompt_override.format(
@@ -158,34 +150,34 @@ def run_voting_batch(
                     messages[1]["content"] = formatted_prompt
                 except KeyError as e:
                     print(f"Warning: Failed to format fallback prompt: {e}")
-                    # Fallback to prepending if formatting fails
                     messages[1]["content"] = (
                         user_prompt_override + "\n\n" + messages[1]["content"]
                     )
             else:
-                # Prepend fallback guidance to the state-specific user prompt
                 messages[1]["content"] = (
                     user_prompt_override + "\n\n" + messages[1]["content"]
                 )
         batch_messages.append(messages)
+    return batch_messages
 
-    # Batch inference (MAKER-style): first vote deterministic (tau=0), remaining votes sampled (tau=0.1)
-    responses = []
-    first_messages = batch_messages[:1]
-    rest_messages = batch_messages[1:]
-    if first_messages:
-        responses.extend(agent.llm.generate_batch(first_messages, do_sample=False, temperature=0.0))
-    if rest_messages:
-        responses.extend(agent.llm.generate_batch(rest_messages, do_sample=True, temperature=0.1, top_p=0.95))
 
-    # Parse each response and tally votes
+def _parse_responses(
+    agent: Agent,
+    responses: list,
+    current_state: Any,
+    current_step: int,
+    agent_offset: int,
+    action_voting: dict[Any, int],
+    failed_predictions: list[FailedPrediction],
+    predictions_table: wandb.Table | None = None,
+) -> None:
+    """Parse batch responses, tally votes in-place."""
     for i, response in enumerate(responses):
-        agent_num = i + 1
+        agent_num = agent_offset + i + 1
         content = response[-1]["content"]
         action = "None"
         parsed_state = "None"
         error = "None"
-
         try:
             action, parsed_state = agent.parse_response(
                 content, current_state, current_step, agent_num
@@ -207,73 +199,84 @@ def run_voting_batch(
                     "error": error,
                 }
             )
-
-        # Log to WandB predictions table
         if predictions_table is not None:
             predictions_table.add_data(
-                current_step,
-                agent_num,
-                str(current_state),
-                str(action),
-                str(parsed_state),
-                error,
+                current_step, agent_num, str(current_state),
+                str(action), str(parsed_state), error,
             )
+
+
+MINI_BATCH_SIZE = 3
+
+
+@weave.op()
+def run_voting_batch(
+    agent: Agent,
+    previous_move: str,
+    current_state: Any,
+    current_step: int,
+    batch_size: int,
+    margin_k: int,
+    system_prompt_override: str | None = None,
+    user_prompt_override: str | None = None,
+    predictions_table: wandb.Table | None = None,
+) -> tuple[dict[Any, int], Any | None, list[FailedPrediction]]:
+    """Run agents in mini-batches of MINI_BATCH_SIZE, checking margin_k between each."""
+    action_voting: dict[Any, int] = {}
+    failed_predictions: list[FailedPrediction] = []
+    agents_so_far = 0
+    max_agents = batch_size * 3  # absolute cap
+
+    def _margin_met() -> bool:
+        if not action_voting:
+            return False
+        top_two = heapq.nlargest(2, action_voting.items(), key=lambda x: x[1])
+        best_val = top_two[0][1]
+        second_val = top_two[1][1] if len(top_two) > 1 else 0
+        return best_val >= second_val + margin_k
+
+    # --- initial mini-batches up to batch_size ---
+    while agents_so_far < batch_size:
+        chunk = min(MINI_BATCH_SIZE, batch_size - agents_so_far)
+        msgs = _build_batch_messages(
+            agent, previous_move, current_state, current_step, chunk,
+            system_prompt_override, user_prompt_override,
+        )
+        # first agent deterministic, rest sampled
+        responses = []
+        if agents_so_far == 0:
+            responses.extend(agent.llm.generate_batch(msgs[:1], do_sample=False, temperature=0.0))
+            if len(msgs) > 1:
+                responses.extend(agent.llm.generate_batch(msgs[1:], do_sample=True, temperature=0.1, top_p=0.95))
+        else:
+            responses.extend(agent.llm.generate_batch(msgs, do_sample=True, temperature=0.1, top_p=0.95))
+
+        _parse_responses(
+            agent, responses, current_state, current_step,
+            agents_so_far, action_voting, failed_predictions, predictions_table,
+        )
+        agents_so_far += chunk
+
+        if _margin_met():
+            break
+
+    # --- extra agents if margin still not met ---
+    while not _margin_met() and agents_so_far < max_agents:
+        chunk = min(MINI_BATCH_SIZE, max_agents - agents_so_far)
+        msgs = _build_batch_messages(
+            agent, previous_move, current_state, current_step, chunk,
+            system_prompt_override, user_prompt_override,
+        )
+        responses = agent.llm.generate_batch(msgs, do_sample=True, temperature=0.1, top_p=0.95)
+        _parse_responses(
+            agent, responses, current_state, current_step,
+            agents_so_far, action_voting, failed_predictions, predictions_table,
+        )
+        agents_so_far += chunk
 
     best_action = None
     if action_voting:
-        top_two = heapq.nlargest(2, action_voting.items(), key=lambda x: x[1])
-        best_action = top_two[0][0]
-        best_value = top_two[0][1]
-        second_best_value = top_two[1][1] if len(top_two) > 1 else 0
-
-        # If margin not met, run additional single agents until it is
-        agents_so_far = batch_size
-        while (
-            best_value < second_best_value + margin_k
-            and agents_so_far < batch_size * 3  # cap additional agents
-        ):
-            agents_so_far += 1
-            try:
-                action, state = agent.execute_decompose_prompt(
-                    previous_move,
-                    current_state,
-                    step=current_step,
-                    agent_num=agents_so_far,
-                    temperature=0.1,
-                    do_sample=True,
-                    top_p=0.95,
-                )
-                if isinstance(action, list):
-                    action = tuple(action)
-                print(
-                    f"Agent {agents_so_far} predicted move: {action}, resulting state: {state}"
-                )
-                action_voting[action] = action_voting.get(action, 0) + 1
-
-                top_two = heapq.nlargest(2, action_voting.items(), key=lambda x: x[1])
-                best_action, best_value = top_two[0]
-                second_best_value = top_two[1][1] if len(top_two) > 1 else 0
-
-                if predictions_table is not None:
-                    predictions_table.add_data(
-                        current_step,
-                        agents_so_far,
-                        str(current_state),
-                        str(action),
-                        str(state),
-                        "None",
-                    )
-            except ValueError as e:
-                print(f"Agent {agents_so_far} error: {e}")
-                failed_predictions.append(
-                    {
-                        "agent_id": f"{current_step}:{agents_so_far}",
-                        "action": "None",
-                        "state": "None",
-                        "error": str(e),
-                    }
-                )
-                continue
+        best_action = heapq.nlargest(1, action_voting.items(), key=lambda x: x[1])[0][0]
 
     return action_voting, best_action, failed_predictions
 
@@ -395,6 +398,9 @@ def main() -> None:
     max_state_revisits = config.get("max_state_revisits", 3)
     cycle_detected = False
 
+    # Count initial state
+    visited_states[str(game.get_state())] = 1
+
     while not game.is_solved() and current_step < max_steps:
         current_state = game.get_state()
         current_step += 1
@@ -463,6 +469,14 @@ def main() -> None:
             else:
                 print("Fallback exhausted. No valid move found.")
                 break
+
+        # --- Cycle detection ---
+        new_state_key = str(game.get_state())
+        visited_states[new_state_key] = visited_states.get(new_state_key, 0) + 1
+        if visited_states[new_state_key] > max_state_revisits:
+            raise CycleDetectedError(
+                f"State visited {visited_states[new_state_key]} times (limit {max_state_revisits}): {new_state_key}"
+            )
 
         step_data = {
             "step": current_step,

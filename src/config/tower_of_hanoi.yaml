@@ -11,6 +11,9 @@ max_state_revisits: 3
 # Game-specific
 num_disks: 20
 
+# Cycle detection
+max_state_revisits: 3
+
 # Fallback config
 max_fallback_retries: 3
 fallback_api: gemini          # "gemini" | "local" | "both"
