@@ -2,9 +2,9 @@ name: Run Dev on BVUni Cluster
 
 on:
   push:
-    branches: [dev-cluster]
+    branches: [dev/luca]
   pull_request:
-    branches: [dev-cluster]
+    branches: [dev/luca]
     types: [closed]
 
 env:
@@ -20,7 +20,7 @@ jobs:
       - name: Checkout code (for auth)
         uses: actions/checkout@v4
         with:
-          ref: dev-cluster
+          ref: dev/luca
 
       # Step 2: Sync the checked-out code into the existing repo folder
       # Preserves .env, LLM/model/, .venv/, and other local-only files
