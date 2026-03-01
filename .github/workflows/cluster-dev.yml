@@ -2,9 +2,9 @@ name: Run Dev on BVUni Cluster
 
 on:
   push:
-    branches: [dev]
+    branches: [dev/luca]
   pull_request:
-    branches: [dev]
+    branches: [dev/luca]
     types: [closed]
 
 env:
@@ -20,7 +20,7 @@ jobs:
       - name: Checkout code (for auth)
         uses: actions/checkout@v4
         with:
-          ref: dev
+          ref: dev/luca
 
       # Step 2: Sync the checked-out code into the existing repo folder
       # Preserves .env, LLM/model/, .venv/, and other local-only files
@@ -29,6 +29,7 @@ jobs:
           rsync -a --delete \
             --exclude '.env' \
             --exclude 'LLM/model/' \
+            --exclude 'LLM/static/' \
             --exclude '.venv/' \
             --exclude 'logs/' \
             --exclude 'output/' \
@@ -37,7 +38,15 @@ jobs:
             $GITHUB_WORKSPACE/ ${{ env.REPO_PATH }}/
           echo "Code synced to ${{ env.REPO_PATH }}"
 
-      # Step 3: Dev smoke test (short run on dev partition)
+      # Step 3: Copy static overlay into model dir
+      - name: Copy static to model
+        run: |
+          cd ${{ env.REPO_PATH }}
+          if [ "$(ls -A LLM/static 2>/dev/null)" ]; then
+            cp -rv LLM/static/* LLM/model/
+          fi
+
+      # Step 4: Dev smoke test (short run on dev partition)
       - name: Dev smoke test
         working-directory: ${{ env.REPO_PATH }}
         run: |
@@ -65,7 +74,7 @@ jobs:
             exit 1
           fi
 
-      # Step 4: Submit full experiment matrix (18 jobs)
+      # Step 5: Submit full experiment matrix (18 jobs)
       - name: Submit experiment matrix
         working-directory: ${{ env.REPO_PATH }}
         run: |
@@ -125,7 +134,7 @@ jobs:
           echo "$PROD_IDS" | tr ' ' '\n' | grep -v '^$' > ${{ env.REPO_PATH }}/logs/active_experiment_ids.txt
           echo "All 18 experiment jobs submitted:$PROD_IDS"
 
-      # Step 5: Cancel all experiment jobs on failure
+      # Step 6: Cancel all experiment jobs on failure
       - name: Cancel experiment jobs on failure
         if: failure()
         run: |
