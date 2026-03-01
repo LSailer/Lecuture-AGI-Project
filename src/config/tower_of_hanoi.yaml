@@ -7,6 +7,7 @@ temperature: 0.1
 temp_escalation: false
 max_state_revisits: 3
 
+
 # Game-specific
 num_disks: 20
 
@@ -15,6 +16,3 @@ max_fallback_retries: 3
 fallback_api: gemini          # "gemini" | "local" | "both"
 fallback_local_model: deepseek-ai/DeepSeek-R1-Distill-Qwen-32B
 gemini_model: gemini-2.5-flash
-
-llm_backend: huggingface          # "huggingface" | "ollama"
-ollama_model: qwen3:8b

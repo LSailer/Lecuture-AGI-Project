@@ -70,7 +70,15 @@ sbatch scripts/run.sh
 
 Submits to `gpu_h100_il` partition with 1x H100 GPU, 127 GB RAM.
 
-### 4. Run Tests
+### 4. Cancel All SLURM Jobs (Remote)
+
+```bash
+gh workflow run cancel-jobs.yml --ref dev
+```
+
+Triggers the self-hosted runner to `scancel --user=$USER` on the cluster. No SSH required.
+
+### 5. Run Tests
 
 ```bash
 cd src

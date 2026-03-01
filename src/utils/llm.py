@@ -1,8 +1,6 @@
-import asyncio
 from typing import Any
 
 from dotenv import load_dotenv
-import ollama
 import torch
 from transformers import pipeline
 import weave
@@ -32,17 +30,22 @@ class LLM:
         user_prompt: str,
         max_new_tokens: int = 750,
         temperature: float = 0.5,
+        do_sample: bool = False,
+        top_p: float = 1.0,
     ) -> list[Message]:
         message: Conversation = [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_prompt},
         ]
-        result: Any = self.pipe(
-            message,
-            max_new_tokens=max_new_tokens,
-            do_sample=True,
-            temperature=temperature,
-        )
+        gen_kwargs: dict[str, Any] = {
+            "max_new_tokens": max_new_tokens,
+            "do_sample": do_sample,
+        }
+        if do_sample:
+            gen_kwargs["temperature"] = temperature
+            gen_kwargs["top_p"] = top_p
+
+        result: Any = self.pipe(message, **gen_kwargs)
         return result[0]["generated_text"]
 
     @weave.op()
@@ -51,70 +54,21 @@ class LLM:
         messages_list: list[Conversation],
         max_new_tokens: int = 750,
         temperature: float = 0.5,
+        do_sample: bool = False,
+        top_p: float = 1.0,
     ) -> list[list[Message]]:
         """Run multiple prompts through the model in a single batch."""
-        results: Any = self.pipe(
-            messages_list,
-            batch_size=len(messages_list),
-            max_new_tokens=max_new_tokens,
-            do_sample=True,
-            temperature=temperature,
-        )
+        gen_kwargs: dict[str, Any] = {
+            "batch_size": len(messages_list),
+            "max_new_tokens": max_new_tokens,
+            "do_sample": do_sample,
+        }
+        if do_sample:
+            gen_kwargs["temperature"] = temperature
+            gen_kwargs["top_p"] = top_p
+
+        results: Any = self.pipe(messages_list, **gen_kwargs)
         return [r[0]["generated_text"] for r in results]
-
-
-class OllamaLLM:
-    def __init__(self, model_id: str = "qwen3:8b") -> None:
-        self.model_id = model_id
-        print(f"OllamaLLM initialized with model {model_id}")
-
-    @weave.op()
-    def generate(
-        self,
-        system_prompt: str,
-        user_prompt: str,
-        max_new_tokens: int = 750,
-        temperature: float = 0.5,
-    ) -> list[Message]:
-        messages: Conversation = [
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_prompt},
-        ]
-        response = ollama.chat(
-            model=self.model_id,
-            messages=messages,
-            options={"num_predict": max_new_tokens, "temperature": temperature},
-        )
-        return messages + [{"role": "assistant", "content": response.message.content}]
-
-    @weave.op()
-    def generate_batch(
-        self,
-        messages_list: list[Conversation],
-        max_new_tokens: int = 750,
-        temperature: float = 0.5,
-    ) -> list[list[Message]]:
-        async def _run_all() -> list[list[Message]]:
-            client = ollama.AsyncClient()
-
-            async def _single(messages: Conversation) -> list[Message]:
-                response = await client.chat(
-                    model=self.model_id,
-                    messages=messages,
-                    options={"num_predict": max_new_tokens, "temperature": temperature},
-                )
-                return messages + [{"role": "assistant", "content": response.message.content}]
-
-            return list(await asyncio.gather(*[_single(m) for m in messages_list]))
-
-        return asyncio.run(_run_all())
-
-
-def create_llm(config: dict, device: str) -> "LLM | OllamaLLM":
-    backend = config.get("llm_backend", "huggingface")
-    if backend == "ollama":
-        return OllamaLLM(model_id=config.get("ollama_model", "qwen3:8b"))
-    return LLM(model_id=config.get("model_id", "LLM/model"), device=device)
 
 
 if __name__ == "__main__":
@@ -122,5 +76,5 @@ if __name__ == "__main__":
     llm_instance = LLM(device=mps_device)
     system_prompt = "You are a helpful assistant."
     prompt = "What is the capital of France?"
-    response = llm_instance.generate(system_prompt, prompt)
+    response = llm_instance.generate(system_prompt, prompt, do_sample=False)
     print(response)
