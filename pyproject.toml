@@ -18,4 +18,7 @@ dependencies = [
     "weave>=0.52.28",
 ]
 
-
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+]
