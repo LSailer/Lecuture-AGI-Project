@@ -1,0 +1,11 @@
+name: Cancel all SLURM jobs
+
+on:
+  workflow_dispatch:
+
+jobs:
+  cancel:
+    runs-on: self-hosted
+    steps:
+      - name: Cancel all user jobs
+        run: scancel --user=$USER
