@@ -67,6 +67,14 @@ def load_config(args: argparse.Namespace) -> dict[str, Any]:
         config["max_steps"] = args.max_steps
     if args.max_agents_per_step is not None:
         config["max_agents_per_step"] = args.max_agents_per_step
+    if args.temperature is not None:
+        config["temperature"] = args.temperature
+    if args.num_disks is not None:
+        config["num_disks"] = args.num_disks
+
+    if args.temp_escalation:
+        config["temp_escalation"] = True
+    config.setdefault("temp_escalation", False)
 
     # Defaults for fallback config keys
     config.setdefault("max_fallback_retries", 3)
@@ -84,6 +92,8 @@ def run_voting_batch(
     current_step: int,
     batch_size: int,
     margin_k: int,
+    temperature: float = 0.1,
+    temp_escalation: bool = False,
     system_prompt_override: str | None = None,
     user_prompt_override: str | None = None,
     predictions_table: wandb.Table | None = None,
@@ -133,7 +143,15 @@ def run_voting_batch(
         batch_messages.append(messages)
 
     # Batch inference
-    responses = agent.llm.generate_batch(batch_messages)
+    if not temp_escalation:
+        responses = agent.llm.generate_batch(batch_messages, temperature=temperature)
+    else:
+        responses = []
+        for i, msgs in enumerate(batch_messages):
+            agent_temp = 0.1 * (i + 1)
+            resp = agent.llm.generate(msgs[0]["content"], msgs[1]["content"],
+                                       temperature=agent_temp)
+            responses.append(resp)
 
     # Parse each response and tally votes
     for i, response in enumerate(responses):
@@ -191,11 +209,13 @@ def run_voting_batch(
         ):
             agents_so_far += 1
             try:
+                chase_temp = 0.1 * agents_so_far if temp_escalation else temperature
                 action, state = agent.execute_decompose_prompt(
                     previous_move,
                     current_state,
                     step=current_step,
                     agent_num=agents_so_far,
+                    temperature=chase_temp,
                 )
                 if isinstance(action, list):
                     action = tuple(action)
@@ -250,6 +270,16 @@ def main() -> None:
     parser.add_argument(
         "--max_agents_per_step", type=int, default=None, help="Max agents per step"
     )
+    parser.add_argument(
+        "--temperature", type=float, default=None, help="LLM sampling temperature"
+    )
+    parser.add_argument(
+        "--num_disks", type=int, default=None, help="Number of disks (tower_of_hanoi)"
+    )
+    parser.add_argument(
+        "--temp_escalation", action="store_true", default=False,
+        help="Escalate temperature per agent (0.1, 0.2, ...)"
+    )
     args = parser.parse_args()
 
     config = load_config(args)
@@ -282,6 +312,8 @@ def main() -> None:
     max_steps = config["max_steps"]
     max_number_agents_per_step = config["max_agents_per_step"]
     max_fallback_retries = config["max_fallback_retries"]
+    temperature = config.get("temperature", 0.1)
+    temp_escalation = config.get("temp_escalation", False)
     output_dir = config.get("output_dir", "output")
 
     if not os.path.exists(output_dir):
@@ -337,6 +369,8 @@ def main() -> None:
         current_state = game.get_state()
         current_step += 1
 
+        fallback_retries_used = 0
+
         # Batch voting: run max_agents_per_step agents in one batch
         action_voting, best_action, failed_predictions = run_voting_batch(
             agent,
@@ -345,28 +379,10 @@ def main() -> None:
             current_step,
             batch_size=max_number_agents_per_step,
             margin_k=margin_k,
+            temperature=temperature,
+            temp_escalation=temp_escalation,
             predictions_table=predictions_table,
         )
-
-        step_data = {
-            "step": current_step,
-            "current_state": str(current_state),
-            "processed_state": str(game.get_state())
-            if hasattr(game, "get_state")
-            else str(current_state),
-            "agent_votes": {str(k): v for k, v in action_voting.items()},
-            "best_action": str(best_action),
-            "failed_predictions": [
-                {
-                    "agent_id": f.get("agent_id"),
-                    "action": str(f.get("action")),
-                    "state": str(f.get("state")),
-                    "error": f.get("error"),
-                }
-                for f in failed_predictions
-            ],
-        }
-        game_history.append(step_data)
 
         if action_voting:
             game.apply_move(best_action)
@@ -397,16 +413,42 @@ def main() -> None:
                     current_step,
                     batch_size=max_number_agents_per_step,
                     margin_k=margin_k,
+                    temperature=temperature,
+                    temp_escalation=temp_escalation,
                     system_prompt_override=new_sys,
                     user_prompt_override=new_usr,
                     predictions_table=predictions_table,
                 )
+
+            fallback_retries_used = fallback_retry
 
             if action_voting:
                 game.apply_move(best_action)
             else:
                 print("Fallback exhausted. No valid move found.")
                 break
+
+        step_data = {
+            "step": current_step,
+            "current_state": str(current_state),
+            "processed_state": str(game.get_state())
+            if hasattr(game, "get_state")
+            else str(current_state),
+            "agent_votes": {str(k): v for k, v in action_voting.items()},
+            "best_action": str(best_action),
+            "failed_predictions": [
+                {
+                    "agent_id": f.get("agent_id"),
+                    "action": str(f.get("action")),
+                    "state": str(f.get("state")),
+                    "error": f.get("error"),
+                }
+                for f in failed_predictions
+            ],
+            "fallback_retries": fallback_retries_used,
+            "num_agents_queried": sum(action_voting.values()) + len(failed_predictions),
+        }
+        game_history.append(step_data)
 
         previous_move = str(best_action)
         print(f"\nStep {current_step} - Current State:", game.get_state())
@@ -434,7 +476,8 @@ def main() -> None:
         os.makedirs(experiments_dir)
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    json_filename = f"experiment_{timestamp}_{config['game']}.json"
+    num_disks_str = f"_{config['num_disks']}d" if game_type == "tower_of_hanoi" else ""
+    json_filename = f"{game_type}{num_disks_str}_{config['max_agents_per_step']}a_T{config.get('temperature', 0.1)}_{timestamp}.json"
     json_path = os.path.join(experiments_dir, json_filename)
 
     # Wrap game_history with metadata for webapp

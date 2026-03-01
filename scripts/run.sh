@@ -7,8 +7,12 @@
 #SBATCH --mem=127G
 #SBATCH --gres=gpu:1
 
-uv run src/main.py --game sliding_puzzle --margin_k 3
+CMD="uv run src/main.py --game ${GAME:-tower_of_hanoi} \
+  --margin_k ${MARGIN_K:-2} \
+  --max_agents_per_step ${MAX_AGENTS:-15} \
+  --temperature ${TEMPERATURE:-0.1} \
+  --num_disks ${NUM_DISKS:-10}"
 
-# Usage:
-# Dev:  sbatch --partition=dev_gpu_h100 --time=00:30:00 scripts/run.sh
-# Prod: sbatch --partition=gpu_h100_il  --time=42:00:00 scripts/run.sh
+[ "${TEMP_ESCALATION:-0}" = "1" ] && CMD="$CMD --temp_escalation"
+
+eval $CMD
