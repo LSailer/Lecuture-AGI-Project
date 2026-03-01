@@ -105,6 +105,8 @@ def load_config(args: argparse.Namespace) -> dict[str, Any]:
     config.setdefault("temp_escalation", False)
 
     # Defaults
+    config.setdefault("temperature", 0.1)
+    config["temperature"] = min(config["temperature"], 1.0)
     config.setdefault("max_state_revisits", 3)
     config.setdefault("max_fallback_retries", 3)
     config.setdefault("fallback_api", "gemini")
@@ -121,6 +123,7 @@ def run_voting_batch(
     current_step: int,
     batch_size: int,
     margin_k: int,
+    temperature: float = 0.1,
     system_prompt_override: str | None = None,
     user_prompt_override: str | None = None,
     predictions_table: wandb.Table | None = None,
@@ -176,7 +179,7 @@ def run_voting_batch(
     if first_messages:
         responses.extend(agent.llm.generate_batch(first_messages, do_sample=False, temperature=0.0))
     if rest_messages:
-        responses.extend(agent.llm.generate_batch(rest_messages, do_sample=True, temperature=0.1, top_p=0.95))
+        responses.extend(agent.llm.generate_batch(rest_messages, do_sample=True, temperature=temperature, top_p=0.95))
 
     # Parse each response and tally votes
     for i, response in enumerate(responses):
@@ -239,7 +242,7 @@ def run_voting_batch(
                     current_state,
                     step=current_step,
                     agent_num=agents_so_far,
-                    temperature=0.1,
+                    temperature=temperature,
                     do_sample=True,
                     top_p=0.95,
                 )
@@ -419,6 +422,7 @@ def main() -> None:
             current_step,
             batch_size=max_number_agents_per_step,
             margin_k=margin_k,
+            temperature=config["temperature"],
             predictions_table=predictions_table,
         )
 
@@ -451,6 +455,7 @@ def main() -> None:
                     current_step,
                     batch_size=max_number_agents_per_step,
                     margin_k=margin_k,
+                    temperature=config["temperature"],
                     system_prompt_override=new_sys,
                     user_prompt_override=new_usr,
                     predictions_table=predictions_table,

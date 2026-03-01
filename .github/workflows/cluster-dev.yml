@@ -65,7 +65,7 @@ jobs:
             exit 1
           fi
 
-      # Step 4: Submit full experiment matrix (18 jobs)
+      # Step 4: Submit temperature sweep (4 jobs)
       - name: Submit experiment matrix
         working-directory: ${{ env.REPO_PATH }}
         run: |
@@ -77,53 +77,19 @@ jobs:
           }
           PART="--partition=gpu_h100_il --time=42:00:00"
 
-          # Temperature sweep (15 agents, mk=2, 10 disks)
-          GAME=tower_of_hanoi NUM_DISKS=10 TEMPERATURE=0.0 MAX_AGENTS=15 MARGIN_K=2 \
-            submit --job-name=toh_10d_15a_T0.0 $PART scripts/run.sh
-          GAME=tower_of_hanoi NUM_DISKS=10 TEMPERATURE=0.1 MAX_AGENTS=15 MARGIN_K=2 \
-            submit --job-name=toh_10d_15a_T0.1 $PART scripts/run.sh
-          GAME=tower_of_hanoi NUM_DISKS=10 TEMPERATURE=0.5 MAX_AGENTS=15 MARGIN_K=2 \
-            submit --job-name=toh_10d_15a_T0.5 $PART scripts/run.sh
-          GAME=tower_of_hanoi NUM_DISKS=10 TEMPERATURE=1.0 MAX_AGENTS=15 MARGIN_K=2 \
-            submit --job-name=toh_10d_15a_T1.0 $PART scripts/run.sh
-
-          # Agent count sweep (T=0.1, mk=2, 10 disks)
-          GAME=tower_of_hanoi NUM_DISKS=10 TEMPERATURE=0.1 MAX_AGENTS=1 MARGIN_K=1 \
-            submit --job-name=toh_10d_1a_T0.1 $PART scripts/run.sh
-          GAME=tower_of_hanoi NUM_DISKS=10 TEMPERATURE=0.1 MAX_AGENTS=2 MARGIN_K=2 \
-            submit --job-name=toh_10d_2a_T0.1 $PART scripts/run.sh
-          GAME=tower_of_hanoi NUM_DISKS=10 TEMPERATURE=0.1 MAX_AGENTS=3 MARGIN_K=2 \
-            submit --job-name=toh_10d_3a_T0.1 $PART scripts/run.sh
-          GAME=tower_of_hanoi NUM_DISKS=10 TEMPERATURE=0.1 MAX_AGENTS=5 MARGIN_K=2 \
-            submit --job-name=toh_10d_5a_T0.1 $PART scripts/run.sh
-          GAME=tower_of_hanoi NUM_DISKS=10 TEMPERATURE=0.1 MAX_AGENTS=7 MARGIN_K=2 \
-            submit --job-name=toh_10d_7a_T0.1 $PART scripts/run.sh
-          GAME=tower_of_hanoi NUM_DISKS=10 TEMPERATURE=0.1 MAX_AGENTS=10 MARGIN_K=2 \
-            submit --job-name=toh_10d_10a_T0.1 $PART scripts/run.sh
-
-          # Margin-k sweep (15 agents, T=0.1, 10 disks) — mk2 already submitted above
-          GAME=tower_of_hanoi NUM_DISKS=10 TEMPERATURE=0.1 MAX_AGENTS=15 MARGIN_K=1 \
-            submit --job-name=toh_10d_15a_mk1 $PART scripts/run.sh
+          # Temperature sweep (15 agents, mk=3, 10 disks)
           GAME=tower_of_hanoi NUM_DISKS=10 TEMPERATURE=0.1 MAX_AGENTS=15 MARGIN_K=3 \
-            submit --job-name=toh_10d_15a_mk3 $PART scripts/run.sh
-          GAME=tower_of_hanoi NUM_DISKS=10 TEMPERATURE=0.1 MAX_AGENTS=15 MARGIN_K=4 \
-            submit --job-name=toh_10d_15a_mk4 $PART scripts/run.sh
-
-          # Sliding puzzle
-          GAME=sliding_puzzle MAX_AGENTS=20 TEMPERATURE=0.1 MARGIN_K=2 \
-            submit --job-name=sp_20a_T0.1 $PART scripts/run.sh
-
-          # Temperature escalation experiments
-          GAME=tower_of_hanoi NUM_DISKS=10 MAX_AGENTS=15 MARGIN_K=2 TEMP_ESCALATION=1 \
-            submit --job-name=toh_10d_15a_esc $PART scripts/run.sh
-          GAME=tower_of_hanoi NUM_DISKS=10 MAX_AGENTS=7 MARGIN_K=2 TEMP_ESCALATION=1 \
-            submit --job-name=toh_10d_7a_esc $PART scripts/run.sh
-          GAME=sliding_puzzle MAX_AGENTS=20 MARGIN_K=2 TEMP_ESCALATION=1 \
-            submit --job-name=sp_20a_esc $PART scripts/run.sh
+            submit --job-name=toh_10d_15a_T0.1 $PART scripts/run.sh
+          GAME=tower_of_hanoi NUM_DISKS=10 TEMPERATURE=0.5 MAX_AGENTS=15 MARGIN_K=3 \
+            submit --job-name=toh_10d_15a_T0.5 $PART scripts/run.sh
+          GAME=tower_of_hanoi NUM_DISKS=10 TEMPERATURE=0.7 MAX_AGENTS=15 MARGIN_K=3 \
+            submit --job-name=toh_10d_15a_T0.7 $PART scripts/run.sh
+          GAME=tower_of_hanoi NUM_DISKS=10 TEMPERATURE=1.0 MAX_AGENTS=15 MARGIN_K=3 \
+            submit --job-name=toh_10d_15a_T1.0 $PART scripts/run.sh
 
           echo "PROD_IDS=$PROD_IDS" >> $GITHUB_ENV
           echo "$PROD_IDS" | tr ' ' '\n' | grep -v '^$' > ${{ env.REPO_PATH }}/logs/active_experiment_ids.txt
-          echo "All 18 experiment jobs submitted:$PROD_IDS"
+          echo "All 4 temperature sweep jobs submitted:$PROD_IDS"
 
       # Step 5: Cancel all experiment jobs on failure
       - name: Cancel experiment jobs on failure
