@@ -98,3 +98,4 @@ jobs:
           for id in $PROD_IDS; do
             scancel $id || true
           done
+# trigger
