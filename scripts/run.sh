@@ -9,10 +9,6 @@
 
 CMD="uv run src/main.py --game ${GAME:-tower_of_hanoi} \
   --margin_k ${MARGIN_K:-2} \
-  --max_agents_per_step ${MAX_AGENTS:-15} \
-  --temperature ${TEMPERATURE:-0.1} \
-  --num_disks ${NUM_DISKS:-10}"
-
-[ "${TEMP_ESCALATION:-0}" = "1" ] && CMD="$CMD --temp_escalation"
+  --max_agents_per_step ${MAX_AGENTS:-15}"
 
 eval $CMD

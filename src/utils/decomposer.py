@@ -1,7 +1,7 @@
 from typing import Any
 from types import ModuleType
 
-from utils.llm import LLM, OllamaLLM, create_llm, Conversation, Message
+from utils.llm import LLM, Conversation, Message
 from utils.parser import Parser
 import csv
 import os
@@ -11,16 +11,12 @@ import weave
 
 class Agent:
     def __init__(
-        self,
-        environment: Any,
-        prompts_module: ModuleType,
-        device: str = "cpu",
-        config: dict | None = None,
+        self, environment: Any, prompts_module: ModuleType, device: str = "cpu"
     ) -> None:
         self.environment = environment
         self.prompts = prompts_module
         self.system_prompt: str = prompts_module.get_system_prompt(environment)
-        self.llm: LLM | OllamaLLM = create_llm(config, device) if config is not None else LLM(device=device)
+        self.llm = LLM(device=device)
         self.output_parser = Parser(
             environment=environment,
             move_pattern=prompts_module.MOVE_PATTERN,
@@ -97,13 +93,24 @@ class Agent:
         return action, parsed_state
 
     def execute_decompose_prompt(
-        self, previous_move: str, current_state: Any, step: int = 0, agent_num: int = 0,
-        temperature: float = 0.1,
+        self,
+        previous_move: str,
+        current_state: Any,
+        step: int = 0,
+        agent_num: int = 0,
+        *,
+        temperature: float = 0.0,
+        do_sample: bool = False,
+        top_p: float = 1.0,
     ) -> tuple[Any, Any]:
         """Single-agent call: build prompt, generate, parse. Kept for backward compat."""
         messages, _user_prompt = self.build_prompt(previous_move, current_state, step)
         response: list[Message] = self.llm.generate(
-            messages[0]["content"], messages[1]["content"], temperature=temperature
+            messages[0]["content"],
+            messages[1]["content"],
+            temperature=temperature,
+            do_sample=do_sample,
+            top_p=top_p,
         )
         content: str = response[-1]["content"]
         return self.parse_response(content, current_state, step, agent_num)

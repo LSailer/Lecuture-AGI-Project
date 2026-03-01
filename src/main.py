@@ -31,6 +31,14 @@ def create_game(config: dict[str, Any]) -> Any:
         from sliding_puzzle.enviroment import SlidingPuzzle
 
         return SlidingPuzzle(initial_state=config["initial_state"])
+    elif game_name == "nonogram":
+        from nonogram.enviroment import Nonogram
+
+        return Nonogram.from_config(
+            row_hints=config["row_hints"],
+            col_hints=config["col_hints"],
+            initial_state=config.get("initial_state"),
+        )
     else:
         raise ValueError(f"Unknown game: {game_name}")
 
@@ -44,9 +52,11 @@ def create_agent(config: dict[str, Any], game: Any, device: str) -> Agent:
         from tower_of_hanoi import prompts
     elif game_name == "sliding_puzzle":
         from sliding_puzzle import prompts
+    elif game_name == "nonogram":
+        from nonogram import prompts
     else:
         raise ValueError(f"Unknown game: {game_name}")
-    return Agent(environment=game, prompts_module=prompts, device=device, config=config)
+    return Agent(environment=game, prompts_module=prompts, device=device)
 
 
 def load_config(args: argparse.Namespace) -> dict[str, Any]:
@@ -67,14 +77,6 @@ def load_config(args: argparse.Namespace) -> dict[str, Any]:
         config["max_steps"] = args.max_steps
     if args.max_agents_per_step is not None:
         config["max_agents_per_step"] = args.max_agents_per_step
-    if args.temperature is not None:
-        config["temperature"] = args.temperature
-    if args.num_disks is not None:
-        config["num_disks"] = args.num_disks
-
-    if args.temp_escalation:
-        config["temp_escalation"] = True
-    config.setdefault("temp_escalation", False)
 
     # Defaults for fallback config keys
     config.setdefault("max_fallback_retries", 3)
@@ -92,8 +94,6 @@ def run_voting_batch(
     current_step: int,
     batch_size: int,
     margin_k: int,
-    temperature: float = 0.1,
-    temp_escalation: bool = False,
     system_prompt_override: str | None = None,
     user_prompt_override: str | None = None,
     predictions_table: wandb.Table | None = None,
@@ -142,16 +142,14 @@ def run_voting_batch(
                 )
         batch_messages.append(messages)
 
-    # Batch inference
-    if not temp_escalation:
-        responses = agent.llm.generate_batch(batch_messages, temperature=temperature)
-    else:
-        responses = []
-        for i, msgs in enumerate(batch_messages):
-            agent_temp = 0.1 * (i + 1)
-            resp = agent.llm.generate(msgs[0]["content"], msgs[1]["content"],
-                                       temperature=agent_temp)
-            responses.append(resp)
+    # Batch inference (MAKER-style): first vote deterministic (tau=0), remaining votes sampled (tau=0.1)
+    responses = []
+    first_messages = batch_messages[:1]
+    rest_messages = batch_messages[1:]
+    if first_messages:
+        responses.extend(agent.llm.generate_batch(first_messages, do_sample=False, temperature=0.0))
+    if rest_messages:
+        responses.extend(agent.llm.generate_batch(rest_messages, do_sample=True, temperature=0.1, top_p=0.95))
 
     # Parse each response and tally votes
     for i, response in enumerate(responses):
@@ -209,13 +207,14 @@ def run_voting_batch(
         ):
             agents_so_far += 1
             try:
-                chase_temp = 0.1 * agents_so_far if temp_escalation else temperature
                 action, state = agent.execute_decompose_prompt(
                     previous_move,
                     current_state,
                     step=current_step,
                     agent_num=agents_so_far,
-                    temperature=chase_temp,
+                    temperature=0.1,
+                    do_sample=True,
+                    top_p=0.95,
                 )
                 if isinstance(action, list):
                     action = tuple(action)
@@ -257,7 +256,7 @@ def main() -> None:
     parser.add_argument(
         "--game",
         required=True,
-        choices=["tower_of_hanoi", "sliding_puzzle"],
+        choices=["tower_of_hanoi", "sliding_puzzle", "nonogram"],
         help="Which puzzle to solve",
     )
     parser.add_argument("--config", default=None, help="Path to YAML config file")
@@ -270,26 +269,17 @@ def main() -> None:
     parser.add_argument(
         "--max_agents_per_step", type=int, default=None, help="Max agents per step"
     )
-    parser.add_argument(
-        "--temperature", type=float, default=None, help="LLM sampling temperature"
-    )
-    parser.add_argument(
-        "--num_disks", type=int, default=None, help="Number of disks (tower_of_hanoi)"
-    )
-    parser.add_argument(
-        "--temp_escalation", action="store_true", default=False,
-        help="Escalate temperature per agent (0.1, 0.2, ...)"
-    )
     args = parser.parse_args()
 
     config = load_config(args)
 
     # Initialize WandB + Weave
     game_type = config["game"]
-    backend = config.get("llm_backend", "huggingface")
 
     if game_type == "tower_of_hanoi":
         size_str = f"d{config.get('num_disks', '?')}"
+    elif game_type == "nonogram":
+        size_str = f"{len(config.get('row_hints', []))}x{len(config.get('col_hints', []))}"
     else:
         n = len(config.get("initial_state", []))
         side = int(n ** 0.5)
@@ -297,7 +287,7 @@ def main() -> None:
 
     timestamp = datetime.now().strftime("%m%d_%H%M")
     run_name = f"{game_type}_{size_str}_k{config['margin_k']}_a{config['max_agents_per_step']}_{timestamp}"
-    tags = [game_type, backend]
+    tags = [game_type]
 
     wandb.init(
         project="lecture-agi",
@@ -312,8 +302,6 @@ def main() -> None:
     max_steps = config["max_steps"]
     max_number_agents_per_step = config["max_agents_per_step"]
     max_fallback_retries = config["max_fallback_retries"]
-    temperature = config.get("temperature", 0.1)
-    temp_escalation = config.get("temp_escalation", False)
     output_dir = config.get("output_dir", "output")
 
     if not os.path.exists(output_dir):
@@ -325,9 +313,7 @@ def main() -> None:
         if os.path.exists(path):
             os.remove(path)
 
-    if config.get("llm_backend") == "ollama":
-        device = "cpu"
-    elif torch.cuda.is_available():
+    if torch.cuda.is_available():
         device = "cuda"
     elif torch.backends.mps.is_available():
         device = "mps"
@@ -379,8 +365,6 @@ def main() -> None:
             current_step,
             batch_size=max_number_agents_per_step,
             margin_k=margin_k,
-            temperature=temperature,
-            temp_escalation=temp_escalation,
             predictions_table=predictions_table,
         )
 
@@ -413,8 +397,6 @@ def main() -> None:
                     current_step,
                     batch_size=max_number_agents_per_step,
                     margin_k=margin_k,
-                    temperature=temperature,
-                    temp_escalation=temp_escalation,
                     system_prompt_override=new_sys,
                     user_prompt_override=new_usr,
                     predictions_table=predictions_table,
@@ -477,14 +459,11 @@ def main() -> None:
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     num_disks_str = f"_{config['num_disks']}d" if game_type == "tower_of_hanoi" else ""
-    json_filename = f"{game_type}{num_disks_str}_{config['max_agents_per_step']}a_T{config.get('temperature', 0.1)}_{timestamp}.json"
+    json_filename = f"{game_type}{num_disks_str}_{config['max_agents_per_step']}a_{timestamp}.json"
     json_path = os.path.join(experiments_dir, json_filename)
 
     # Wrap game_history with metadata for webapp
-    experiment_data = {
-        "game_type": config['game'],
-        "steps": game_history
-    }
+    experiment_data = {"game_type": config["game"], "steps": game_history}
 
     with open(json_path, "w") as f:
         json.dump(experiment_data, f, indent=2)
