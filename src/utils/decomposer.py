@@ -53,7 +53,8 @@ class Agent:
 
         try:
             action, parsed_state = self.output_parser.parse_action_state(
-                response_content
+                response_content,
+                current_state=current_state,
             )
         except Exception as e:
             error_message = str(e)

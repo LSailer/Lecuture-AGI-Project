@@ -1,0 +1,27 @@
+game: rubiks_cube
+
+# Solver params
+max_steps: 2000
+max_agents_per_step: 9
+margin_k: 3
+
+output_dir: output
+
+# Fallback
+max_fallback_retries: 3
+fallback_api: gemini
+gemini_model: gemini-2.5-flash
+
+# Rubik config
+forbid_undo: true
+max_score_drop: 6
+
+# Simple scramble (example). You can replace with any list.
+scramble:
+  - R
+  - U
+  - R'
+  - U'
+  - F2
+
+  # uv run src/main.py --game rubiks_cube
