@@ -60,14 +60,24 @@ class TestParser(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "exactly one move"):
             self.parser.parse_action_state(response, current_state=current_state)
 
-    def test_parse_action_state_rejects_extra_text_before_move(self) -> None:
+    def test_parse_action_state_allows_reasoning_before_move(self) -> None:
         current_state = self.env.get_state()
         next_state = [[-1] * 5 for _ in range(5)]
         next_state[2][2] = 1
 
-        response = "Here is my answer:\n" + build_response(2, 2, "filled", next_state)
-        with self.assertRaisesRegex(ValueError, "extra text before move"):
-            self.parser.parse_action_state(response, current_state=current_state)
+        response = (
+            "Here is my reasoning:\n"
+            "I will choose the center cell.\n"
+            + build_response(2, 2, "filled", next_state)
+        )
+
+        move, state = self.parser.parse_action_state(
+            response,
+            current_state=current_state,
+        )
+
+        self.assertEqual(move, (2, 2, 1))
+        self.assertEqual(state, next_state)
 
     def test_parse_action_state_rejects_extra_text_after_state(self) -> None:
         current_state = self.env.get_state()

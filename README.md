@@ -40,6 +40,7 @@ Downloads the model (currently `mistralai/Devstral-Small-2-24B-Instruct-2512`) t
 ```bash
 uv run src/main.py --game tower_of_hanoi
 uv run src/main.py --game sliding_puzzle
+uv run src/main.py --game nonogram
 ```
 
 **CLI overrides:**

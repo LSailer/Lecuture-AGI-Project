@@ -199,5 +199,3 @@ class Nonogram:
                 return False
         return True
 
-# uv sync
-# uv run src/main.py --game nonogram

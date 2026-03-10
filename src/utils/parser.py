@@ -20,42 +20,26 @@ class Parser:
         self.parse_move_fn = parse_move_fn
         self.parse_state_fn = parse_state_fn
 
-    def _extract_single_match(
-        self,
-        pattern: re.Pattern[str],
-        response: str,
-        label: str,
-    ) -> re.Match[str]:
-        matches = list(pattern.finditer(response))
+    def _coerce_to_reference_shape(self, value: Any, reference: Any) -> Any:
+        """
+        Normalize parsed states to the container structure of current_state.
+        This keeps one parser compatible with games that use lists vs tuples.
+        """
+        if isinstance(reference, list):
+            if isinstance(value, (list, tuple)):
+                if reference:
+                    return [self._coerce_to_reference_shape(v, reference[0]) for v in value]
+                return list(value)
+            return value
 
-        if not matches:
-            raise ValueError(f"Could not find {label} in the response.")
-        if len(matches) > 1:
-            raise ValueError(f"Invalid response: expected exactly one {label}.")
+        if isinstance(reference, tuple):
+            if isinstance(value, (list, tuple)):
+                if reference:
+                    return tuple(self._coerce_to_reference_shape(v, reference[0]) for v in value)
+                return tuple(value)
+            return value
 
-        return matches[0]
-
-    def _ensure_strict_two_line_format(
-        self,
-        response: str,
-        move_match: re.Match[str],
-        state_match: re.Match[str],
-    ) -> None:
-        if move_match.start() > state_match.start():
-            raise ValueError("Invalid response: move must appear before next_state.")
-
-        prefix = response[: move_match.start()]
-        between = response[move_match.end() : state_match.start()]
-        suffix = response[state_match.end() :]
-
-        if prefix.strip():
-            raise ValueError("Invalid response: extra text before move.")
-        if between.strip():
-            raise ValueError(
-                "Invalid response: only whitespace is allowed between move and next_state."
-            )
-        if suffix.strip():
-            raise ValueError("Invalid response: extra text after next_state.")
+        return value
 
     def _validate_transition_consistency(
         self,
@@ -64,8 +48,8 @@ class Parser:
         state: Any,
     ) -> None:
         """
-        Enforce MAKER-style consistency:
-        next_state must be exactly the result of applying move to current_state.
+        Check that next_state exactly matches the result of applying move
+        to current_state in the environment.
         """
         temp_env = copy.deepcopy(self.environment)
 
@@ -82,7 +66,9 @@ class Parser:
         temp_env.apply_move(move)
         expected_state = temp_env.get_state()
 
-        if expected_state != state:
+        normalized_state = self._coerce_to_reference_shape(state, expected_state)
+
+        if expected_state != normalized_state:
             raise ValueError(
                 "Inconsistent prediction: next_state does not match current_state + move."
             )
@@ -95,22 +81,24 @@ class Parser:
         if not isinstance(response, str) or not response.strip():
             raise ValueError("Empty response.")
 
-        move_match = self._extract_single_match(self.move_pattern, response, "move")
-        state_match = self._extract_single_match(
-            self.state_pattern, response, "next_state"
-        )
+        move_matches = list(self.move_pattern.finditer(response))
+        state_matches = list(self.state_pattern.finditer(response))
 
-        self._ensure_strict_two_line_format(response, move_match, state_match)
+        if not move_matches or not state_matches:
+            raise ValueError("Could not find move or next_state in the response.")
 
         try:
-            move = self.parse_move_fn(move_match)
+            move = self.parse_move_fn(move_matches[-1])
         except Exception as e:
             raise ValueError("Error parsing move.") from e
 
         try:
-            state = self.parse_state_fn(state_match)
+            state = self.parse_state_fn(state_matches[-1])
         except Exception as e:
             raise ValueError("Error parsing next_state.") from e
+
+        if current_state is not None:
+            state = self._coerce_to_reference_shape(state, current_state)
 
         try:
             validated_move = self.environment.validate_move(move)
@@ -132,8 +120,8 @@ class Parser:
         return validated_move, validated_state
     
 
+    """
+    Ursprünglicher Parser, nur wird jetzt zusätzlich noch geprüft ob der move tatsächlich zum state führt.
+    Vorher nur ist move gültig + ist state gültig!
 
-"""
-- Fix: parser accepts now exactly one move and one state.
-- Fix: Checks if next_state is consistent with current_state + move.
-"""
+    """
