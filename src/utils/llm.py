@@ -5,6 +5,22 @@ import torch
 from transformers import pipeline
 import weave
 
+try:
+    import weave
+except ImportError:
+    class _WeaveStub:
+        @staticmethod
+        def op():
+            def decorator(fn):
+                return fn
+            return decorator
+
+        @staticmethod
+        def init(*args, **kwargs):
+            return None
+
+    weave = _WeaveStub()
+
 
 load_dotenv()
 
@@ -19,7 +35,6 @@ class LLM:
 
         if device == "cuda":
             self.pipe = pipeline("text-generation", model=model_id, device_map=device)
-
         else:
             self.pipe = pipeline("text-generation", model=model_id, device=device)
 

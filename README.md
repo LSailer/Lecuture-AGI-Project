@@ -51,6 +51,7 @@ Downloads the model to `LLM/model/`. Set `llm_backend: huggingface` in the confi
 ```bash
 uv run src/main.py --game tower_of_hanoi
 uv run src/main.py --game sliding_puzzle
+uv run src/main.py --game nonogram
 ```
 
 **CLI overrides:**

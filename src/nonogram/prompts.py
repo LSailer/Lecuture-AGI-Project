@@ -18,10 +18,16 @@ Nonogram rules:
 - You have a {rows}x{cols} grid.
 - Each row has hints (a list of positive integers) describing the lengths of consecutive FILLED blocks (#) in that row, in order, separated by at least one EMPTY cell (x).
 - Same for each column.
+- A single number means there is exactly one consecutive FILLED block of that length in the line.
 - Each cell is one of:
   - unknown: -1 (.)
   - empty: 0 (x)
   - filled: 1 (#)
+
+Examples:
+- Hint [3] means exactly one block of 3 consecutive FILLED cells in that row/column.
+- Hint [1, 1] means exactly two FILLED single cells, separated by at least one EMPTY cell.
+- Hint [2, 1] means one block of 2 consecutive FILLED cells, then at least one EMPTY cell, then one block of 1 FILLED cell.
 
 Goal:
 - Decide every cell so that ALL row hints and column hints are satisfied exactly.

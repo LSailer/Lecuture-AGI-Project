@@ -55,12 +55,12 @@ class Agent:
 
         try:
             action, parsed_state = self.output_parser.parse_action_state(
-                response_content
+                response_content,
+                current_state=current_state,
             )
         except Exception as e:
             error_message = str(e)
         if error_message != "None":
-            # Track failures to failures.csv
             failures_file = os.path.join("output", "failures.csv")
             os.makedirs("output", exist_ok=True)
             failures_exists = os.path.isfile(failures_file)

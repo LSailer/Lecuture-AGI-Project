@@ -11,6 +11,13 @@ from google import genai
 FailedPrediction = dict[str, str]
 
 
+class SafeFormatDict(dict):
+    """Leave unknown placeholders unchanged instead of failing formatting."""
+
+    def __missing__(self, key: str) -> str:
+        return "{" + key + "}"
+
+
 class FallbackModel:
     """Calls a fallback model to rewrite system/user prompts when all agents fail."""
 
@@ -65,6 +72,19 @@ and produce improved system and user prompts that will help the agents reason be
 </USER_PROMPT>
 """
 
+    def _format_prompt_if_possible(
+        self,
+        prompt_template: str,
+        prompt_context: dict[str, Any] | None,
+    ) -> str:
+        """Format a prompt template if context is available, otherwise return raw template."""
+        if not prompt_context:
+            return prompt_template
+        try:
+            return prompt_template.format_map(SafeFormatDict(prompt_context))
+        except Exception as e:
+            return f"{prompt_template}\n\n[FORMAT WARNING: {e}]"
+
     def update_compose(
         self,
         system_prompt: str,
@@ -72,6 +92,7 @@ and produce improved system and user prompts that will help the agents reason be
         failed_predictions: list[FailedPrediction],
         step: int = 0,
         retry: int = 0,
+        prompt_context: dict[str, Any] | None = None,
     ) -> tuple[str, str]:
         """Returns (new_system_prompt, new_user_prompt) by calling fallback model."""
         meta_prompt = self._build_meta_prompt(
@@ -93,14 +114,34 @@ and produce improved system and user prompts that will help the agents reason be
 
         if response is None:
             print("All fallback models failed, returning original prompts.")
+            self._log_debug_prompts(
+                step=step,
+                retry=retry,
+                system_prompt=system_prompt,
+                user_prompt_formatted=self._format_prompt_if_possible(
+                    user_prompt, prompt_context
+                ),
+                failed_predictions=failed_predictions,
+                meta_prompt=meta_prompt,
+                fallback_response=None,
+            )
             return system_prompt, user_prompt
 
         new_system, new_user = self._parse_response(
             response, system_prompt, user_prompt
         )
 
-        # Debug prompt tracking
-        self._log_debug_prompts(step, retry, new_system, new_user, failed_predictions)
+        self._log_debug_prompts(
+            step=step,
+            retry=retry,
+            system_prompt=new_system,
+            user_prompt_formatted=self._format_prompt_if_possible(
+                new_user, prompt_context
+            ),
+            failed_predictions=failed_predictions,
+            meta_prompt=meta_prompt,
+            fallback_response=response,
+        )
 
         return new_system, new_user
 
@@ -116,7 +157,6 @@ and produce improved system and user prompts that will help the agents reason be
             loop = None
 
         if loop and loop.is_running():
-            # Already in an async context — run in a new thread
             import concurrent.futures
 
             with concurrent.futures.ThreadPoolExecutor() as pool:
@@ -124,8 +164,7 @@ and produce improved system and user prompts that will help the agents reason be
                     asyncio.run, self._call_gemini_async(meta_prompt)
                 ).result()
             return result
-        else:
-            return asyncio.run(self._call_gemini_async(meta_prompt))
+        return asyncio.run(self._call_gemini_async(meta_prompt))
 
     async def _call_gemini_async(self, meta_prompt: str) -> str:
         """Async Gemini API call using google-genai SDK."""
@@ -184,8 +223,10 @@ and produce improved system and user prompts that will help the agents reason be
         step: int,
         retry: int,
         system_prompt: str,
-        user_prompt: str,
+        user_prompt_formatted: str,
         failed_predictions: list[FailedPrediction],
+        meta_prompt: str,
+        fallback_response: str | None,
     ) -> None:
         """Append debug info to output/debug_prompts.md."""
         os.makedirs("output", exist_ok=True)
@@ -197,9 +238,12 @@ and produce improved system and user prompts that will help the agents reason be
             for fp in failed_predictions
         )
 
-        with open(debug_path, "a") as f:
+        with open(debug_path, "a", encoding="utf-8") as f:
             f.write(f"\n## Fallback at Step {step}, Retry {retry}\n\n")
             f.write(f"### System Prompt\n{system_prompt}\n\n")
-            f.write(f"### User Prompt\n{user_prompt}\n\n")
+            f.write(f"### User Prompt\n{user_prompt_formatted}\n\n")
             f.write(f"### Failed Predictions\n{failures_text}\n\n")
+            f.write(f"### Meta Prompt Sent To Fallback\n{meta_prompt}\n\n")
+            f.write("### Fallback Raw Response\n")
+            f.write(f"{fallback_response if fallback_response is not None else '[None]'}\n\n")
             f.write("---\n")

@@ -1,4 +1,7 @@
+from __future__ import annotations
+
 from typing import Any, Callable
+import copy
 import re
 
 
@@ -17,7 +20,67 @@ class Parser:
         self.parse_move_fn = parse_move_fn
         self.parse_state_fn = parse_state_fn
 
-    def parse_action_state(self, response: str) -> tuple[Any, Any]:
+    def _coerce_to_reference_shape(self, value: Any, reference: Any) -> Any:
+        """
+        Normalize parsed states to the container structure of a reference state.
+        This keeps the parser compatible with games using lists or tuples.
+        """
+        if isinstance(reference, list):
+            if isinstance(value, (list, tuple)):
+                if reference:
+                    return [self._coerce_to_reference_shape(v, reference[0]) for v in value]
+                return list(value)
+            return value
+
+        if isinstance(reference, tuple):
+            if isinstance(value, (list, tuple)):
+                if reference:
+                    return tuple(self._coerce_to_reference_shape(v, reference[0]) for v in value)
+                return tuple(value)
+            return value
+
+        return value
+
+    def _validate_transition_consistency(
+        self,
+        current_state: Any,
+        move: Any,
+        state: Any,
+    ) -> None:
+        """
+        Check that next_state exactly matches the result of applying move
+        to current_state in the environment.
+        """
+        temp_env = copy.deepcopy(self.environment)
+
+        if hasattr(temp_env, "get_state"):
+            env_state = temp_env.get_state()
+            if env_state != current_state:
+                raise ValueError(
+                    "Internal state mismatch: environment state differs from current_state."
+                )
+
+        if not hasattr(temp_env, "apply_move") or not hasattr(temp_env, "get_state"):
+            return
+
+        temp_env.apply_move(move)
+        expected_state = temp_env.get_state()
+
+        normalized_state = self._coerce_to_reference_shape(state, expected_state)
+
+        if expected_state != normalized_state:
+            raise ValueError(
+                "Inconsistent prediction: next_state does not match current_state + move."
+            )
+
+    def parse_action_state(
+        self,
+        response: str,
+        current_state: Any | None = None,
+    ) -> tuple[Any, Any]:
+        if not isinstance(response, str) or not response.strip():
+            raise ValueError("Empty response.")
+
         move_matches = list(self.move_pattern.finditer(response))
         state_matches = list(self.state_pattern.finditer(response))
 
@@ -26,8 +89,32 @@ class Parser:
 
         try:
             move = self.parse_move_fn(move_matches[-1])
+        except Exception as e:
+            raise ValueError("Error parsing move.") from e
+
+        try:
             state = self.parse_state_fn(state_matches[-1])
         except Exception as e:
-            raise ValueError("Error parsing move or next_state") from e
+            raise ValueError("Error parsing next_state.") from e
 
-        return self.environment.validate_move(move), self.environment.is_valid_state(state)
+        if current_state is not None:
+            state = self._coerce_to_reference_shape(state, current_state)
+
+        try:
+            validated_move = self.environment.validate_move(move)
+        except Exception as e:
+            raise ValueError(str(e)) from e
+
+        try:
+            validated_state = self.environment.is_valid_state(state)
+        except Exception as e:
+            raise ValueError(str(e)) from e
+
+        if current_state is not None:
+            self._validate_transition_consistency(
+                current_state=current_state,
+                move=validated_move,
+                state=validated_state,
+            )
+
+        return validated_move, validated_state
