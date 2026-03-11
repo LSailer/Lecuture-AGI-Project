@@ -1,22 +1,19 @@
-#!/bin/bash
+#!/bin/sh
 #SBATCH --job-name=RunSimulation
-#SBATCH --output=logs/Logs%j.out
-#SBATCH --error=logs/Logs%j.err
-#SBATCH --time=00:30:00
+#SBATCH --output=logs/slurm-%j.out
+#SBATCH --error=logs/slurm-%j.err
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
 #SBATCH --mem=127G
 #SBATCH --gres=gpu:1
-#SBATCH --partition=dev_gpu_h100
 
-# uv run src/main.py --game tower_of_hanoi --margin_k 3
-#uv run src/main.py --game sliding_puzzle --margin_k 3
-uv run src/main.py --game nonogram --margin_k 3 --max_agents_per_step 8
+CMD="uv run src/main.py --game ${GAME:-tower_of_hanoi} \
+  --margin_k ${MARGIN_K:-2} \
+  --max_agents_per_step ${MAX_AGENTS:-15} \
+  --temperature ${TEMPERATURE:-0.1} \
+  --num_disks ${NUM_DISKS:-10} \
+  --max_state_revisits ${MAX_STATE_REVISITS:-3}"
 
-# Slurm Commands
-# module load devel/python/3.10.5
-# sbatch -> Run script
-# squeue -> show the list
-# scancel <job_id> -> cancel job
-# sinfo_t_idle
-# squeue --start
+[ "${TEMP_ESCALATION:-0}" = "1" ] && CMD="$CMD --temp_escalation"
+
+eval $CMD

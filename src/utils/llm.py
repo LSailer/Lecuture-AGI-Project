@@ -3,6 +3,7 @@ from typing import Any
 from dotenv import load_dotenv
 import torch
 from transformers import pipeline
+import weave
 
 try:
     import weave

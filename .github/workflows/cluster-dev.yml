@@ -1,0 +1,143 @@
+name: Run Dev on BVUni Cluster
+
+on:
+  push:
+    branches: [dev/luca]
+  pull_request:
+    branches: [dev/luca]
+    types: [closed]
+
+env:
+  REPO_PATH: /pfs/data6/home/ul/ul_student/ul_hfj15/Lecuture-AGI-Project
+
+jobs:
+  submit-slurm-job:
+    runs-on: self-hosted
+    if: github.event_name == 'push' || github.event.pull_request.merged == true
+
+    steps:
+      # Step 1: Checkout handles GitHub authentication automatically
+      - name: Checkout code (for auth)
+        uses: actions/checkout@v4
+        with:
+          ref: dev/luca
+
+      # Step 2: Sync the checked-out code into the existing repo folder
+      # Preserves .env, LLM/model/, .venv/, and other local-only files
+      - name: Sync code to project folder
+        run: |
+          rsync -a --delete \
+            --exclude '.env' \
+            --exclude 'LLM/model/' \
+            --exclude 'LLM/static/' \
+            --exclude '.venv/' \
+            --exclude 'logs/' \
+            --exclude 'output/' \
+            --exclude '__pycache__/' \
+            --exclude 'webapp/node_modules/' \
+            $GITHUB_WORKSPACE/ ${{ env.REPO_PATH }}/
+          echo "Code synced to ${{ env.REPO_PATH }}"
+
+      # Step 3: Copy static overlay into model dir
+      - name: Copy static to model
+        run: |
+          cd ${{ env.REPO_PATH }}
+          if [ "$(ls -A LLM/static 2>/dev/null)" ]; then
+            cp -rv LLM/static/* LLM/model/
+          fi
+
+      # Step 4: Dev smoke test (short run on dev partition)
+      - name: Dev smoke test
+        working-directory: ${{ env.REPO_PATH }}
+        run: |
+          mkdir -p logs
+          dev_id=$(sbatch --parsable --partition=dev_gpu_h100 --time=00:30:00 scripts/run.sh)
+          echo "Submitted dev smoke test: $dev_id"
+          echo "DEV_ID=$dev_id" >> $GITHUB_ENV
+
+          echo "Waiting for dev job $dev_id to finish..."
+          while squeue -j $dev_id -h 2>/dev/null | grep -q "$dev_id"; do
+            echo "Dev job $dev_id still running — checking again in 5 minutes..."
+            sleep 300
+          done
+
+          echo "Dev job $dev_id finished."
+          OUT_FILE="logs/slurm-${dev_id}.out"
+          ERR_FILE="logs/slurm-${dev_id}.err"
+          [ -f "$OUT_FILE" ] && echo "--- STDOUT ---" && cat "$OUT_FILE"
+          [ -f "$ERR_FILE" ] && echo "--- STDERR ---" && cat "$ERR_FILE"
+
+          EXIT_CODE=$(sacct -j $dev_id --format=ExitCode --noheader | head -1 | cut -d':' -f1 | tr -d ' ')
+          echo "Dev job exit code: $EXIT_CODE"
+          if [ "$EXIT_CODE" != "0" ] && [ -n "$EXIT_CODE" ]; then
+            echo "Dev smoke test failed"
+            exit 1
+          fi
+
+      # Step 5: Submit full experiment matrix (18 jobs)
+      - name: Submit experiment matrix
+        working-directory: ${{ env.REPO_PATH }}
+        run: |
+          PROD_IDS=""
+          submit() {
+            local id=$(sbatch --parsable "$@")
+            echo "Submitted $id: $*"
+            PROD_IDS="${PROD_IDS} ${id}"
+          }
+          PART="--partition=gpu_h100_il --time=42:00:00"
+
+          # Temperature sweep (15 agents, mk=2, 10 disks)
+          GAME=tower_of_hanoi NUM_DISKS=10 TEMPERATURE=0.0 MAX_AGENTS=15 MARGIN_K=2 \
+            submit --job-name=toh_10d_15a_T0.0 $PART scripts/run.sh
+          GAME=tower_of_hanoi NUM_DISKS=10 TEMPERATURE=0.1 MAX_AGENTS=15 MARGIN_K=2 \
+            submit --job-name=toh_10d_15a_T0.1 $PART scripts/run.sh
+          GAME=tower_of_hanoi NUM_DISKS=10 TEMPERATURE=0.5 MAX_AGENTS=15 MARGIN_K=2 \
+            submit --job-name=toh_10d_15a_T0.5 $PART scripts/run.sh
+          GAME=tower_of_hanoi NUM_DISKS=10 TEMPERATURE=1.0 MAX_AGENTS=15 MARGIN_K=2 \
+            submit --job-name=toh_10d_15a_T1.0 $PART scripts/run.sh
+
+          # Agent count sweep (T=0.1, mk=2, 10 disks)
+          GAME=tower_of_hanoi NUM_DISKS=10 TEMPERATURE=0.1 MAX_AGENTS=1 MARGIN_K=1 \
+            submit --job-name=toh_10d_1a_T0.1 $PART scripts/run.sh
+          GAME=tower_of_hanoi NUM_DISKS=10 TEMPERATURE=0.1 MAX_AGENTS=2 MARGIN_K=2 \
+            submit --job-name=toh_10d_2a_T0.1 $PART scripts/run.sh
+          GAME=tower_of_hanoi NUM_DISKS=10 TEMPERATURE=0.1 MAX_AGENTS=3 MARGIN_K=2 \
+            submit --job-name=toh_10d_3a_T0.1 $PART scripts/run.sh
+          GAME=tower_of_hanoi NUM_DISKS=10 TEMPERATURE=0.1 MAX_AGENTS=5 MARGIN_K=2 \
+            submit --job-name=toh_10d_5a_T0.1 $PART scripts/run.sh
+          GAME=tower_of_hanoi NUM_DISKS=10 TEMPERATURE=0.1 MAX_AGENTS=7 MARGIN_K=2 \
+            submit --job-name=toh_10d_7a_T0.1 $PART scripts/run.sh
+          GAME=tower_of_hanoi NUM_DISKS=10 TEMPERATURE=0.1 MAX_AGENTS=10 MARGIN_K=2 \
+            submit --job-name=toh_10d_10a_T0.1 $PART scripts/run.sh
+
+          # Margin-k sweep (15 agents, T=0.1, 10 disks) — mk2 already submitted above
+          GAME=tower_of_hanoi NUM_DISKS=10 TEMPERATURE=0.1 MAX_AGENTS=15 MARGIN_K=1 \
+            submit --job-name=toh_10d_15a_mk1 $PART scripts/run.sh
+          GAME=tower_of_hanoi NUM_DISKS=10 TEMPERATURE=0.1 MAX_AGENTS=15 MARGIN_K=3 \
+            submit --job-name=toh_10d_15a_mk3 $PART scripts/run.sh
+          GAME=tower_of_hanoi NUM_DISKS=10 TEMPERATURE=0.1 MAX_AGENTS=15 MARGIN_K=4 \
+            submit --job-name=toh_10d_15a_mk4 $PART scripts/run.sh
+
+          # Sliding puzzle
+          GAME=sliding_puzzle MAX_AGENTS=20 TEMPERATURE=0.1 MARGIN_K=2 \
+            submit --job-name=sp_20a_T0.1 $PART scripts/run.sh
+
+          # Temperature escalation experiments
+          GAME=tower_of_hanoi NUM_DISKS=10 MAX_AGENTS=15 MARGIN_K=2 TEMP_ESCALATION=1 \
+            submit --job-name=toh_10d_15a_esc $PART scripts/run.sh
+          GAME=tower_of_hanoi NUM_DISKS=10 MAX_AGENTS=7 MARGIN_K=2 TEMP_ESCALATION=1 \
+            submit --job-name=toh_10d_7a_esc $PART scripts/run.sh
+          GAME=sliding_puzzle MAX_AGENTS=20 MARGIN_K=2 TEMP_ESCALATION=1 \
+            submit --job-name=sp_20a_esc $PART scripts/run.sh
+
+          echo "PROD_IDS=$PROD_IDS" >> $GITHUB_ENV
+          echo "$PROD_IDS" | tr ' ' '\n' | grep -v '^$' > ${{ env.REPO_PATH }}/logs/active_experiment_ids.txt
+          echo "All 18 experiment jobs submitted:$PROD_IDS"
+
+      # Step 6: Cancel all experiment jobs on failure
+      - name: Cancel experiment jobs on failure
+        if: failure()
+        run: |
+          for id in $PROD_IDS; do
+            scancel $id || true
+          done

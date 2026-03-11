@@ -8,7 +8,8 @@ Currently implements **Tower of Hanoi** and **Sliding Puzzle** domains.
 
 - **Python** >= 3.13
 - **Package manager**: `uv`
-- **Hugging Face Account**: A valid token to download the LLM model.
+- **Hugging Face Account**: A valid token to download the LLM model (only needed for HuggingFace backend)
+- **Ollama** (recommended for Apple Silicon): [ollama.com](https://ollama.com)
 
 ## Installation
 
@@ -29,11 +30,21 @@ uv sync
 
 ### 1. Download the LLM
 
+**Option A — Ollama (recommended for Apple Silicon):**
+
+```bash
+ollama pull qwen3:8b
+```
+
+Ensure `llm_backend: ollama` is set in `src/config/*.yaml` (default).
+
+**Option B — HuggingFace:**
+
 ```bash
 uv run LLM/download.py
 ```
 
-Downloads the model (currently `mistralai/Devstral-Small-2-24B-Instruct-2512`) to `LLM/model/`.
+Downloads the model to `LLM/model/`. Set `llm_backend: huggingface` in the config.
 
 ### 2. Run Solvers
 
@@ -60,7 +71,15 @@ sbatch scripts/run.sh
 
 Submits to `gpu_h100_il` partition with 1x H100 GPU, 127 GB RAM.
 
-### 4. Run Tests
+### 4. Cancel All SLURM Jobs (Remote)
+
+```bash
+gh workflow run cancel-jobs.yml --ref dev
+```
+
+Triggers the self-hosted runner to `scancel --user=$USER` on the cluster. No SSH required.
+
+### 5. Run Tests
 
 ```bash
 cd src

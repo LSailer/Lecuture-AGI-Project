@@ -22,6 +22,7 @@ import json
 from datetime import datetime
 
 
+
 def create_game(config: dict[str, Any]) -> Any:
     """Factory: instantiate the right game environment from config."""
     game_name = config["game"]
@@ -233,7 +234,6 @@ def _build_batch_messages(
 
         if system_prompt_override:
             messages[0]["content"] = system_prompt_override
-
         if user_prompt_override:
             if "{" in user_prompt_override:
                 try:
@@ -291,6 +291,7 @@ def _build_batch_messages(
             logged_this_step = True
 
         batch_messages.append(messages)
+    return batch_messages
 
     return batch_messages
 
@@ -322,7 +323,6 @@ def run_voting_batch(
         action: Any = "None"
         parsed_state: Any = "None"
         error = "None"
-
         try:
             action, parsed_state = agent.parse_response(
                 response_content, current_state, current_step, agent_num
@@ -365,12 +365,8 @@ def run_voting_batch(
 
         if predictions_table is not None:
             predictions_table.add_data(
-                current_step,
-                agent_num,
-                str(current_state),
-                str(action),
-                str(parsed_state),
-                error,
+                current_step, agent_num, str(current_state),
+                str(action), str(parsed_state), error,
             )
 
     # Initial batch
