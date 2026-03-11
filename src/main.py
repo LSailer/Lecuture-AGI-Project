@@ -154,6 +154,13 @@ def get_best_candidate(
     return candidate_lookup[best_key]
 
 
+class SafeFormatDict(dict):
+    """Leave unknown placeholders unchanged instead of failing formatting."""
+
+    def __missing__(self, key: str) -> str:
+        return "{" + key + "}"
+
+
 def run_voting_batch(
     agent: Agent,
     previous_move: str,
@@ -198,20 +205,52 @@ def run_voting_batch(
         messages, _user_prompt = agent.build_prompt(
             previous_move, current_state, current_step
         )
+            
         if system_prompt_override:
             messages[0]["content"] = system_prompt_override
 
         if user_prompt_override:
-            if "{current_state}" in user_prompt_override:
+            if "{" in user_prompt_override:
                 try:
-                    formatted_prompt = user_prompt_override.format(
-                    current_state=current_state,
-                    previous_move=previous_move,
-                    state_visual=state_visual,
-                    current_step=current_step,
+                    format_values: dict[str, Any] = {
+                        "current_state": current_state,
+                        "previous_move": previous_move,
+                        "state_visual": state_visual,
+                        "current_step": current_step,
+                    }
+
+                    if hasattr(agent.environment, "row_hints"):
+                        format_values["row_hints"] = agent.environment.row_hints
+                    if hasattr(agent.environment, "col_hints"):
+                        format_values["col_hints"] = agent.environment.col_hints
+                        format_values["column_hints"] = agent.environment.col_hints
+                    if hasattr(agent.environment, "n_rows"):
+                        format_values["n_rows"] = agent.environment.n_rows
+                    if hasattr(agent.environment, "n_cols"):
+                        format_values["n_cols"] = agent.environment.n_cols
+                    if hasattr(agent.environment, "row_hints"):
+                        allowed_cells = [
+                            (r, c)
+                            for r, row in enumerate(current_state)
+                            for c, v in enumerate(row)
+                            if v == -1
+                        ]
+                        format_values["allowed_cells"] = (
+                            allowed_cells
+                            if len(allowed_cells) <= 80
+                            else allowed_cells[:80] + ["..."]
+                        )
+
+                    formatted_prompt = user_prompt_override.format_map(
+                        SafeFormatDict(format_values)
                     )
                     messages[1]["content"] = formatted_prompt
-                except KeyError as e:
+
+                    # if not batch_messages:
+                    #     print("\n=== FORMATTED FALLBACK USER PROMPT ===")
+                    #     print(formatted_prompt)ss
+
+                except Exception as e:
                     print(f"Warning: Failed to format fallback prompt: {e}")
                     messages[1]["content"] = (
                         user_prompt_override + "\n\n" + messages[1]["content"]
@@ -222,7 +261,7 @@ def run_voting_batch(
                 )
         batch_messages.append(messages)
 
-    # Batch inference (MAKER-style): first vote deterministic (tau=0), remaining votes sampled (tau=0.1)
+    # Batch inference: first vote deterministic (tau=0), remaining votes sampled (tau=0.1)
     responses = []
     first_messages = batch_messages[:1]
     rest_messages = batch_messages[1:]

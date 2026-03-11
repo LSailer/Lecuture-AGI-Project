@@ -53,7 +53,7 @@ and produce improved system and user prompts that will help the agents reason be
 1. Analyze why the agents failed (wrong parsing, bad reasoning, invalid moves, etc.).
 2. Produce an improved system prompt and user prompt that address the failure modes.
 3. Keep the same output format requirements (move = [...], next_state = [...]).
-4. You CAN and SHOULD use the placeholders `{{current_state}}`, `{{previous_move}}`, and `{{state_visual}}` (if applicable) in your improved user prompt. Do NOT hardcode the state from the failed step.
+4. You CAN and SHOULD use the placeholders `{{current_state}}`, `{{previous_move}}`, and `{{state_visual}}` (if applicable) in your improved user prompt. 
 5. Output your response in EXACTLY this format:
 
 <SYSTEM_PROMPT>
@@ -102,6 +102,11 @@ and produce improved system and user prompts that will help the agents reason be
         # Debug prompt tracking
         self._log_debug_prompts(step, retry, new_system, new_user, failed_predictions)
 
+        # print("\n=== NEW FALLBACK SYSTEM PROMPT ===")
+        # print(new_system)
+        # print("\n=== NEW FALLBACK USER PROMPT ===")
+        # print(new_user)
+        
         return new_system, new_user
 
     def _call_gemini(self, meta_prompt: str) -> str:

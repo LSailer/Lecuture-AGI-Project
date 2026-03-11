@@ -1,9 +1,17 @@
 game: nonogram
 margin_k: 3
 max_steps: 500
-max_agents_per_step: 15
+max_agents_per_step: 10
 output_dir: output
 
+# Fallback config
+max_fallback_retries: 3
+fallback_api: local          # "gemini" | "local" | "both"
+fallback_local_model: LLM/model
+gemini_model: gemini-2.5-flash
+
+
+# 1. Game
 # 5x5 "diamond" puzzle
 row_hints:
   - [1]
@@ -27,3 +35,25 @@ initial_state:
   - [-1, -1, -1, -1, -1]
   - [-1, -1, -1, -1, -1]
   - [-1, -1, -1, -1, -1]
+
+# # 2. Game
+# row_hints:
+#   - [1]
+#   - [2]
+#   - [3]
+#   - [1, 1]
+#   - [4]
+
+# col_hints:
+#   - [1, 1]
+#   - [2, 1]
+#   - [3]
+#   - [1, 1]
+#   - [2]
+
+# initial_state:
+#   - [-1, -1, -1, -1, -1]
+#   - [-1, -1, -1, -1, -1]
+#   - [-1, -1, -1, -1, -1]
+#   - [-1, -1, -1, -1, -1]
+#   - [-1, -1, -1, -1, -1]
