@@ -1,13 +1,20 @@
 game: sliding_puzzle
 margin_k: 2
 max_steps: 200
-max_agents_per_step: 20
+max_agents_per_step: 3
 output_dir: output
+temperature: 0.1
+temp_escalation: false
+max_state_revisits: 3
+
 
 # Game-specific
 #initial_state: [15,14,13,12,11,10, 9, 8, 7, 6, 5, 4, 3, 1, 2, 0]
 # initial_state: [0, 1, 2, 3,6,7,8,4,5,14,10,12,9,13,11,15]
 initial_state: [0, 1, 2, 5, 6, 3, 4, 7, 8]
+# Cycle detection
+max_state_revisits: 3
+
 # Fallback config
 max_fallback_retries: 3
 fallback_api: gemini # "gemini" | "local" | "both"

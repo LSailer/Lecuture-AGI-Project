@@ -1,22 +1,25 @@
-"""Unified entry point for all puzzle solvers."""
-
 import sys
 import os
+
+# Add src to path for imports
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
 import argparse
 import copy
+import subprocess
+from pathlib import Path
 from typing import Any
 
 import yaml
 import torch
+from utils import CycleDetectedError
 from utils.decomposer import Agent
 from utils.fallback import FailedPrediction
 import wandb
+import weave
 import matplotlib.pyplot as plt  # noqa: F401
 import json
 from datetime import datetime
-
-# Add src to path for imports
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 
 def create_game(config: dict[str, Any]) -> Any:
@@ -58,6 +61,19 @@ def create_agent(config: dict[str, Any], game: Any, device: str) -> Agent:
     return Agent(environment=game, prompts_module=prompts, device=device)
 
 
+def _cancel_sibling_jobs() -> None:
+    """Read active experiment job IDs and scancel them all."""
+    repo_root = Path(__file__).resolve().parent.parent
+    ids_file = repo_root / "logs" / "active_experiment_ids.txt"
+    if not ids_file.exists():
+        print("No active_experiment_ids.txt found, skipping scancel (likely local dev).")
+        return
+    job_ids = [line.strip() for line in ids_file.read_text().splitlines() if line.strip()]
+    print(f"Cancelling {len(job_ids)} sibling jobs: {job_ids}")
+    for jid in job_ids:
+        subprocess.run(["scancel", jid], check=False)
+
+
 def load_config(args: argparse.Namespace) -> dict[str, Any]:
     """Load YAML config, then apply CLI overrides."""
     config_path = args.config
@@ -76,8 +92,18 @@ def load_config(args: argparse.Namespace) -> dict[str, Any]:
         config["max_steps"] = args.max_steps
     if args.max_agents_per_step is not None:
         config["max_agents_per_step"] = args.max_agents_per_step
+    if args.temperature is not None:
+        config["temperature"] = args.temperature
+    if args.num_disks is not None:
+        config["num_disks"] = args.num_disks
+    if args.max_state_revisits is not None:
+        config["max_state_revisits"] = args.max_state_revisits
+    if args.temp_escalation:
+        config["temp_escalation"] = True
 
-    # Defaults for fallback config keys
+    # Defaults
+    config.setdefault("temp_escalation", False)
+    config.setdefault("max_state_revisits", 3)
     config.setdefault("max_fallback_retries", 3)
     config.setdefault("fallback_api", "gemini")
     config.setdefault("gemini_model", "gemini-2.5-flash")
@@ -135,7 +161,7 @@ def get_top_two_counts(vote_counts: dict[Any, int]) -> tuple[int, int]:
 def has_consensus(vote_counts: dict[Any, int], margin_k: int) -> bool:
     """
     True iff the top candidate is ahead by at least margin_k votes.
-    MAKER-style rule: do not accept a candidate before the margin is met.
+    Voting is over full candidates: (action, next_state).
     """
     if not vote_counts:
         return False
@@ -161,51 +187,50 @@ class SafeFormatDict(dict):
         return "{" + key + "}"
 
 
-def run_voting_batch(
+def log_actual_llm_prompt(
+    step: int,
+    system_prompt: str,
+    user_prompt: str,
+    mode: str,
+) -> None:
+    """Log the actual prompt sent to the LLM once per step and mode."""
+    os.makedirs("output", exist_ok=True)
+    debug_path = os.path.join("output", "debug_prompts.md")
+
+    with open(debug_path, "a", encoding="utf-8") as f:
+        f.write(f"\n## Actual LLM Prompt at Step {step} ({mode})\n\n")
+        f.write("### System Prompt\n")
+        f.write(system_prompt)
+        f.write("\n\n### User Prompt\n")
+        f.write(user_prompt)
+        f.write("\n\n---\n")
+
+
+@weave.op()
+def _build_batch_messages(
     agent: Agent,
     previous_move: str,
     current_state: Any,
     current_step: int,
-    batch_size: int,
-    margin_k: int,
-    max_agents_total: int,
+    count: int,
     system_prompt_override: str | None = None,
     user_prompt_override: str | None = None,
-    predictions_table: wandb.Table | None = None,
-) -> tuple[dict[str, int], dict[str, Any] | None, list[FailedPrediction], bool]:
-    """
-    Run a batch of agents and tally votes.
-
-    Returns:
-        (
-            candidate_voting_as_strings,
-            best_prediction_or_none,
-            failed_predictions,
-            consensus_reached,
-        )
-
-    Voting is done over the full (action, next_state) candidate,
-    not just over the action alone.
-    """
-    candidate_voting: dict[Any, int] = {}
-    candidate_lookup: dict[Any, dict[str, Any]] = {}
-    failed_predictions: list[FailedPrediction] = []
-
-    # Build batch prompts — always include current game state via build_prompt()
-    batch_messages = []
-
-    # Pre-calculate visual state if needed for formatting
+) -> list:
+    """Build `count` prompt message lists for batch inference."""
     state_visual = str(current_state)
     if hasattr(agent.prompts, "_visualize_state"):
         state_visual = agent.prompts._visualize_state(current_state)
     elif hasattr(agent.environment, "visualize"):
         state_visual = agent.environment.visualize()
 
-    for _ in range(batch_size):
+    batch_messages = []
+    logged_this_step = False
+
+    for _ in range(count):
         messages, _user_prompt = agent.build_prompt(
             previous_move, current_state, current_step
         )
-            
+
         if system_prompt_override:
             messages[0]["content"] = system_prompt_override
 
@@ -245,11 +270,6 @@ def run_voting_batch(
                         SafeFormatDict(format_values)
                     )
                     messages[1]["content"] = formatted_prompt
-
-                    # if not batch_messages:
-                    #     print("\n=== FORMATTED FALLBACK USER PROMPT ===")
-                    #     print(formatted_prompt)ss
-
                 except Exception as e:
                     print(f"Warning: Failed to format fallback prompt: {e}")
                     messages[1]["content"] = (
@@ -259,26 +279,46 @@ def run_voting_batch(
                 messages[1]["content"] = (
                     user_prompt_override + "\n\n" + messages[1]["content"]
                 )
+
+        if not logged_this_step:
+            mode = "fallback" if (system_prompt_override or user_prompt_override) else "default"
+            log_actual_llm_prompt(
+                step=current_step,
+                system_prompt=messages[0]["content"],
+                user_prompt=messages[1]["content"],
+                mode=mode,
+            )
+            logged_this_step = True
+
         batch_messages.append(messages)
 
-    # Batch inference: first vote deterministic (tau=0), remaining votes sampled (tau=0.1)
-    responses = []
-    first_messages = batch_messages[:1]
-    rest_messages = batch_messages[1:]
-    if first_messages:
-        responses.extend(
-            agent.llm.generate_batch(first_messages, do_sample=False, temperature=0.0)
-        )
-    if rest_messages:
-        responses.extend(
-            agent.llm.generate_batch(
-                rest_messages, do_sample=True, temperature=0.1, top_p=0.95
-            )
-        )
+    return batch_messages
 
-    def process_prediction(
-        response_content: str, agent_num: int
-    ) -> None:
+
+@weave.op()
+def run_voting_batch(
+    agent: Agent,
+    previous_move: str,
+    current_state: Any,
+    current_step: int,
+    batch_size: int,
+    margin_k: int,
+    system_prompt_override: str | None = None,
+    user_prompt_override: str | None = None,
+    predictions_table: wandb.Table | None = None,
+) -> tuple[dict[str, int], dict[str, Any] | None, list[FailedPrediction], bool]:
+    """
+    Run agents, vote over full candidates (action + next_state),
+    and only return a best prediction if margin_k is actually met.
+    """
+    candidate_voting: dict[Any, int] = {}
+    candidate_lookup: dict[Any, dict[str, Any]] = {}
+    failed_predictions: list[FailedPrediction] = []
+
+    agents_so_far = 0
+    max_agents_total = batch_size * 3
+
+    def process_response(response_content: str, agent_num: int) -> None:
         action: Any = "None"
         parsed_state: Any = "None"
         error = "None"
@@ -333,15 +373,40 @@ def run_voting_batch(
                 error,
             )
 
-    # Parse each response and tally votes
+    # Initial batch
+    batch_messages = _build_batch_messages(
+        agent,
+        previous_move,
+        current_state,
+        current_step,
+        batch_size,
+        system_prompt_override,
+        user_prompt_override,
+    )
+
+    responses = []
+    first_messages = batch_messages[:1]
+    rest_messages = batch_messages[1:]
+
+    if first_messages:
+        responses.extend(
+            agent.llm.generate_batch(first_messages, do_sample=False, temperature=0.0)
+        )
+    if rest_messages:
+        responses.extend(
+            agent.llm.generate_batch(
+                rest_messages, do_sample=True, temperature=0.1, top_p=0.95
+            )
+        )
+
     for i, response in enumerate(responses):
         agent_num = i + 1
         content = response[-1]["content"]
-        process_prediction(content, agent_num)
+        process_response(content, agent_num)
 
     agents_so_far = batch_size
 
-    # If margin not met, run additional single agents until it is or until max_agents_total is reached
+    # Additional agents until consensus or cap
     while (
         candidate_voting
         and not has_consensus(candidate_voting, margin_k)
@@ -411,7 +476,6 @@ def run_voting_batch(
                     "None",
                     str(e),
                 )
-            continue
 
     consensus_reached = has_consensus(candidate_voting, margin_k)
     best_prediction = (
@@ -450,12 +514,55 @@ def main() -> None:
     parser.add_argument(
         "--max_agents_per_step", type=int, default=None, help="Max agents per step"
     )
+    parser.add_argument(
+        "--temperature", type=float, default=None, help="LLM sampling temperature"
+    )
+    parser.add_argument(
+        "--num_disks", type=int, default=None, help="Number of disks (tower_of_hanoi)"
+    )
+    parser.add_argument(
+        "--temp_escalation",
+        action="store_true",
+        default=False,
+        help="Escalate temperature per agent (0.1, 0.2, ...)",
+    )
+    parser.add_argument(
+        "--max_state_revisits",
+        type=int,
+        default=None,
+        help="Cancel all jobs after a state is seen this many times (cycle detection)",
+    )
     args = parser.parse_args()
 
     config = load_config(args)
 
-    # Initialize WandB
-    wandb.init(project="lecture-agi", config=config)
+    # Initialize WandB + Weave
+    game_type = config["game"]
+
+    if game_type == "tower_of_hanoi":
+        size_str = f"d{config.get('num_disks', '?')}"
+    elif game_type == "nonogram":
+        size_str = f"{len(config.get('row_hints', []))}x{len(config.get('col_hints', []))}"
+    else:
+        n = len(config.get("initial_state", []))
+        side = int(n ** 0.5)
+        size_str = f"{side}x{side}"
+
+    timestamp = datetime.now().strftime("%m%d_%H%M")
+    run_name = f"{game_type}_{size_str}_k{config['margin_k']}_a{config['max_agents_per_step']}_{timestamp}"
+    tags = [game_type]
+
+    wandb.init(
+        project="lecture-agi",
+        config=config,
+        group=game_type,
+        name=run_name,
+        tags=tags,
+    )
+    try:
+        weave.init("lecture-agi")
+    except Exception as e:
+        print(f"Warning: Weave disabled: {e}")
 
     margin_k = config["margin_k"]
     max_steps = config["max_steps"]
@@ -482,12 +589,11 @@ def main() -> None:
     game = create_game(config)
     agent = create_agent(config, game, device)
 
-    # Initialize fallback model (lazy — won't load weights until needed)
+    # Initialize fallback model
     from utils.fallback import FallbackModel
 
     fallback: FallbackModel = FallbackModel(config, device=device)
 
-    # WandB predictions table
     predictions_table = wandb.Table(
         columns=[
             "step",
@@ -509,10 +615,33 @@ def main() -> None:
     previous_move = "None"
     current_step = 0
     game_history = []
+    visited_states: dict[str, int] = {}
+    max_state_revisits = config.get("max_state_revisits", 3)
+    cycle_detected = False
+
+    visited_states[str(game.get_state())] = 1
 
     while not game.is_solved() and current_step < max_steps:
         current_state = copy.deepcopy(game.get_state())
         current_step += 1
+
+        # Cycle detection before step
+        state_key = str(current_state)
+        visited_states[state_key] = visited_states.get(state_key, 0) + 1
+        if visited_states[state_key] > max_state_revisits:
+            print(f"Cycle detected: state seen {visited_states[state_key]} times. Cancelling all jobs.")
+            wandb.log(
+                {
+                    "early_stop": "cycle_detected",
+                    "cycle_state": state_key,
+                    "cycle_step": current_step,
+                }
+            )
+            _cancel_sibling_jobs()
+            cycle_detected = True
+            break
+
+        fallback_retries_used = 0
 
         candidate_voting, best_prediction, failed_predictions, consensus_reached = (
             run_voting_batch(
@@ -522,10 +651,96 @@ def main() -> None:
                 current_step,
                 batch_size=max_number_agents_per_step,
                 margin_k=margin_k,
-                max_agents_total=max_number_agents_per_step,
                 predictions_table=predictions_table,
             )
         )
+
+        if consensus_reached and best_prediction is not None:
+            game.apply_move(best_prediction["action"])
+        else:
+            print(f"No valid consensus at step {current_step}. Engaging fallback...")
+            fallback_retry = 0
+
+            while (
+                fallback_retry < max_fallback_retries
+                and not (consensus_reached and best_prediction is not None)
+            ):
+                fallback_retry += 1
+                print(f"Fallback retry {fallback_retry}/{max_fallback_retries}")
+
+                _messages, user_prompt = agent.build_prompt(
+                    previous_move, current_state, current_step
+                )
+                state_visual = str(current_state)
+                if hasattr(agent.prompts, "_visualize_state"):
+                    state_visual = agent.prompts._visualize_state(current_state)
+                elif hasattr(agent.environment, "visualize"):
+                    state_visual = agent.environment.visualize()
+
+                prompt_context = {
+                    "current_state": current_state,
+                    "previous_move": previous_move,
+                    "state_visual": state_visual,
+                    "current_step": current_step,
+                }
+
+                if hasattr(agent.environment, "row_hints"):
+                    prompt_context["row_hints"] = agent.environment.row_hints
+                if hasattr(agent.environment, "col_hints"):
+                    prompt_context["col_hints"] = agent.environment.col_hints
+                    prompt_context["column_hints"] = agent.environment.col_hints
+                if hasattr(agent.environment, "n_rows"):
+                    prompt_context["n_rows"] = agent.environment.n_rows
+                if hasattr(agent.environment, "n_cols"):
+                    prompt_context["n_cols"] = agent.environment.n_cols
+                if hasattr(agent.environment, "row_hints"):
+                    allowed_cells = [
+                        (r, c)
+                        for r, row in enumerate(current_state)
+                        for c, v in enumerate(row)
+                        if v == -1
+                    ]
+                    prompt_context["allowed_cells"] = (
+                        allowed_cells if len(allowed_cells) <= 80 else allowed_cells[:80] + ["..."]
+                    )
+
+                new_sys, new_usr = fallback.update_compose(
+                    agent.system_prompt,
+                    user_prompt,
+                    failed_predictions,
+                    step=current_step,
+                    retry=fallback_retry,
+                    prompt_context=prompt_context,
+                )
+                candidate_voting, best_prediction, failed_predictions, consensus_reached = (
+                    run_voting_batch(
+                        agent,
+                        previous_move,
+                        current_state,
+                        current_step,
+                        batch_size=max_number_agents_per_step,
+                        margin_k=margin_k,
+                        system_prompt_override=new_sys,
+                        user_prompt_override=new_usr,
+                        predictions_table=predictions_table,
+                    )
+                )
+
+            fallback_retries_used = fallback_retry
+
+            if consensus_reached and best_prediction is not None:
+                game.apply_move(best_prediction["action"])
+            else:
+                print("Fallback exhausted. No valid consensus move found.")
+                break
+
+        # Cycle detection after move
+        new_state_key = str(game.get_state())
+        visited_states[new_state_key] = visited_states.get(new_state_key, 0) + 1
+        if visited_states[new_state_key] > max_state_revisits:
+            raise CycleDetectedError(
+                f"State visited {visited_states[new_state_key]} times (limit {max_state_revisits}): {new_state_key}"
+            )
 
         step_data = {
             "step": current_step,
@@ -546,55 +761,10 @@ def main() -> None:
                 }
                 for f in failed_predictions
             ],
+            "fallback_retries": fallback_retries_used,
+            "num_agents_queried": len(failed_predictions) + sum(candidate_voting.values()),
         }
         game_history.append(step_data)
-
-        if consensus_reached and best_prediction is not None:
-            game.apply_move(best_prediction["action"])
-        else:
-            print(
-                f"No valid consensus at step {current_step}. Engaging fallback..."
-            )
-            fallback_retry = 0
-
-            while (
-                fallback_retry < max_fallback_retries
-                and not (consensus_reached and best_prediction is not None)
-            ):
-                fallback_retry += 1
-                print(f"Fallback retry {fallback_retry}/{max_fallback_retries}")
-
-                _messages, user_prompt = agent.build_prompt(
-                    previous_move, current_state, current_step
-                )
-                new_sys, new_usr = fallback.update_compose(
-                    agent.system_prompt,
-                    user_prompt,
-                    failed_predictions,
-                    step=current_step,
-                    retry=fallback_retry,
-                )
-
-                candidate_voting, best_prediction, failed_predictions, consensus_reached = (
-                    run_voting_batch(
-                        agent,
-                        previous_move,
-                        current_state,
-                        current_step,
-                        batch_size=max_number_agents_per_step,
-                        margin_k=margin_k,
-                        max_agents_total=max_number_agents_per_step,
-                        system_prompt_override=new_sys,
-                        user_prompt_override=new_usr,
-                        predictions_table=predictions_table,
-                    )
-                )
-
-            if consensus_reached and best_prediction is not None:
-                game.apply_move(best_prediction["action"])
-            else:
-                print("Fallback exhausted. No valid consensus move found.")
-                break
 
         previous_move = (
             str(best_prediction["action"]) if best_prediction is not None else "None"
@@ -611,24 +781,27 @@ def main() -> None:
     else:
         print(f"\nMax steps ({max_steps}) reached without solving.")
 
-    # Log final metrics to WandB
     wandb.log({"predictions": predictions_table})
-    wandb.log({"total_steps": current_step, "solved": game.is_solved()})
+    wandb.log(
+        {
+            "total_steps": current_step,
+            "solved": game.is_solved(),
+            "cycle_detected": cycle_detected,
+        }
+    )
 
-    # Save custom log files
     wandb.save(os.path.join(output_dir, "failures.csv"))
     wandb.save(os.path.join(output_dir, "debug_prompts.md"))
 
-    # Save detailed JSON log for visualization
     experiments_dir = os.path.join(output_dir, "experiments")
     if not os.path.exists(experiments_dir):
         os.makedirs(experiments_dir)
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    json_filename = f"experiment_{timestamp}_{config['game']}.json"
+    num_disks_str = f"_{config['num_disks']}d" if game_type == "tower_of_hanoi" else ""
+    json_filename = f"{game_type}{num_disks_str}_{config['max_agents_per_step']}a_{timestamp}.json"
     json_path = os.path.join(experiments_dir, json_filename)
 
-    # Wrap game_history with metadata for webapp
     experiment_data = {"game_type": config["game"], "steps": game_history}
 
     with open(json_path, "w") as f:
@@ -641,12 +814,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
-
-
-"""
-- Fix: margin_k is now enforced strictly, so no move is applied before real consensus is reached.
-- Fix: The LLM-provided next_state is now actually validated and must match the state resulting from applying the predicted move; it is no longer just parsed and ignored
-- Fix: Fix: The fallback is now triggered not only when all predictions fail, but also when valid candidates exist without reaching consensus.
-
-"""

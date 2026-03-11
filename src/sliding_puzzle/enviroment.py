@@ -48,7 +48,19 @@ class SlidingPuzzle:
 
         return self.state
 
-    def validate_move(self, move: tuple):
+    _OPPOSITE = {"up": "down", "down": "up", "left": "right", "right": "left"}
+    _BLANK_OFFSETS = {"up": (-1, 0), "down": (1, 0), "left": (0, -1), "right": (0, 1)}
+
+    def validate_move(self, move):
+        if isinstance(move, str):
+            blank_dir = move.lower()
+            empty_row, empty_col = self._get_position(0)
+            dr, dc = self._BLANK_OFFSETS[blank_dir]
+            tile_row, tile_col = empty_row + dr, empty_col + dc
+            if not (0 <= tile_row < self.grid_size and 0 <= tile_col < self.grid_size):
+                raise ValueError("Invalid move: No tile in that direction.")
+            tile = self.state[tile_row * self.grid_size + tile_col]
+            return (tile, self._OPPOSITE[blank_dir])
         tile, direction = move
 
         if tile not in self.state:
@@ -103,7 +115,16 @@ class SlidingPuzzle:
         return self.state == self.goal_state
 
     def get_state(self):
-        return self.state
+        return self.state[:]
+
+    def preview_move(self, action) -> list:
+        """Return resulting state after action WITHOUT mutating self."""
+        tile, direction = action
+        state = self.state[:]
+        tile_index = state.index(tile)
+        empty_index = state.index(0)
+        state[tile_index], state[empty_index] = state[empty_index], state[tile_index]
+        return state
 
     def apply_move(self, action):
         self.move_tile(action[0], action[1])

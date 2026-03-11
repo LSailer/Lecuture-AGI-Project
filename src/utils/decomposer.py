@@ -6,6 +6,7 @@ from utils.parser import Parser
 import csv
 import os
 from datetime import datetime
+import weave
 
 
 class Agent:
@@ -39,6 +40,7 @@ class Agent:
             {"role": "user", "content": user_prompt},
         ], user_prompt
 
+    @weave.op()
     def parse_response(
         self,
         response_content: str,
@@ -59,7 +61,6 @@ class Agent:
         except Exception as e:
             error_message = str(e)
         if error_message != "None":
-            # Track failures to failures.csv
             failures_file = os.path.join("output", "failures.csv")
             os.makedirs("output", exist_ok=True)
             failures_exists = os.path.isfile(failures_file)

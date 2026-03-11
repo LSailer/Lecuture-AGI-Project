@@ -22,8 +22,8 @@ class Parser:
 
     def _coerce_to_reference_shape(self, value: Any, reference: Any) -> Any:
         """
-        Normalize parsed states to the container structure of current_state.
-        This keeps one parser compatible with games that use lists vs tuples.
+        Normalize parsed states to the container structure of a reference state.
+        This keeps the parser compatible with games using lists or tuples.
         """
         if isinstance(reference, list):
             if isinstance(value, (list, tuple)):
@@ -118,10 +118,3 @@ class Parser:
             )
 
         return validated_move, validated_state
-    
-
-    """
-    Ursprünglicher Parser, nur wird jetzt zusätzlich noch geprüft ob der move tatsächlich zum state führt.
-    Vorher nur ist move gültig + ist state gültig!
-
-    """

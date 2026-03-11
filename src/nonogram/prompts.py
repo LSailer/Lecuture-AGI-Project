@@ -51,6 +51,7 @@ Where:
 Do NOT add extra text after the two lines.
 """.strip()
 
+
 def _visualize_state(state):
     mapping = {-1: ".", 0: "x", 1: "#"}
     return "\n".join("".join(mapping[v] for v in row) for row in state)

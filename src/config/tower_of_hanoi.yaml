@@ -1,11 +1,18 @@
 game: tower_of_hanoi
 margin_k: 2
-max_steps: 1000
-max_agents_per_step: 15
+max_steps: 3000000
+max_agents_per_step: 3
 output_dir: output
+temperature: 0.1
+temp_escalation: false
+max_state_revisits: 3
+
 
 # Game-specific
-num_disks: 3
+num_disks: 20
+
+# Cycle detection
+max_state_revisits: 3
 
 # Fallback config
 max_fallback_retries: 3

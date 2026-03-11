@@ -4,6 +4,22 @@ from dotenv import load_dotenv
 import torch
 from transformers import pipeline
 
+try:
+    import weave
+except ImportError:
+    class _WeaveStub:
+        @staticmethod
+        def op():
+            def decorator(fn):
+                return fn
+            return decorator
+
+        @staticmethod
+        def init(*args, **kwargs):
+            return None
+
+    weave = _WeaveStub()
+
 
 load_dotenv()
 
@@ -18,10 +34,10 @@ class LLM:
 
         if device == "cuda":
             self.pipe = pipeline("text-generation", model=model_id, device_map=device)
-
         else:
             self.pipe = pipeline("text-generation", model=model_id, device=device)
 
+    @weave.op()
     def generate(
         self,
         system_prompt: str,
@@ -46,6 +62,7 @@ class LLM:
         result: Any = self.pipe(message, **gen_kwargs)
         return result[0]["generated_text"]
 
+    @weave.op()
     def generate_batch(
         self,
         messages_list: list[Conversation],
