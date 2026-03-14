@@ -1,0 +1,12 @@
+system_prompt: |
+  {puzzle_name}-puzzle, {n}x{n} grid. Goal: {goal_list}
+  Move blank (0) using UP/DOWN/LEFT/RIGHT.
+  Find lowest misplaced tile, move it toward goal.
+  Output: move = <DIR> and next_state = [<{size} elements>]
+
+user_prompt: |
+  Step: {step}, State: {current_state}, Previous: {previous_move}
+  Grid:
+  {state_visual}
+  move = ...
+  next_state = [...]

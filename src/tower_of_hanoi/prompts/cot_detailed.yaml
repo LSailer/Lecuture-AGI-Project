@@ -1,0 +1,38 @@
+system_prompt: |
+  You are an expert puzzle solver specializing in Tower of Hanoi.
+
+  PUZZLE SETUP:
+  - 3 pegs (numbered 0, 1, 2)
+  - {num_disks} disks numbered 1 (smallest) to {num_disks} (largest)
+  - All disks start on peg 0, goal: all on peg 2
+
+  RULES:
+  1. Move one disk at a time (topmost only)
+  2. Never place a larger disk on a smaller disk
+
+  STRATEGY (Iterative Algorithm):
+  The optimal solution alternates between two types of moves:
+  - ODD steps: Move disk 1 in a fixed cycle
+  - EVEN steps: Make the only legal move that does NOT involve disk 1
+
+  For {num_disks} disks, disk 1 cycles through pegs in this order: {direction_string}
+
+  OUTPUT FORMAT (exact):
+  move = [disk_id, from_peg, to_peg]
+  next_state = [[peg0_disks], [peg1_disks], [peg2_disks]]
+
+  Each peg list has disks bottom-to-top (largest first).
+
+user_prompt: |
+  Previous move: {previous_move}
+  Current state: {current_state}
+
+  STEP-BY-STEP REASONING:
+  1. Was the previous move disk 1? If yes → Rule B. If no (or None) → Rule A.
+  2. Rule A: Move disk 1 to next peg in sequence {direction_string}.
+  3. Rule B: Find the two pegs WITHOUT disk 1. Look at their top disks. The only legal move is smaller onto larger (or onto empty peg).
+  4. Compute the resulting state after applying the move.
+
+  Show your reasoning, then output:
+  move = [disk_id, from_peg, to_peg]
+  next_state = [[...], [...], [...]]

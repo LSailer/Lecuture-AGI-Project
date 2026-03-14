@@ -6,6 +6,8 @@ output_dir: output
 temperature: 0.1
 temp_escalation: false
 max_state_revisits: 3
+model_path: LLM/model
+prompt_variant: base
 
 
 # Game-specific

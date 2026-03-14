@@ -1,0 +1,64 @@
+name: Run Autoresearch
+
+on:
+  workflow_dispatch:
+    inputs:
+      game:
+        description: 'Game to run autoresearch on'
+        required: true
+        type: choice
+        options:
+          - tower_of_hanoi
+          - sliding_puzzle
+      time_budget:
+        description: 'Time budget in hours'
+        required: false
+        default: '23.5'
+
+env:
+  REPO_PATH: /pfs/data6/home/ul/ul_student/ul_hfj15/Lecuture-AGI-Project
+
+jobs:
+  autoresearch:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Sync code to project folder
+        run: |
+          rsync -a --delete \
+            --exclude '.env' \
+            --exclude 'LLM/models/' \
+            --exclude 'LLM/model/' \
+            --exclude 'LLM/static/' \
+            --exclude '.venv/' \
+            --exclude 'logs/' \
+            --exclude 'output/' \
+            --exclude '__pycache__/' \
+            $GITHUB_WORKSPACE/ ${{ env.REPO_PATH }}/
+
+      - name: Copy models
+        run: |
+          cd ${{ env.REPO_PATH }}
+          if [ "$(ls -A LLM/static 2>/dev/null)" ]; then
+            cp -rv LLM/static/* LLM/model/ 2>/dev/null || true
+          fi
+
+      - name: Submit autoresearch job
+        working-directory: ${{ env.REPO_PATH }}
+        env:
+          GAME: ${{ inputs.game }}
+          TIME_BUDGET: ${{ inputs.time_budget }}
+        run: |
+          mkdir -p logs output
+          JOB_ID=$(sbatch --parsable \
+            --partition=gpu_h100_il \
+            --time=24:00:00 \
+            --job-name="ar-${GAME}" \
+            --output=logs/autoresearch-%j.out \
+            --error=logs/autoresearch-%j.err \
+            --ntasks=1 --cpus-per-task=4 --mem=127G --gres=gpu:1 \
+            --wrap="uv run scripts/autoresearch.py --game ${GAME} --time-budget ${TIME_BUDGET}")
+          echo "Submitted autoresearch job: $JOB_ID"
