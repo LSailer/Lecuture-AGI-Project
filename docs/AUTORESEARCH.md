@@ -1,33 +1,24 @@
 # Autoresearch Guide
 
-Automated hyperparameter search for Tower of Hanoi and Sliding Puzzle.
+Autonomous research for Tower of Hanoi and Sliding Puzzle.
 Inspired by [karpathy/autoresearch](https://github.com/karpathy/autoresearch).
 
 ## How it works
 
-The script iterates over combinations of:
-- **Models**: Qwen3-32B, Devstral-24B, DeepSeek-R1-32B
-- **Temperature**: 0.0, 0.1, 0.3, 0.5, 0.7, 1.0
-- **Prompt variants**: base, cot_detailed, minimal
-- **Agents per step**: 1, 3, 5
-- **Margin k**: 1, 2, 3
+Claude Code IS the researcher. You give it `program.md` and it runs experiments autonomously — modifying configs/prompts, running `main.py`, evaluating SR/steps, keeping or discarding changes. No Python script orchestrating — Claude Code itself is the loop.
 
-Each experiment: modify config → git commit → run main.py → parse SR/steps → keep or discard.
-
-Stages auto-advance when SR=100% for 2 consecutive experiments:
-- **Tower of Hanoi**: 3 disks → 4 → 5 → ...
-- **Sliding Puzzle**: 2x2 → 3x3 (easiest) → 3x3 (hardest) → 4x4 (easiest) → 4x4 (hardest)
+One game per Claude Code session. It runs until you stop it.
 
 ## Prerequisites
 
 - SSH access to bwunicluster
-- HuggingFace token in `.env` (`HUGGING_FACE_HUB_TOKEN`)
-- GitHub CLI (`gh`) configured for PR creation
+- Claude Code installed on cluster nodes
+- HuggingFace token in `.env`
+- Models pre-downloaded (see step 1)
 
 ## Step 1: Download models (one-time)
 
 ```bash
-# On cluster:
 sbatch --partition=dev_gpu_h100 --time=02:00:00 --wrap="uv run LLM/download_all.py"
 
 # Verify:
@@ -41,60 +32,48 @@ ls LLM/models/
 uv run jupyter nbconvert --to notebook --execute --inplace notebooks/test_autoresearch.ipynb
 ```
 
-All 5 tests should pass (prompt loading, configs, SR, dry-run).
-
 ## Step 3: Start autoresearch
-
-Two separate jobs — one per game:
 
 ```bash
 # Tower of Hanoi
 git checkout -b autoresearch/toh-$(date +%b%d | tr '[:upper:]' '[:lower:]')
-GAME=tower_of_hanoi sbatch --job-name=ar-toh scripts/run_autoresearch.sh
+claude --print "read program.md, game=tower_of_hanoi, start experimenting"
 
-# Sliding Puzzle
+# Sliding Puzzle (separate session)
 git checkout -b autoresearch/sp-$(date +%b%d | tr '[:upper:]' '[:lower:]')
-GAME=sliding_puzzle sbatch --job-name=ar-sp scripts/run_autoresearch.sh
+claude --print "read program.md, game=sliding_puzzle, start experimenting"
+```
+
+Or wrap in sbatch for unattended runs:
+
+```bash
+sbatch --partition=gpu_h100_il --time=24:00:00 --gres=gpu:1 --mem=127G \
+  --wrap="claude --print 'read program.md, game=tower_of_hanoi, start experimenting'"
 ```
 
 ## Step 4: Monitor
 
 ```bash
-squeue -u $USER                          # job status
-tail -f logs/autoresearch-<jobid>.out    # live output
-cat results.tsv                          # experiment summary
-cat output/autoresearch_results.csv      # full CSV for analysis
+cat results.tsv                    # experiment log
+git log --oneline                  # kept experiments
 ```
 
 ## Step 5: Analyze results (locally)
 
 ```bash
-# Copy CSV from cluster
-scp cluster:~/path/to/Project/output/autoresearch_results.csv output/
+# Copy results from cluster
+scp cluster:~/path/to/Project/results.tsv .
 
 # Open analysis notebook
 jupyter notebook notebooks/analyze_autoresearch.ipynb
 ```
 
-Charts include: model comparison, temperature heatmap, prompt variant comparison, stage progression, SR vs steps Pareto front.
+## Key files
 
-## Step 6: Review PR
-
-The autoresearch script auto-creates a PR with the best config before the time budget runs out. Review on GitHub and merge if results look good.
-
-## Dry run (no GPU needed)
-
-```bash
-uv run scripts/autoresearch.py --game tower_of_hanoi --dry-run
-uv run scripts/autoresearch.py --game sliding_puzzle --dry-run
-```
-
-## Configuration
-
-Edit `scripts/autoresearch.py` constants to change search space:
-- `MODELS` — model name → path mapping
-- `TEMPERATURES` — temperature values to try
-- `PROMPT_VARIANTS` — prompt variant names (must match YAML files)
-- `AGENT_COUNTS` — max_agents_per_step values
-- `MARGIN_KS` — margin_k values
-- `EXPERIMENT_TIMEOUT` — per-experiment timeout in seconds
+| File | Role |
+|------|------|
+| `program.md` | Instructions for Claude Code (the "skill") |
+| `src/config/<game>.yaml` | Config Claude Code modifies |
+| `src/<game>/prompts/*.yaml` | Prompt templates Claude Code modifies |
+| `results.tsv` | Experiment log (untracked) |
+| `LLM/download_all.py` | One-time model download |
