@@ -5,70 +5,83 @@ Inspired by [karpathy/autoresearch](https://github.com/karpathy/autoresearch).
 
 ## How it works
 
-Claude Code IS the researcher, driven by a **Ralph Loop**. Each iteration:
-1. Claude reads `results.tsv` + git history (previous experiments)
-2. Decides what to try next (model, temperature, prompt, agents)
-3. Modifies config/prompt YAML, commits
-4. Runs experiment via `srun` on GPU (dev_gpu_h100, 20 min)
-5. Parses results, keeps or discards
-6. Exits → Ralph Loop feeds same prompt again → next iteration
+Claude Code IS the researcher. A shell loop invokes Claude repeatedly with the same prompt. Each iteration Claude reads `results.tsv` + git history, runs one experiment, keeps or discards, then exits. The loop restarts it with fresh context.
 
-No context bloat — each iteration gets fresh context, reads state from files.
+## Two modes
 
-## Prerequisites
+### Mode A: sbatch (preferred)
 
-- SSH access to bwunicluster login node
-- Claude Code installed
-- HuggingFace token in `.env`
-- Models pre-downloaded (`uv run LLM/download_all.py`)
-- Ralph Loop plugin installed
+Claude Code runs inside a sbatch job on a GPU node. Experiments run directly with `uv run`. Submit and walk away.
 
-## Quick start
+Uses `program.md`.
 
 ```bash
-# SSH to cluster login node
 cd ~/Lecuture-AGI-Project
 git checkout -b autoresearch/toh-mar14
 
-# Start Ralph Loop
-/ralph-loop "read program.md, game=tower_of_hanoi" \
+# Submit (24h, H100)
+GAME=tower_of_hanoi sbatch scripts/run_autoresearch.sh
+
+# For sliding puzzle
+GAME=sliding_puzzle sbatch scripts/run_autoresearch.sh
+```
+
+Monitor from anywhere:
+```bash
+ssh cluster
+cat ~/Lecuture-AGI-Project/results.tsv
+tail -f ~/Lecuture-AGI-Project/logs/autoresearch-*.out
+```
+
+### Mode B: tmux fallback
+
+If Claude Code can't run on GPU nodes, use this. Claude runs on login node inside tmux, experiments via `srun`.
+
+Uses `program_fallback.md`.
+
+```bash
+ssh cluster
+
+# Start tmux (survives SSH disconnect)
+tmux new -s autoresearch
+
+cd ~/Lecuture-AGI-Project
+git checkout -b autoresearch/toh-mar14
+claude
+# Inside Claude Code:
+/ralph-loop "read program_fallback.md, game=tower_of_hanoi" \
   --completion-promise "DONE" \
   --max-iterations 50
 ```
 
-For sliding puzzle (separate session):
+Detach: `Ctrl+b` then `d`. Reattach: `tmux attach -t autoresearch`.
+
+## Test which mode works
+
+Run this on the cluster to check if Claude Code works on a GPU node:
+
 ```bash
-git checkout -b autoresearch/sp-mar14
-/ralph-loop "read program.md, game=sliding_puzzle" \
-  --completion-promise "DONE" \
-  --max-iterations 50
+srun --partition=dev_gpu_h100 --time=00:10:00 --gres=gpu:1 --mem=64G \
+  uv run jupyter nbconvert --to notebook --execute --inplace notebooks/test_cluster_claude.ipynb
 ```
+
+If test passes → use Mode A. If Claude Code fails on GPU node → use Mode B.
 
 ## What happens
 
-- Each iteration: ~20 min (GPU experiment) + ~1 min (Claude reasoning)
+- Each iteration: ~20 min (experiment) + ~1 min (Claude reasoning)
 - 50 iterations ≈ ~17 hours
-- Wrap-up: analysis notebook + PR created automatically on last iteration
-- Stop early: `/cancel-ralph`
+- Last 2 iterations: analysis notebook + PR created automatically
+- Mode A: stops via `claude_done.flag`
+- Mode B: stops via `<promise>DONE</promise>` or `/cancel-ralph`
 
-## Monitor
+## Prerequisites
 
-```bash
-cat results.tsv              # experiment log
-git log --oneline            # kept experiments
-tail -f run.log              # live experiment output (during srun)
-```
-
-## Key files
-
-| File | Role |
-|------|------|
-| `program.md` | Instructions for Claude Code (read each iteration) |
-| `src/config/<game>.yaml` | Config Claude modifies |
-| `src/<game>/prompts/*.yaml` | Prompt templates Claude modifies |
-| `results.tsv` | Experiment log (untracked, persists across iterations) |
-| `run.log` | Latest experiment output |
-| `LLM/download_all.py` | One-time model download |
+- SSH access to bwunicluster
+- Claude Code installed
+- HuggingFace token in `.env`
+- Models pre-downloaded
+- Mode B only: Ralph Loop plugin installed
 
 ## Download models (one-time)
 
@@ -76,3 +89,15 @@ tail -f run.log              # live experiment output (during srun)
 srun --partition=dev_gpu_h100 --time=02:00:00 --gres=gpu:1 --mem=127G \
   uv run LLM/download_all.py
 ```
+
+## Key files
+
+| File | Role |
+|------|------|
+| `program.md` | Mode A — Claude on GPU node, direct `uv run` |
+| `program_fallback.md` | Mode B — Claude on login node, `srun` to GPU |
+| `scripts/run_autoresearch.sh` | Mode A sbatch wrapper (shell loop) |
+| `src/config/<game>.yaml` | Config Claude modifies |
+| `src/<game>/prompts/*.yaml` | Prompt templates Claude modifies |
+| `results.tsv` | Experiment log (persists across iterations) |
+| `run.log` | Latest experiment output |

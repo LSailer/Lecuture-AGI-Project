@@ -1,15 +1,15 @@
-# autoresearch
+# autoresearch (fallback — login node + srun)
 
-This is an experiment to have Claude Code do its own research on the MAKER puzzle-solving framework. You are driven by a shell loop — each invocation you run ONE experiment, then exit. The loop feeds you the same prompt again, and you see your previous work in `results.tsv` and git history.
+This is an experiment to have Claude Code do its own research on the MAKER puzzle-solving framework. You are driven by a Ralph Loop — each iteration you run ONE experiment, then exit. The loop feeds you the same prompt again, and you see your previous work in `results.tsv` and git history.
 
-**You are running on a GPU node. Use `uv run` directly (no srun needed).**
+**You are running on a login node (no GPU). Use `srun` to submit experiments to GPU.**
 
 ## Setup (first iteration only)
 
 If `results.tsv` does not exist yet, this is the first iteration. Do setup:
 
 1. Read the in-scope files for context:
-   - `program.md` — these instructions (you're reading it now)
+   - `program_fallback.md` — these instructions (you're reading it now)
    - `src/main.py` — the solver loop. Do not modify.
    - `src/config/<game>.yaml` — the config file you modify
    - `src/<game>/prompts/*.yaml` — prompt templates you modify or create
@@ -26,19 +26,20 @@ If `results.tsv` already exists, skip setup — go straight to the experiment lo
 
 ## The game
 
-The game is specified in the prompt (e.g. `game=tower_of_hanoi`). Read it from context.
+The game is specified in the Ralph Loop prompt (e.g. `game=tower_of_hanoi`). Read it from context.
 
 ## One iteration = one experiment
 
-Each invocation, you do exactly ONE experiment:
+Each Ralph Loop iteration, you do exactly ONE experiment:
 
 1. **Read state**: `cat results.tsv` and `git log --oneline -10` — what worked, what didn't
 2. **Decide**: based on previous results, pick what to try next. Be creative.
 3. **Modify**: edit config YAML and/or prompt YAML files
 4. **Commit**: `git commit -am "exp: <description>"`
-5. **Run** (direct, already on GPU):
+5. **Run** (via srun to GPU):
    ```bash
-   uv run src/main.py --game <game> > run.log 2>&1
+   srun --partition=dev_gpu_h100 --time=00:20:00 --gres=gpu:1 --mem=127G \
+     uv run src/main.py --game <game> > run.log 2>&1
    ```
 6. **Parse**: `grep "Success Rate\|solved in\|Max steps" run.log`
    - If empty → crash. `tail -50 run.log` for error. Log as crash.
@@ -48,7 +49,25 @@ Each invocation, you do exactly ONE experiment:
    - Worse → `git reset --hard HEAD~1` (discard the commit)
 9. **Stage up**: if SR=100% → increase difficulty (more disks / harder puzzle)
 
-Then **exit**. The shell loop will invoke you again. After all iterations, the shell script handles analysis notebook + PR automatically.
+Then **exit**. The Ralph Loop will feed you the same prompt again.
+
+## Wrap-up (last iteration)
+
+Count lines in `results.tsv` (minus header) to know your iteration number. When approaching `--max-iterations` (e.g. iteration 48 of 50), OR when SR=100% at the highest difficulty:
+
+1. **Ensure best config is committed**: verify with `git log --oneline -1`.
+2. **Commit results**: `git add results.tsv && git commit -m "autoresearch results"`
+3. **Run analysis notebook**:
+   ```bash
+   uv run jupyter nbconvert --to notebook --execute --inplace notebooks/analyze_autoresearch.ipynb
+   ```
+4. **Commit analysis**: `git add notebooks/analyze_autoresearch.ipynb && git commit -m "analysis"`
+5. **Push + PR**:
+   ```bash
+   git push -u origin HEAD
+   gh pr create --title "autoresearch: <game> results" --body "$(cat results.tsv)"
+   ```
+6. **Stop the loop**: output `<promise>DONE</promise>`
 
 ## What you CAN modify
 
