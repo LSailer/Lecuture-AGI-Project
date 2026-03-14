@@ -5,75 +5,74 @@ Inspired by [karpathy/autoresearch](https://github.com/karpathy/autoresearch).
 
 ## How it works
 
-Claude Code IS the researcher. You give it `program.md` and it runs experiments autonomously — modifying configs/prompts, running `main.py`, evaluating SR/steps, keeping or discarding changes. No Python script orchestrating — Claude Code itself is the loop.
+Claude Code IS the researcher, driven by a **Ralph Loop**. Each iteration:
+1. Claude reads `results.tsv` + git history (previous experiments)
+2. Decides what to try next (model, temperature, prompt, agents)
+3. Modifies config/prompt YAML, commits
+4. Runs experiment via `srun` on GPU (dev_gpu_h100, 20 min)
+5. Parses results, keeps or discards
+6. Exits → Ralph Loop feeds same prompt again → next iteration
 
-One game per Claude Code session. It runs until you stop it.
+No context bloat — each iteration gets fresh context, reads state from files.
 
 ## Prerequisites
 
-- SSH access to bwunicluster
-- Claude Code installed on cluster nodes
+- SSH access to bwunicluster login node
+- Claude Code installed
 - HuggingFace token in `.env`
-- Models pre-downloaded (see step 1)
+- Models pre-downloaded (`uv run LLM/download_all.py`)
+- Ralph Loop plugin installed
 
-## Step 1: Download models (one-time)
+## Quick start
 
 ```bash
-sbatch --partition=dev_gpu_h100 --time=02:00:00 --wrap="uv run LLM/download_all.py"
+# SSH to cluster login node
+cd ~/Lecuture-AGI-Project
+git checkout -b autoresearch/toh-mar14
 
-# Verify:
-ls LLM/models/
-# → qwen3-32b/  devstral-24b/  deepseek-r1-32b/
+# Start Ralph Loop
+/ralph-loop "read program.md, game=tower_of_hanoi" \
+  --completion-promise "DONE" \
+  --max-iterations 50
 ```
 
-## Step 2: Run test notebook (verify setup)
-
+For sliding puzzle (separate session):
 ```bash
-uv run jupyter nbconvert --to notebook --execute --inplace notebooks/test_autoresearch.ipynb
+git checkout -b autoresearch/sp-mar14
+/ralph-loop "read program.md, game=sliding_puzzle" \
+  --completion-promise "DONE" \
+  --max-iterations 50
 ```
 
-## Step 3: Start autoresearch
+## What happens
+
+- Each iteration: ~20 min (GPU experiment) + ~1 min (Claude reasoning)
+- 50 iterations ≈ ~17 hours
+- Wrap-up: analysis notebook + PR created automatically on last iteration
+- Stop early: `/cancel-ralph`
+
+## Monitor
 
 ```bash
-# Tower of Hanoi
-git checkout -b autoresearch/toh-$(date +%b%d | tr '[:upper:]' '[:lower:]')
-claude --print "read program.md, game=tower_of_hanoi, start experimenting"
-
-# Sliding Puzzle (separate session)
-git checkout -b autoresearch/sp-$(date +%b%d | tr '[:upper:]' '[:lower:]')
-claude --print "read program.md, game=sliding_puzzle, start experimenting"
-```
-
-Or wrap in sbatch for unattended runs:
-
-```bash
-sbatch --partition=gpu_h100_il --time=24:00:00 --gres=gpu:1 --mem=127G \
-  --wrap="claude --print 'read program.md, game=tower_of_hanoi, start experimenting'"
-```
-
-## Step 4: Monitor
-
-```bash
-cat results.tsv                    # experiment log
-git log --oneline                  # kept experiments
-```
-
-## Step 5: Analyze results (locally)
-
-```bash
-# Copy results from cluster
-scp cluster:~/path/to/Project/results.tsv .
-
-# Open analysis notebook
-jupyter notebook notebooks/analyze_autoresearch.ipynb
+cat results.tsv              # experiment log
+git log --oneline            # kept experiments
+tail -f run.log              # live experiment output (during srun)
 ```
 
 ## Key files
 
 | File | Role |
 |------|------|
-| `program.md` | Instructions for Claude Code (the "skill") |
-| `src/config/<game>.yaml` | Config Claude Code modifies |
-| `src/<game>/prompts/*.yaml` | Prompt templates Claude Code modifies |
-| `results.tsv` | Experiment log (untracked) |
+| `program.md` | Instructions for Claude Code (read each iteration) |
+| `src/config/<game>.yaml` | Config Claude modifies |
+| `src/<game>/prompts/*.yaml` | Prompt templates Claude modifies |
+| `results.tsv` | Experiment log (untracked, persists across iterations) |
+| `run.log` | Latest experiment output |
 | `LLM/download_all.py` | One-time model download |
+
+## Download models (one-time)
+
+```bash
+srun --partition=dev_gpu_h100 --time=02:00:00 --gres=gpu:1 --mem=127G \
+  uv run LLM/download_all.py
+```

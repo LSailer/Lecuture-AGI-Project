@@ -1,155 +1,117 @@
 # autoresearch
 
-This is an experiment to have Claude Code do its own research on the MAKER puzzle-solving framework.
+This is an experiment to have Claude Code do its own research on the MAKER puzzle-solving framework. You are driven by a Ralph Loop — each iteration you run ONE experiment, then exit. The loop feeds you the same prompt again, and you see your previous work in `results.tsv` and git history.
 
-## Setup
+## Setup (first iteration only)
 
-To set up a new experiment, work with the user to:
+If `results.tsv` does not exist yet, this is the first iteration. Do setup:
 
-1. **Agree on a run tag**: propose a tag based on today's date (e.g. `mar14`). The branch `autoresearch/<game>-<tag>` must not already exist.
-2. **Agree on the game**: `tower_of_hanoi` or `sliding_puzzle`. One game per session.
-3. **Create the branch**: `git checkout -b autoresearch/<game>-<tag>` from current HEAD.
-4. **Read the in-scope files** for full context:
+1. Read the in-scope files for context:
    - `program.md` — these instructions (you're reading it now)
-   - `src/main.py` — the solver loop. Read it but do not modify the core logic.
+   - `src/main.py` — the solver loop. Do not modify.
    - `src/config/<game>.yaml` — the config file you modify
-   - `src/<game>/prompts/*.yaml` — prompt templates you modify (or create new ones)
-   - `src/<game>/enviroment.py` — game environment (read-only, understand the rules)
-   - `src/<game>/prompts.py` — prompt loader (read-only, understand how YAML → prompt)
-5. **Verify models exist**: `ls LLM/models/` — should contain `qwen3-32b/`, `devstral-24b/`, `deepseek-r1-32b/`.
-6. **Initialize results.tsv**: Create `results.tsv` with just the header row. The baseline will be recorded after the first run.
-7. **Confirm and go**: Confirm setup looks good.
+   - `src/<game>/prompts/*.yaml` — prompt templates you modify or create
+   - `src/<game>/enviroment.py` — game rules (read-only)
+   - `src/<game>/prompts.py` — prompt loader (read-only)
+2. Verify models: `ls LLM/models/` — should contain `qwen3-32b/`, `devstral-24b/`, `deepseek-r1-32b/`.
+3. Create `results.tsv` with header:
+   ```
+   printf 'commit\tsr\tsteps\tstage\tstatus\tdescription\n' > results.tsv
+   ```
+4. Run the **baseline** experiment (step 5 below) with default config.
 
-Once you get confirmation, kick off the experimentation.
+If `results.tsv` already exists, skip setup — go straight to the experiment loop.
 
-## Experimentation
+## The game
 
-Each experiment runs on a single GPU. You launch it as:
+The game is specified by the user in the Ralph Loop prompt (e.g. `game=tower_of_hanoi`). Read it from context.
 
-```
-uv run src/main.py --game <game> > run.log 2>&1
-```
+## One iteration = one experiment
 
-**What you CAN modify:**
-- `src/config/<game>.yaml` — this is your main knob. Everything is fair game: `temperature`, `model_path`, `prompt_variant`, `max_agents_per_step`, `margin_k`, `num_disks` (tower_of_hanoi), `initial_state` (sliding_puzzle), `max_steps`.
-- `src/<game>/prompts/*.yaml` — the system and user prompt templates. You can edit existing variants or create entirely new ones. This is where the real creativity happens: try different reasoning strategies, chain-of-thought styles, rule phrasings, examples, etc.
+Each Ralph Loop iteration, you do exactly ONE experiment:
 
-**What you CANNOT modify:**
-- `src/main.py` — the solver loop is fixed.
-- `src/*/enviroment.py` — game rules and environments are fixed.
-- `src/utils/` — parser, LLM pipeline, fallback model are fixed.
-- `prepare.py` equivalent: there is none. The games are deterministic.
+1. **Read state**: `cat results.tsv` and `git log --oneline -10` — what worked, what didn't
+2. **Decide**: based on previous results, pick what to try next. Be creative.
+3. **Modify**: edit config YAML and/or prompt YAML files
+4. **Commit**: `git commit -am "exp: <description>"`
+5. **Run** (via srun on GPU):
+   ```bash
+   srun --partition=dev_gpu_h100 --time=00:20:00 --gres=gpu:1 --mem=127G \
+     uv run src/main.py --game <game> > run.log 2>&1
+   ```
+6. **Parse**: `grep "Success Rate\|solved in\|Max steps" run.log`
+   - If empty → crash. `tail -50 run.log` for error. Log as crash.
+7. **Log**: append result to `results.tsv` (tab-separated)
+8. **Keep or discard**:
+   - SR improved or same SR with fewer steps → keep (branch advances)
+   - Worse → `git reset --hard HEAD~1` (discard the commit)
+9. **Stage up**: if SR=100% → increase difficulty (more disks / harder puzzle)
 
-**The goal is simple: get the highest SR (Success Rate) with the fewest steps.**
+Then **exit**. The Ralph Loop will feed you the same prompt again.
 
-SR = `compute_progress()`, printed at the end of each run as `Success Rate: XX.X%`. It measures how close the agent got to solving the puzzle:
+## Wrap-up (last iteration)
+
+Count lines in `results.tsv` (minus header) to know your iteration number. When approaching `--max-iterations` (e.g. iteration 48 of 50), OR when SR=100% at the highest difficulty you want to try:
+
+1. **Ensure best config is committed**: if last experiment was discarded, the current HEAD already has the best. Verify with `git log --oneline -1`.
+2. **Commit results**: `git add results.tsv && git commit -m "autoresearch results"`
+3. **Run analysis notebook**:
+   ```bash
+   uv run jupyter nbconvert --to notebook --execute --inplace notebooks/analyze_autoresearch.ipynb
+   ```
+4. **Commit analysis**: `git add notebooks/analyze_autoresearch.ipynb && git commit -m "analysis"`
+5. **Push + PR**:
+   ```bash
+   git push -u origin HEAD
+   gh pr create --title "autoresearch: <game> results" --body "$(cat results.tsv)"
+   ```
+6. **Stop the loop**: output `<promise>DONE</promise>`
+
+## What you CAN modify
+
+- `src/config/<game>.yaml` — `temperature`, `model_path`, `prompt_variant`, `max_agents_per_step`, `margin_k`, `num_disks`, `initial_state`, `max_steps`
+- `src/<game>/prompts/*.yaml` — system and user prompt templates. Create new variants too.
+
+## What you CANNOT modify
+
+- `src/main.py`, `src/*/enviroment.py`, `src/utils/` — solver, games, and pipeline are fixed.
+
+## The metric
+
+**SR (Success Rate)** = `compute_progress()`, printed as `Success Rate: XX.X%`.
 - `100%` = fully solved
-- `< 100%` = partial progress (tiles in correct position / total tiles, or disks on target peg / total disks)
+- `< 100%` = partial progress
 
-Since the step budget (`max_steps`) is configurable, you should also track total steps used. Fewer steps at the same SR is better.
+**Also track steps.** Fewer steps at same SR = better.
 
-**Available models** (pre-downloaded in `LLM/models/`):
-- `LLM/models/qwen3-32b` — Qwen3-32B (strong reasoning)
-- `LLM/models/devstral-24b` — Devstral-Small-2-24B-Instruct (current default)
-- `LLM/models/deepseek-r1-32b` — DeepSeek-R1-Distill-Qwen-32B (reasoning-focused)
+## Available models
 
-**Parameters to experiment with:**
-- `model_path` — which model to use
-- `temperature` — sampling temperature (0.0 = deterministic, greedy)
-- `prompt_variant` — which YAML prompt file to load (e.g. `base`, `cot_detailed`, `minimal`, or new ones you create)
-- `max_agents_per_step` — number of parallel agents voting per step (more = stronger consensus but slower)
-- `margin_k` — consensus margin for voting (higher = stricter agreement needed)
-- `num_disks` — difficulty level for tower_of_hanoi (start at 3)
-- `initial_state` — puzzle config for sliding_puzzle (use keys from `CONFIGS` dict in enviroment.py)
-- `max_steps` — step budget per run
+- `LLM/models/qwen3-32b` — Qwen3-32B
+- `LLM/models/devstral-24b` — Devstral-24B (default)
+- `LLM/models/deepseek-r1-32b` — DeepSeek-R1-32B
 
-**Stages (difficulty progression):**
-- Tower of Hanoi: start with `num_disks: 3` (optimal = 7 moves). Once SR=100%, try 4, 5, 6, ...
-- Sliding Puzzle: start with `2x2` config. Then `3x3 (easiest)`, `3x3 (hardest)`, `4x4 (easiest)`, `4x4 (hardest)`.
+## Difficulty stages
 
-**The first run**: Your very first run should always be to establish the baseline with the default config, so you will run the solver as-is.
+- **Tower of Hanoi**: `num_disks` 3 → 4 → 5 → ... (optimal = 2^n - 1 moves)
+- **Sliding Puzzle**: `2x2` → `3x3 (easiest)` → `3x3 (hardest)` → `4x4 (easiest)` → `4x4 (hardest)` (use CONFIGS dict keys as `initial_state`)
 
-## Output format
+## Results format
 
-The script prints a summary at the end:
-
-```
-Puzzle solved in 7 steps!
-Success Rate: 100.0%
-```
-
-or:
-
-```
-Max steps (200) reached without solving.
-Success Rate: 44.4%
-```
-
-Extract the key metrics from the log:
-
-```
-grep "Success Rate\|solved in\|Max steps" run.log
-```
-
-## Logging results
-
-When an experiment is done, log it to `results.tsv` (tab-separated, NOT comma-separated).
-
-The TSV has a header row and 6 columns:
-
-```
-commit	sr	steps	stage	status	description
-```
-
-1. git commit hash (short, 7 chars)
-2. SR achieved (e.g. 1.000000) — use 0.000000 for crashes
-3. total steps used
-4. stage (num_disks for ToH, config name for sliding puzzle)
-5. status: `keep`, `discard`, or `crash`
-6. short text description of what this experiment tried
-
-Example:
+`results.tsv` — tab-separated, 6 columns:
 
 ```
 commit	sr	steps	stage	status	description
 a1b2c3d	1.000000	7	3	keep	baseline devstral T=0.1
-b2c3d4e	1.000000	9	3	discard	qwen3 T=0.1 (solved but more steps)
-c3d4e5f	0.666667	200	4	keep	devstral T=0.1 4 disks (partial)
+b2c3d4e	1.000000	9	3	discard	qwen3 T=0.1 (more steps)
+c3d4e5f	0.666667	200	4	keep	devstral T=0.1 4 disks
 d4e5f6g	0.000000	0	4	crash	deepseek OOM
 ```
 
-## The experiment loop
+## Tips
 
-The experiment runs on a dedicated branch (e.g. `autoresearch/toh-mar14`).
-
-LOOP FOREVER:
-
-1. Look at the git state and `results.tsv` — what have you tried, what worked, what didn't
-2. Think about what to try next. Be creative: try different models, temperatures, prompt strategies, agent counts. If something almost worked, iterate on it. If you're stuck, try something radically different.
-3. Modify the config YAML and/or prompt YAML files with your experimental idea
-4. git commit with a descriptive message
-5. Run the experiment: `uv run src/main.py --game <game> > run.log 2>&1`
-6. Read the results: `grep "Success Rate\|solved in\|Max steps" run.log`
-7. If the grep output is empty, the run crashed. Run `tail -50 run.log` to read the stack trace and attempt a fix. If you can't fix it after a few attempts, give up on that idea.
-8. Record the results in results.tsv (do NOT commit results.tsv, leave it untracked)
-9. If SR improved (higher), or same SR with fewer steps → "advance" the branch, keeping the commit
-10. If SR is equal or worse → `git reset --hard HEAD~1` to discard
-11. If SR = 100% at current difficulty → increase difficulty (more disks / harder puzzle config), reset best SR tracking
-
-The idea is that you are a completely autonomous researcher trying things out. If they work, keep. If they don't, discard. And you're advancing the branch so that you can iterate. If you feel like you're getting stuck, try something creative — rewrite the prompt from scratch, try a completely different reasoning strategy, combine ideas from previous near-misses.
-
-**Timeout**: Each experiment should take at most ~30 minutes. If a run exceeds 30 minutes, kill it and treat it as a failure.
-
-**Crashes**: If a run crashes (OOM, bug, etc.), use your judgment: if it's a typo or easy fix, fix and re-run. If the idea is fundamentally broken, skip it and move on.
-
-**NEVER STOP**: Once the experiment loop has begun, do NOT pause to ask the human if you should continue. The human might be asleep or away. You are autonomous. If you run out of ideas, think harder — re-read the prompt files, try combining previous near-misses, try more radical changes. The loop runs until the human interrupts you.
-
-## Tips for good experiments
-
-1. **Start simple**: establish baseline, then change one thing at a time
-2. **Prompt engineering matters most**: the prompts are where the real gains are. Try different reasoning strategies, more/fewer examples, different phrasings
-3. **Temperature**: low (0.0-0.1) for deterministic/greedy, higher (0.3-0.7) for diversity in voting
-4. **Models**: bigger isn't always better — smaller models with better prompts can beat larger ones
-5. **Agents + voting**: more agents = better consensus but slower. Find the sweet spot.
-6. **Read the game rules**: understand the optimal strategy (e.g. Tower of Hanoi has a known optimal algorithm — can you encode it in the prompt?)
-7. **Check failures.csv**: `output/failures.csv` logs parsing failures — if the model can't follow the output format, fix the prompt
+1. **Start simple**: baseline first, then one change at a time
+2. **Prompts matter most**: different reasoning strategies, CoT styles, examples, rule phrasings
+3. **Temperature**: 0.0-0.1 for greedy, 0.3-0.7 for voting diversity
+4. **Check failures.csv**: `output/failures.csv` shows parsing failures → fix prompt format
+5. **Read the game**: Tower of Hanoi has a known optimal algorithm — try encoding it in the prompt
+6. **Be creative**: if stuck, rewrite prompts from scratch, try radical changes
