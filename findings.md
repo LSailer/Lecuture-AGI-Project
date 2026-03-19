@@ -39,3 +39,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral T=0.1, base prompt, 6 disks
 - **Result**: 100% SR, 63 steps (optimal, 2^6-1=63)
 - **Insight**: Base prompt continues to scale optimally to 6 disks. The model has a robust internal representation of the recursive Tower of Hanoi strategy. Next: push to 7 disks (127 optimal moves) or try a different model (qwen3-32b / deepseek-r1-32b) at 6 disks to benchmark relative capability.
+
+## Iteration 4 (sliding_puzzle) — explicit answer-first prompt devstral T=0.5 3x3 easiest
+- **Config**: devstral-24b, T=0.5, explicit prompt (new answer-first variant), 3x3 initial_state=[1,2,5,6,3,4,7,8,0], 3 agents
+- **Result**: 22.2% SR, 200 steps (max steps hit, partial progress) — KEEP (first >0% on 3x3)
+- **Insight**: Answer-first format + explicit worked example + correct adjacency arithmetic got the model computing valid next_state. T=0.5 diversity helped escape some cycles (cycle_detected=False). But 22.2% means only 2/9 tiles correct at end — model still gets stuck. Next: increase T further (0.7) for more diversity to escape greedy traps, or add explicit anti-cycle instruction "if you've been at this state before, choose a different move direction than previously used".
