@@ -30,6 +30,11 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Result**: 0% SR, max steps (200) — DISCARD
 - **Insight**: Model produces "Inconsistent prediction" errors — next_state doesn't match current_state+move. 3x3 blank-movement arithmetic overwhelms the base prompt. The single 3x3 example in the system prompt wasn't enough. Next: add explicit coordinate mapping (row, col) to help the model compute next_state correctly, or try cot_detailed prompt which may provide more reasoning scaffolding.
 
+## Iteration 3 (sliding_puzzle) — coordinate prompt 3x3 easiest devstral T=0.1
+- **Config**: devstral-24b, T=0.1, coordinate prompt (new), 3x3 initial_state=[1,2,5,6,3,4,7,8,0]
+- **Result**: 0% SR, max steps (200) — DISCARD
+- **Insight**: Coordinate prompt fixed "Inconsistent prediction" errors (explicit index-swap arithmetic worked). New failure mode: **cycles** — model gets stuck looping valid states (cycle detected at step 24+). Greedy Manhattan strategy alone is insufficient for 3x3. Next: add explicit anti-cycle instructions (penalize revisited states, force different direction when cycling), or try deepseek-r1-32b which may do better longer-horizon planning, or try higher `max_agents_per_step` for vote diversity to escape cycles.
+
 ## Iteration 4 (prod iter2) — stage up to 6 disks
 - **Config**: devstral T=0.1, base prompt, 6 disks
 - **Result**: 100% SR, 63 steps (optimal, 2^6-1=63)
