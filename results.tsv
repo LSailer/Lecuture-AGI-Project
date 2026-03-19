@@ -12,3 +12,4 @@ ecffc4000592d49b55081ccdbcf289865f30a474	0.000000	0	2	discard	sliding_puzzle ite
 ea82d8fee9538abe75b8695da2372ec84fbb4623	0.000000	200	2	discard	sliding_puzzle iter6b devstral explicit_v2 offset-chain — 0% SR cycles from step1, worse than explicit
 b44798a710042093b089cd8cc9b388c23982409a	0.222222	200	2	discard	sliding_puzzle iter6c devstral T=0.7 explicit — 22.2% SR same as T=0.5, no improvement
 7be9875	0.000000	200	2	discard	sliding_puzzle iter7 explicit_v3 anti-reversal rule — 0% SR Gemini quota exhausted all inconsistent predictions fail
+d0b07bf2d4cd0df2018fba87758aa0845db40ea5	0.000000	200	2	discard	sliding_puzzle iter8 explicit_v4 swap arithmetic in examples — 0% SR still goal-seeking next_state not swap arithmetic
