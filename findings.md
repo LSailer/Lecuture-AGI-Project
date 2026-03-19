@@ -19,3 +19,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral T=0.1, base prompt, 5 disks
 - **Result**: 100% SR, 31 steps (optimal, 2^5-1=31)
 - **Insight**: The base prompt's alternating-disk-1 rule scales optimally to 5 disks. Model still achieves perfect steps. Next: push to 6 disks (63 optimal moves) or try alternative models to benchmark against devstral.
+
+## Iteration 1 (sliding_puzzle) — baseline 2x2 devstral T=0.1
+- **Config**: devstral-24b, T=0.1, base prompt, 2x2 initial_state=[2,1,3,0]
+- **Result**: 100% SR, 8 steps (optimal for 2x2 is ~3; base prompt is greedy so 8 is acceptable)
+- **Insight**: Base prompt solves 2x2 out of the box with devstral. SR=100%. Next: stage up to 3x3 (easiest) to test the greedy strategy at higher complexity.
