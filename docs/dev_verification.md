@@ -1,61 +1,89 @@
 # Dev Verification Report — Autoresearch Pipeline
 
-## Date: 2026-03-19
-## Job ID: 3643387
-## Partition: dev_gpu_h100 (uc3n082)
-## Wall-clock: 16m 11s (of 30m limit)
+## Run 1 (initial): Job 3643387
+## Run 2 (git fix rerun): Job 3643486
 
-## Checklist
+## Date: 2026-03-19
+## Partition: dev_gpu_h100 (uc3n082)
+
+---
+
+## Run 2 — Git Commit Behavior Fix (latest)
+
+### What was fixed
+
+| Problem | Before (Run 1) | After (Run 2) |
+|---------|----------------|---------------|
+| Discard mechanism | `git reset --hard HEAD~1` — destroys commit history | `git revert HEAD~1 --no-edit` — preserves history |
+| Commit separation | `git commit -am` (config + results mixed) | Config and results in separate commits |
+| Config file safety | Pre-created YAML deleted by `reset --hard` | Config files preserved across iterations |
+| Staging up | Iteration 2 didn't stage up to 4 disks | Iteration 2 staged up to 4 disks (15 steps optimal) |
+| findings.md | Not present | Created and populated with qualitative insights |
+
+### Checklist
+
+| # | Check | Status | Notes |
+|---|-------|--------|-------|
+| 1 | sbatch submitted | PASS | job 3643486 |
+| 2 | GPU detected | PASS | `NVIDIA H100` |
+| 3 | Iteration 1 ran | PASS | SR=100%, 7 steps (optimal for 3 disks) |
+| 4 | Iteration 2 ran | PASS | SR=100%, 15 steps (optimal for 4 disks) |
+| 5 | Staged up 3→4 disks | PASS | Claude increased `num_disks` from 3 to 4 after SR=100% |
+| 6 | results.tsv populated | PASS | header + 2 data rows |
+| 7 | findings.md populated | PASS | 2 iteration entries with insights |
+| 8 | Config/results separated | PASS | `d521145` = config only, `6ccb502` = results only |
+| 9 | Analysis notebook executed | PASS | nbconvert succeeded |
+| 10 | git push succeeded | PASS | pushed to origin/feature/parameter-sweep |
+| 11 | No discard needed (both kept) | N/A | Both experiments improved — revert path not exercised |
+
+### Results
+
+```
+commit    sr         steps  stage  status   description
+27b8ca5   1.000000   7      3      keep     dev baseline devstral T=0.1 base prompt 3 disks
+d521145   1.000000   15     4      keep     dev iter2 stage up 4 disks base prompt devstral T=0.1 optimal 15 steps
+```
+
+### Git History (clean separation)
+
+```
+1366f8a feat: add findings.md as persistent knowledge file for autoresearch
+43a6f0d exp: dev iter2 validation 3 disks base prompt devstral T=0.1
+e33db4c dev: analysis notebook
+6ccb502 results: dev iter2 100% SR 15 steps 4 disks — keep (staged up, optimal)
+d521145 exp: dev iter2 stage up to 4 disks base prompt devstral T=0.1
+85d447b results: dev iter1 baseline 100% SR 7 steps 3 disks — keep
+27b8ca5 feat: add configuration and scripts for autoresearch pipeline
+```
+
+### Wall-clock: 21 minutes (within 30-minute dev_gpu_h100 limit)
+
+### Known limitation
+
+The `git revert` discard path was NOT exercised in this run because both experiments were `keep`. To fully verify, a run where one experiment is discarded is needed. However, the structural fix (separate commits) is confirmed working, which is the prerequisite for `git revert HEAD~1` to target the right commit.
+
+---
+
+## Run 1 — Initial Validation (superseded)
+
+### Job ID: 3643387 | Wall-clock: 16m 11s
 
 | # | Check | Status | Notes |
 |---|-------|--------|-------|
 | 1 | sbatch submitted | PASS | job 3643387 |
 | 2 | GPU detected | PASS | `NVIDIA H100` |
-| 3 | CUDA module loaded | PASS | `module load devel/cuda/12.8` — torch used cuda |
-| 4 | Iteration 1 ran | PASS | SR=100%, 7 steps (optimal for 3 disks) |
-| 5 | Iteration 2 ran | PASS | SR=100%, 7 steps (cot_detailed, discarded — same as baseline) |
-| 6 | results.tsv populated | PASS | header + 2 data rows |
-| 7 | git commits created | PASS | 4 commits: exp baseline, results keep, results discard, analysis |
-| 8 | Analysis notebook executed | PASS | nbconvert wrote 8282 bytes, no errors |
-| 9 | git push succeeded | PASS | pushed to origin/feature/parameter-sweep |
-| 10 | PR created | PASS | [PR #20](https://github.com/LSailer/Lecuture-AGI-Project/pull/20) |
+| 3 | Iteration 1 ran | PASS | SR=100%, 7 steps (optimal for 3 disks) |
+| 4 | Iteration 2 ran | PASS | SR=100%, 7 steps (cot_detailed, discarded — same as baseline) |
+| 5 | results.tsv populated | PASS | header + 2 data rows |
+| 6 | git commits created | PASS | 4 commits |
+| 7 | Analysis notebook executed | PASS | nbconvert succeeded |
+| 8 | git push succeeded | PASS | pushed to origin/feature/parameter-sweep |
+| 9 | PR created | PASS | [PR #20](https://github.com/LSailer/Lecuture-AGI-Project/pull/20) |
 
-## Bugs Found
+### Bugs found in Run 1
 
-### Bug 1: results.tsv not committed in wrap-up (minor)
+1. **`git reset --hard HEAD~1` deleted pre-created config** — destructive discard wiped `tower_of_hanoi_dev.yaml`
+2. **Iteration 2 didn't stage up** — Claude chose prompt exploration over difficulty increase
+3. **Config + results mixed in one commit** — made `git reset` boundary unclear
 
-- **Symptom**: The wrap-up `git add results.tsv && git commit` printed "nothing added to commit" because Claude's iteration loop already committed results.tsv in its own commits.
-- **Root cause**: program.md tells Claude to commit after each experiment, so results.tsv is already tracked. The wrap-up `git add results.tsv` is redundant.
-- **Impact**: None — results are committed by the iteration loop. The `|| true` in the script prevents failure.
-- **Fix needed**: No fix required. The `|| true` handles it gracefully.
-
-### Bug 2: Iteration 2 didn't stage up to 4 disks
-
-- **Symptom**: program.md says "if SR=100% → increase difficulty". Iteration 2 used 3 disks (same stage) instead of staging up to 4 disks.
-- **Root cause**: Claude in iteration 2 chose to try a different prompt variant (`cot_detailed`) rather than staging up. This is a Claude judgment call, not a code bug.
-- **Impact**: Low — with more iterations Claude would eventually stage up. The 2-iteration dev test is just too short.
-- **Fix needed**: None for dev test. For production runs (50 iterations), this self-corrects.
-
-## Results
-
-```
-commit    sr         steps  stage  status   description
-3828069   1.000000   7      3      keep     baseline devstral T=0.1 base prompt 3 disks
-2a3f576   1.000000   7      3      discard  cot_detailed prompt devstral T=0.1 3 disks (same as baseline)
-```
-
-## Git History
-
-```
-501d779 dev: analysis notebook
-3edbefa results: iter2 cot_detailed 100% SR 7 steps 3 disks — discard (same as baseline)
-0936ce1 results: baseline 100% SR 7 steps 3 disks — keep
-3828069 exp: baseline devstral T=0.1 base prompt 3 disks
-```
-
-## Outcome
-
-**PASS** — All 10 checks passed. The full autoresearch pipeline works end-to-end:
-experiment → commit → keep/discard → analysis notebook → push → PR creation.
-
-Total time: 16 minutes (well within 30-minute dev_gpu_h100 limit).
+All three bugs were fixed for Run 2.
