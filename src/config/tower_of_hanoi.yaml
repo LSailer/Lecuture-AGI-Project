@@ -11,7 +11,7 @@ prompt_variant: base
 
 
 # Game-specific
-num_disks: 20
+num_disks: 5
 
 # Cycle detection
 max_state_revisits: 3
