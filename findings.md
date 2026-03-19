@@ -84,3 +84,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral-24b, T=0.5, explicit_v5 (new: blank_row/col + Valid_moves enumeration), 3x3 easiest
 - **Result**: 0% SR, 4 valid steps — KEEP (best without Gemini fallback)
 - **Insight**: Row/col boundary enumeration FIXED the dominant "Invalid move: No tile in that direction" failure mode — 0 invalid boundary moves vs 7/9 agents failing before. 4 valid consensus steps taken. But model cycles on step 4 (tile 6 right then immediately left — reversal). Next: add explicit anti-reversal rule to explicit_v5 now that valid steps are being taken (iter7's anti-reversal failed because Gemini was exhausted and next_state errors dominated; now valid moves are being found, anti-reversal can take effect).
+
+## Iteration 11 (sliding_puzzle) — explicit_v6 anti-reversal rule
+- **Config**: devstral-24b, T=0.5, explicit_v6 (anti-reversal removes opposite of Previous_move from Valid_moves), 3x3 easiest
+- **Result**: 11.1% SR, 3 valid steps — KEEP (SR improved from 0% in iter10b)
+- **Insight**: Anti-reversal IS applied correctly (model removes UP when Previous=DOWN etc.), and SR improved to 11.1% (1 tile at goal). But "Inconsistent prediction" now dominates: model selects valid move direction correctly but writes next_state as goal-seeking prediction (not mechanical swap). Example: says `move = LEFT` (blank_idx=4) but writes next_state that swaps indices 4↔7 (goal-seeking) not 4↔3 (LEFT neighbor). Next: add explicit `N:` (neighbor index), `tile_at_N:` (state[N] value), and reframe next_state as "copy current_state, set index blank_idx = tile_at_N, set index N = 0" — three explicit derivation steps before the array. Also keep anti-reversal.
