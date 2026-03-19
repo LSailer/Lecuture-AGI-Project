@@ -24,28 +24,49 @@ system_prompt: |
      Manhattan distance to its goal → choose that direction.
   4. Otherwise move blank one step closer to Target (prefer moves not reversing previous move).
   5. Never displace a tile already at its goal index (index < Target).
+  6. ANTI-BACKTRACK: Never choose the exact opposite of your previous move.
+     UP↔DOWN are opposites. LEFT↔RIGHT are opposites.
+     Doing so undoes your last step and creates an oscillation loop.
+     If the only valid move is the opposite, pick any other valid direction instead.
 
-  Example (3x3):
+  Example 1 — blank adjacent to target (3x3):
   State: [1, 2, 0, 4, 5, 3, 7, 8, 6]
   Grid:
    1  2  0
    4  5  3
    7  8  6
-  Blank is at index 2. Target is tile 3 (at index 5; goal index = 3).
-  Blank (index 2) is directly above tile 3 (index 5)? No — index 2 is row 0 col 2, index 5 is row 1 col 2. DOWN from blank = index 2+3 = 5. Yes, adjacent DOWN.
-  Swapping moves tile 3 from index 5 to index 2 — Manhattan from 5→3 = 2, from 2→3 = 1. Reduces distance.
+  Blank is at index 2 (row 0, col 2). Target is tile 3 (at index 5; goal index = 3).
+  DOWN from blank: index 2+3 = 5 → tile 3 is there. Adjacent DOWN ✓
+  Swapping: tile 3 moves to index 2, blank moves to index 5.
+  Manhattan(tile 3): goal=3, was at index 5 (dist=2), now at index 2 (dist=1). Reduces ✓
   move = DOWN
   next_state = [1, 2, 3, 4, 5, 0, 7, 8, 6]   ← blank was at 2, tile 3 was at 5; they swapped.
+
+  Example 2 — blank NOT adjacent to target, must navigate (3x3):
+  State: [1, 2, 5, 0, 3, 4, 7, 8, 6]
+  Grid:
+   1  2  5
+   0  3  4
+   7  8  6
+  Blank is at index 3 (row 1, col 0). Target is tile 3 (at index 4; goal index = 3).
+  Is blank adjacent to tile 3? RIGHT from blank: index 3+1 = 4 → tile 3 is there. Adjacent RIGHT ✓
+  Swapping: tile 3 moves to index 3, blank moves to index 4.
+  Manhattan(tile 3): goal=3, was at 4 (dist=1), now at 3 (dist=0). Reduces ✓
+  move = RIGHT
+  next_state = [1, 2, 5, 3, 0, 4, 7, 8, 6]   ← blank was at 3, tile 3 was at 4; they swapped.
 
 user_prompt: |
   Step: {step}
   State: {current_state}
-  Previous: {previous_move}
+  Previous move: {previous_move}
   Grid:
   {state_visual}
 
+  FORBIDDEN move (anti-backtrack): if previous move was UP → do NOT output DOWN; if DOWN → not UP; if LEFT → not RIGHT; if RIGHT → not LEFT.
+
   Fill in immediately (no preamble):
-  Target: <lowest tile not at goal>
+  blank_index: <index of 0 in current state>
+  Target: <lowest tile not at its goal index>
   move = <UP|DOWN|LEFT|RIGHT>
   next_state = [<all values 0–{max_tile} — state after applying the move>]
-  Reasoning: <one sentence>
+  Reasoning: <one sentence showing blank swap arithmetic>
