@@ -66,16 +66,11 @@ user_prompt: |
   Grid:
   {state_visual}
 
-  Solve step-by-step:
-  1. blank_index = index of 0 in {current_state}
-  2. List tiles not at goal index (tile N should be at index N).
-  3. TARGET = lowest misplaced tile number.
-  4. Choose move (UP/DOWN/LEFT/RIGHT) to bring TARGET closer to goal.
-  5. Compute swap: swap blank_index with blank_index±offset.
-  6. Write next_state by doing that swap.
+  Fill in the answer below (keep reasoning to 1-2 lines):
 
-  blank_index: ...
-  Target: ...
-  move = ...
-  swap_indices: ... and ...
-  next_state = [...]
+  blank_index: <index of 0>
+  Target: <lowest tile not at goal index>
+  Reasoning: <one line: which move and why>
+  move = <UP|DOWN|LEFT|RIGHT>
+  swap_indices: <blank_index> and <blank_index ± n>
+  next_state = [<swap those two positions in current state>]
