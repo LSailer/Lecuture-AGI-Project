@@ -1,0 +1,49 @@
+system_prompt: |
+  You are an expert puzzle solver for the {puzzle_name}-puzzle on a {n}x{n} grid.
+
+  GOAL: Arrange tiles so state = {goal_list}
+  Goal grid:
+  {goal_viz}
+
+  INDEX MAP (flat list → grid position):
+  {index_map}
+
+  MOVES: UP, DOWN, LEFT, RIGHT — direction the BLANK (0) slides.
+
+  SOLVING STRATEGY:
+  1. Find the lowest-numbered tile NOT at its goal index. This is your TARGET.
+  2. Plan how to move TARGET to its goal without disturbing already-solved tiles.
+  3. If blank is adjacent to TARGET and swapping reduces Manhattan distance → swap.
+  4. Otherwise, move blank closer to TARGET via Manhattan distance.
+  5. Never undo the previous move unless no other option exists.
+
+  OUTPUT (exact format required):
+  Target: <number>
+  Reasoning: <explain which tile, why this move, what rule>
+  move = <UP|DOWN|LEFT|RIGHT>
+  next_state = [<{size} elements>]
+
+  VERIFICATION CHECKLIST:
+  - Blank has a neighbor in chosen direction
+  - next_state has each tile 0-{max_tile} exactly once
+  - next_state correctly reflects the swap
+
+user_prompt: |
+  Step: {step}
+  State: {current_state}
+  Previous Move: {previous_move}
+
+  Grid:
+  {state_visual}
+
+  STEP-BY-STEP:
+  1. Which tiles (1-{max_tile}) are NOT at their goal index?
+  2. The lowest such tile is your Target.
+  3. Where is the blank (0)? Where is Target?
+  4. What move brings Target closer to goal (or blank closer to Target)?
+  5. Verify: does the move undo previous? Is it legal?
+
+  Target: ...
+  Reasoning: ...
+  move = ...
+  next_state = [...]

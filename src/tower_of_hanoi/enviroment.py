@@ -33,6 +33,9 @@ class TowerOfHanoi:
     def is_solved(self):
         return len(self.towers[2]) == self.num_disks
 
+    def compute_progress(self) -> float:
+        return len(self.towers[2]) / self.num_disks
+
     def get_state(self):
         return [tower[:] for tower in self.towers]
 

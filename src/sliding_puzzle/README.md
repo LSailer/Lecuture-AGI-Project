@@ -11,20 +11,20 @@ Classic tile-sliding puzzle on an NxN grid (supports 2x2, 3x3, 4x4, etc.).
 **State format:** Flat list of integers where `0` represents the empty space.
 ```python
 # 3x3 puzzle (8-puzzle):
-[1, 2, 3, 4, 5, 6, 7, 0, 8]
+[1, 0, 2, 3, 4, 5, 6, 7, 8]
 
 # Visualized:
-# [1, 2, 3]
-# [4, 5, 6]
-# [7, 0, 8]
+# [1, 0, 2]
+# [3, 4, 5]
+# [6, 7, 8]
 ```
 
-**Goal state:** Tiles in order 1..N with 0 at the end: `[1, 2, 3, 4, 5, 6, 7, 8, 0]`
+**Goal state:** Tiles in order 0..N-1: `[0, 1, 2, 3, 4, 5, 6, 7, 8]`
 
 **Move format:** `(tile, direction)` where direction is `"up"`, `"down"`, `"left"`, or `"right"`.
 ```python
-puzzle = SlidingPuzzle(initial_state=[1, 2, 3, 4, 5, 6, 7, 0, 8])
-puzzle.move_tile(8, "left")  # Slide tile 8 left into the empty space
+puzzle = SlidingPuzzle(initial_state=[1, 0, 2, 3, 4, 5, 6, 7, 8])
+puzzle.move_tile(1, "right")  # Slide tile 1 right into the empty space
 ```
 
 **Validation rules:**
@@ -33,7 +33,7 @@ puzzle.move_tile(8, "left")  # Slide tile 8 left into the empty space
 - Tile must be adjacent to the empty space in the given direction
 - Target position must be within grid bounds
 
-**Solvability:** The constructor rejects unsolvable states using inversion parity (only even-inversion states are solvable).
+**Solvability:** The constructor rejects unsolvable states. For odd-width grids, checks inversion parity. For even-width grids, also accounts for blank row distance from goal.
 
 **Interface:**
 - `get_state()` - returns current state as a flat list
@@ -46,13 +46,13 @@ puzzle.move_tile(8, "left")  # Slide tile 8 left into the empty space
 
 ## Prompts (`prompts.py`)
 
-The LLM prompt uses heuristic-guided strategy:
+Generic prompt system that adapts to any NxN grid size. Uses heuristic-guided strategy:
 - Prioritize moving misplaced tiles closer to their goal positions
 - Avoid reversing the previous move
-- Work on upper/left tiles first (1, 2, 3, 4, 5)
+- Goal index of tile N is N
 
 **LLM output patterns:**
 ```
-move = [tile_number, "direction"]
-next_state = [1, 2, 3, 4, 5, 6, 7, 8, 0]
+move = DIRECTION
+next_state = [0, 1, 2, 3, 4, 5, 6, 7, 8]
 ```

@@ -1,0 +1,14 @@
+system_prompt: |
+  Tower of Hanoi: {num_disks} disks, 3 pegs (0,1,2). Move all disks from peg 0 to peg 2.
+  Rules: move one disk at a time, never place larger on smaller.
+  Output: move = [disk, from, to] and next_state = [[peg0], [peg1], [peg2]]
+
+user_prompt: |
+  Previous move: {previous_move}
+  State: {current_state}
+
+  If previous move was NOT disk 1: move disk 1 next in sequence {direction_string}.
+  If previous move WAS disk 1: make the only legal non-disk-1 move.
+
+  move = [disk_id, from_peg, to_peg]
+  next_state = [[...], [...], [...]]

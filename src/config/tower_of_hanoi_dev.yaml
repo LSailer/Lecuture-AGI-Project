@@ -1,6 +1,6 @@
 game: tower_of_hanoi
 margin_k: 2
-max_steps: 3000000
+max_steps: 100
 max_agents_per_step: 3
 output_dir: output
 temperature: 0.1
@@ -9,15 +9,14 @@ max_state_revisits: 3
 model_path: LLM/model
 prompt_variant: base
 
-
-# Game-specific
-num_disks: 20
+# Game-specific — 4 disks (15 moves optimal)
+num_disks: 4
 
 # Cycle detection
 max_state_revisits: 3
 
-# Fallback config
-max_fallback_retries: 3
-fallback_api: gemini          # "gemini" | "local" | "both"
+# Fallback config — reduced retries for speed
+max_fallback_retries: 1
+fallback_api: gemini
 fallback_local_model: deepseek-ai/DeepSeek-R1-Distill-Qwen-32B
 gemini_model: gemini-2.5-flash

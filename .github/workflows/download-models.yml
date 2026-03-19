@@ -1,0 +1,52 @@
+name: Download All Models
+
+on:
+  push:
+    branches: [dev/download]
+  workflow_dispatch:
+
+env:
+  REPO_PATH: /pfs/data6/home/ul/ul_student/ul_hfj15/Lecuture-AGI-Project
+
+jobs:
+  download-models:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Sync code to project folder
+        run: |
+          rsync -a --delete \
+            --exclude '.env' \
+            --exclude 'LLM/models/' \
+            --exclude 'LLM/model/' \
+            --exclude 'LLM/static/' \
+            --exclude '.venv/' \
+            --exclude 'logs/' \
+            --exclude 'output/' \
+            --exclude '__pycache__/' \
+            $GITHUB_WORKSPACE/ ${{ env.REPO_PATH }}/
+
+      - name: Download all models via sbatch
+        working-directory: ${{ env.REPO_PATH }}
+        run: |
+          mkdir -p logs
+          JOB_ID=$(sbatch --parsable \
+            --partition=dev_gpu_h100 \
+            --time=04:00:00 \
+            --job-name=download-models \
+            --output=logs/download-%j.out \
+            --error=logs/download-%j.err \
+            --wrap="uv run LLM/download_all.py")
+          echo "Submitted download job: $JOB_ID"
+
+          echo "Waiting for job $JOB_ID..."
+          while squeue -j $JOB_ID -h 2>/dev/null | grep -q "$JOB_ID"; do
+            sleep 60
+          done
+
+          echo "Download job finished."
+          cat logs/download-${JOB_ID}.out || true
+          cat logs/download-${JOB_ID}.err || true

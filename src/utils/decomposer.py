@@ -11,12 +11,14 @@ import weave
 
 class Agent:
     def __init__(
-        self, environment: Any, prompts_module: ModuleType, device: str = "cpu"
+        self, environment: Any, prompts_module: ModuleType, device: str = "cpu",
+        model_path: str = "LLM/model", prompt_variant: str = "base",
     ) -> None:
         self.environment = environment
         self.prompts = prompts_module
-        self.system_prompt: str = prompts_module.get_system_prompt(environment)
-        self.llm = LLM(device=device)
+        self.prompt_variant = prompt_variant
+        self.system_prompt: str = prompts_module.get_system_prompt(environment, variant=prompt_variant)
+        self.llm = LLM(model_id=model_path, device=device)
         self.output_parser = Parser(
             environment=environment,
             move_pattern=prompts_module.MOVE_PATTERN,
@@ -34,6 +36,7 @@ class Agent:
             previous_move=previous_move,
             environment=self.environment,
             step=step,
+            variant=self.prompt_variant,
         )
         return [
             {"role": "system", "content": self.system_prompt},

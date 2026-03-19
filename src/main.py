@@ -58,7 +58,9 @@ def create_agent(config: dict[str, Any], game: Any, device: str) -> Agent:
         from nonogram import prompts
     else:
         raise ValueError(f"Unknown game: {game_name}")
-    return Agent(environment=game, prompts_module=prompts, device=device)
+    model_path = config.get("model_path", "LLM/model")
+    prompt_variant = config.get("prompt_variant", "base")
+    return Agent(environment=game, prompts_module=prompts, device=device, model_path=model_path, prompt_variant=prompt_variant)
 
 
 def _cancel_sibling_jobs() -> None:
@@ -100,11 +102,17 @@ def load_config(args: argparse.Namespace) -> dict[str, Any]:
         config["max_state_revisits"] = args.max_state_revisits
     if args.temp_escalation:
         config["temp_escalation"] = True
+    if args.model_path is not None:
+        config["model_path"] = args.model_path
+    if args.prompt_variant is not None:
+        config["prompt_variant"] = args.prompt_variant
 
     # Defaults
     config.setdefault("temp_escalation", False)
     config.setdefault("max_state_revisits", 3)
     config.setdefault("max_fallback_retries", 3)
+    config.setdefault("model_path", "LLM/model")
+    config.setdefault("prompt_variant", "base")
     config.setdefault("fallback_api", "gemini")
     config.setdefault("gemini_model", "gemini-2.5-flash")
 
@@ -608,6 +616,12 @@ def main() -> None:
         help="Escalate temperature per agent (0.1, 0.2, ...)",
     )
     parser.add_argument(
+        "--model_path", type=str, default=None, help="Path to local model directory"
+    )
+    parser.add_argument(
+        "--prompt_variant", type=str, default=None, help="Prompt variant name (e.g., base, cot_detailed, minimal)"
+    )
+    parser.add_argument(
         "--max_state_revisits",
         type=int,
         default=None,
@@ -813,12 +827,16 @@ def main() -> None:
     else:
         print(f"\nMax steps ({max_steps}) reached without solving.")
 
+    success_rate = game.compute_progress()
+    print(f"Success Rate: {success_rate:.1%}")
+
     wandb.log({"predictions": predictions_table})
     wandb.log(
         {
             "total_steps": current_step,
             "solved": game.is_solved(),
             "cycle_detected": cycle_detected,
+            "success_rate": success_rate,
         }
     )
 
@@ -834,7 +852,7 @@ def main() -> None:
     json_filename = f"{game_type}{num_disks_str}_{config['max_agents_per_step']}a_{timestamp}.json"
     json_path = os.path.join(experiments_dir, json_filename)
 
-    experiment_data = {"game_type": config["game"], "steps": game_history}
+    experiment_data = {"game_type": config["game"], "success_rate": success_rate, "steps": game_history}
 
     with open(json_path, "w") as f:
         json.dump(experiment_data, f, indent=2)

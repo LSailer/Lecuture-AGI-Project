@@ -1,3 +1,12 @@
+CONFIGS = {
+    "2x2": [2, 1, 3, 0],
+    "3x3 (easiest)": [1, 2, 5, 6, 3, 4, 7, 8, 0],
+    "3x3 (hardest)": [8, 6, 7, 2, 5, 4, 3, 1, 0],
+    "4x4 (easiest)": [1, 2, 3, 7, 8, 4, 5, 6, 9, 10, 11, 15, 0, 12, 13, 14],
+    "4x4 (hardest)": [15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0],
+}
+
+
 class SlidingPuzzle:
     def __init__(self, initial_state):
         if initial_state is None:
@@ -10,20 +19,23 @@ class SlidingPuzzle:
             raise ValueError("Number should squared")
         self.grid_size = int(self.size**0.5)
 
-        self.goal_state = list(range(1, self.size)) + [0]
+        self.goal_state = list(range(self.size))
         if not self._is_solvable(initial_state):
             raise ValueError("Initial state is not solvable.")
         self.state = initial_state.copy()
 
     def _is_solvable(self, state):
         inversions = 0
-        flat_state = [tile for tile in state if tile != 0]
-        for i in range(len(flat_state)):
-            for j in range(i + 1, len(flat_state)):
-                if flat_state[i] > flat_state[j]:
+        flat = [t for t in state if t != 0]
+        for i in range(len(flat)):
+            for j in range(i + 1, len(flat)):
+                if flat[i] > flat[j]:
                     inversions += 1
-
-        return inversions % 2 == 0
+        if self.grid_size % 2 == 1:
+            return inversions % 2 == 0
+        blank_row = state.index(0) // self.grid_size
+        goal_blank_row = 0
+        return (inversions + abs(blank_row - goal_blank_row)) % 2 == 0
 
     def _get_position(self, tile):
         index = self.state.index(tile)
@@ -114,6 +126,10 @@ class SlidingPuzzle:
     def is_solved(self):
         return self.state == self.goal_state
 
+    def compute_progress(self) -> float:
+        correct = sum(1 for i, tile in enumerate(self.state) if tile == self.goal_state[i])
+        return correct / len(self.state)
+
     def get_state(self):
         return self.state[:]
 
@@ -142,23 +158,17 @@ class SlidingPuzzle:
 
 if __name__ == "__main__":
     print("=== 3x3 Puzzle (8-puzzle) ===")
-    puzzle = SlidingPuzzle(initial_state=[1, 2, 3, 4, 5, 6, 7, 0, 8])
+    puzzle = SlidingPuzzle(initial_state=[1, 2, 3, 6, 4, 5, 7, 8, 0])
     print("Initial State:", puzzle.get_state())
+    print("Goal State:", puzzle.goal_state)
     print("Visual:")
     print(puzzle.visualize())
-
-    puzzle.move_tile(8, "left")
-    print("\nAfter moving tile 8 left:")
-    print(puzzle.get_state())
-    print("Visual:")
-    print(puzzle.visualize())
-    print("Is solved?", puzzle.is_solved())
 
     print("\n=== 4x4 Puzzle (15-puzzle) ===")
     puzzle_4x4 = SlidingPuzzle(
-        initial_state=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 15]
+        initial_state=[15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
     )
     print("Initial State:", puzzle_4x4.get_state())
+    print("Goal State:", puzzle_4x4.goal_state)
     print("Visual:")
     print(puzzle_4x4.visualize())
-    print("Goal State:", puzzle_4x4.goal_state)
