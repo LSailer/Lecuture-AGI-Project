@@ -54,5 +54,5 @@ user_prompt: |
   Blank_idx: <index of 0 in state>
   Swap_idx: <index to swap blank with>
   Offset: <Swap_idx - Blank_idx>
-  move = <look up offset in table above: negative row-stride→UP, positive row-stride→DOWN, -1→LEFT, +1→RIGHT>
+  move = <look up offset in table: -{n}→UP, +{n}→DOWN, -1→LEFT, +1→RIGHT>
   next_state = [<all values 0–{max_tile} — state after swapping Blank_idx and Swap_idx>]
