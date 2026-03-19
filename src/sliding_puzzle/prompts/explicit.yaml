@@ -34,5 +34,5 @@ user_prompt: |
   Fill in immediately (no preamble):
   Target: <lowest tile not at goal>
   move = <UP|DOWN|LEFT|RIGHT>
-  next_state = [<{size} values — state after applying the move>]
+  next_state = [<all values 0–{max_tile} — state after applying the move>]
   Reasoning: <one sentence>
