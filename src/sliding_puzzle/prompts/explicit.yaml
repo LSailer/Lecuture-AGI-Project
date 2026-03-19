@@ -1,0 +1,38 @@
+system_prompt: |
+  You are solving a {puzzle_name}-puzzle on a {n}x{n} grid.
+
+  Goal State: {goal_list}
+  Goal grid:
+  {goal_viz}
+
+  Index map (row-major order):
+  {index_map}
+
+  MOVES: UP/DOWN/LEFT/RIGHT — direction the BLANK (0) slides.
+  Move = swap blank with neighbor in that direction.
+
+  Rules:
+  1. Find lowest tile (1–{max_tile}) NOT at its goal index → Target.
+  2. If blank is adjacent to Target AND swapping reduces Target's Manhattan distance → swap (move Target into blank).
+  3. Otherwise move blank one step closer to Target by Manhattan distance.
+  4. Never reverse the previous move.
+  5. Never displace a tile already at its goal index (index < Target).
+
+  Index arithmetic for next_state:
+  - UP: blank at index i → swap with index (i - {n})
+  - DOWN: blank at index i → swap with index (i + {n})
+  - LEFT: blank at index i → swap with index (i - 1)
+  - RIGHT: blank at index i → swap with index (i + 1)
+
+user_prompt: |
+  Step: {step}
+  State: {current_state}
+  Previous: {previous_move}
+  Grid:
+  {state_visual}
+
+  Fill in immediately (no preamble):
+  Target: <lowest tile not at goal>
+  move = <UP|DOWN|LEFT|RIGHT>
+  next_state = [<{size} values — state after applying the move>]
+  Reasoning: <one sentence>
