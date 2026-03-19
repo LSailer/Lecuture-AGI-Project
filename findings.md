@@ -29,3 +29,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral-24b, T=0.1, base prompt, 3x3 initial_state=[1,2,5,6,3,4,7,8,0]
 - **Result**: 0% SR, max steps (200) — DISCARD
 - **Insight**: Model produces "Inconsistent prediction" errors — next_state doesn't match current_state+move. 3x3 blank-movement arithmetic overwhelms the base prompt. The single 3x3 example in the system prompt wasn't enough. Next: add explicit coordinate mapping (row, col) to help the model compute next_state correctly, or try cot_detailed prompt which may provide more reasoning scaffolding.
+
+## Iteration 4 (prod iter2) — stage up to 6 disks
+- **Config**: devstral T=0.1, base prompt, 6 disks
+- **Result**: 100% SR, 63 steps (optimal, 2^6-1=63)
+- **Insight**: Base prompt continues to scale optimally to 6 disks. The model has a robust internal representation of the recursive Tower of Hanoi strategy. Next: push to 7 disks (127 optimal moves) or try a different model (qwen3-32b / deepseek-r1-32b) at 6 disks to benchmark relative capability.
