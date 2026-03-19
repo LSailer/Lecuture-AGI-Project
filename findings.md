@@ -44,3 +44,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral-24b, T=0.5, explicit prompt (new answer-first variant), 3x3 initial_state=[1,2,5,6,3,4,7,8,0], 3 agents
 - **Result**: 22.2% SR, 200 steps (max steps hit, partial progress) — KEEP (first >0% on 3x3)
 - **Insight**: Answer-first format + explicit worked example + correct adjacency arithmetic got the model computing valid next_state. T=0.5 diversity helped escape some cycles (cycle_detected=False). But 22.2% means only 2/9 tiles correct at end — model still gets stuck. Next: increase T further (0.7) for more diversity to escape greedy traps, or add explicit anti-cycle instruction "if you've been at this state before, choose a different move direction than previously used".
+
+## Iteration 5 (sliding_puzzle) — anti-backtrack rule + 2nd example + blank_index hint
+- **Config**: devstral-24b, T=0.5, explicit prompt (anti-backtrack, 2nd example, blank_index), 3x3 easiest
+- **Result**: 11.1% SR, 1 valid step then all Inconsistent prediction — DISCARD
+- **Insight**: Adding `blank_index:` to the output format caused severe regression. The model correctly identifies the target index (e.g., UP from blank_idx=7 reaches idx=4=tile3) but **labels the direction wrong** (says LEFT when it means UP). The anti-backtrack rule was understood but ignored. The reasoning also enters infinite "Wait..." loops that fill the token budget. Root cause: the model's direction-name↔index arithmetic is unreliable. Next: try qwen3-32b (stronger spatial reasoning) or deepseek-r1-32b (CoT might fix direction confusion), or redesign prompt to ask for INDEX of tile to swap rather than direction name.
