@@ -9,8 +9,8 @@ max_state_revisits: 3
 model_path: LLM/model
 prompt_variant: base
 
-# Game-specific — 4 disks (15 moves optimal)
-num_disks: 4
+# Game-specific — 3 disks (7 moves optimal)
+num_disks: 3
 
 # Cycle detection
 max_state_revisits: 3
