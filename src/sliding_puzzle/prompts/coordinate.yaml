@@ -1,0 +1,81 @@
+system_prompt: |
+  You are solving a {puzzle_name}-puzzle ({n}x{n} grid).
+
+  Goal State: {goal_list}
+  Goal Grid:
+  {goal_viz}
+
+  Index Map (flat index → row, col):
+  {index_map}
+
+  ═══ COMPUTING next_state ═══
+  The state is a flat list. The blank is the tile with value 0.
+  Each move SWAPS two positions in the list:
+    blank_index = position of 0 in the current state list
+    UP    → swap positions blank_index and blank_index - {n}   (blank_index >= {n})
+    DOWN  → swap positions blank_index and blank_index + {n}   (blank_index <  {n}*({n}-1))
+    LEFT  → swap positions blank_index and blank_index - 1     (blank_index % {n} != 0)
+    RIGHT → swap positions blank_index and blank_index + 1     (blank_index % {n} != {n}-1)
+
+  next_state = copy of current state, then swap the two positions above.
+
+  Example (3x3):
+  State: [1, 2, 5, 6, 3, 4, 7, 8, 0]
+  blank_index = 8
+  Grid:
+   1  2  5
+   6  3  4
+   7  8  0
+
+  Move UP → swap index 8 and index 8-3=5
+  Swap positions 8 and 5: value at 5 is 4, value at 8 is 0 → swap them
+  next_state = [1, 2, 5, 6, 3, 0, 7, 8, 4]
+
+  Example 2 (3x3):
+  State: [1, 2, 5, 6, 3, 0, 7, 8, 4]
+  blank_index = 5
+  Grid:
+   1  2  5
+   6  3  0
+   7  8  4
+
+  Move LEFT → swap index 5 and index 5-1=4
+  Swap positions 5 and 4: value at 4 is 3, value at 5 is 0 → swap them
+  next_state = [1, 2, 5, 6, 0, 3, 7, 8, 4]
+
+  ═══ SOLVING STRATEGY ═══
+  1. Find the lowest-numbered tile NOT at its goal index. Call it TARGET.
+     (Goal index of tile N is N. Tile 0 is the blank.)
+  2. If blank is adjacent to TARGET and swapping brings TARGET closer to goal → move blank toward TARGET (swap).
+  3. Otherwise → move blank one step closer to TARGET by Manhattan distance.
+     Avoid displacing tiles that are already correctly placed.
+  4. Never undo the immediately previous move.
+
+  ═══ OUTPUT FORMAT (strict) ═══
+  blank_index: <index of 0 in current state>
+  Target: <tile number>
+  move = <UP|DOWN|LEFT|RIGHT>
+  swap_indices: <blank_index> and <blank_index ± offset>
+  next_state = [<{size} elements after swap>]
+
+user_prompt: |
+  Step: {step}
+  Current State: {current_state}
+  Previous Move: {previous_move}
+
+  Grid:
+  {state_visual}
+
+  Solve step-by-step:
+  1. blank_index = index of 0 in {current_state}
+  2. List tiles not at goal index (tile N should be at index N).
+  3. TARGET = lowest misplaced tile number.
+  4. Choose move (UP/DOWN/LEFT/RIGHT) to bring TARGET closer to goal.
+  5. Compute swap: swap blank_index with blank_index±offset.
+  6. Write next_state by doing that swap.
+
+  blank_index: ...
+  Target: ...
+  move = ...
+  swap_indices: ... and ...
+  next_state = [...]

@@ -7,7 +7,7 @@ temperature: 0.1
 temp_escalation: false
 max_state_revisits: 3
 model_path: LLM/models/devstral-24b
-prompt_variant: base
+prompt_variant: coordinate
 
 
 # Game-specific — goal: [0,1,2,...,N-1], 0 always last in initial
@@ -16,7 +16,7 @@ prompt_variant: base
 # 3x3 (hardest): initial_state: [8, 6, 7, 2, 5, 4, 3, 1, 0]
 # 4x4 (easiest): initial_state: [1, 2, 3, 7, 8, 4, 5, 6, 9, 10, 11, 15, 0, 12, 13, 14]
 # 4x4 (hardest): initial_state: [15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
-initial_state: [2, 1, 3, 0]
+initial_state: [1, 2, 5, 6, 3, 4, 7, 8, 0]
 # Cycle detection
 max_state_revisits: 3
 
