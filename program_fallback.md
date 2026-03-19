@@ -35,7 +35,8 @@ Each Ralph Loop iteration, you do exactly ONE experiment:
 1. **Read state**: `cat results.tsv` and `git log --oneline -10` — what worked, what didn't
 2. **Decide**: based on previous results, pick what to try next. Be creative.
 3. **Modify**: edit config YAML and/or prompt YAML files
-4. **Commit**: `git commit -am "exp: <description>"`
+4. **Commit config changes**: `git add src/config/ src/*/prompts/ && git commit -m "exp: <description>"`
+   (Only commit config/prompt changes — results are logged separately in step 7)
 5. **Run** (via srun to GPU):
    ```bash
    srun --partition=dev_gpu_h100 --time=00:20:00 --gres=gpu:1 --mem=127G \
@@ -43,10 +44,11 @@ Each Ralph Loop iteration, you do exactly ONE experiment:
    ```
 6. **Parse**: `grep "Success Rate\|solved in\|Max steps" run.log`
    - If empty → crash. `tail -50 run.log` for error. Log as crash.
-7. **Log**: append result to `results.tsv` (tab-separated)
+7. **Log**: append result to `results.tsv`, then commit:
+   `git add results.tsv && git commit -m "results: <status> <summary>"`
 8. **Keep or discard**:
    - SR improved or same SR with fewer steps → keep (branch advances)
-   - Worse → `git reset --hard HEAD~1` (discard the commit)
+   - Worse → `git revert HEAD~1 --no-edit` (reverts the experiment commit, preserving history)
 9. **Stage up**: if SR=100% → increase difficulty (more disks / harder puzzle)
 
 Then **exit**. The Ralph Loop will feed you the same prompt again.
