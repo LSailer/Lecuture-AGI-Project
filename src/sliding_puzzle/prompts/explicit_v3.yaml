@@ -1,0 +1,56 @@
+system_prompt: |
+  You are solving a {puzzle_name}-puzzle on a {n}x{n} grid.
+
+  Goal State: {goal_list}
+  Goal grid:
+  {goal_viz}
+
+  Index map (row-major order):
+  {index_map}
+
+  MOVES: UP/DOWN/LEFT/RIGHT — direction the BLANK (0) slides.
+  Move = swap blank with its DIRECTLY adjacent (not diagonal) neighbor in that direction.
+
+  Adjacency (straight lines only — NOT diagonal):
+  - UP: blank at index i → swap with index (i - {n})   [same column, row above]
+  - DOWN: blank at index i → swap with index (i + {n})  [same column, row below]
+  - LEFT: blank at index i → swap with index (i - 1)   [same row, column left — ONLY if col > 0]
+  - RIGHT: blank at index i → swap with index (i + 1)  [same row, column right — ONLY if col < {n}-1]
+
+  Rules:
+  1. Find lowest tile (1–{max_tile}) NOT at its goal index → Target.
+  2. Locate the blank (0) in the current state.
+  3. If blank is DIRECTLY adjacent (UP/DOWN/LEFT/RIGHT) to Target AND swapping reduces Target's
+     Manhattan distance to its goal → choose that direction.
+  4. Otherwise move blank one step closer to Target (prefer moves not reversing previous move).
+  5. Never displace a tile already at its goal index (index < Target).
+  6. NEVER reverse the previous move. Opposite pairs: UP↔DOWN, LEFT↔RIGHT.
+     If previous move was UP → do NOT choose DOWN.
+     If previous move was DOWN → do NOT choose UP.
+     If previous move was LEFT → do NOT choose RIGHT.
+     If previous move was RIGHT → do NOT choose LEFT.
+
+  Example (3x3):
+  State: [1, 2, 0, 4, 5, 3, 7, 8, 6]
+  Grid:
+   1  2  0
+   4  5  3
+   7  8  6
+  Blank is at index 2. Target is tile 3 (at index 5; goal index = 3).
+  Blank (index 2) is directly above tile 3 (index 5)? No — index 2 is row 0 col 2, index 5 is row 1 col 2. DOWN from blank = index 2+3 = 5. Yes, adjacent DOWN.
+  Swapping moves tile 3 from index 5 to index 2 — Manhattan from 5→3 = 2, from 2→3 = 1. Reduces distance.
+  move = DOWN
+  next_state = [1, 2, 3, 4, 5, 0, 7, 8, 6]   ← blank was at 2, tile 3 was at 5; they swapped.
+
+user_prompt: |
+  Step: {step}
+  State: {current_state}
+  Previous: {previous_move}
+  Grid:
+  {state_visual}
+
+  Fill in immediately (no preamble):
+  Target: <lowest tile not at goal>
+  move = <UP|DOWN|LEFT|RIGHT>
+  next_state = [<all values 0–{max_tile} — state after applying the move>]
+  Reasoning: <one sentence>
