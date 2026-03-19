@@ -11,3 +11,4 @@ d521145	1.000000	15	4	keep	dev iter2 stage up 4 disks base prompt devstral T=0.1
 ecffc4000592d49b55081ccdbcf289865f30a474	0.000000	0	2	discard	sliding_puzzle iter6 qwen3-32b T=0.5 explicit — token budget exhausted by thinking mode, never reaches move= format
 ea82d8fee9538abe75b8695da2372ec84fbb4623	0.000000	200	2	discard	sliding_puzzle iter6b devstral explicit_v2 offset-chain — 0% SR cycles from step1, worse than explicit
 b44798a710042093b089cd8cc9b388c23982409a	0.222222	200	2	discard	sliding_puzzle iter6c devstral T=0.7 explicit — 22.2% SR same as T=0.5, no improvement
+7be9875	0.000000	200	2	discard	sliding_puzzle iter7 explicit_v3 anti-reversal rule — 0% SR Gemini quota exhausted all inconsistent predictions fail

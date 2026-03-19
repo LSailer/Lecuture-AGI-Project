@@ -54,3 +54,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: (a) qwen3-32b T=0.5 explicit; (b) devstral T=0.5 explicit_v2 offset-chain; (c) devstral T=0.7 explicit
 - **Result**: (a) 0% SR — qwen3 thinking-mode exhausts 750-token budget before reaching move= line; (b) 0% SR — offset-chain fields confuse model, cycles from step 1; (c) 22.2% SR — same as iter4, no gain from higher temperature
 - **Insight**: Root cause is cycling — model oscillates tile back and forth while Gemini fallback is quota-exhausted (all fallback retries fail silently). Cycle-avoidance MUST be baked into the prompt rules rather than relying on fallback. Next: add explicit anti-backtrack rule to explicit.yaml system prompt — "Do not reverse your previous move" — without changing output format (the output-format changes in iter5 caused regression).
+
+## Iteration 7 (sliding_puzzle) — explicit_v3 anti-reversal rule
+- **Config**: devstral-24b, T=0.5, explicit_v3 (anti-reversal rule added to system prompt), 3x3 easiest
+- **Result**: 0% SR, 200 steps — DISCARD
+- **Insight**: Gemini fallback is quota-exhausted (free tier: 20 req/day). Without fallback, ALL "Inconsistent prediction" steps fail — the 22.2% in iter4 was entirely dependent on Gemini correcting next_state errors. Root cause: model computes `next_state` greedily (places tile at goal) instead of mechanically (swap blank↔adjacent). Anti-reversal rule had no effect because cycling isn't the bottleneck — wrong next_state is. Next: redesign prompt to force explicit swap arithmetic: "blank at B, neighbor at N=B±{n}, swap B and N in state". Do NOT add new output fields (iter5 lesson) — add the swap derivation as a reasoning step in the system prompt example only.
