@@ -3,11 +3,11 @@ margin_k: 2
 max_steps: 200
 max_agents_per_step: 3
 output_dir: output
-temperature: 0.7
+temperature: 0.5
 temp_escalation: false
 max_state_revisits: 3
 model_path: LLM/models/devstral-24b
-prompt_variant: explicit
+prompt_variant: explicit_v2
 
 
 # Game-specific — goal: [0,1,2,...,N-1], 0 always last in initial
