@@ -49,3 +49,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral-24b, T=0.5, explicit prompt (anti-backtrack, 2nd example, blank_index), 3x3 easiest
 - **Result**: 11.1% SR, 1 valid step then all Inconsistent prediction — DISCARD
 - **Insight**: Adding `blank_index:` to the output format caused severe regression. The model correctly identifies the target index (e.g., UP from blank_idx=7 reaches idx=4=tile3) but **labels the direction wrong** (says LEFT when it means UP). The anti-backtrack rule was understood but ignored. The reasoning also enters infinite "Wait..." loops that fill the token budget. Root cause: the model's direction-name↔index arithmetic is unreliable. Next: try qwen3-32b (stronger spatial reasoning) or deepseek-r1-32b (CoT might fix direction confusion), or redesign prompt to ask for INDEX of tile to swap rather than direction name.
+
+## Iteration 6 (sliding_puzzle) — model switch + prompt redesign experiments
+- **Config**: (a) qwen3-32b T=0.5 explicit; (b) devstral T=0.5 explicit_v2 offset-chain; (c) devstral T=0.7 explicit
+- **Result**: (a) 0% SR — qwen3 thinking-mode exhausts 750-token budget before reaching move= line; (b) 0% SR — offset-chain fields confuse model, cycles from step 1; (c) 22.2% SR — same as iter4, no gain from higher temperature
+- **Insight**: Root cause is cycling — model oscillates tile back and forth while Gemini fallback is quota-exhausted (all fallback retries fail silently). Cycle-avoidance MUST be baked into the prompt rules rather than relying on fallback. Next: add explicit anti-backtrack rule to explicit.yaml system prompt — "Do not reverse your previous move" — without changing output format (the output-format changes in iter5 caused regression).
