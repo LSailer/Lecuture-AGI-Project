@@ -6,8 +6,8 @@ output_dir: output
 temperature: 0.5
 temp_escalation: false
 max_state_revisits: 3
-model_path: LLM/models/deepseek-r1-32b
-prompt_variant: explicit
+model_path: LLM/models/devstral-24b
+prompt_variant: explicit_v5
 
 
 # Game-specific — goal: [0,1,2,...,N-1], 0 always last in initial
