@@ -14,3 +14,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral T=0.1, base prompt, 4 disks
 - **Result**: 100% SR, 15 steps (optimal)
 - **Insight**: Model handles 4 disks optimally too. Next: try 5 disks or explore if other models/prompts can match this.
+
+## Iteration 3 (prod iter1) — stage up to 5 disks
+- **Config**: devstral T=0.1, base prompt, 5 disks
+- **Result**: 100% SR, 31 steps (optimal, 2^5-1=31)
+- **Insight**: The base prompt's alternating-disk-1 rule scales optimally to 5 disks. Model still achieves perfect steps. Next: push to 6 disks (63 optimal moves) or try alternative models to benchmark against devstral.
