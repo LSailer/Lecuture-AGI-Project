@@ -49,8 +49,8 @@ user_prompt: |
   Fill in immediately (no preamble):
   Target: <lowest tile not at goal>
   blank_idx: <index of 0 in state>
-  blank_row: <blank_idx // {n}>
-  blank_col: <blank_idx % {n}>
-  Valid_moves: <enumerate: UP if blank_row>0; DOWN if blank_row<{n}-1; LEFT if blank_col>0; RIGHT if blank_col<{n}-1>
+  blank_row: <blank_idx // n>
+  blank_col: <blank_idx % n>
+  Valid_moves: <enumerate: UP if blank_row>0; DOWN if blank_row<n-1; LEFT if blank_col>0; RIGHT if blank_col<n-1>
   move = <one direction from Valid_moves only>
   next_state = [<all values 0–{max_tile} — state after swapping blank_idx and its neighbor in move direction>]
