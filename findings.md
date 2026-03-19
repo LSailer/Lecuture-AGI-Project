@@ -74,3 +74,13 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral-24b, T=0.1, base prompt, 7 disks
 - **Result**: 100% SR, 127 steps (optimal, 2^7-1=127)
 - **Insight**: Base prompt scales optimally to 7 disks. Wall-clock time ~110 min (~35 sec/inference × 127×3 calls). The alternating-disk-1 rule provably generates 2^n-1 optimal moves; model faithfully follows it without drift across all 127 sequential decisions. Next: push to 8 disks (255 optimal moves, ~220 min projected) OR benchmark alternative models (qwen3-32b, deepseek-r1-32b) at 7 disks to compare capability and speed.
+
+## Iteration 10 (sliding_puzzle) — DeepSeek-R1-32B token budget exhausted
+- **Config**: deepseek-r1-32b, T=0.5, explicit prompt, 3x3 easiest
+- **Result**: 0% SR, 200 steps (max) — DISCARD
+- **Insight**: R1 generates verbose inline reasoning ("Okay, so I'm trying to solve...") filling 750 token budget before reaching `move=` format — same failure as qwen3 iter6. All agents fail "Could not find move or next_state in the response." R1 is incompatible with 750-token budget + answer-first format. Devstral remains the only usable model.
+
+## Iteration 10b (sliding_puzzle) — explicit_v5 row/col boundary enumeration
+- **Config**: devstral-24b, T=0.5, explicit_v5 (new: blank_row/col + Valid_moves enumeration), 3x3 easiest
+- **Result**: 0% SR, 4 valid steps — KEEP (best without Gemini fallback)
+- **Insight**: Row/col boundary enumeration FIXED the dominant "Invalid move: No tile in that direction" failure mode — 0 invalid boundary moves vs 7/9 agents failing before. 4 valid consensus steps taken. But model cycles on step 4 (tile 6 right then immediately left — reversal). Next: add explicit anti-reversal rule to explicit_v5 now that valid steps are being taken (iter7's anti-reversal failed because Gemini was exhausted and next_state errors dominated; now valid moves are being found, anti-reversal can take effect).
