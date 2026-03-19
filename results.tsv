@@ -19,3 +19,4 @@ d4286c9	1.000000	127	7	keep	iter3 stage up to 7 disks base prompt devstral T=0.1
 fdf45ebd6fdb032dd23c1beab9d8d9abd8194f19	0.000000	4	2	keep	sliding_puzzle iter10b 3x3 easiest devstral T=0.5 explicit_v5 row/col boundary check — 4 valid steps (up from 0-1), Invalid move errors fixed, cycling after step4
 dfd3703	0.111111	3	2	keep	sliding_puzzle iter11 3x3 easiest devstral T=0.5 explicit_v6 anti-reversal — 11.1dfd3703	0.111111	3	2	keep	sliding_puzzle iter11 3x3 easiest devstral T=0.5 explicit_v6 anti-reversal - 11.1% SR 3 valid steps improved from iter10b 0%
 a9fca40	0.222222	153	2	keep	sliding_puzzle iter12 3x3 easiest devstral T=0.5 explicit_v7 N+tile_at_N bridge — 22.2% SR 153 steps ties best SR with fewer steps
+63530cb	0.000000	200	2	discard	sliding_puzzle iter13 3x3 easiest devstral T=0.5 explicit_v8 short output — 0% SR goal-seeking reverts without intermediate fields, regression from v7
