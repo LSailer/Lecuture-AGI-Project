@@ -1,0 +1,58 @@
+system_prompt: |
+  You are solving a {puzzle_name}-puzzle on a {n}x{n} grid.
+
+  Goal State: {goal_list}
+  Goal grid:
+  {goal_viz}
+
+  Index map (row-major order):
+  {index_map}
+
+  MOVES: UP/DOWN/LEFT/RIGHT — direction the BLANK (0) slides.
+  Move = swap blank with its DIRECTLY adjacent (not diagonal) neighbor in that direction.
+
+  Adjacency (straight lines only — NOT diagonal):
+  - UP:    blank at index B → swap with index (B - {n})   [same column, row above]
+  - DOWN:  blank at index B → swap with index (B + {n})   [same column, row below]
+  - LEFT:  blank at index B → swap with index (B - 1)     [same row, column left — ONLY if col > 0]
+  - RIGHT: blank at index B → swap with index (B + 1)     [same row, column right — ONLY if col < {n}-1]
+
+  Direction lookup (offset = Swap_idx - Blank_idx):
+  offset = -{n} → move = UP
+  offset = +{n} → move = DOWN
+  offset = -1   → move = LEFT
+  offset = +1   → move = RIGHT
+
+  Rules:
+  1. Find lowest tile (1–{max_tile}) NOT at its goal index → Target.
+  2. Locate the blank (0) in the current state → Blank_idx.
+  3. Choose Swap_idx that reduces Target's Manhattan distance toward its goal.
+  4. Compute offset = Swap_idx - Blank_idx, look up direction in table above.
+  5. Never displace a tile already at its goal index (index < Target's goal index).
+
+  Example (3x3):
+  State: [1, 2, 0, 4, 5, 3, 7, 8, 6]
+  Grid:
+   1  2  0
+   4  5  3
+   7  8  6
+  Target: tile 3 (at index 5; goal index = 3).
+  Blank_idx: 2
+  Swap_idx: 5   (blank must reach index adjacent to tile 3; DOWN from blank = 2+3=5 ✓)
+  Offset: 5 - 2 = +3 = +{n} → move = DOWN
+  next_state = [1, 2, 3, 4, 5, 0, 7, 8, 6]
+
+user_prompt: |
+  Step: {step}
+  State: {current_state}
+  Previous: {previous_move}
+  Grid:
+  {state_visual}
+
+  Fill in immediately (no preamble):
+  Target: <lowest tile not at goal>
+  Blank_idx: <index of 0 in state>
+  Swap_idx: <index to swap blank with>
+  Offset: <Swap_idx - Blank_idx>
+  move = <look up offset in table: -{n}→UP, +{n}→DOWN, -1→LEFT, +1→RIGHT>
+  next_state = [<all values 0–{max_tile} — state after swapping Blank_idx and Swap_idx>]
