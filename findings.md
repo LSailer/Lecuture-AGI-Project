@@ -69,3 +69,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral-24b, T=0.5, explicit_v5 (swap=[B,N] before next_state), 3x3 easiest
 - **Result**: 0% SR, total_steps=1 valid — DISCARD
 - **Insight**: The `swap` field is being populated correctly (model says `swap = [8, 7]`), but `next_state` is STILL goal-seeking (swaps positions 6 and 8, not 7 and 8). The reasoning and next_state remain disconnected even with the explicit swap commitment. Also: most agents say `move = RIGHT` when blank is at corner index 8 (RIGHT is invalid) — the model doesn't track boundary conditions. Gemini quota remains exhausted, exposing all failures. Root cause may be deeper: the model conflates "where blank should go eventually" with "where blank goes now". Next: try DeepSeek-R1-32B which has explicit CoT reasoning chains for arithmetic — it may better propagate the swap indices into next_state. Keep explicit_v5 prompt or simplify back to explicit.
+
+## Iteration 5 (tower iter3) — stage up to 7 disks
+- **Config**: devstral-24b, T=0.1, base prompt, 7 disks
+- **Result**: 100% SR, 127 steps (optimal, 2^7-1=127)
+- **Insight**: Base prompt scales optimally to 7 disks. Wall-clock time ~110 min (~35 sec/inference × 127×3 calls). The alternating-disk-1 rule provably generates 2^n-1 optimal moves; model faithfully follows it without drift across all 127 sequential decisions. Next: push to 8 disks (255 optimal moves, ~220 min projected) OR benchmark alternative models (qwen3-32b, deepseek-r1-32b) at 7 disks to compare capability and speed.
