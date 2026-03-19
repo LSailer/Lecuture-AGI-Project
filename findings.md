@@ -24,3 +24,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral-24b, T=0.1, base prompt, 2x2 initial_state=[2,1,3,0]
 - **Result**: 100% SR, 8 steps (optimal for 2x2 is ~3; base prompt is greedy so 8 is acceptable)
 - **Insight**: Base prompt solves 2x2 out of the box with devstral. SR=100%. Next: stage up to 3x3 (easiest) to test the greedy strategy at higher complexity.
+
+## Iteration 2 (sliding_puzzle) — stage up to 3x3 easiest devstral T=0.1
+- **Config**: devstral-24b, T=0.1, base prompt, 3x3 initial_state=[1,2,5,6,3,4,7,8,0]
+- **Result**: 0% SR, max steps (200) — DISCARD
+- **Insight**: Model produces "Inconsistent prediction" errors — next_state doesn't match current_state+move. 3x3 blank-movement arithmetic overwhelms the base prompt. The single 3x3 example in the system prompt wasn't enough. Next: add explicit coordinate mapping (row, col) to help the model compute next_state correctly, or try cot_detailed prompt which may provide more reasoning scaffolding.
