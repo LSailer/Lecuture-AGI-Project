@@ -6,7 +6,7 @@ output_dir: output
 temperature: 0.5
 temp_escalation: false
 max_state_revisits: 3
-model_path: LLM/models/devstral-24b
+model_path: LLM/models/deepseek-r1-32b
 prompt_variant: explicit
 
 
