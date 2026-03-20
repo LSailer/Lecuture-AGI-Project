@@ -105,10 +105,10 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Result**: 100% SR, 76 steps — KEEP (massive breakthrough: 22.2%→100%)
 - **Insight**: Increasing agents from 3→9 was decisive. The "wisdom of crowds" effect overrides goal-seeking minority: with 9 votes, the correct mechanical swap answer wins consensus consistently. 76 steps (vs optimal ~20) shows cycles still occur but resolve quickly. Next: stage up to 3x3 hardest initial_state=[8,6,7,2,5,4,3,1,0] to test whether 9-agent consensus can handle a harder configuration, or try reducing steps by decreasing T (more greedy → fewer exploration cycles).
 
-## Iteration 4 (tower iter4) — stage up to 8 disks [IN PROGRESS]
+## Iteration 4 (tower iter4) — stage up to 8 disks [TIMEOUT]
 - **Config**: devstral-24b, T=0.1, base prompt, 8 disks (optimal=255 moves)
-- **Result**: Run still in progress (PID 334021, started ~15:19 Mar 19). Expected ~220 min but taking longer (~10+ hrs). No output file yet.
-- **Insight**: Run started but another parallel agent reverted the exp commit (config back to 7). Background process (PID 334021) still running with 8 disks since config was loaded at startup. Output will appear as `tower_of_hanoi_8d_3a_*.json` when complete. If run completes with 100% SR 255 steps, stage up to 9 disks (511 optimal). If it stalls, the model may be drifting at 8 disks — try T=0.0 or minimal prompt.
+- **Result**: Timed out — the 24-hour SLURM job limit was reached before the run completed. No output produced.
+- **Insight**: At 8 disks the optimal solution requires 255 sequential moves, each needing 3 agent calls (~35 sec/call), totalling ~7.4 hours of pure inference — but overhead, retries, and voting push wall-clock time beyond the 24h budget. The base prompt scales optimally through 7 disks (127 steps, ~110 min) but 8 disks exceeds the job time limit. Future attempts should either extend the SLURM time limit, reduce per-call latency (e.g., fewer agents, lower max_tokens), or checkpoint progress to resume across jobs.
 
 ## Iteration 15 (sliding_puzzle) — stage up to 3x3 hardest
 - **Config**: devstral-24b, T=0.5, explicit_v7, 3x3 hardest initial_state=[8,6,7,2,5,4,3,1,0], max_agents=9
