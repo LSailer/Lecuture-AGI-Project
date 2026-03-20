@@ -28,23 +28,17 @@ uv sync
 
 ## Usage
 
-### 1. Download the LLM
-
-**Option A — Ollama (recommended for Apple Silicon):**
+### 1. Download the LLMs
 
 ```bash
-ollama pull qwen3:8b
+uv run LLM/download_all.py
 ```
 
-Ensure `llm_backend: ollama` is set in `src/config/*.yaml` (default).
-
-**Option B — HuggingFace:**
+Downloads all models (Qwen3-32B, Devstral-24B, DeepSeek-R1-32B) to `LLM/models/`:
 
 ```bash
-uv run LLM/download.py
+uv run LLM/download_all.py
 ```
-
-Downloads the model to `LLM/model/`. Set `llm_backend: huggingface` in the config.
 
 ### 2. Run Solvers
 
@@ -71,29 +65,58 @@ sbatch scripts/run.sh
 
 Submits to `gpu_h100_il` partition with 1x H100 GPU, 127 GB RAM.
 
-### 4. Cancel All SLURM Jobs (Remote)
+### 4. Autoresearch (Autonomous Experiment Loop)
+
+Autoresearch runs Claude Code in a loop on the cluster. Each iteration, Claude reads prior results (`results.tsv`), designs and runs an experiment, evaluates the outcome, and commits findings. See [docs/AUTORESEARCH.md](docs/AUTORESEARCH.md) for full details.
+
+**Dev (smoke test):**
 
 ```bash
-gh workflow run cancel-jobs.yml --ref dev
+# Quick validation — 2 iterations, 30 min, dev config (3 disks, max_steps=100)
+GAME=tower_of_hanoi sbatch scripts/run_autoresearch_dev.sh
 ```
 
-Triggers the self-hosted runner to `scancel --user=$USER` on the cluster. No SSH required.
+- Partition: `dev_gpu_h100`
+- Timeout: 30 minutes
+- Iterations: 2 (hardcoded)
+- Config: `src/config/<game>_dev.yaml`
+- Claude budget: $1/iteration
 
-### 5. Run Tests
+**Prod (full research run):**
 
 ```bash
-cd src
-uv run sliding_puzzle/test_simple.py
-uv run sliding_puzzle/test_generic.py
+# Full campaign — up to 50 iterations, 24h, prod config (7 disks)
+GAME=tower_of_hanoi sbatch scripts/run_autoresearch.sh
+
+# Override iteration count
+MAX_ITER=20 GAME=sliding_puzzle sbatch scripts/run_autoresearch.sh
 ```
+
+- Partition: `gpu_h100_il`
+- Timeout: 24 hours
+- Iterations: 50 (default, configurable via `MAX_ITER`)
+- Config: `src/config/<game>.yaml`
+- Claude budget: $2/iteration
+
+**Monitor a running job:**
+
+```bash
+tail -f logs/autoresearch-*.out    # live output
+cat results.tsv                    # experiment log
+squeue -u $USER                    # SLURM job status
+```
+
+Both scripts automatically commit results, run the analysis notebook, push to the branch, and create a PR when finished.
+
+
 
 ## Project Structure
 
 ```
 Lecuture-AGI-Project/
 ├── LLM/
-│   ├── download.py               # Model download script
-│   └── model/                    # Downloaded model weights
+│   ├── download_all.py           # Downloads all models (Qwen3, Devstral, DeepSeek)
+│   └── models/                   # Downloaded model weights
 ├── src/
 │   ├── main.py                   # Unified orchestration + voting loop
 │   ├── config/
@@ -111,9 +134,15 @@ Lecuture-AGI-Project/
 │       ├── prompts.py            # System/user prompts, regex patterns, parse fns
 │       ├── test_simple.py        # Basic environment tests
 │       └── test_generic.py       # Generic NxN tests
+├── program.md                    # Autoresearch prompt (prod — GPU node)
+├── program_fallback.md           # Autoresearch prompt (fallback — login node)
+├── results.tsv                   # Autoresearch experiment log
+├── findings.md                   # Autoresearch qualitative notes
 ├── output/                       # Generated logs and plots
 ├── scripts/
-│   └── run.sh                    # SLURM job script
+│   ├── run.sh                    # SLURM job script (single experiment)
+│   ├── run_autoresearch.sh       # Prod autoresearch loop (24h, 50 iterations)
+│   └── run_autoresearch_dev.sh   # Dev autoresearch smoke test (30min, 2 iterations)
 └── .env                          # HF_TOKEN (not committed)
 ```
 
@@ -158,7 +187,4 @@ Each `prompts.py` exports:
 
 Configuration lives in `src/config/*.yaml` and can be overridden via CLI.
 
-## Output
 
-- `output/log.csv` - Per-agent responses with columns: `step`, `number_agent`, `response`, `predicted_action`, `predicted_state`, `error_message`
-- `output/step_N_distribution.png` - Vote distribution bar charts per step
