@@ -104,3 +104,13 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral-24b, T=0.5, explicit_v7, 3x3 easiest, max_agents_per_step=9
 - **Result**: 100% SR, 76 steps — KEEP (massive breakthrough: 22.2%→100%)
 - **Insight**: Increasing agents from 3→9 was decisive. The "wisdom of crowds" effect overrides goal-seeking minority: with 9 votes, the correct mechanical swap answer wins consensus consistently. 76 steps (vs optimal ~20) shows cycles still occur but resolve quickly. Next: stage up to 3x3 hardest initial_state=[8,6,7,2,5,4,3,1,0] to test whether 9-agent consensus can handle a harder configuration, or try reducing steps by decreasing T (more greedy → fewer exploration cycles).
+
+## Iteration 4 (tower iter4) — stage up to 8 disks [IN PROGRESS]
+- **Config**: devstral-24b, T=0.1, base prompt, 8 disks (optimal=255 moves)
+- **Result**: Run still in progress (PID 334021, started ~15:19 Mar 19). Expected ~220 min but taking longer (~10+ hrs). No output file yet.
+- **Insight**: Run started but another parallel agent reverted the exp commit (config back to 7). Background process (PID 334021) still running with 8 disks since config was loaded at startup. Output will appear as `tower_of_hanoi_8d_3a_*.json` when complete. If run completes with 100% SR 255 steps, stage up to 9 disks (511 optimal). If it stalls, the model may be drifting at 8 disks — try T=0.0 or minimal prompt.
+
+## Iteration 15 (sliding_puzzle) — stage up to 3x3 hardest
+- **Config**: devstral-24b, T=0.5, explicit_v7, 3x3 hardest initial_state=[8,6,7,2,5,4,3,1,0], max_agents=9
+- **Result**: 22.2% SR, 200 steps (max steps hit, partial progress) — KEEP (first result at stage 3)
+- **Insight**: Same SR as best iter12 result on 3x3 *easiest*, despite 9 agents — the harder configuration requires longer detour paths that the greedy Manhattan heuristic cannot plan. "Inconsistent prediction" errors persist throughout (next_state goal-seeking). The 9-agent wisdom-of-crowds effect that solved easiest does not transfer to hardest. Root cause: 3x3 hardest requires temporarily moving tiles AWAY from goal to create detour paths; greedy rule 6 ("pick direction that moves Target closer to its goal") directly prevents these necessary detours. Next: try adding a lookahead hint in the prompt — "sometimes you must temporarily move Target away from goal to clear a path; if the best greedy move would displace an already-placed tile (goal index < Target's goal), consider an alternative move instead" — or try increasing max_steps beyond 200 to see if the model eventually solves it given more attempts.

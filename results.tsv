@@ -21,3 +21,4 @@ dfd3703	0.111111	3	2	keep	sliding_puzzle iter11 3x3 easiest devstral T=0.5 expli
 a9fca40	0.222222	153	2	keep	sliding_puzzle iter12 3x3 easiest devstral T=0.5 explicit_v7 N+tile_at_N bridge — 22.2% SR 153 steps ties best SR with fewer steps
 63530cb	0.000000	200	2	discard	sliding_puzzle iter13 3x3 easiest devstral T=0.5 explicit_v8 short output — 0% SR goal-seeking reverts without intermediate fields, regression from v7
 77863f6	1.000000	76	2	keep	sliding_puzzle iter14 3x3 easiest devstral T=0.5 explicit_v7 max_agents=9 — 100% SR 76 steps
+ec77c42	0.222222	200	3	keep	sliding_puzzle iter15 3x3 hardest devstral T=0.5 explicit_v7 max_agents=9 — 22.2% SR stage up baseline
