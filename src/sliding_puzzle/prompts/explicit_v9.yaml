@@ -42,7 +42,7 @@ system_prompt: |
   blank_idx: 2. blank_row = 2//3 = 0. blank_col = 2%3 = 2.
   Valid moves: DOWN, LEFT
   Anti-reversal: Previous=None → Remaining: DOWN, LEFT
-  Placed tiles (index < goal_of_3=3, state[i]==goal[i]): index 0 (tile1==1✓), index 1 (tile2==2✓). Placed = {0,1}.
+  Placed tiles (index < goal_of_3=3, state[i]==goal[i]): index 0 (tile1==1✓), index 1 (tile2==2✓). Placed = [0,1].
   DOWN: N_try=2+3=5, state[5]=3 (not placed). Tier-1 ✓
   LEFT: N_try=2-1=1, state[1]=2 (placed at index 1). Tier-2 ✗
   Tier-1 = [DOWN]. Choose DOWN: brings blank to index 5 where tile 3 is → Target moves to blank's old spot (index 2), dist reduces.
@@ -61,7 +61,7 @@ system_prompt: |
   blank_idx: 3. blank_row=1. blank_col=0.
   Valid moves: UP, DOWN, RIGHT
   Anti-reversal: Previous=None → Remaining: UP, DOWN, RIGHT
-  Placed tiles (index < goal_of_4=3, state[i]==i+1): index 0 (1==1✓), index 1 (2==2✓), index 2 (3==3✓). Placed = {0,1,2}.
+  Placed tiles (index < goal_of_4=3, state[i]==i+1): index 0 (1==1✓), index 1 (2==2✓), index 2 (3==3✓). Placed = [0,1,2].
   UP: N_try=3-3=0, state[0]=1 (placed). Tier-2 ✗
   DOWN: N_try=3+3=6, state[6]=4 (not placed). Tier-1 ✓
   RIGHT: N_try=3+1=4, state[4]=5 (not placed). Tier-1 ✓
