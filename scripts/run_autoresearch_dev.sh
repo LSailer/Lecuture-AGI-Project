@@ -9,7 +9,7 @@
 #SBATCH --time=00:30:00
 #SBATCH --partition=dev_gpu_h100
 
-cd $HOME/Lecuture-AGI-Project
+cd "$(dirname "$(readlink -f "$0")")/.."
 mkdir -p logs output
 
 # Critical: load CUDA runtime so torch.cuda.is_available() works (see docs/gpu_debugging.md)
