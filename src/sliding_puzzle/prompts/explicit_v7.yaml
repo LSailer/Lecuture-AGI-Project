@@ -1,0 +1,66 @@
+system_prompt: |
+  You are solving a {puzzle_name}-puzzle on a {n}x{n} grid.
+
+  Goal State: {goal_list}
+  Goal grid:
+  {goal_viz}
+
+  Index map (row-major order):
+  {index_map}
+
+  MOVES: UP/DOWN/LEFT/RIGHT — direction the BLANK (0) slides.
+  Move = swap blank with its DIRECTLY adjacent neighbor in that direction.
+
+  Adjacency (neighbor index N):
+  - UP:    blank at index B → N = B - {n}   [valid ONLY if blank_row > 0]
+  - DOWN:  blank at index B → N = B + {n}  [valid ONLY if blank_row < {n}-1]
+  - LEFT:  blank at index B → N = B - 1   [valid ONLY if blank_col > 0]
+  - RIGHT: blank at index B → N = B + 1  [valid ONLY if blank_col < {n}-1]
+
+  Rules:
+  1. Find lowest tile (1–{max_tile}) NOT at its goal index → Target.
+  2. Find blank (0) in current state → blank_idx.
+  3. Compute blank_row = blank_idx // {n}, blank_col = blank_idx % {n}.
+  4. List ONLY valid moves: UP if blank_row>0; DOWN if blank_row<{n}-1; LEFT if blank_col>0; RIGHT if blank_col<{n}-1.
+  5. ANTI-REVERSAL: If Previous_move is known, remove its opposite from Valid_moves (UP↔DOWN, LEFT↔RIGHT).
+  6. From remaining valid moves, pick direction that moves Target closer to its goal.
+  7. Never displace a tile already at its goal index (index < Target's goal index).
+  8. Compute N = neighbor index for chosen move direction using formula above.
+  9. Look up tile_at_N = current_state[N] (the tile currently sitting at index N).
+  10. next_state = copy current_state, then set position blank_idx = tile_at_N, set position N = 0.
+
+  Example (3x3):
+  State: [1, 2, 0, 4, 5, 3, 7, 8, 6]
+  Grid:
+   1  2  0
+   4  5  3
+   7  8  6
+  Target: tile 3 (at index 5; goal index = 3).
+  blank_idx: 2. blank_row = 2//3 = 0. blank_col = 2%3 = 2.
+  Valid moves: UP? row>0? 0>0? No. DOWN? row<2? 0<2? Yes. LEFT? col>0? 2>0? Yes. RIGHT? col<2? 2<2? No.
+  Valid_moves: DOWN, LEFT
+  Previous_move: None → Anti-reversal: no removal → Remaining: DOWN, LEFT
+  DOWN sends blank toward index 5 (tile 3) — Manhattan tile3: goal=3, currently at 5; after swap tile3→index 2, dist=1. Reduces distance. ✓
+  move = DOWN
+  N: blank_idx + n = 2 + 3 = 5
+  tile_at_N: state[5] = 3
+  next_state: copy [1, 2, 0, 4, 5, 3, 7, 8, 6], set index 2 = 3 (tile_at_N), set index 5 = 0 → [1, 2, 3, 4, 5, 0, 7, 8, 6]
+
+user_prompt: |
+  Step: {step}
+  State: {current_state}
+  Previous: {previous_move}
+  Grid:
+  {state_visual}
+
+  Fill in immediately (no preamble):
+  Target: <lowest tile not at goal>
+  blank_idx: <index of 0 in state>
+  blank_row: <blank_idx // n>
+  blank_col: <blank_idx % n>
+  Valid_moves: <enumerate: UP if blank_row>0; DOWN if blank_row<n-1; LEFT if blank_col>0; RIGHT if blank_col<n-1>
+  Anti-reversal: <if Previous is UP remove DOWN, if DOWN remove UP, if LEFT remove RIGHT, if RIGHT remove LEFT; list remaining moves>
+  move = <one direction from Anti-reversal list only>
+  N: <blank_idx + offset for chosen direction = exact integer>
+  tile_at_N: <current_state[N] = exact tile value from state above>
+  next_state = [<copy current_state; replace index blank_idx with tile_at_N, replace index N with 0; all other values unchanged>]

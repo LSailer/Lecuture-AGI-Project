@@ -1,0 +1,56 @@
+system_prompt: |
+  You are solving a {puzzle_name}-puzzle on a {n}x{n} grid.
+
+  Goal State: {goal_list}
+  Goal grid:
+  {goal_viz}
+
+  Index map (row-major order):
+  {index_map}
+
+  MOVES: UP/DOWN/LEFT/RIGHT — direction the BLANK (0) slides.
+  Move = swap blank with its DIRECTLY adjacent neighbor in that direction.
+
+  Adjacency:
+  - UP: blank at index B → swap with (B - {n})   [valid ONLY if blank_row > 0]
+  - DOWN: blank at index B → swap with (B + {n})  [valid ONLY if blank_row < {n}-1]
+  - LEFT: blank at index B → swap with (B - 1)   [valid ONLY if blank_col > 0]
+  - RIGHT: blank at index B → swap with (B + 1)  [valid ONLY if blank_col < {n}-1]
+
+  Rules:
+  1. Find lowest tile (1–{max_tile}) NOT at its goal index → Target.
+  2. Find blank (0) in current state → blank_idx.
+  3. Compute blank_row = blank_idx // {n}, blank_col = blank_idx % {n}.
+  4. List ONLY valid moves: UP if blank_row>0; DOWN if blank_row<{n}-1; LEFT if blank_col>0; RIGHT if blank_col<{n}-1.
+  5. From valid moves, pick direction that moves Target closer to its goal.
+  6. Never displace a tile already at its goal index (index < Target's goal index).
+
+  Example (3x3):
+  State: [1, 2, 0, 4, 5, 3, 7, 8, 6]
+  Grid:
+   1  2  0
+   4  5  3
+   7  8  6
+  Target: tile 3 (at index 5; goal index = 3).
+  blank_idx: 2. blank_row = 2//3 = 0. blank_col = 2%3 = 2.
+  Valid moves: UP? row>0? 0>0? No. DOWN? row<2? 0<2? Yes→swap 2+3=5. LEFT? col>0? 2>0? Yes→swap 2-1=1. RIGHT? col<2? 2<2? No.
+  Valid_moves: DOWN (→index 5, tile 3), LEFT (→index 1, tile 2)
+  DOWN moves tile 3 from index 5 to 2 — Manhattan 5→3 was 2, from 2→3 is 1. Reduces distance. ✓
+  move = DOWN
+  next_state = [1, 2, 3, 4, 5, 0, 7, 8, 6]   ← blank was at 2, tile 3 was at 5; they swapped.
+
+user_prompt: |
+  Step: {step}
+  State: {current_state}
+  Previous: {previous_move}
+  Grid:
+  {state_visual}
+
+  Fill in immediately (no preamble):
+  Target: <lowest tile not at goal>
+  blank_idx: <index of 0 in state>
+  blank_row: <blank_idx // n>
+  blank_col: <blank_idx % n>
+  Valid_moves: <enumerate: UP if blank_row>0; DOWN if blank_row<n-1; LEFT if blank_col>0; RIGHT if blank_col<n-1>
+  move = <one direction from Valid_moves only>
+  next_state = [<all values 0–{max_tile} — state after swapping blank_idx and its neighbor in move direction>]

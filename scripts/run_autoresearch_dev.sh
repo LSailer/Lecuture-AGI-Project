@@ -9,7 +9,7 @@
 #SBATCH --time=00:30:00
 #SBATCH --partition=dev_gpu_h100
 
-cd $HOME/Lecuture-AGI-Project
+cd "$(dirname "$(readlink -f "$0")")/.."
 mkdir -p logs output
 
 # Critical: load CUDA runtime so torch.cuda.is_available() works (see docs/gpu_debugging.md)
@@ -37,7 +37,7 @@ echo "=== Dev experiments done after $ITER iterations ==="
 
 # --- Wrap-up: analysis + PR ---
 echo "=== Wrap-up ==="
-git add results.tsv && git commit -m "dev: autoresearch smoke test results" || true
+git add results.tsv findings.md && git commit -m "dev: autoresearch smoke test results" || true
 
 uv run jupyter nbconvert --to notebook --execute --inplace notebooks/analyze_autoresearch.ipynb
 git add notebooks/analyze_autoresearch.ipynb && git commit -m "dev: analysis notebook" || true

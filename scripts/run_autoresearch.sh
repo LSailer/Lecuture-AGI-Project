@@ -9,7 +9,7 @@
 #SBATCH --time=24:00:00
 #SBATCH --partition=gpu_h100_il
 
-cd $HOME/Lecuture-AGI-Project
+cd "$(dirname "$(readlink -f "$0")")/.."
 mkdir -p logs output
 
 GAME=${GAME:-tower_of_hanoi}
@@ -35,7 +35,7 @@ echo "=== Experiments done after $ITER iterations ==="
 
 # --- Wrap-up: analysis + PR ---
 echo "=== Wrap-up ==="
-git add results.tsv && git commit -m "autoresearch results" || true
+git add results.tsv findings.md && git commit -m "autoresearch results" || true
 
 uv run jupyter nbconvert --to notebook --execute --inplace notebooks/analyze_autoresearch.ipynb
 git add notebooks/analyze_autoresearch.ipynb && git commit -m "analysis" || true

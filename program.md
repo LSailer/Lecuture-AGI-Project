@@ -20,7 +20,11 @@ If `results.tsv` does not exist yet, this is the first iteration. Do setup:
    ```
    printf 'commit\tsr\tsteps\tstage\tstatus\tdescription\n' > results.tsv
    ```
-4. Run the **baseline** experiment (step 5 below) with default config.
+4. Create `findings.md` with header (if it doesn't exist):
+   ```
+   printf '# Autoresearch Findings\n\nQualitative insights accumulated across experiment iterations.\nEach entry: what was tried, what was learned, and what to try next.\n\n---\n' > findings.md
+   ```
+5. Run the **baseline** experiment (step 6 below) with default config.
 
 If `results.tsv` already exists, skip setup — go straight to the experiment loop.
 
@@ -32,7 +36,7 @@ The game is specified in the prompt (e.g. `game=tower_of_hanoi`). Read it from c
 
 Each invocation, you do exactly ONE experiment:
 
-1. **Read state**: `cat results.tsv` and `git log --oneline -10` — what worked, what didn't
+1. **Read state**: `cat results.tsv`, `cat findings.md`, and `git log --oneline -10` — what worked, what didn't, and qualitative insights from prior iterations
 2. **Decide**: based on previous results, pick what to try next. Be creative.
 3. **Modify**: edit config YAML and/or prompt YAML files
 4. **Commit config changes**: `git add src/config/ src/*/prompts/ && git commit -m "exp: <description>"`
@@ -44,11 +48,18 @@ Each invocation, you do exactly ONE experiment:
 6. **Parse**: `grep "Success Rate\|solved in\|Max steps" run.log`
    - If empty → crash. `tail -50 run.log` for error. Log as crash.
 7. **Log**: append result to `results.tsv`, then commit:
-   `git add results.tsv && git commit -m "results: <status> <summary>"`
+   `git add results.tsv findings.md && git commit -m "results: <status> <summary>"`
 8. **Keep or discard**:
    - SR improved or same SR with fewer steps → keep (branch advances)
    - Worse → `git revert HEAD~1 --no-edit` (reverts the experiment commit, preserving history)
-9. **Stage up**: if SR=100% → increase difficulty (more disks / harder puzzle)
+9. **Record insight**: append a brief entry to `findings.md` — what you tried, what you learned, what to try next. Use this format:
+   ```
+   ## Iteration N — short description
+   - **Config**: model, temperature, prompt variant, difficulty
+   - **Result**: SR%, steps (optimal?)
+   - **Insight**: 1-2 sentences on what you learned and what to try next.
+   ```
+10. **Stage up**: if SR=100% → increase difficulty (more disks / harder puzzle)
 
 Then **exit**. The shell loop will invoke you again. After all iterations, the shell script handles analysis notebook + PR automatically.
 
@@ -56,6 +67,7 @@ Then **exit**. The shell loop will invoke you again. After all iterations, the s
 
 - `src/config/<game>.yaml` — `temperature`, `model_path`, `prompt_variant`, `max_agents_per_step`, `margin_k`, `num_disks`, `initial_state`, `max_steps`
 - `src/<game>/prompts/*.yaml` — system and user prompt templates. Create new variants too.
+- `findings.md` — qualitative insights from experiments (append-only lab notebook)
 
 ## What you CANNOT modify
 
