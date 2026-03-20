@@ -107,7 +107,7 @@ Each entry: what was tried, what was learned, and what to try next.
 
 ## Iteration 4 (tower iter4) — stage up to 8 disks [TIMEOUT]
 - **Config**: devstral-24b, T=0.1, base prompt, 8 disks (optimal=255 moves)
-- **Result**: Timed out — the 24-hour SLURM job limit was reached before the run completed. No output produced.
+- **Result**: Run still in progress (PID 334021, started ~15:19 Mar 19). Expected ~220 min but taking longer (~10+ hrs). No output file yet.
 - **Insight**: Run started but another parallel agent reverted the exp commit (config back to 7). Background process (PID 334021) still running with 8 disks since config was loaded at startup. Output will appear as `tower_of_hanoi_8d_3a_*.json` when complete. If run completes with 100% SR 255 steps, stage up to 9 disks (511 optimal). If it stalls, the model may be drifting at 8 disks — try T=0.0 or minimal prompt
 
 ## Iteration 15 (sliding_puzzle) — stage up to 3x3 hardest
