@@ -41,6 +41,14 @@ def create_game(config: dict[str, Any]) -> Any:
             col_hints=config["col_hints"],
             initial_state=config.get("initial_state"),
         )
+    elif game_name == "rubiks_cube":
+        from rubiks_cube.enviroment import RubiksCube
+
+        return RubiksCube.from_config(
+            scramble=config.get("scramble"),
+            forbid_undo=config.get("forbid_undo", True),
+            max_score_drop=config.get("max_score_drop", 3),
+        )
     else:
         raise ValueError(f"Unknown game: {game_name}")
 
@@ -56,6 +64,8 @@ def create_agent(config: dict[str, Any], game: Any, device: str) -> Agent:
         from sliding_puzzle import prompts
     elif game_name == "nonogram":
         from nonogram import prompts
+    elif game_name == "rubiks_cube":
+        from rubiks_cube import prompts
     else:
         raise ValueError(f"Unknown game: {game_name}")
     model_path = config.get("model_path", "LLM/model")
@@ -590,7 +600,7 @@ def main() -> None:
     parser.add_argument(
         "--game",
         required=True,
-        choices=["tower_of_hanoi", "sliding_puzzle", "nonogram"],
+        choices=["tower_of_hanoi", "sliding_puzzle", "nonogram", "rubiks_cube"],
         help="Which puzzle to solve",
     )
     parser.add_argument("--config", default=None, help="Path to YAML config file")
@@ -638,6 +648,8 @@ def main() -> None:
         size_str = f"d{config.get('num_disks', '?')}"
     elif game_type == "nonogram":
         size_str = f"{len(config.get('row_hints', []))}x{len(config.get('col_hints', []))}"
+    elif game_type == "rubiks_cube":
+        size_str = f"s{len(config.get('scramble', []))}"
     else:
         n = len(config.get("initial_state", []))
         side = int(n ** 0.5)

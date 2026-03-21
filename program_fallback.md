@@ -98,6 +98,7 @@ Count lines in `results.tsv` (minus header) to know your iteration number. When 
 
 - **Tower of Hanoi**: `num_disks` 3 → 4 → 5 → ... (optimal = 2^n - 1 moves)
 - **Sliding Puzzle**: `2x2` → `3x3 (easiest)` → `3x3 (hardest)` → `4x4 (easiest)` → `4x4 (hardest)` (use CONFIGS dict keys as `initial_state`)
+- **Rubik's Cube**: `2-move` → `4-move` → `6-move` → `8-move` → `10-move` → `12-move` (use CONFIGS dict keys as `scramble`)
 
 ## Results format
 

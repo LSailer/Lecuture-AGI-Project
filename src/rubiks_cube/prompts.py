@@ -1,5 +1,8 @@
+import os
 import re
-from typing import Any
+
+import yaml
+
 
 # Robust patterns (safety net) – find fields anywhere even if model adds extra text.
 MOVE_PATTERN = re.compile(r"(?is)\bmove\b\s*[:=]\s*([URFDLB](?:2|')?)\b")
@@ -16,38 +19,27 @@ _ALLOWED = [
 
 _SOLVED = "W" * 9 + "R" * 9 + "G" * 9 + "Y" * 9 + "O" * 9 + "B" * 9
 
-
-def get_system_prompt(environment: Any) -> str:
-    return f"""
-You are a Rubik's Cube solver assistant.
-
-State encoding:
-- The cube state is a SINGLE 54-character string over letters: W,R,G,Y,O,B.
-- Face order is EXACTLY: U(0-8), R(9-17), F(18-26), D(27-35), L(36-44), B(45-53).
-- Within each face indices are row-major:
-  0 1 2
-  3 4 5
-  6 7 8
-- IMPORTANT invariant: each letter W,R,G,Y,O,B must appear EXACTLY 9 times.
-
-Moves:
-- Allowed moves are EXACTLY: {", ".join(_ALLOWED)}.
-- U means rotate the U face 90° clockwise when looking at the U face from outside.
-- U' is counter-clockwise, U2 is 180°. Same for R,F,D,L,B.
-
-Reference solved state:
-{_SOLVED}
-
-REQUIREMENTS (STRICT):
-- Output MUST contain a single next move in this EXACT FORMAT:
-move = <one move token>
-- Output MUST contain the next state after applying that move in this EXACT FORMAT:
-next_state = <54-character string>
-- Output MUST be EXACTLY TWO LINES (no extra text, no explanations, no markdown).
-""".strip()
+_PROMPTS_DIR = os.path.join(os.path.dirname(__file__), "prompts")
+_prompt_cache: dict[str, dict[str, str]] = {}
 
 
-def build_user_prompt(current_state: str, previous_move: str, environment: Any, step: int) -> str:
+def _load_variant(variant: str) -> dict[str, str]:
+    if variant not in _prompt_cache:
+        path = os.path.join(_PROMPTS_DIR, f"{variant}.yaml")
+        with open(path) as f:
+            _prompt_cache[variant] = yaml.safe_load(f)
+    return _prompt_cache[variant]
+
+
+def get_system_prompt(environment, variant: str = "base"):
+    templates = _load_variant(variant)
+    return templates["system_prompt"].format(
+        allowed_moves=", ".join(_ALLOWED),
+        solved_state=_SOLVED,
+    )
+
+
+def build_user_prompt(current_state, previous_move, environment, step, variant: str = "base"):
     score = environment.score(current_state)
     phase = environment.phase
     phase_goal = (
@@ -56,31 +48,26 @@ def build_user_prompt(current_state: str, previous_move: str, environment: Any, 
         else "Continue toward the full solve."
     )
 
-    return f"""
-Step: {step}
-Phase: {phase}
-Goal: {phase_goal}
-Current score: {score}
-Previous move: {previous_move}
-Allowed moves: {", ".join(_ALLOWED)}
-
-Current state:
-{current_state}
-
-Remember: output EXACTLY TWO LINES:
-move = <...>
-next_state = <...>
-""".strip()
+    templates = _load_variant(variant)
+    return templates["user_prompt"].format(
+        step=step,
+        phase=phase,
+        phase_goal=phase_goal,
+        score=score,
+        previous_move=previous_move,
+        allowed_moves=", ".join(_ALLOWED),
+        current_state=current_state,
+    )
 
 
-def parse_move(match: re.Match):
+def parse_move(match):
     mv = match.group(1).strip()
     if mv not in _ALLOWED:
         raise ValueError("Move not in allowed set.")
     return mv
 
 
-def parse_state(match: re.Match):
+def parse_state(match):
     st = match.group(1).strip()
     if len(st) != 54:
         raise ValueError("State must be a 54-character string.")

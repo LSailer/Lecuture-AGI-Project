@@ -6,6 +6,15 @@ from typing import Dict, List, Tuple, Optional
 Vec = Tuple[int, int, int]
 StickerKey = Tuple[int, int, int, int, int, int]  # (x,y,z,nx,ny,nz)
 
+CONFIGS = {
+    "2-move": ["R", "U"],
+    "4-move": ["R", "U", "R'", "U'"],
+    "6-move": ["R", "U", "R'", "U'", "F2", "D"],
+    "8-move": ["R", "U", "R'", "U'", "F2", "D", "L", "B'"],
+    "10-move": ["R", "U", "R'", "U'", "F2", "D", "L", "B'", "U2", "R"],
+    "12-move": ["R", "U", "R'", "U'", "F2", "D", "L", "B'", "U2", "R", "D'", "F"],
+}
+
 
 def _rot_x_p90(v: Vec) -> Vec:
     x, y, z = v
@@ -163,6 +172,11 @@ class RubiksCube:
 
     def is_solved(self) -> bool:
         return self.state == self.solved_state()
+
+    def compute_progress(self) -> float:
+        sol = self.solved_state()
+        correct = sum(1 for i in range(54) if self.state[i] == sol[i])
+        return correct / 54
 
     def is_valid_state(self, state: str) -> str:
         """
