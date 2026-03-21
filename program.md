@@ -91,6 +91,7 @@ Then **exit**. The shell loop will invoke you again. After all iterations, the s
 
 - **Tower of Hanoi**: `num_disks` 3 → 4 → 5 → ... (optimal = 2^n - 1 moves)
 - **Sliding Puzzle**: `2x2` → `3x3 (easiest)` → `3x3 (hardest)` → `4x4 (easiest)` → `4x4 (hardest)` (use CONFIGS dict keys as `initial_state`)
+- **Nonogram**: `4x4 (butterfly)` → `4x4 (diamond)` → `5x5 (diamond)` → `5x5 (fragmented)` → `7x7 (cross)` → `10x10 (large)` (use CONFIGS dict keys for `row_hints`/`col_hints`)
 
 ## Results format
 

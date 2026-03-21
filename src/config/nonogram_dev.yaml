@@ -1,0 +1,27 @@
+game: nonogram
+margin_k: 2
+max_steps: 50
+max_agents_per_step: 3
+output_dir: output
+temperature: 0.5
+model_path: LLM/model
+prompt_variant: base
+
+# Game-specific — 4x4 butterfly (16 cells, simplest stage)
+row_hints:
+  - [1, 1]
+  - [2]
+  - [2]
+  - [1, 1]
+
+col_hints:
+  - [1, 1]
+  - [2]
+  - [2]
+  - [1, 1]
+
+# Fallback config — reduced retries for speed
+max_fallback_retries: 1
+fallback_api: gemini
+fallback_local_model: deepseek-ai/DeepSeek-R1-Distill-Qwen-32B
+gemini_model: gemini-2.5-flash
