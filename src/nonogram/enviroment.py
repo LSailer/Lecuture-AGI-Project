@@ -7,6 +7,37 @@ from typing import List, Tuple, Optional
 Cell = int  # -1 unknown, 0 empty, 1 filled
 Move = Tuple[int, int, int]  # row, col, value (0 empty, 1 filled)
 
+CONFIGS = {
+    "5x5 (diamond)": {
+        "row_hints": [[1], [3], [5], [3], [1]],
+        "col_hints": [[1], [3], [5], [3], [1]],
+    },
+    "5x5 (cross)": {
+        "row_hints": [[1, 1], [5], [1, 1], [5], [1, 1]],
+        "col_hints": [[1, 1], [5], [1, 1], [5], [1, 1]],
+    },
+    "5x5 (arrow)": {
+        "row_hints": [[1], [2], [5], [2], [1]],
+        "col_hints": [[1], [1], [5], [1, 1], [1]],
+    },
+    "5x5 (checkerboard)": {
+        "row_hints": [[1, 1, 1], [1, 1], [1, 1, 1], [1, 1], [1, 1, 1]],
+        "col_hints": [[1, 1, 1], [1, 1], [1, 1, 1], [1, 1], [1, 1, 1]],
+    },
+    "7x7 (heart)": {
+        "row_hints": [[2, 2], [5], [7], [7], [5], [3], [1]],
+        "col_hints": [[2], [4], [6], [5], [6], [4], [2]],
+    },
+    "10x10 (oval)": {
+        "row_hints": [[4], [6], [8], [10], [10], [10], [10], [8], [6], [4]],
+        "col_hints": [[4], [6], [8], [10], [10], [10], [10], [8], [6], [4]],
+    },
+    "10x10 (star)": {
+        "row_hints": [[2], [4], [10], [4], [6], [6], [4], [10], [4], [2]],
+        "col_hints": [[2], [4], [10], [4], [6], [6], [4], [10], [4], [2]],
+    },
+}
+
 
 def _line_feasible(cells: List[Cell], hints: List[int]) -> bool:
     """
@@ -184,3 +215,8 @@ class Nonogram:
             if not _line_satisfied(col, self.col_hints[c]):
                 return False
         return True
+
+    def compute_progress(self) -> float:
+        total = self.n_rows * self.n_cols
+        decided = sum(1 for row in self.grid for c in row if c != -1)
+        return decided / total

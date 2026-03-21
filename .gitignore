@@ -224,11 +224,10 @@ output/failures.csv
 webapp/node_modules/
 webapp/dist/
 
-.gemini/
-gha-creds-*.json
+
 
 GEMINI.md
 
 CLAUDE.md
 LLM/.DS_Store
-output/
+

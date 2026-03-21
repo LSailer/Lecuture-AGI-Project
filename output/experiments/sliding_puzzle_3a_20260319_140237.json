@@ -1,0 +1,20 @@
+{
+  "game_type": "sliding_puzzle",
+  "success_rate": 0.1111111111111111,
+  "steps": [
+    {
+      "step": 1,
+      "current_state": "[1, 2, 5, 6, 3, 4, 7, 8, 0]",
+      "processed_state": "[1, 2, 5, 6, 3, 4, 7, 0, 8]",
+      "candidate_votes": {
+        "{'action': (8, 'right'), 'state': [1, 2, 5, 6, 3, 4, 7, 0, 8]}": 3
+      },
+      "best_action": "(8, 'right')",
+      "best_state": "[1, 2, 5, 6, 3, 4, 7, 0, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    }
+  ]
+}

@@ -3,7 +3,13 @@
     "allow": [
       "Bash(find /pfs/data6/home/ul/ul_student/ul_hfj15/Lecuture-AGI-Project -path *experiments* -name *.json)",
       "Bash(bash run.sh)",
-      "Bash(scontrol show:*)"
+      "Bash(scontrol show:*)",
+      "Bash(find /pfs/data6/home/ul/ul_student/ul_hfj15/Lecuture-AGI-Project -type d -name autoresearch* -o -type d -name *puzzle* -o -type d -name *hanoi*)",
+      "Bash(find /pfs/data6/home/ul/ul_student/ul_hfj15/Lecuture-AGI-Project/worktrees -type f -name *.md -o -name *.txt -o -name *.sh)",
+      "Bash(grep -r \"difficulty\\\\|DIFFICULTY\\\\|puzzle\" /pfs/data6/home/ul/ul_student/ul_hfj15/Lecuture-AGI-Project/src/config/ --include=*.yaml --include=*.yml)",
+      "Bash(find src:*)",
+      "Bash(find /pfs/data6/home/ul/ul_student/ul_hfj15/Lecuture-AGI-Project -type d -name *autoresearch* -o -type d -name *tasks*)",
+      "Bash(find /pfs/data6/home/ul/ul_student/ul_hfj15/Lecuture-AGI-Project -type f \\\\\\(-name *.yaml -o -name *.yml \\\\\\))"
     ]
   }
 }

@@ -1,0 +1,419 @@
+{
+  "game_type": "sliding_puzzle",
+  "success_rate": 0.0,
+  "steps": [
+    {
+      "step": 1,
+      "current_state": "[1, 2, 5, 6, 3, 4, 7, 8, 0]",
+      "processed_state": "[1, 2, 5, 6, 3, 0, 7, 8, 4]",
+      "candidate_votes": {
+        "{'action': (4, 'down'), 'state': [1, 2, 5, 6, 3, 0, 7, 8, 4]}": 3
+      },
+      "best_action": "(4, 'down')",
+      "best_state": "[1, 2, 5, 6, 3, 0, 7, 8, 4]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 2,
+      "current_state": "[1, 2, 5, 6, 3, 0, 7, 8, 4]",
+      "processed_state": "[1, 2, 5, 6, 0, 3, 7, 8, 4]",
+      "candidate_votes": {
+        "{'action': (3, 'right'), 'state': [1, 2, 5, 6, 0, 3, 7, 8, 4]}": 3
+      },
+      "best_action": "(3, 'right')",
+      "best_state": "[1, 2, 5, 6, 0, 3, 7, 8, 4]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 3,
+      "current_state": "[1, 2, 5, 6, 0, 3, 7, 8, 4]",
+      "processed_state": "[1, 2, 5, 6, 3, 0, 7, 8, 4]",
+      "candidate_votes": {
+        "{'action': (3, 'left'), 'state': [1, 2, 5, 6, 3, 0, 7, 8, 4]}": 3
+      },
+      "best_action": "(3, 'left')",
+      "best_state": "[1, 2, 5, 6, 3, 0, 7, 8, 4]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 4,
+      "current_state": "[1, 2, 5, 6, 3, 0, 7, 8, 4]",
+      "processed_state": "[1, 2, 5, 6, 0, 3, 7, 8, 4]",
+      "candidate_votes": {
+        "{'action': (3, 'right'), 'state': [1, 2, 5, 6, 0, 3, 7, 8, 4]}": 3
+      },
+      "best_action": "(3, 'right')",
+      "best_state": "[1, 2, 5, 6, 0, 3, 7, 8, 4]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 5,
+      "current_state": "[1, 2, 5, 6, 0, 3, 7, 8, 4]",
+      "processed_state": "[1, 2, 5, 6, 3, 0, 7, 8, 4]",
+      "candidate_votes": {
+        "{'action': (3, 'left'), 'state': [1, 2, 5, 6, 3, 0, 7, 8, 4]}": 3
+      },
+      "best_action": "(3, 'left')",
+      "best_state": "[1, 2, 5, 6, 3, 0, 7, 8, 4]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 6,
+      "current_state": "[1, 2, 5, 6, 3, 0, 7, 8, 4]",
+      "processed_state": "[1, 2, 5, 6, 0, 3, 7, 8, 4]",
+      "candidate_votes": {
+        "{'action': (3, 'right'), 'state': [1, 2, 5, 6, 0, 3, 7, 8, 4]}": 3
+      },
+      "best_action": "(3, 'right')",
+      "best_state": "[1, 2, 5, 6, 0, 3, 7, 8, 4]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 7,
+      "current_state": "[1, 2, 5, 6, 0, 3, 7, 8, 4]",
+      "processed_state": "[1, 2, 5, 6, 3, 0, 7, 8, 4]",
+      "candidate_votes": {
+        "{'action': (3, 'left'), 'state': [1, 2, 5, 6, 3, 0, 7, 8, 4]}": 3
+      },
+      "best_action": "(3, 'left')",
+      "best_state": "[1, 2, 5, 6, 3, 0, 7, 8, 4]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 8,
+      "current_state": "[1, 2, 5, 6, 3, 0, 7, 8, 4]",
+      "processed_state": "[1, 2, 5, 6, 0, 3, 7, 8, 4]",
+      "candidate_votes": {
+        "{'action': (3, 'right'), 'state': [1, 2, 5, 6, 0, 3, 7, 8, 4]}": 3
+      },
+      "best_action": "(3, 'right')",
+      "best_state": "[1, 2, 5, 6, 0, 3, 7, 8, 4]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "[1, 2, 5, 6, 3, 0, 7, 8, 4]",
+          "error": "Cycle detected: state visited 4 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 4
+    },
+    {
+      "step": 9,
+      "current_state": "[1, 2, 5, 6, 0, 3, 7, 8, 4]",
+      "processed_state": "[1, 2, 5, 0, 6, 3, 7, 8, 4]",
+      "candidate_votes": {
+        "{'action': (6, 'right'), 'state': [1, 2, 5, 0, 6, 3, 7, 8, 4]}": 3
+      },
+      "best_action": "(6, 'right')",
+      "best_state": "[1, 2, 5, 0, 6, 3, 7, 8, 4]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "[1, 2, 5, 6, 0, 3, 7, 8, 4]",
+          "error": "Cycle detected: state visited 4 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 4
+    },
+    {
+      "step": 10,
+      "current_state": "[1, 2, 5, 0, 6, 3, 7, 8, 4]",
+      "processed_state": "[1, 2, 5, 6, 0, 3, 7, 8, 4]",
+      "candidate_votes": {
+        "{'action': (6, 'left'), 'state': [1, 2, 5, 6, 0, 3, 7, 8, 4]}": 3
+      },
+      "best_action": "(6, 'left')",
+      "best_state": "[1, 2, 5, 6, 0, 3, 7, 8, 4]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 11,
+      "current_state": "[1, 2, 5, 6, 0, 3, 7, 8, 4]",
+      "processed_state": "[1, 2, 5, 6, 3, 0, 7, 8, 4]",
+      "candidate_votes": {
+        "{'action': (3, 'left'), 'state': [1, 2, 5, 6, 3, 0, 7, 8, 4]}": 3
+      },
+      "best_action": "(3, 'left')",
+      "best_state": "[1, 2, 5, 6, 3, 0, 7, 8, 4]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "[1, 2, 5, 6, 0, 3, 7, 8, 4]",
+          "error": "Cycle detected: state visited 5 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 4
+    },
+    {
+      "step": 12,
+      "current_state": "[1, 2, 5, 6, 3, 0, 7, 8, 4]",
+      "processed_state": "[1, 2, 0, 6, 3, 5, 7, 8, 4]",
+      "candidate_votes": {
+        "{'action': (5, 'down'), 'state': [1, 2, 0, 6, 3, 5, 7, 8, 4]}": 3
+      },
+      "best_action": "(5, 'down')",
+      "best_state": "[1, 2, 0, 6, 3, 5, 7, 8, 4]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "[1, 2, 5, 6, 3, 0, 7, 8, 4]",
+          "error": "Cycle detected: state visited 5 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 2,
+      "num_agents_queried": 4
+    },
+    {
+      "step": 13,
+      "current_state": "[1, 2, 0, 6, 3, 5, 7, 8, 4]",
+      "processed_state": "[1, 0, 2, 6, 3, 5, 7, 8, 4]",
+      "candidate_votes": {
+        "{'action': (2, 'right'), 'state': [1, 0, 2, 6, 3, 5, 7, 8, 4]}": 2
+      },
+      "best_action": "(2, 'right')",
+      "best_state": "[1, 0, 2, 6, 3, 5, 7, 8, 4]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "13:1",
+          "action": "None",
+          "state": "None",
+          "error": "Invalid move: No tile in that direction."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 14,
+      "current_state": "[1, 0, 2, 6, 3, 5, 7, 8, 4]",
+      "processed_state": "[1, 2, 0, 6, 3, 5, 7, 8, 4]",
+      "candidate_votes": {
+        "{'action': (2, 'left'), 'state': [1, 2, 0, 6, 3, 5, 7, 8, 4]}": 3
+      },
+      "best_action": "(2, 'left')",
+      "best_state": "[1, 2, 0, 6, 3, 5, 7, 8, 4]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 15,
+      "current_state": "[1, 2, 0, 6, 3, 5, 7, 8, 4]",
+      "processed_state": "[1, 2, 5, 6, 3, 0, 7, 8, 4]",
+      "candidate_votes": {
+        "{'action': (5, 'up'), 'state': [1, 2, 5, 6, 3, 0, 7, 8, 4]}": 3
+      },
+      "best_action": "(5, 'up')",
+      "best_state": "[1, 2, 5, 6, 3, 0, 7, 8, 4]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 2,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 16,
+      "current_state": "[1, 2, 5, 6, 3, 0, 7, 8, 4]",
+      "processed_state": "[1, 2, 5, 6, 0, 3, 7, 8, 4]",
+      "candidate_votes": {
+        "{'action': (3, 'right'), 'state': [1, 2, 5, 6, 0, 3, 7, 8, 4]}": 2
+      },
+      "best_action": "(3, 'right')",
+      "best_state": "[1, 2, 5, 6, 0, 3, 7, 8, 4]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "[1, 2, 5, 6, 3, 0, 7, 8, 4]",
+          "error": "Cycle detected: state visited 6 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 17,
+      "current_state": "[1, 2, 5, 6, 0, 3, 7, 8, 4]",
+      "processed_state": "[1, 2, 5, 6, 3, 0, 7, 8, 4]",
+      "candidate_votes": {
+        "{'action': (3, 'left'), 'state': [1, 2, 5, 6, 3, 0, 7, 8, 4]}": 3
+      },
+      "best_action": "(3, 'left')",
+      "best_state": "[1, 2, 5, 6, 3, 0, 7, 8, 4]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "[1, 2, 5, 6, 0, 3, 7, 8, 4]",
+          "error": "Cycle detected: state visited 6 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 4
+    },
+    {
+      "step": 18,
+      "current_state": "[1, 2, 5, 6, 3, 0, 7, 8, 4]",
+      "processed_state": "[1, 2, 0, 6, 3, 5, 7, 8, 4]",
+      "candidate_votes": {
+        "{'action': (5, 'down'), 'state': [1, 2, 0, 6, 3, 5, 7, 8, 4]}": 3
+      },
+      "best_action": "(5, 'down')",
+      "best_state": "[1, 2, 0, 6, 3, 5, 7, 8, 4]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "[1, 2, 5, 6, 3, 0, 7, 8, 4]",
+          "error": "Cycle detected: state visited 7 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 2,
+      "num_agents_queried": 4
+    },
+    {
+      "step": 19,
+      "current_state": "[1, 2, 0, 6, 3, 5, 7, 8, 4]",
+      "processed_state": "[1, 0, 2, 6, 3, 5, 7, 8, 4]",
+      "candidate_votes": {
+        "{'action': (2, 'right'), 'state': [1, 0, 2, 6, 3, 5, 7, 8, 4]}": 2
+      },
+      "best_action": "(2, 'right')",
+      "best_state": "[1, 0, 2, 6, 3, 5, 7, 8, 4]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "19:1",
+          "action": "None",
+          "state": "None",
+          "error": "Invalid move: No tile in that direction."
+        },
+        {
+          "agent_id": "19:3",
+          "action": "None",
+          "state": "None",
+          "error": "Invalid move: No tile in that direction."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 4
+    },
+    {
+      "step": 20,
+      "current_state": "[1, 0, 2, 6, 3, 5, 7, 8, 4]",
+      "processed_state": "[1, 2, 0, 6, 3, 5, 7, 8, 4]",
+      "candidate_votes": {
+        "{'action': (2, 'left'), 'state': [1, 2, 0, 6, 3, 5, 7, 8, 4]}": 3
+      },
+      "best_action": "(2, 'left')",
+      "best_state": "[1, 2, 0, 6, 3, 5, 7, 8, 4]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 21,
+      "current_state": "[1, 2, 0, 6, 3, 5, 7, 8, 4]",
+      "processed_state": "[1, 2, 5, 6, 3, 0, 7, 8, 4]",
+      "candidate_votes": {
+        "{'action': (5, 'up'), 'state': [1, 2, 5, 6, 3, 0, 7, 8, 4]}": 3
+      },
+      "best_action": "(5, 'up')",
+      "best_state": "[1, 2, 5, 6, 3, 0, 7, 8, 4]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "[1, 2, 0, 6, 3, 5, 7, 8, 4]",
+          "error": "Cycle detected: state visited 4 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 4
+    },
+    {
+      "step": 22,
+      "current_state": "[1, 2, 5, 6, 3, 0, 7, 8, 4]",
+      "processed_state": "[1, 2, 5, 6, 0, 3, 7, 8, 4]",
+      "candidate_votes": {
+        "{'action': (3, 'right'), 'state': [1, 2, 5, 6, 0, 3, 7, 8, 4]}": 2
+      },
+      "best_action": "(3, 'right')",
+      "best_state": "[1, 2, 5, 6, 0, 3, 7, 8, 4]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "[1, 2, 5, 6, 3, 0, 7, 8, 4]",
+          "error": "Cycle detected: state visited 8 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 3,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 23,
+      "current_state": "[1, 2, 5, 6, 0, 3, 7, 8, 4]",
+      "processed_state": "[1, 2, 5, 6, 3, 0, 7, 8, 4]",
+      "candidate_votes": {
+        "{'action': (3, 'left'), 'state': [1, 2, 5, 6, 3, 0, 7, 8, 4]}": 4,
+        "{'action': (6, 'right'), 'state': [1, 2, 5, 0, 6, 3, 7, 8, 4]}": 2
+      },
+      "best_action": "(3, 'left')",
+      "best_state": "[1, 2, 5, 6, 3, 0, 7, 8, 4]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "[1, 2, 5, 6, 0, 3, 7, 8, 4]",
+          "error": "Cycle detected: state visited 7 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 7
+    }
+  ]
+}

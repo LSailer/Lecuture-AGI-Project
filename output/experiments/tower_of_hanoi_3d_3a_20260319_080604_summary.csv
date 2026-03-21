@@ -1,0 +1,2 @@
+game_type,num_disks,total_steps,solved,cycle_detected,margin_k,max_agents_per_step,temperature,timestamp
+tower_of_hanoi,3,7,True,False,2,3,0.1,20260319_080604

@@ -4,7 +4,7 @@
 #SBATCH --error=logs/autoresearch-%j.err
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=4
-#SBATCH --mem=127G
+#SBATCH --mem=190G
 #SBATCH --gres=gpu:1
 #SBATCH --time=24:00:00
 #SBATCH --partition=gpu_h100_il

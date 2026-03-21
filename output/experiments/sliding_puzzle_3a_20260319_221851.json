@@ -1,0 +1,2881 @@
+{
+  "game_type": "sliding_puzzle",
+  "success_rate": 0.2222222222222222,
+  "steps": [
+    {
+      "step": 1,
+      "current_state": "[1, 2, 5, 6, 3, 4, 7, 8, 0]",
+      "processed_state": "[1, 2, 5, 6, 3, 4, 7, 0, 8]",
+      "candidate_votes": {
+        "{'action': (4, 'down'), 'state': [1, 2, 5, 6, 3, 0, 7, 8, 4]}": 3,
+        "{'action': (8, 'right'), 'state': [1, 2, 5, 6, 3, 4, 7, 0, 8]}": 5
+      },
+      "best_action": "(8, 'right')",
+      "best_state": "[1, 2, 5, 6, 3, 4, 7, 0, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 8
+    },
+    {
+      "step": 2,
+      "current_state": "[1, 2, 5, 6, 3, 4, 7, 0, 8]",
+      "processed_state": "[1, 2, 5, 6, 0, 4, 7, 3, 8]",
+      "candidate_votes": {
+        "{'action': (3, 'down'), 'state': [1, 2, 5, 6, 0, 4, 7, 3, 8]}": 3
+      },
+      "best_action": "(3, 'down')",
+      "best_state": "[1, 2, 5, 6, 0, 4, 7, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 3,
+      "current_state": "[1, 2, 5, 6, 0, 4, 7, 3, 8]",
+      "processed_state": "[1, 2, 5, 0, 6, 4, 7, 3, 8]",
+      "candidate_votes": {
+        "{'action': (6, 'right'), 'state': [1, 2, 5, 0, 6, 4, 7, 3, 8]}": 3
+      },
+      "best_action": "(6, 'right')",
+      "best_state": "[1, 2, 5, 0, 6, 4, 7, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 4,
+      "current_state": "[1, 2, 5, 0, 6, 4, 7, 3, 8]",
+      "processed_state": "[0, 2, 5, 1, 6, 4, 7, 3, 8]",
+      "candidate_votes": {
+        "{'action': (1, 'down'), 'state': [0, 2, 5, 1, 6, 4, 7, 3, 8]}": 3,
+        "{'action': (7, 'up'), 'state': [1, 2, 5, 7, 6, 4, 0, 3, 8]}": 1
+      },
+      "best_action": "(1, 'down')",
+      "best_state": "[0, 2, 5, 1, 6, 4, 7, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 4
+    },
+    {
+      "step": 5,
+      "current_state": "[0, 2, 5, 1, 6, 4, 7, 3, 8]",
+      "processed_state": "[2, 0, 5, 1, 6, 4, 7, 3, 8]",
+      "candidate_votes": {
+        "{'action': (2, 'left'), 'state': [2, 0, 5, 1, 6, 4, 7, 3, 8]}": 3
+      },
+      "best_action": "(2, 'left')",
+      "best_state": "[2, 0, 5, 1, 6, 4, 7, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 6,
+      "current_state": "[2, 0, 5, 1, 6, 4, 7, 3, 8]",
+      "processed_state": "[2, 6, 5, 1, 0, 4, 7, 3, 8]",
+      "candidate_votes": {
+        "{'action': (6, 'up'), 'state': [2, 6, 5, 1, 0, 4, 7, 3, 8]}": 3
+      },
+      "best_action": "(6, 'up')",
+      "best_state": "[2, 6, 5, 1, 0, 4, 7, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 7,
+      "current_state": "[2, 6, 5, 1, 0, 4, 7, 3, 8]",
+      "processed_state": "[2, 6, 5, 0, 1, 4, 7, 3, 8]",
+      "candidate_votes": {
+        "{'action': (1, 'right'), 'state': [2, 6, 5, 0, 1, 4, 7, 3, 8]}": 2
+      },
+      "best_action": "(1, 'right')",
+      "best_state": "[2, 6, 5, 0, 1, 4, 7, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "7:3",
+          "action": "None",
+          "state": "None",
+          "error": "Inconsistent prediction: next_state does not match current_state + move."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 8,
+      "current_state": "[2, 6, 5, 0, 1, 4, 7, 3, 8]",
+      "processed_state": "[0, 6, 5, 2, 1, 4, 7, 3, 8]",
+      "candidate_votes": {
+        "{'action': (2, 'down'), 'state': [0, 6, 5, 2, 1, 4, 7, 3, 8]}": 3,
+        "{'action': (7, 'up'), 'state': [2, 6, 5, 7, 1, 4, 0, 3, 8]}": 1
+      },
+      "best_action": "(2, 'down')",
+      "best_state": "[0, 6, 5, 2, 1, 4, 7, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 4
+    },
+    {
+      "step": 9,
+      "current_state": "[0, 6, 5, 2, 1, 4, 7, 3, 8]",
+      "processed_state": "[6, 0, 5, 2, 1, 4, 7, 3, 8]",
+      "candidate_votes": {
+        "{'action': (6, 'left'), 'state': [6, 0, 5, 2, 1, 4, 7, 3, 8]}": 3
+      },
+      "best_action": "(6, 'left')",
+      "best_state": "[6, 0, 5, 2, 1, 4, 7, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 10,
+      "current_state": "[6, 0, 5, 2, 1, 4, 7, 3, 8]",
+      "processed_state": "[6, 1, 5, 2, 0, 4, 7, 3, 8]",
+      "candidate_votes": {
+        "{'action': (1, 'up'), 'state': [6, 1, 5, 2, 0, 4, 7, 3, 8]}": 2
+      },
+      "best_action": "(1, 'up')",
+      "best_state": "[6, 1, 5, 2, 0, 4, 7, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "10:2",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 11,
+      "current_state": "[6, 1, 5, 2, 0, 4, 7, 3, 8]",
+      "processed_state": "[6, 1, 5, 0, 2, 4, 7, 3, 8]",
+      "candidate_votes": {
+        "{'action': (2, 'right'), 'state': [6, 1, 5, 0, 2, 4, 7, 3, 8]}": 3
+      },
+      "best_action": "(2, 'right')",
+      "best_state": "[6, 1, 5, 0, 2, 4, 7, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 12,
+      "current_state": "[6, 1, 5, 0, 2, 4, 7, 3, 8]",
+      "processed_state": "[0, 1, 5, 6, 2, 4, 7, 3, 8]",
+      "candidate_votes": {
+        "{'action': (6, 'down'), 'state': [0, 1, 5, 6, 2, 4, 7, 3, 8]}": 2
+      },
+      "best_action": "(6, 'down')",
+      "best_state": "[0, 1, 5, 6, 2, 4, 7, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "12:2",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 13,
+      "current_state": "[0, 1, 5, 6, 2, 4, 7, 3, 8]",
+      "processed_state": "[1, 0, 5, 6, 2, 4, 7, 3, 8]",
+      "candidate_votes": {
+        "{'action': (1, 'left'), 'state': [1, 0, 5, 6, 2, 4, 7, 3, 8]}": 3
+      },
+      "best_action": "(1, 'left')",
+      "best_state": "[1, 0, 5, 6, 2, 4, 7, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 1,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 14,
+      "current_state": "[1, 0, 5, 6, 2, 4, 7, 3, 8]",
+      "processed_state": "[1, 2, 5, 6, 0, 4, 7, 3, 8]",
+      "candidate_votes": {
+        "{'action': (2, 'up'), 'state': [1, 2, 5, 6, 0, 4, 7, 3, 8]}": 3
+      },
+      "best_action": "(2, 'up')",
+      "best_state": "[1, 2, 5, 6, 0, 4, 7, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 15,
+      "current_state": "[1, 2, 5, 6, 0, 4, 7, 3, 8]",
+      "processed_state": "[1, 2, 5, 0, 6, 4, 7, 3, 8]",
+      "candidate_votes": {
+        "{'action': (6, 'right'), 'state': [1, 2, 5, 0, 6, 4, 7, 3, 8]}": 3
+      },
+      "best_action": "(6, 'right')",
+      "best_state": "[1, 2, 5, 0, 6, 4, 7, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 16,
+      "current_state": "[1, 2, 5, 0, 6, 4, 7, 3, 8]",
+      "processed_state": "[0, 2, 5, 1, 6, 4, 7, 3, 8]",
+      "candidate_votes": {
+        "{'action': (1, 'down'), 'state': [0, 2, 5, 1, 6, 4, 7, 3, 8]}": 2
+      },
+      "best_action": "(1, 'down')",
+      "best_state": "[0, 2, 5, 1, 6, 4, 7, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "16:2",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 17,
+      "current_state": "[0, 2, 5, 1, 6, 4, 7, 3, 8]",
+      "processed_state": "[2, 0, 5, 1, 6, 4, 7, 3, 8]",
+      "candidate_votes": {
+        "{'action': (2, 'left'), 'state': [2, 0, 5, 1, 6, 4, 7, 3, 8]}": 3
+      },
+      "best_action": "(2, 'left')",
+      "best_state": "[2, 0, 5, 1, 6, 4, 7, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 1,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 18,
+      "current_state": "[2, 0, 5, 1, 6, 4, 7, 3, 8]",
+      "processed_state": "[2, 6, 5, 1, 0, 4, 7, 3, 8]",
+      "candidate_votes": {
+        "{'action': (6, 'up'), 'state': [2, 6, 5, 1, 0, 4, 7, 3, 8]}": 2
+      },
+      "best_action": "(6, 'up')",
+      "best_state": "[2, 6, 5, 1, 0, 4, 7, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "18:3",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 19,
+      "current_state": "[2, 6, 5, 1, 0, 4, 7, 3, 8]",
+      "processed_state": "[2, 6, 5, 0, 1, 4, 7, 3, 8]",
+      "candidate_votes": {
+        "{'action': (1, 'right'), 'state': [2, 6, 5, 0, 1, 4, 7, 3, 8]}": 2
+      },
+      "best_action": "(1, 'right')",
+      "best_state": "[2, 6, 5, 0, 1, 4, 7, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "19:3",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 20,
+      "current_state": "[2, 6, 5, 0, 1, 4, 7, 3, 8]",
+      "processed_state": "[0, 6, 5, 2, 1, 4, 7, 3, 8]",
+      "candidate_votes": {
+        "{'action': (7, 'up'), 'state': [2, 6, 5, 7, 1, 4, 0, 3, 8]}": 1,
+        "{'action': (2, 'down'), 'state': [0, 6, 5, 2, 1, 4, 7, 3, 8]}": 3
+      },
+      "best_action": "(2, 'down')",
+      "best_state": "[0, 6, 5, 2, 1, 4, 7, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 1,
+      "num_agents_queried": 4
+    },
+    {
+      "step": 21,
+      "current_state": "[0, 6, 5, 2, 1, 4, 7, 3, 8]",
+      "processed_state": "[6, 0, 5, 2, 1, 4, 7, 3, 8]",
+      "candidate_votes": {
+        "{'action': (6, 'left'), 'state': [6, 0, 5, 2, 1, 4, 7, 3, 8]}": 3
+      },
+      "best_action": "(6, 'left')",
+      "best_state": "[6, 0, 5, 2, 1, 4, 7, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 22,
+      "current_state": "[6, 0, 5, 2, 1, 4, 7, 3, 8]",
+      "processed_state": "[6, 1, 5, 2, 0, 4, 7, 3, 8]",
+      "candidate_votes": {
+        "{'action': (1, 'up'), 'state': [6, 1, 5, 2, 0, 4, 7, 3, 8]}": 3
+      },
+      "best_action": "(1, 'up')",
+      "best_state": "[6, 1, 5, 2, 0, 4, 7, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 1,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 23,
+      "current_state": "[6, 1, 5, 2, 0, 4, 7, 3, 8]",
+      "processed_state": "[6, 1, 5, 0, 2, 4, 7, 3, 8]",
+      "candidate_votes": {
+        "{'action': (2, 'right'), 'state': [6, 1, 5, 0, 2, 4, 7, 3, 8]}": 2
+      },
+      "best_action": "(2, 'right')",
+      "best_state": "[6, 1, 5, 0, 2, 4, 7, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "23:2",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 24,
+      "current_state": "[6, 1, 5, 0, 2, 4, 7, 3, 8]",
+      "processed_state": "[0, 1, 5, 6, 2, 4, 7, 3, 8]",
+      "candidate_votes": {
+        "{'action': (6, 'down'), 'state': [0, 1, 5, 6, 2, 4, 7, 3, 8]}": 3,
+        "{'action': (7, 'up'), 'state': [6, 1, 5, 7, 2, 4, 0, 3, 8]}": 1
+      },
+      "best_action": "(6, 'down')",
+      "best_state": "[0, 1, 5, 6, 2, 4, 7, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "24:4",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 5
+    },
+    {
+      "step": 25,
+      "current_state": "[0, 1, 5, 6, 2, 4, 7, 3, 8]",
+      "processed_state": "[1, 0, 5, 6, 2, 4, 7, 3, 8]",
+      "candidate_votes": {
+        "{'action': (1, 'left'), 'state': [1, 0, 5, 6, 2, 4, 7, 3, 8]}": 3
+      },
+      "best_action": "(1, 'left')",
+      "best_state": "[1, 0, 5, 6, 2, 4, 7, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 1,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 26,
+      "current_state": "[1, 0, 5, 6, 2, 4, 7, 3, 8]",
+      "processed_state": "[1, 2, 5, 6, 0, 4, 7, 3, 8]",
+      "candidate_votes": {
+        "{'action': (2, 'up'), 'state': [1, 2, 5, 6, 0, 4, 7, 3, 8]}": 3
+      },
+      "best_action": "(2, 'up')",
+      "best_state": "[1, 2, 5, 6, 0, 4, 7, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 27,
+      "current_state": "[1, 2, 5, 6, 0, 4, 7, 3, 8]",
+      "processed_state": "[1, 2, 5, 6, 4, 0, 7, 3, 8]",
+      "candidate_votes": {
+        "{'action': (4, 'left'), 'state': [1, 2, 5, 6, 4, 0, 7, 3, 8]}": 3
+      },
+      "best_action": "(4, 'left')",
+      "best_state": "[1, 2, 5, 6, 4, 0, 7, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 28,
+      "current_state": "[1, 2, 5, 6, 4, 0, 7, 3, 8]",
+      "processed_state": "[1, 2, 0, 6, 4, 5, 7, 3, 8]",
+      "candidate_votes": {
+        "{'action': (5, 'down'), 'state': [1, 2, 0, 6, 4, 5, 7, 3, 8]}": 2
+      },
+      "best_action": "(5, 'down')",
+      "best_state": "[1, 2, 0, 6, 4, 5, 7, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "28:1",
+          "action": "None",
+          "state": "None",
+          "error": "Inconsistent prediction: next_state does not match current_state + move."
+        },
+        {
+          "agent_id": "28:2",
+          "action": "None",
+          "state": "None",
+          "error": "Inconsistent prediction: next_state does not match current_state + move."
+        },
+        {
+          "agent_id": "28:4",
+          "action": "None",
+          "state": "None",
+          "error": "Inconsistent prediction: next_state does not match current_state + move."
+        },
+        {
+          "agent_id": "28:5",
+          "action": "None",
+          "state": "None",
+          "error": "Inconsistent prediction: next_state does not match current_state + move."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 6
+    },
+    {
+      "step": 29,
+      "current_state": "[1, 2, 0, 6, 4, 5, 7, 3, 8]",
+      "processed_state": "[1, 0, 2, 6, 4, 5, 7, 3, 8]",
+      "candidate_votes": {
+        "{'action': (2, 'right'), 'state': [1, 0, 2, 6, 4, 5, 7, 3, 8]}": 3
+      },
+      "best_action": "(2, 'right')",
+      "best_state": "[1, 0, 2, 6, 4, 5, 7, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 30,
+      "current_state": "[1, 0, 2, 6, 4, 5, 7, 3, 8]",
+      "processed_state": "[1, 4, 2, 6, 0, 5, 7, 3, 8]",
+      "candidate_votes": {
+        "{'action': (4, 'up'), 'state': [1, 4, 2, 6, 0, 5, 7, 3, 8]}": 3
+      },
+      "best_action": "(4, 'up')",
+      "best_state": "[1, 4, 2, 6, 0, 5, 7, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 31,
+      "current_state": "[1, 4, 2, 6, 0, 5, 7, 3, 8]",
+      "processed_state": "[1, 4, 2, 0, 6, 5, 7, 3, 8]",
+      "candidate_votes": {
+        "{'action': (6, 'right'), 'state': [1, 4, 2, 0, 6, 5, 7, 3, 8]}": 3
+      },
+      "best_action": "(6, 'right')",
+      "best_state": "[1, 4, 2, 0, 6, 5, 7, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 32,
+      "current_state": "[1, 4, 2, 0, 6, 5, 7, 3, 8]",
+      "processed_state": "[1, 4, 2, 7, 6, 5, 0, 3, 8]",
+      "candidate_votes": {
+        "{'action': (1, 'down'), 'state': [0, 4, 2, 1, 6, 5, 7, 3, 8]}": 2,
+        "{'action': (7, 'up'), 'state': [1, 4, 2, 7, 6, 5, 0, 3, 8]}": 4
+      },
+      "best_action": "(7, 'up')",
+      "best_state": "[1, 4, 2, 7, 6, 5, 0, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "32:2",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 7
+    },
+    {
+      "step": 33,
+      "current_state": "[1, 4, 2, 7, 6, 5, 0, 3, 8]",
+      "processed_state": "[1, 4, 2, 7, 6, 5, 3, 0, 8]",
+      "candidate_votes": {
+        "{'action': (3, 'left'), 'state': [1, 4, 2, 7, 6, 5, 3, 0, 8]}": 3,
+        "{'action': (7, 'down'), 'state': [1, 4, 2, 0, 6, 5, 7, 3, 8]}": 1
+      },
+      "best_action": "(3, 'left')",
+      "best_state": "[1, 4, 2, 7, 6, 5, 3, 0, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "33:4",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 5
+    },
+    {
+      "step": 34,
+      "current_state": "[1, 4, 2, 7, 6, 5, 3, 0, 8]",
+      "processed_state": "[1, 4, 2, 7, 0, 5, 3, 6, 8]",
+      "candidate_votes": {
+        "{'action': (6, 'down'), 'state': [1, 4, 2, 7, 0, 5, 3, 6, 8]}": 3
+      },
+      "best_action": "(6, 'down')",
+      "best_state": "[1, 4, 2, 7, 0, 5, 3, 6, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 1,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 35,
+      "current_state": "[1, 4, 2, 7, 0, 5, 3, 6, 8]",
+      "processed_state": "[1, 0, 2, 7, 4, 5, 3, 6, 8]",
+      "candidate_votes": {
+        "{'action': (4, 'down'), 'state': [1, 0, 2, 7, 4, 5, 3, 6, 8]}": 3
+      },
+      "best_action": "(4, 'down')",
+      "best_state": "[1, 0, 2, 7, 4, 5, 3, 6, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 1,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 36,
+      "current_state": "[1, 0, 2, 7, 4, 5, 3, 6, 8]",
+      "processed_state": "[1, 2, 0, 7, 4, 5, 3, 6, 8]",
+      "candidate_votes": {
+        "{'action': (2, 'left'), 'state': [1, 2, 0, 7, 4, 5, 3, 6, 8]}": 3
+      },
+      "best_action": "(2, 'left')",
+      "best_state": "[1, 2, 0, 7, 4, 5, 3, 6, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 37,
+      "current_state": "[1, 2, 0, 7, 4, 5, 3, 6, 8]",
+      "processed_state": "[1, 2, 5, 7, 4, 0, 3, 6, 8]",
+      "candidate_votes": {
+        "{'action': (5, 'up'), 'state': [1, 2, 5, 7, 4, 0, 3, 6, 8]}": 3
+      },
+      "best_action": "(5, 'up')",
+      "best_state": "[1, 2, 5, 7, 4, 0, 3, 6, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 38,
+      "current_state": "[1, 2, 5, 7, 4, 0, 3, 6, 8]",
+      "processed_state": "[1, 2, 5, 7, 0, 4, 3, 6, 8]",
+      "candidate_votes": {
+        "{'action': (4, 'right'), 'state': [1, 2, 5, 7, 0, 4, 3, 6, 8]}": 3
+      },
+      "best_action": "(4, 'right')",
+      "best_state": "[1, 2, 5, 7, 0, 4, 3, 6, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 1,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 39,
+      "current_state": "[1, 2, 5, 7, 0, 4, 3, 6, 8]",
+      "processed_state": "[1, 0, 5, 7, 2, 4, 3, 6, 8]",
+      "candidate_votes": {
+        "{'action': (2, 'down'), 'state': [1, 0, 5, 7, 2, 4, 3, 6, 8]}": 3
+      },
+      "best_action": "(2, 'down')",
+      "best_state": "[1, 0, 5, 7, 2, 4, 3, 6, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 40,
+      "current_state": "[1, 0, 5, 7, 2, 4, 3, 6, 8]",
+      "processed_state": "[0, 1, 5, 7, 2, 4, 3, 6, 8]",
+      "candidate_votes": {
+        "{'action': (1, 'right'), 'state': [0, 1, 5, 7, 2, 4, 3, 6, 8]}": 2
+      },
+      "best_action": "(1, 'right')",
+      "best_state": "[0, 1, 5, 7, 2, 4, 3, 6, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "40:3",
+          "action": "None",
+          "state": "None",
+          "error": "Inconsistent prediction: next_state does not match current_state + move."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 41,
+      "current_state": "[0, 1, 5, 7, 2, 4, 3, 6, 8]",
+      "processed_state": "[7, 1, 5, 0, 2, 4, 3, 6, 8]",
+      "candidate_votes": {
+        "{'action': (7, 'up'), 'state': [7, 1, 5, 0, 2, 4, 3, 6, 8]}": 2
+      },
+      "best_action": "(7, 'up')",
+      "best_state": "[7, 1, 5, 0, 2, 4, 3, 6, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "41:1",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "41:3",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "41:4",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 2,
+      "num_agents_queried": 5
+    },
+    {
+      "step": 42,
+      "current_state": "[7, 1, 5, 0, 2, 4, 3, 6, 8]",
+      "processed_state": "[0, 1, 5, 7, 2, 4, 3, 6, 8]",
+      "candidate_votes": {
+        "{'action': (7, 'down'), 'state': [0, 1, 5, 7, 2, 4, 3, 6, 8]}": 3,
+        "{'action': (2, 'left'), 'state': [7, 1, 5, 2, 0, 4, 3, 6, 8]}": 1
+      },
+      "best_action": "(7, 'down')",
+      "best_state": "[0, 1, 5, 7, 2, 4, 3, 6, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "42:3",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "42:4",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "42:6",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "42:7",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "42:8",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 43,
+      "current_state": "[0, 1, 5, 7, 2, 4, 3, 6, 8]",
+      "processed_state": "[1, 0, 5, 7, 2, 4, 3, 6, 8]",
+      "candidate_votes": {
+        "{'action': (1, 'left'), 'state': [1, 0, 5, 7, 2, 4, 3, 6, 8]}": 2
+      },
+      "best_action": "(1, 'left')",
+      "best_state": "[1, 0, 5, 7, 2, 4, 3, 6, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "43:1",
+          "action": "None",
+          "state": "None",
+          "error": "Inconsistent prediction: next_state does not match current_state + move."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 44,
+      "current_state": "[1, 0, 5, 7, 2, 4, 3, 6, 8]",
+      "processed_state": "[0, 1, 5, 7, 2, 4, 3, 6, 8]",
+      "candidate_votes": {
+        "{'action': (1, 'right'), 'state': [0, 1, 5, 7, 2, 4, 3, 6, 8]}": 3,
+        "{'action': (2, 'up'), 'state': [1, 2, 5, 7, 0, 4, 3, 6, 8]}": 1
+      },
+      "best_action": "(1, 'right')",
+      "best_state": "[0, 1, 5, 7, 2, 4, 3, 6, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "44:2",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "44:5",
+          "action": "None",
+          "state": "None",
+          "error": "Inconsistent prediction: next_state does not match current_state + move."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 6
+    },
+    {
+      "step": 45,
+      "current_state": "[0, 1, 5, 7, 2, 4, 3, 6, 8]",
+      "processed_state": "[7, 1, 5, 0, 2, 4, 3, 6, 8]",
+      "candidate_votes": {
+        "{'action': (7, 'up'), 'state': [7, 1, 5, 0, 2, 4, 3, 6, 8]}": 2
+      },
+      "best_action": "(7, 'up')",
+      "best_state": "[7, 1, 5, 0, 2, 4, 3, 6, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "45:3",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 46,
+      "current_state": "[7, 1, 5, 0, 2, 4, 3, 6, 8]",
+      "processed_state": "[0, 1, 5, 7, 2, 4, 3, 6, 8]",
+      "candidate_votes": {
+        "{'action': (7, 'down'), 'state': [0, 1, 5, 7, 2, 4, 3, 6, 8]}": 2
+      },
+      "best_action": "(7, 'down')",
+      "best_state": "[0, 1, 5, 7, 2, 4, 3, 6, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "46:1",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 47,
+      "current_state": "[0, 1, 5, 7, 2, 4, 3, 6, 8]",
+      "processed_state": "[1, 0, 5, 7, 2, 4, 3, 6, 8]",
+      "candidate_votes": {
+        "{'action': (1, 'left'), 'state': [1, 0, 5, 7, 2, 4, 3, 6, 8]}": 2
+      },
+      "best_action": "(1, 'left')",
+      "best_state": "[1, 0, 5, 7, 2, 4, 3, 6, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "[0, 1, 5, 7, 2, 4, 3, 6, 8]",
+          "error": "Cycle detected: state visited 4 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 3,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 48,
+      "current_state": "[1, 0, 5, 7, 2, 4, 3, 6, 8]",
+      "processed_state": "[1, 2, 5, 7, 0, 4, 3, 6, 8]",
+      "candidate_votes": {
+        "{'action': (2, 'up'), 'state': [1, 2, 5, 7, 0, 4, 3, 6, 8]}": 2
+      },
+      "best_action": "(2, 'up')",
+      "best_state": "[1, 2, 5, 7, 0, 4, 3, 6, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "48:1",
+          "action": "None",
+          "state": "None",
+          "error": "Inconsistent prediction: next_state does not match current_state + move."
+        },
+        {
+          "agent_id": "48:3",
+          "action": "None",
+          "state": "None",
+          "error": "Inconsistent prediction: next_state does not match current_state + move."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 4
+    },
+    {
+      "step": 49,
+      "current_state": "[1, 2, 5, 7, 0, 4, 3, 6, 8]",
+      "processed_state": "[1, 2, 5, 0, 7, 4, 3, 6, 8]",
+      "candidate_votes": {
+        "{'action': (7, 'right'), 'state': [1, 2, 5, 0, 7, 4, 3, 6, 8]}": 3
+      },
+      "best_action": "(7, 'right')",
+      "best_state": "[1, 2, 5, 0, 7, 4, 3, 6, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 2,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 50,
+      "current_state": "[1, 2, 5, 0, 7, 4, 3, 6, 8]",
+      "processed_state": "[0, 2, 5, 1, 7, 4, 3, 6, 8]",
+      "candidate_votes": {
+        "{'action': (1, 'down'), 'state': [0, 2, 5, 1, 7, 4, 3, 6, 8]}": 3
+      },
+      "best_action": "(1, 'down')",
+      "best_state": "[0, 2, 5, 1, 7, 4, 3, 6, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 51,
+      "current_state": "[0, 2, 5, 1, 7, 4, 3, 6, 8]",
+      "processed_state": "[2, 0, 5, 1, 7, 4, 3, 6, 8]",
+      "candidate_votes": {
+        "{'action': (2, 'left'), 'state': [2, 0, 5, 1, 7, 4, 3, 6, 8]}": 3
+      },
+      "best_action": "(2, 'left')",
+      "best_state": "[2, 0, 5, 1, 7, 4, 3, 6, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 1,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 52,
+      "current_state": "[2, 0, 5, 1, 7, 4, 3, 6, 8]",
+      "processed_state": "[2, 7, 5, 1, 0, 4, 3, 6, 8]",
+      "candidate_votes": {
+        "{'action': (7, 'up'), 'state': [2, 7, 5, 1, 0, 4, 3, 6, 8]}": 3
+      },
+      "best_action": "(7, 'up')",
+      "best_state": "[2, 7, 5, 1, 0, 4, 3, 6, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 53,
+      "current_state": "[2, 7, 5, 1, 0, 4, 3, 6, 8]",
+      "processed_state": "[2, 7, 5, 0, 1, 4, 3, 6, 8]",
+      "candidate_votes": {
+        "{'action': (1, 'right'), 'state': [2, 7, 5, 0, 1, 4, 3, 6, 8]}": 2
+      },
+      "best_action": "(1, 'right')",
+      "best_state": "[2, 7, 5, 0, 1, 4, 3, 6, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "53:3",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 54,
+      "current_state": "[2, 7, 5, 0, 1, 4, 3, 6, 8]",
+      "processed_state": "[0, 7, 5, 2, 1, 4, 3, 6, 8]",
+      "candidate_votes": {
+        "{'action': (2, 'down'), 'state': [0, 7, 5, 2, 1, 4, 3, 6, 8]}": 5,
+        "{'action': (3, 'up'), 'state': [2, 7, 5, 3, 1, 4, 0, 6, 8]}": 3
+      },
+      "best_action": "(2, 'down')",
+      "best_state": "[0, 7, 5, 2, 1, 4, 3, 6, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 8
+    },
+    {
+      "step": 55,
+      "current_state": "[0, 7, 5, 2, 1, 4, 3, 6, 8]",
+      "processed_state": "[7, 0, 5, 2, 1, 4, 3, 6, 8]",
+      "candidate_votes": {
+        "{'action': (7, 'left'), 'state': [7, 0, 5, 2, 1, 4, 3, 6, 8]}": 3
+      },
+      "best_action": "(7, 'left')",
+      "best_state": "[7, 0, 5, 2, 1, 4, 3, 6, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 56,
+      "current_state": "[7, 0, 5, 2, 1, 4, 3, 6, 8]",
+      "processed_state": "[7, 1, 5, 2, 0, 4, 3, 6, 8]",
+      "candidate_votes": {
+        "{'action': (1, 'up'), 'state': [7, 1, 5, 2, 0, 4, 3, 6, 8]}": 3
+      },
+      "best_action": "(1, 'up')",
+      "best_state": "[7, 1, 5, 2, 0, 4, 3, 6, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 1,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 57,
+      "current_state": "[7, 1, 5, 2, 0, 4, 3, 6, 8]",
+      "processed_state": "[7, 1, 5, 2, 4, 0, 3, 6, 8]",
+      "candidate_votes": {
+        "{'action': (4, 'left'), 'state': [7, 1, 5, 2, 4, 0, 3, 6, 8]}": 3,
+        "{'action': (2, 'right'), 'state': [7, 1, 5, 0, 2, 4, 3, 6, 8]}": 1
+      },
+      "best_action": "(4, 'left')",
+      "best_state": "[7, 1, 5, 2, 4, 0, 3, 6, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 4
+    },
+    {
+      "step": 58,
+      "current_state": "[7, 1, 5, 2, 4, 0, 3, 6, 8]",
+      "processed_state": "[7, 1, 0, 2, 4, 5, 3, 6, 8]",
+      "candidate_votes": {
+        "{'action': (5, 'down'), 'state': [7, 1, 0, 2, 4, 5, 3, 6, 8]}": 2
+      },
+      "best_action": "(5, 'down')",
+      "best_state": "[7, 1, 0, 2, 4, 5, 3, 6, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "58:1",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "58:3",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "58:4",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "58:5",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "58:6",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "58:7",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 8
+    },
+    {
+      "step": 59,
+      "current_state": "[7, 1, 0, 2, 4, 5, 3, 6, 8]",
+      "processed_state": "[7, 0, 1, 2, 4, 5, 3, 6, 8]",
+      "candidate_votes": {
+        "{'action': (1, 'right'), 'state': [7, 0, 1, 2, 4, 5, 3, 6, 8]}": 3
+      },
+      "best_action": "(1, 'right')",
+      "best_state": "[7, 0, 1, 2, 4, 5, 3, 6, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 60,
+      "current_state": "[7, 0, 1, 2, 4, 5, 3, 6, 8]",
+      "processed_state": "[7, 4, 1, 2, 0, 5, 3, 6, 8]",
+      "candidate_votes": {
+        "{'action': (4, 'up'), 'state': [7, 4, 1, 2, 0, 5, 3, 6, 8]}": 3
+      },
+      "best_action": "(4, 'up')",
+      "best_state": "[7, 4, 1, 2, 0, 5, 3, 6, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 61,
+      "current_state": "[7, 4, 1, 2, 0, 5, 3, 6, 8]",
+      "processed_state": "[7, 4, 1, 0, 2, 5, 3, 6, 8]",
+      "candidate_votes": {
+        "{'action': (2, 'right'), 'state': [7, 4, 1, 0, 2, 5, 3, 6, 8]}": 3
+      },
+      "best_action": "(2, 'right')",
+      "best_state": "[7, 4, 1, 0, 2, 5, 3, 6, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 62,
+      "current_state": "[7, 4, 1, 0, 2, 5, 3, 6, 8]",
+      "processed_state": "[0, 4, 1, 7, 2, 5, 3, 6, 8]",
+      "candidate_votes": {
+        "{'action': (7, 'down'), 'state': [0, 4, 1, 7, 2, 5, 3, 6, 8]}": 2
+      },
+      "best_action": "(7, 'down')",
+      "best_state": "[0, 4, 1, 7, 2, 5, 3, 6, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "62:1",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "62:2",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 4
+    },
+    {
+      "step": 63,
+      "current_state": "[0, 4, 1, 7, 2, 5, 3, 6, 8]",
+      "processed_state": "[4, 0, 1, 7, 2, 5, 3, 6, 8]",
+      "candidate_votes": {
+        "{'action': (4, 'left'), 'state': [4, 0, 1, 7, 2, 5, 3, 6, 8]}": 2
+      },
+      "best_action": "(4, 'left')",
+      "best_state": "[4, 0, 1, 7, 2, 5, 3, 6, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "63:2",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 64,
+      "current_state": "[4, 0, 1, 7, 2, 5, 3, 6, 8]",
+      "processed_state": "[0, 4, 1, 7, 2, 5, 3, 6, 8]",
+      "candidate_votes": {
+        "{'action': (4, 'right'), 'state': [0, 4, 1, 7, 2, 5, 3, 6, 8]}": 3
+      },
+      "best_action": "(4, 'right')",
+      "best_state": "[0, 4, 1, 7, 2, 5, 3, 6, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 65,
+      "current_state": "[0, 4, 1, 7, 2, 5, 3, 6, 8]",
+      "processed_state": "[4, 0, 1, 7, 2, 5, 3, 6, 8]",
+      "candidate_votes": {
+        "{'action': (4, 'left'), 'state': [4, 0, 1, 7, 2, 5, 3, 6, 8]}": 3,
+        "{'action': (7, 'up'), 'state': [7, 4, 1, 0, 2, 5, 3, 6, 8]}": 1
+      },
+      "best_action": "(4, 'left')",
+      "best_state": "[4, 0, 1, 7, 2, 5, 3, 6, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "65:4",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "65:5",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "65:6",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 7
+    },
+    {
+      "step": 66,
+      "current_state": "[4, 0, 1, 7, 2, 5, 3, 6, 8]",
+      "processed_state": "[0, 4, 1, 7, 2, 5, 3, 6, 8]",
+      "candidate_votes": {
+        "{'action': (4, 'right'), 'state': [0, 4, 1, 7, 2, 5, 3, 6, 8]}": 4,
+        "{'action': (2, 'up'), 'state': [4, 2, 1, 7, 0, 5, 3, 6, 8]}": 2
+      },
+      "best_action": "(4, 'right')",
+      "best_state": "[0, 4, 1, 7, 2, 5, 3, 6, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 6
+    },
+    {
+      "step": 67,
+      "current_state": "[0, 4, 1, 7, 2, 5, 3, 6, 8]",
+      "processed_state": "[7, 4, 1, 0, 2, 5, 3, 6, 8]",
+      "candidate_votes": {
+        "{'action': (7, 'up'), 'state': [7, 4, 1, 0, 2, 5, 3, 6, 8]}": 2
+      },
+      "best_action": "(7, 'up')",
+      "best_state": "[7, 4, 1, 0, 2, 5, 3, 6, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "67:2",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "67:3",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 4
+    },
+    {
+      "step": 68,
+      "current_state": "[7, 4, 1, 0, 2, 5, 3, 6, 8]",
+      "processed_state": "[7, 4, 1, 2, 0, 5, 3, 6, 8]",
+      "candidate_votes": {
+        "{'action': (2, 'left'), 'state': [7, 4, 1, 2, 0, 5, 3, 6, 8]}": 3
+      },
+      "best_action": "(2, 'left')",
+      "best_state": "[7, 4, 1, 2, 0, 5, 3, 6, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 69,
+      "current_state": "[7, 4, 1, 2, 0, 5, 3, 6, 8]",
+      "processed_state": "[7, 4, 1, 2, 6, 5, 3, 0, 8]",
+      "candidate_votes": {
+        "{'action': (6, 'up'), 'state': [7, 4, 1, 2, 6, 5, 3, 0, 8]}": 3
+      },
+      "best_action": "(6, 'up')",
+      "best_state": "[7, 4, 1, 2, 6, 5, 3, 0, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 70,
+      "current_state": "[7, 4, 1, 2, 6, 5, 3, 0, 8]",
+      "processed_state": "[7, 4, 1, 2, 6, 5, 0, 3, 8]",
+      "candidate_votes": {
+        "{'action': (3, 'right'), 'state': [7, 4, 1, 2, 6, 5, 0, 3, 8]}": 3
+      },
+      "best_action": "(3, 'right')",
+      "best_state": "[7, 4, 1, 2, 6, 5, 0, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 1,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 71,
+      "current_state": "[7, 4, 1, 2, 6, 5, 0, 3, 8]",
+      "processed_state": "[7, 4, 1, 0, 6, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (2, 'down'), 'state': [7, 4, 1, 0, 6, 5, 2, 3, 8]}": 3
+      },
+      "best_action": "(2, 'down')",
+      "best_state": "[7, 4, 1, 0, 6, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 72,
+      "current_state": "[7, 4, 1, 0, 6, 5, 2, 3, 8]",
+      "processed_state": "[7, 4, 1, 6, 0, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (6, 'left'), 'state': [7, 4, 1, 6, 0, 5, 2, 3, 8]}": 3
+      },
+      "best_action": "(6, 'left')",
+      "best_state": "[7, 4, 1, 6, 0, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 1,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 73,
+      "current_state": "[7, 4, 1, 6, 0, 5, 2, 3, 8]",
+      "processed_state": "[7, 0, 1, 6, 4, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (4, 'down'), 'state': [7, 0, 1, 6, 4, 5, 2, 3, 8]}": 2
+      },
+      "best_action": "(4, 'down')",
+      "best_state": "[7, 0, 1, 6, 4, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "73:1",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "73:3",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 4
+    },
+    {
+      "step": 74,
+      "current_state": "[7, 0, 1, 6, 4, 5, 2, 3, 8]",
+      "processed_state": "[0, 7, 1, 6, 4, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (7, 'right'), 'state': [0, 7, 1, 6, 4, 5, 2, 3, 8]}": 3
+      },
+      "best_action": "(7, 'right')",
+      "best_state": "[0, 7, 1, 6, 4, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 1,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 75,
+      "current_state": "[0, 7, 1, 6, 4, 5, 2, 3, 8]",
+      "processed_state": "[6, 7, 1, 0, 4, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (7, 'left'), 'state': [7, 0, 1, 6, 4, 5, 2, 3, 8]}": 1,
+        "{'action': (6, 'up'), 'state': [6, 7, 1, 0, 4, 5, 2, 3, 8]}": 3
+      },
+      "best_action": "(6, 'up')",
+      "best_state": "[6, 7, 1, 0, 4, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "75:1",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "75:3",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "75:4",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "75:5",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "75:7",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 76,
+      "current_state": "[6, 7, 1, 0, 4, 5, 2, 3, 8]",
+      "processed_state": "[6, 7, 1, 4, 0, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (4, 'left'), 'state': [6, 7, 1, 4, 0, 5, 2, 3, 8]}": 3,
+        "{'action': (6, 'down'), 'state': [0, 7, 1, 6, 4, 5, 2, 3, 8]}": 1
+      },
+      "best_action": "(4, 'left')",
+      "best_state": "[6, 7, 1, 4, 0, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 4
+    },
+    {
+      "step": 77,
+      "current_state": "[6, 7, 1, 4, 0, 5, 2, 3, 8]",
+      "processed_state": "[6, 0, 1, 4, 7, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (7, 'down'), 'state': [6, 0, 1, 4, 7, 5, 2, 3, 8]}": 3
+      },
+      "best_action": "(7, 'down')",
+      "best_state": "[6, 0, 1, 4, 7, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 1,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 78,
+      "current_state": "[6, 0, 1, 4, 7, 5, 2, 3, 8]",
+      "processed_state": "[6, 1, 0, 4, 7, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (1, 'left'), 'state': [6, 1, 0, 4, 7, 5, 2, 3, 8]}": 3
+      },
+      "best_action": "(1, 'left')",
+      "best_state": "[6, 1, 0, 4, 7, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 79,
+      "current_state": "[6, 1, 0, 4, 7, 5, 2, 3, 8]",
+      "processed_state": "[6, 1, 5, 4, 7, 0, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (5, 'up'), 'state': [6, 1, 5, 4, 7, 0, 2, 3, 8]}": 3
+      },
+      "best_action": "(5, 'up')",
+      "best_state": "[6, 1, 5, 4, 7, 0, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 80,
+      "current_state": "[6, 1, 5, 4, 7, 0, 2, 3, 8]",
+      "processed_state": "[6, 1, 5, 4, 0, 7, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (7, 'right'), 'state': [6, 1, 5, 4, 0, 7, 2, 3, 8]}": 2
+      },
+      "best_action": "(7, 'right')",
+      "best_state": "[6, 1, 5, 4, 0, 7, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "80:2",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 81,
+      "current_state": "[6, 1, 5, 4, 0, 7, 2, 3, 8]",
+      "processed_state": "[6, 0, 5, 4, 1, 7, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (1, 'down'), 'state': [6, 0, 5, 4, 1, 7, 2, 3, 8]}": 3
+      },
+      "best_action": "(1, 'down')",
+      "best_state": "[6, 0, 5, 4, 1, 7, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 82,
+      "current_state": "[6, 0, 5, 4, 1, 7, 2, 3, 8]",
+      "processed_state": "[0, 6, 5, 4, 1, 7, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (6, 'right'), 'state': [0, 6, 5, 4, 1, 7, 2, 3, 8]}": 4,
+        "{'action': (5, 'left'), 'state': [6, 5, 0, 4, 1, 7, 2, 3, 8]}": 2
+      },
+      "best_action": "(6, 'right')",
+      "best_state": "[0, 6, 5, 4, 1, 7, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "82:3",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 7
+    },
+    {
+      "step": 83,
+      "current_state": "[0, 6, 5, 4, 1, 7, 2, 3, 8]",
+      "processed_state": "[4, 6, 5, 0, 1, 7, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (4, 'up'), 'state': [4, 6, 5, 0, 1, 7, 2, 3, 8]}": 3
+      },
+      "best_action": "(4, 'up')",
+      "best_state": "[4, 6, 5, 0, 1, 7, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 1,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 84,
+      "current_state": "[4, 6, 5, 0, 1, 7, 2, 3, 8]",
+      "processed_state": "[0, 6, 5, 4, 1, 7, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (4, 'down'), 'state': [0, 6, 5, 4, 1, 7, 2, 3, 8]}": 3,
+        "{'action': (1, 'left'), 'state': [4, 6, 5, 1, 0, 7, 2, 3, 8]}": 1
+      },
+      "best_action": "(4, 'down')",
+      "best_state": "[0, 6, 5, 4, 1, 7, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "84:4",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "84:5",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "84:6",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "84:7",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "84:8",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 3,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 85,
+      "current_state": "[0, 6, 5, 4, 1, 7, 2, 3, 8]",
+      "processed_state": "[6, 0, 5, 4, 1, 7, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (6, 'left'), 'state': [6, 0, 5, 4, 1, 7, 2, 3, 8]}": 3
+      },
+      "best_action": "(6, 'left')",
+      "best_state": "[6, 0, 5, 4, 1, 7, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 86,
+      "current_state": "[6, 0, 5, 4, 1, 7, 2, 3, 8]",
+      "processed_state": "[0, 6, 5, 4, 1, 7, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (1, 'up'), 'state': [6, 1, 5, 4, 0, 7, 2, 3, 8]}": 1,
+        "{'action': (6, 'right'), 'state': [0, 6, 5, 4, 1, 7, 2, 3, 8]}": 3
+      },
+      "best_action": "(6, 'right')",
+      "best_state": "[0, 6, 5, 4, 1, 7, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 4
+    },
+    {
+      "step": 87,
+      "current_state": "[0, 6, 5, 4, 1, 7, 2, 3, 8]",
+      "processed_state": "[4, 6, 5, 0, 1, 7, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (4, 'up'), 'state': [4, 6, 5, 0, 1, 7, 2, 3, 8]}": 3
+      },
+      "best_action": "(4, 'up')",
+      "best_state": "[4, 6, 5, 0, 1, 7, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 1,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 88,
+      "current_state": "[4, 6, 5, 0, 1, 7, 2, 3, 8]",
+      "processed_state": "[4, 6, 5, 1, 0, 7, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (1, 'left'), 'state': [4, 6, 5, 1, 0, 7, 2, 3, 8]}": 2
+      },
+      "best_action": "(1, 'left')",
+      "best_state": "[4, 6, 5, 1, 0, 7, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "88:1",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 89,
+      "current_state": "[4, 6, 5, 1, 0, 7, 2, 3, 8]",
+      "processed_state": "[4, 0, 5, 1, 6, 7, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (6, 'down'), 'state': [4, 0, 5, 1, 6, 7, 2, 3, 8]}": 3
+      },
+      "best_action": "(6, 'down')",
+      "best_state": "[4, 0, 5, 1, 6, 7, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 1,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 90,
+      "current_state": "[4, 0, 5, 1, 6, 7, 2, 3, 8]",
+      "processed_state": "[4, 5, 0, 1, 6, 7, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (5, 'left'), 'state': [4, 5, 0, 1, 6, 7, 2, 3, 8]}": 3
+      },
+      "best_action": "(5, 'left')",
+      "best_state": "[4, 5, 0, 1, 6, 7, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 91,
+      "current_state": "[4, 5, 0, 1, 6, 7, 2, 3, 8]",
+      "processed_state": "[4, 5, 7, 1, 6, 0, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (7, 'up'), 'state': [4, 5, 7, 1, 6, 0, 2, 3, 8]}": 3
+      },
+      "best_action": "(7, 'up')",
+      "best_state": "[4, 5, 7, 1, 6, 0, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 92,
+      "current_state": "[4, 5, 7, 1, 6, 0, 2, 3, 8]",
+      "processed_state": "[4, 5, 7, 1, 0, 6, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (6, 'right'), 'state': [4, 5, 7, 1, 0, 6, 2, 3, 8]}": 2
+      },
+      "best_action": "(6, 'right')",
+      "best_state": "[4, 5, 7, 1, 0, 6, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "92:2",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 93,
+      "current_state": "[4, 5, 7, 1, 0, 6, 2, 3, 8]",
+      "processed_state": "[4, 0, 7, 1, 5, 6, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (5, 'down'), 'state': [4, 0, 7, 1, 5, 6, 2, 3, 8]}": 3
+      },
+      "best_action": "(5, 'down')",
+      "best_state": "[4, 0, 7, 1, 5, 6, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 94,
+      "current_state": "[4, 0, 7, 1, 5, 6, 2, 3, 8]",
+      "processed_state": "[4, 7, 0, 1, 5, 6, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (7, 'left'), 'state': [4, 7, 0, 1, 5, 6, 2, 3, 8]}": 3
+      },
+      "best_action": "(7, 'left')",
+      "best_state": "[4, 7, 0, 1, 5, 6, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 95,
+      "current_state": "[4, 7, 0, 1, 5, 6, 2, 3, 8]",
+      "processed_state": "[4, 7, 6, 1, 5, 0, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (6, 'up'), 'state': [4, 7, 6, 1, 5, 0, 2, 3, 8]}": 2
+      },
+      "best_action": "(6, 'up')",
+      "best_state": "[4, 7, 6, 1, 5, 0, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "95:1",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 96,
+      "current_state": "[4, 7, 6, 1, 5, 0, 2, 3, 8]",
+      "processed_state": "[4, 7, 6, 1, 0, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (5, 'right'), 'state': [4, 7, 6, 1, 0, 5, 2, 3, 8]}": 3
+      },
+      "best_action": "(5, 'right')",
+      "best_state": "[4, 7, 6, 1, 0, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 1,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 97,
+      "current_state": "[4, 7, 6, 1, 0, 5, 2, 3, 8]",
+      "processed_state": "[4, 0, 6, 1, 7, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (7, 'down'), 'state': [4, 0, 6, 1, 7, 5, 2, 3, 8]}": 3
+      },
+      "best_action": "(7, 'down')",
+      "best_state": "[4, 0, 6, 1, 7, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 1,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 98,
+      "current_state": "[4, 0, 6, 1, 7, 5, 2, 3, 8]",
+      "processed_state": "[4, 6, 0, 1, 7, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (6, 'left'), 'state': [4, 6, 0, 1, 7, 5, 2, 3, 8]}": 3
+      },
+      "best_action": "(6, 'left')",
+      "best_state": "[4, 6, 0, 1, 7, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 99,
+      "current_state": "[4, 6, 0, 1, 7, 5, 2, 3, 8]",
+      "processed_state": "[4, 6, 5, 1, 7, 0, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (6, 'right'), 'state': [4, 0, 6, 1, 7, 5, 2, 3, 8]}": 1,
+        "{'action': (5, 'up'), 'state': [4, 6, 5, 1, 7, 0, 2, 3, 8]}": 3
+      },
+      "best_action": "(5, 'up')",
+      "best_state": "[4, 6, 5, 1, 7, 0, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "99:2",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 5
+    },
+    {
+      "step": 100,
+      "current_state": "[4, 6, 5, 1, 7, 0, 2, 3, 8]",
+      "processed_state": "[4, 6, 0, 1, 7, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (5, 'down'), 'state': [4, 6, 0, 1, 7, 5, 2, 3, 8]}": 2
+      },
+      "best_action": "(5, 'down')",
+      "best_state": "[4, 6, 0, 1, 7, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "100:2",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "100:3",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 4
+    },
+    {
+      "step": 101,
+      "current_state": "[4, 6, 0, 1, 7, 5, 2, 3, 8]",
+      "processed_state": "[4, 0, 6, 1, 7, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (6, 'right'), 'state': [4, 0, 6, 1, 7, 5, 2, 3, 8]}": 3
+      },
+      "best_action": "(6, 'right')",
+      "best_state": "[4, 0, 6, 1, 7, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 102,
+      "current_state": "[4, 0, 6, 1, 7, 5, 2, 3, 8]",
+      "processed_state": "[4, 7, 6, 1, 0, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (7, 'up'), 'state': [4, 7, 6, 1, 0, 5, 2, 3, 8]}": 3
+      },
+      "best_action": "(7, 'up')",
+      "best_state": "[4, 7, 6, 1, 0, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 103,
+      "current_state": "[4, 7, 6, 1, 0, 5, 2, 3, 8]",
+      "processed_state": "[4, 7, 6, 0, 1, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (1, 'right'), 'state': [4, 7, 6, 0, 1, 5, 2, 3, 8]}": 3,
+        "{'action': (5, 'left'), 'state': [4, 7, 6, 1, 5, 0, 2, 3, 8]}": 1,
+        "{'action': (7, 'down'), 'state': [4, 0, 6, 1, 7, 5, 2, 3, 8]}": 1
+      },
+      "best_action": "(1, 'right')",
+      "best_state": "[4, 7, 6, 0, 1, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 5
+    },
+    {
+      "step": 104,
+      "current_state": "[4, 7, 6, 0, 1, 5, 2, 3, 8]",
+      "processed_state": "[0, 7, 6, 4, 1, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (4, 'down'), 'state': [0, 7, 6, 4, 1, 5, 2, 3, 8]}": 3,
+        "{'action': (2, 'up'), 'state': [4, 7, 6, 2, 1, 5, 0, 3, 8]}": 1
+      },
+      "best_action": "(4, 'down')",
+      "best_state": "[0, 7, 6, 4, 1, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "104:2",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "104:5",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 6
+    },
+    {
+      "step": 105,
+      "current_state": "[0, 7, 6, 4, 1, 5, 2, 3, 8]",
+      "processed_state": "[7, 0, 6, 4, 1, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (7, 'left'), 'state': [7, 0, 6, 4, 1, 5, 2, 3, 8]}": 3
+      },
+      "best_action": "(7, 'left')",
+      "best_state": "[7, 0, 6, 4, 1, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 1,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 106,
+      "current_state": "[7, 0, 6, 4, 1, 5, 2, 3, 8]",
+      "processed_state": "[7, 1, 6, 4, 0, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (1, 'up'), 'state': [7, 1, 6, 4, 0, 5, 2, 3, 8]}": 2
+      },
+      "best_action": "(1, 'up')",
+      "best_state": "[7, 1, 6, 4, 0, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "106:2",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 107,
+      "current_state": "[7, 1, 6, 4, 0, 5, 2, 3, 8]",
+      "processed_state": "[7, 1, 6, 0, 4, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (4, 'right'), 'state': [7, 1, 6, 0, 4, 5, 2, 3, 8]}": 3
+      },
+      "best_action": "(4, 'right')",
+      "best_state": "[7, 1, 6, 0, 4, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 1,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 108,
+      "current_state": "[7, 1, 6, 0, 4, 5, 2, 3, 8]",
+      "processed_state": "[0, 1, 6, 7, 4, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (7, 'down'), 'state': [0, 1, 6, 7, 4, 5, 2, 3, 8]}": 3
+      },
+      "best_action": "(7, 'down')",
+      "best_state": "[0, 1, 6, 7, 4, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 109,
+      "current_state": "[0, 1, 6, 7, 4, 5, 2, 3, 8]",
+      "processed_state": "[1, 0, 6, 7, 4, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (1, 'left'), 'state': [1, 0, 6, 7, 4, 5, 2, 3, 8]}": 3
+      },
+      "best_action": "(1, 'left')",
+      "best_state": "[1, 0, 6, 7, 4, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 1,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 110,
+      "current_state": "[1, 0, 6, 7, 4, 5, 2, 3, 8]",
+      "processed_state": "[1, 4, 6, 7, 0, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (4, 'up'), 'state': [1, 4, 6, 7, 0, 5, 2, 3, 8]}": 2
+      },
+      "best_action": "(4, 'up')",
+      "best_state": "[1, 4, 6, 7, 0, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "110:1",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 111,
+      "current_state": "[1, 4, 6, 7, 0, 5, 2, 3, 8]",
+      "processed_state": "[1, 4, 6, 0, 7, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (7, 'right'), 'state': [1, 4, 6, 0, 7, 5, 2, 3, 8]}": 3
+      },
+      "best_action": "(7, 'right')",
+      "best_state": "[1, 4, 6, 0, 7, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 2,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 112,
+      "current_state": "[1, 4, 6, 0, 7, 5, 2, 3, 8]",
+      "processed_state": "[0, 4, 6, 1, 7, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (1, 'down'), 'state': [0, 4, 6, 1, 7, 5, 2, 3, 8]}": 3,
+        "{'action': (2, 'up'), 'state': [1, 4, 6, 2, 7, 5, 0, 3, 8]}": 1,
+        "{'action': (7, 'left'), 'state': [1, 4, 6, 7, 0, 5, 2, 3, 8]}": 1
+      },
+      "best_action": "(1, 'down')",
+      "best_state": "[0, 4, 6, 1, 7, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 5
+    },
+    {
+      "step": 113,
+      "current_state": "[0, 4, 6, 1, 7, 5, 2, 3, 8]",
+      "processed_state": "[4, 0, 6, 1, 7, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (4, 'left'), 'state': [4, 0, 6, 1, 7, 5, 2, 3, 8]}": 3
+      },
+      "best_action": "(4, 'left')",
+      "best_state": "[4, 0, 6, 1, 7, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 114,
+      "current_state": "[4, 0, 6, 1, 7, 5, 2, 3, 8]",
+      "processed_state": "[4, 7, 6, 1, 0, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (7, 'up'), 'state': [4, 7, 6, 1, 0, 5, 2, 3, 8]}": 3
+      },
+      "best_action": "(7, 'up')",
+      "best_state": "[4, 7, 6, 1, 0, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 115,
+      "current_state": "[4, 7, 6, 1, 0, 5, 2, 3, 8]",
+      "processed_state": "[4, 7, 6, 0, 1, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (1, 'right'), 'state': [4, 7, 6, 0, 1, 5, 2, 3, 8]}": 2
+      },
+      "best_action": "(1, 'right')",
+      "best_state": "[4, 7, 6, 0, 1, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "115:3",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 116,
+      "current_state": "[4, 7, 6, 0, 1, 5, 2, 3, 8]",
+      "processed_state": "[0, 7, 6, 4, 1, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (4, 'down'), 'state': [0, 7, 6, 4, 1, 5, 2, 3, 8]}": 2
+      },
+      "best_action": "(4, 'down')",
+      "best_state": "[0, 7, 6, 4, 1, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "116:3",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 117,
+      "current_state": "[0, 7, 6, 4, 1, 5, 2, 3, 8]",
+      "processed_state": "[7, 0, 6, 4, 1, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (7, 'left'), 'state': [7, 0, 6, 4, 1, 5, 2, 3, 8]}": 3
+      },
+      "best_action": "(7, 'left')",
+      "best_state": "[7, 0, 6, 4, 1, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 1,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 118,
+      "current_state": "[7, 0, 6, 4, 1, 5, 2, 3, 8]",
+      "processed_state": "[7, 1, 6, 4, 0, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (1, 'up'), 'state': [7, 1, 6, 4, 0, 5, 2, 3, 8]}": 3
+      },
+      "best_action": "(1, 'up')",
+      "best_state": "[7, 1, 6, 4, 0, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 119,
+      "current_state": "[7, 1, 6, 4, 0, 5, 2, 3, 8]",
+      "processed_state": "[7, 1, 6, 0, 4, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (4, 'right'), 'state': [7, 1, 6, 0, 4, 5, 2, 3, 8]}": 2
+      },
+      "best_action": "(4, 'right')",
+      "best_state": "[7, 1, 6, 0, 4, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "119:1",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 120,
+      "current_state": "[7, 1, 6, 0, 4, 5, 2, 3, 8]",
+      "processed_state": "[0, 1, 6, 7, 4, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (2, 'up'), 'state': [7, 1, 6, 2, 4, 5, 0, 3, 8]}": 1,
+        "{'action': (7, 'down'), 'state': [0, 1, 6, 7, 4, 5, 2, 3, 8]}": 3
+      },
+      "best_action": "(7, 'down')",
+      "best_state": "[0, 1, 6, 7, 4, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 4
+    },
+    {
+      "step": 121,
+      "current_state": "[0, 1, 6, 7, 4, 5, 2, 3, 8]",
+      "processed_state": "[1, 0, 6, 7, 4, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (1, 'left'), 'state': [1, 0, 6, 7, 4, 5, 2, 3, 8]}": 3
+      },
+      "best_action": "(1, 'left')",
+      "best_state": "[1, 0, 6, 7, 4, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 122,
+      "current_state": "[1, 0, 6, 7, 4, 5, 2, 3, 8]",
+      "processed_state": "[1, 4, 6, 7, 0, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (4, 'up'), 'state': [1, 4, 6, 7, 0, 5, 2, 3, 8]}": 2
+      },
+      "best_action": "(4, 'up')",
+      "best_state": "[1, 4, 6, 7, 0, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "122:2",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 123,
+      "current_state": "[1, 4, 6, 7, 0, 5, 2, 3, 8]",
+      "processed_state": "[1, 0, 6, 7, 4, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (5, 'left'), 'state': [1, 4, 6, 7, 5, 0, 2, 3, 8]}": 1,
+        "{'action': (4, 'down'), 'state': [1, 0, 6, 7, 4, 5, 2, 3, 8]}": 3
+      },
+      "best_action": "(4, 'down')",
+      "best_state": "[1, 0, 6, 7, 4, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "123:1",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "123:5",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 6
+    },
+    {
+      "step": 124,
+      "current_state": "[1, 0, 6, 7, 4, 5, 2, 3, 8]",
+      "processed_state": "[0, 1, 6, 7, 4, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (1, 'right'), 'state': [0, 1, 6, 7, 4, 5, 2, 3, 8]}": 2
+      },
+      "best_action": "(1, 'right')",
+      "best_state": "[0, 1, 6, 7, 4, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "124:1",
+          "action": "None",
+          "state": "None",
+          "error": "Inconsistent prediction: next_state does not match current_state + move."
+        }
+      ],
+      "fallback_retries": 2,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 125,
+      "current_state": "[0, 1, 6, 7, 4, 5, 2, 3, 8]",
+      "processed_state": "[7, 1, 6, 0, 4, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (7, 'up'), 'state': [7, 1, 6, 0, 4, 5, 2, 3, 8]}": 3,
+        "{'action': (1, 'left'), 'state': [1, 0, 6, 7, 4, 5, 2, 3, 8]}": 1
+      },
+      "best_action": "(7, 'up')",
+      "best_state": "[7, 1, 6, 0, 4, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "125:1",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "125:3",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "125:5",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "125:6",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "125:8",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 126,
+      "current_state": "[7, 1, 6, 0, 4, 5, 2, 3, 8]",
+      "processed_state": "[7, 1, 6, 4, 0, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (4, 'left'), 'state': [7, 1, 6, 4, 0, 5, 2, 3, 8]}": 3
+      },
+      "best_action": "(4, 'left')",
+      "best_state": "[7, 1, 6, 4, 0, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 1,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 127,
+      "current_state": "[7, 1, 6, 4, 0, 5, 2, 3, 8]",
+      "processed_state": "[7, 0, 6, 4, 1, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (1, 'down'), 'state': [7, 0, 6, 4, 1, 5, 2, 3, 8]}": 2
+      },
+      "best_action": "(1, 'down')",
+      "best_state": "[7, 0, 6, 4, 1, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "127:1",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 128,
+      "current_state": "[7, 0, 6, 4, 1, 5, 2, 3, 8]",
+      "processed_state": "[0, 7, 6, 4, 1, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (7, 'right'), 'state': [0, 7, 6, 4, 1, 5, 2, 3, 8]}": 2
+      },
+      "best_action": "(7, 'right')",
+      "best_state": "[0, 7, 6, 4, 1, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "128:3",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 129,
+      "current_state": "[0, 7, 6, 4, 1, 5, 2, 3, 8]",
+      "processed_state": "[4, 7, 6, 0, 1, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (4, 'up'), 'state': [4, 7, 6, 0, 1, 5, 2, 3, 8]}": 3
+      },
+      "best_action": "(4, 'up')",
+      "best_state": "[4, 7, 6, 0, 1, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 1,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 130,
+      "current_state": "[4, 7, 6, 0, 1, 5, 2, 3, 8]",
+      "processed_state": "[0, 7, 6, 4, 1, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (4, 'down'), 'state': [0, 7, 6, 4, 1, 5, 2, 3, 8]}": 2
+      },
+      "best_action": "(4, 'down')",
+      "best_state": "[0, 7, 6, 4, 1, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "130:2",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 131,
+      "current_state": "[0, 7, 6, 4, 1, 5, 2, 3, 8]",
+      "processed_state": "[7, 0, 6, 4, 1, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (7, 'left'), 'state': [7, 0, 6, 4, 1, 5, 2, 3, 8]}": 3
+      },
+      "best_action": "(7, 'left')",
+      "best_state": "[7, 0, 6, 4, 1, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "[0, 7, 6, 4, 1, 5, 2, 3, 8]",
+          "error": "Cycle detected: state visited 4 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 4
+    },
+    {
+      "step": 132,
+      "current_state": "[7, 0, 6, 4, 1, 5, 2, 3, 8]",
+      "processed_state": "[7, 1, 6, 4, 0, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (1, 'up'), 'state': [7, 1, 6, 4, 0, 5, 2, 3, 8]}": 3
+      },
+      "best_action": "(1, 'up')",
+      "best_state": "[7, 1, 6, 4, 0, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "[7, 0, 6, 4, 1, 5, 2, 3, 8]",
+          "error": "Cycle detected: state visited 4 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 4
+    },
+    {
+      "step": 133,
+      "current_state": "[7, 1, 6, 4, 0, 5, 2, 3, 8]",
+      "processed_state": "[7, 1, 6, 0, 4, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (4, 'right'), 'state': [7, 1, 6, 0, 4, 5, 2, 3, 8]}": 2
+      },
+      "best_action": "(4, 'right')",
+      "best_state": "[7, 1, 6, 0, 4, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "[7, 1, 6, 4, 0, 5, 2, 3, 8]",
+          "error": "Cycle detected: state visited 4 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 2,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 134,
+      "current_state": "[7, 1, 6, 0, 4, 5, 2, 3, 8]",
+      "processed_state": "[7, 1, 6, 4, 0, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (7, 'down'), 'state': [0, 1, 6, 7, 4, 5, 2, 3, 8]}": 2,
+        "{'action': (4, 'left'), 'state': [7, 1, 6, 4, 0, 5, 2, 3, 8]}": 4
+      },
+      "best_action": "(4, 'left')",
+      "best_state": "[7, 1, 6, 4, 0, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "[7, 1, 6, 0, 4, 5, 2, 3, 8]",
+          "error": "Cycle detected: state visited 4 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 2,
+      "num_agents_queried": 7
+    },
+    {
+      "step": 135,
+      "current_state": "[7, 1, 6, 4, 0, 5, 2, 3, 8]",
+      "processed_state": "[7, 0, 6, 4, 1, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (1, 'down'), 'state': [7, 0, 6, 4, 1, 5, 2, 3, 8]}": 3,
+        "{'action': (3, 'up'), 'state': [7, 1, 6, 4, 3, 5, 2, 0, 8]}": 1
+      },
+      "best_action": "(1, 'down')",
+      "best_state": "[7, 0, 6, 4, 1, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "[7, 1, 6, 4, 0, 5, 2, 3, 8]",
+          "error": "Cycle detected: state visited 5 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 5
+    },
+    {
+      "step": 136,
+      "current_state": "[7, 0, 6, 4, 1, 5, 2, 3, 8]",
+      "processed_state": "[0, 7, 6, 4, 1, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (7, 'right'), 'state': [0, 7, 6, 4, 1, 5, 2, 3, 8]}": 3,
+        "{'action': (6, 'left'), 'state': [7, 6, 0, 4, 1, 5, 2, 3, 8]}": 1
+      },
+      "best_action": "(7, 'right')",
+      "best_state": "[0, 7, 6, 4, 1, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "[7, 0, 6, 4, 1, 5, 2, 3, 8]",
+          "error": "Cycle detected: state visited 5 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 5
+    },
+    {
+      "step": 137,
+      "current_state": "[0, 7, 6, 4, 1, 5, 2, 3, 8]",
+      "processed_state": "[4, 7, 6, 0, 1, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (4, 'up'), 'state': [4, 7, 6, 0, 1, 5, 2, 3, 8]}": 3
+      },
+      "best_action": "(4, 'up')",
+      "best_state": "[4, 7, 6, 0, 1, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "[0, 7, 6, 4, 1, 5, 2, 3, 8]",
+          "error": "Cycle detected: state visited 5 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 4
+    },
+    {
+      "step": 138,
+      "current_state": "[4, 7, 6, 0, 1, 5, 2, 3, 8]",
+      "processed_state": "[0, 7, 6, 4, 1, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (4, 'down'), 'state': [0, 7, 6, 4, 1, 5, 2, 3, 8]}": 3,
+        "{'action': (1, 'left'), 'state': [4, 7, 6, 1, 0, 5, 2, 3, 8]}": 1
+      },
+      "best_action": "(4, 'down')",
+      "best_state": "[0, 7, 6, 4, 1, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "[4, 7, 6, 0, 1, 5, 2, 3, 8]",
+          "error": "Cycle detected: state visited 4 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 5
+    },
+    {
+      "step": 139,
+      "current_state": "[0, 7, 6, 4, 1, 5, 2, 3, 8]",
+      "processed_state": "[7, 0, 6, 4, 1, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (7, 'left'), 'state': [7, 0, 6, 4, 1, 5, 2, 3, 8]}": 3
+      },
+      "best_action": "(7, 'left')",
+      "best_state": "[7, 0, 6, 4, 1, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "[0, 7, 6, 4, 1, 5, 2, 3, 8]",
+          "error": "Cycle detected: state visited 6 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 4
+    },
+    {
+      "step": 140,
+      "current_state": "[7, 0, 6, 4, 1, 5, 2, 3, 8]",
+      "processed_state": "[7, 1, 6, 4, 0, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (1, 'up'), 'state': [7, 1, 6, 4, 0, 5, 2, 3, 8]}": 3
+      },
+      "best_action": "(1, 'up')",
+      "best_state": "[7, 1, 6, 4, 0, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "[7, 0, 6, 4, 1, 5, 2, 3, 8]",
+          "error": "Cycle detected: state visited 6 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 4
+    },
+    {
+      "step": 141,
+      "current_state": "[7, 1, 6, 4, 0, 5, 2, 3, 8]",
+      "processed_state": "[7, 1, 6, 0, 4, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (4, 'right'), 'state': [7, 1, 6, 0, 4, 5, 2, 3, 8]}": 3
+      },
+      "best_action": "(4, 'right')",
+      "best_state": "[7, 1, 6, 0, 4, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "[7, 1, 6, 4, 0, 5, 2, 3, 8]",
+          "error": "Cycle detected: state visited 6 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 4
+    },
+    {
+      "step": 142,
+      "current_state": "[7, 1, 6, 0, 4, 5, 2, 3, 8]",
+      "processed_state": "[0, 1, 6, 7, 4, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (2, 'up'), 'state': [7, 1, 6, 2, 4, 5, 0, 3, 8]}": 1,
+        "{'action': (7, 'down'), 'state': [0, 1, 6, 7, 4, 5, 2, 3, 8]}": 3
+      },
+      "best_action": "(7, 'down')",
+      "best_state": "[0, 1, 6, 7, 4, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "[7, 1, 6, 0, 4, 5, 2, 3, 8]",
+          "error": "Cycle detected: state visited 5 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 2,
+      "num_agents_queried": 5
+    },
+    {
+      "step": 143,
+      "current_state": "[0, 1, 6, 7, 4, 5, 2, 3, 8]",
+      "processed_state": "[1, 0, 6, 7, 4, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (1, 'left'), 'state': [1, 0, 6, 7, 4, 5, 2, 3, 8]}": 2
+      },
+      "best_action": "(1, 'left')",
+      "best_state": "[1, 0, 6, 7, 4, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "[0, 1, 6, 7, 4, 5, 2, 3, 8]",
+          "error": "Cycle detected: state visited 4 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 144,
+      "current_state": "[1, 0, 6, 7, 4, 5, 2, 3, 8]",
+      "processed_state": "[1, 4, 6, 7, 0, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (4, 'up'), 'state': [1, 4, 6, 7, 0, 5, 2, 3, 8]}": 3
+      },
+      "best_action": "(4, 'up')",
+      "best_state": "[1, 4, 6, 7, 0, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "[1, 0, 6, 7, 4, 5, 2, 3, 8]",
+          "error": "Cycle detected: state visited 4 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 4
+    },
+    {
+      "step": 145,
+      "current_state": "[1, 4, 6, 7, 0, 5, 2, 3, 8]",
+      "processed_state": "[1, 0, 6, 7, 4, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (4, 'down'), 'state': [1, 0, 6, 7, 4, 5, 2, 3, 8]}": 2
+      },
+      "best_action": "(4, 'down')",
+      "best_state": "[1, 0, 6, 7, 4, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "145:3",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 146,
+      "current_state": "[1, 0, 6, 7, 4, 5, 2, 3, 8]",
+      "processed_state": "[0, 1, 6, 7, 4, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (1, 'right'), 'state': [0, 1, 6, 7, 4, 5, 2, 3, 8]}": 3,
+        "{'action': (6, 'left'), 'state': [1, 6, 0, 7, 4, 5, 2, 3, 8]}": 1
+      },
+      "best_action": "(1, 'right')",
+      "best_state": "[0, 1, 6, 7, 4, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "[1, 0, 6, 7, 4, 5, 2, 3, 8]",
+          "error": "Cycle detected: state visited 5 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 3,
+      "num_agents_queried": 5
+    },
+    {
+      "step": 147,
+      "current_state": "[0, 1, 6, 7, 4, 5, 2, 3, 8]",
+      "processed_state": "[7, 1, 6, 0, 4, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (7, 'up'), 'state': [7, 1, 6, 0, 4, 5, 2, 3, 8]}": 3
+      },
+      "best_action": "(7, 'up')",
+      "best_state": "[7, 1, 6, 0, 4, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "[0, 1, 6, 7, 4, 5, 2, 3, 8]",
+          "error": "Cycle detected: state visited 5 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 4
+    },
+    {
+      "step": 148,
+      "current_state": "[7, 1, 6, 0, 4, 5, 2, 3, 8]",
+      "processed_state": "[7, 1, 6, 4, 0, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (4, 'left'), 'state': [7, 1, 6, 4, 0, 5, 2, 3, 8]}": 2
+      },
+      "best_action": "(4, 'left')",
+      "best_state": "[7, 1, 6, 4, 0, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "[7, 1, 6, 0, 4, 5, 2, 3, 8]",
+          "error": "Cycle detected: state visited 6 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 149,
+      "current_state": "[7, 1, 6, 4, 0, 5, 2, 3, 8]",
+      "processed_state": "[7, 1, 6, 0, 4, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (4, 'right'), 'state': [7, 1, 6, 0, 4, 5, 2, 3, 8]}": 3
+      },
+      "best_action": "(4, 'right')",
+      "best_state": "[7, 1, 6, 0, 4, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "[7, 1, 6, 4, 0, 5, 2, 3, 8]",
+          "error": "Cycle detected: state visited 7 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 4
+    },
+    {
+      "step": 150,
+      "current_state": "[7, 1, 6, 0, 4, 5, 2, 3, 8]",
+      "processed_state": "[0, 1, 6, 7, 4, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (7, 'down'), 'state': [0, 1, 6, 7, 4, 5, 2, 3, 8]}": 3,
+        "{'action': (2, 'up'), 'state': [7, 1, 6, 2, 4, 5, 0, 3, 8]}": 1
+      },
+      "best_action": "(7, 'down')",
+      "best_state": "[0, 1, 6, 7, 4, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "[7, 1, 6, 0, 4, 5, 2, 3, 8]",
+          "error": "Cycle detected: state visited 7 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 5
+    },
+    {
+      "step": 151,
+      "current_state": "[0, 1, 6, 7, 4, 5, 2, 3, 8]",
+      "processed_state": "[1, 0, 6, 7, 4, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (1, 'left'), 'state': [1, 0, 6, 7, 4, 5, 2, 3, 8]}": 2
+      },
+      "best_action": "(1, 'left')",
+      "best_state": "[1, 0, 6, 7, 4, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "[0, 1, 6, 7, 4, 5, 2, 3, 8]",
+          "error": "Cycle detected: state visited 6 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 3
+    },
+    {
+      "step": 152,
+      "current_state": "[1, 0, 6, 7, 4, 5, 2, 3, 8]",
+      "processed_state": "[1, 4, 6, 7, 0, 5, 2, 3, 8]",
+      "candidate_votes": {
+        "{'action': (4, 'up'), 'state': [1, 4, 6, 7, 0, 5, 2, 3, 8]}": 3
+      },
+      "best_action": "(4, 'up')",
+      "best_state": "[1, 4, 6, 7, 0, 5, 2, 3, 8]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "[1, 0, 6, 7, 4, 5, 2, 3, 8]",
+          "error": "Cycle detected: state visited 6 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 4
+    }
+  ]
+}
