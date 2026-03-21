@@ -1,10 +1,10 @@
 game: nonogram
 margin_k: 2
-max_steps: 50
+max_steps: 100
 max_agents_per_step: 3
 output_dir: output
 temperature: 0.5
-model_path: LLM/model
+model_path: LLM/models/devstral-24b
 prompt_variant: base
 
 # Game-specific — 4x4 butterfly (16 cells, simplest stage)
