@@ -9,7 +9,7 @@
 #SBATCH --time=00:30:00
 #SBATCH --partition=dev_gpu_h100
 
-cd "$(dirname "$(readlink -f "$0")")/.."
+cd "${SLURM_SUBMIT_DIR:-$(dirname "$(readlink -f "$0")")/..}"
 mkdir -p logs output
 
 # Critical: load CUDA runtime so torch.cuda.is_available() works (see docs/gpu_debugging.md)

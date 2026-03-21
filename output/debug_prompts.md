@@ -1,0 +1,93 @@
+
+## Actual LLM Prompt at Step 1 (default)
+
+### System Prompt
+You are a Nonogram (Picross) solver using constraint propagation.
+
+Nonogram rules:
+- 4x4 grid. Each cell: -1 (unknown/.), 0 (empty/x), 1 (filled/#).
+- Row/column hints describe the consecutive FILLED block lengths in order, separated by ≥1 empty.
+- Hint [2] → exactly one block of 2 consecutive filled cells.
+- Hint [1,1] → exactly two single filled cells, each separated by ≥1 empty cell.
+
+SOLVING STRATEGY — always find a LOGICALLY FORCED cell:
+
+Rule 1 — Overlap analysis (single-clue lines):
+  For a line of length n with a single hint k, positions [(n-k) .. (k-1)] are DEFINITELY FILLED.
+  Example: n=5, k=3 → positions 2 to 2 are forced filled. n=4, k=3 → positions 1 to 2 forced filled.
+
+Rule 2 — Constraint propagation from known cells:
+  After placing any FILLED cell in a line, check if the hint is now partially satisfied.
+  - Hint [1,1]: if one filled cell is already placed at position p, then positions p-1 and p+1 MUST be EMPTY (no consecutive allowed).
+  - Hint [2]: if one filled cell is at position p, then p-1 OR p+1 must also be filled (the block is exactly 2).
+
+Rule 3 — Feasibility check (MOST IMPORTANT):
+  For each unknown cell (r,c), test both values before proposing:
+  - If marking (r,c)=FILLED makes row r OR column c infeasible → (r,c) MUST be EMPTY.
+  - If marking (r,c)=EMPTY makes row r OR column c infeasible → (r,c) MUST be FILLED.
+  A line with hint [1,1] and cells [1, -1, ...] is INFEASIBLE if the next cell is set to 1 (consecutive filled = block of 2, not [1,1]).
+
+Rule 4 — Completed lines:
+  If a row/column's filled count already equals sum(hints), all remaining unknown cells in that line are EMPTY.
+
+Worked example — 4x4 butterfly (row hints [1,1],[2],[2],[1,1]; col hints [1,1],[2],[2],[1,1]):
+Start: all unknown.
+- Col 1 hint [2] in 4 rows: no overlap alone. But cross-checking row hints:
+  Row 1 hint [2] must place a block of 2. Col 0 hint [1,1] allows at most 1 filled per half.
+  If row 1's block were at cols 0-1: col 0 gets row 1 filled. Then col 0 = [?, 1, ?, ?] with hint [1,1]. If row 0 also fills col 0 (row 0 hint [1,1] starts at col 0), col 0 = [1,1,?,?] → infeasible for [1,1]. So row 1's block CANNOT start at col 0.
+  If row 1's block is at cols 1-2: row 1 = [0,1,1,0]. Check col 0: row 1=0. Col 0 hint [1,1] → rows 0 and 3 are the two filled cells. Col 1: rows 1 and 2 filled = hint [2] ✓.
+  If row 1's block is at cols 2-3: col 3 gets row 1 filled. By symmetry same argument → forces row 1 block to cols 1-2.
+- Therefore row 1 = [0,1,1,0] and row 2 = [0,1,1,0] (symmetric). Row 0 = [1,0,0,1]. Row 3 = [1,0,0,1].
+- After row 0 col 0 = FILLED: col 0 is [1,-1,-1,-1] with hint [1,1]. Setting (1,0)=FILLED → [1,1,-1,-1] → INFEASIBLE for [1,1]. So (1,0) MUST be EMPTY. (Rule 3)
+
+VERY IMPORTANT output format (EXACT):
+
+move = [row, col, "filled"]
+next_state = [[...], [...], ...]
+
+or
+
+move = [row, col, "empty"]
+next_state = [[...], [...], ...]
+
+- row/col are 0-indexed integers.
+- next_state is the FULL grid as a nested list of ints using only -1, 0, 1.
+- Only the chosen cell changes; ALL others stay IDENTICAL to current_state.
+- Do NOT add extra text after the two lines.
+
+
+### User Prompt
+Current step: 1
+Previous move: None
+
+Row hints (0..3):
+[[1, 1], [2], [2], [1, 1]]
+
+Column hints (0..3):
+[[1, 1], [2], [2], [1, 1]]
+
+Current_state (nested list):
+[[-1, -1, -1, -1], [-1, -1, -1, -1], [-1, -1, -1, -1], [-1, -1, -1, -1]]
+
+Visual (.:unknown, x:empty, #:filled):
+....
+....
+....
+....
+
+Allowed cells (must choose one of these coordinates; 0-indexed):
+[(0, 0), (0, 1), (0, 2), (0, 3), (1, 0), (1, 1), (1, 2), (1, 3), (2, 0), (2, 1), (2, 2), (2, 3), (3, 0), (3, 1), (3, 2), (3, 3)]
+
+Decision guidance:
+1) Apply Rule 3 first: for EACH allowed cell, check if setting it FILLED makes its row or column infeasible → it must be EMPTY (and vice versa). This is the most reliable way to find forced cells.
+2) Apply Rule 2: if a FILLED cell exists in a line with hint [1,1], the cells adjacent to it MUST be EMPTY.
+3) Apply Rule 4: if a row/column's filled count equals the total cells to fill (sum of hints), all remaining unknowns in that line are EMPTY.
+4) Only pick from the allowed cells list. Only decide UNKNOWN cells (value -1).
+5) Update ONLY the chosen cell in next_state; all other cells must be identical to current_state.
+
+Now output ONLY:
+move = [row, col, "filled"|"empty"]
+next_state = [...]
+
+
+---

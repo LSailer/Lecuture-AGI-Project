@@ -9,7 +9,31 @@
       "Bash(grep -r \"difficulty\\\\|DIFFICULTY\\\\|puzzle\" /pfs/data6/home/ul/ul_student/ul_hfj15/Lecuture-AGI-Project/src/config/ --include=*.yaml --include=*.yml)",
       "Bash(find src:*)",
       "Bash(find /pfs/data6/home/ul/ul_student/ul_hfj15/Lecuture-AGI-Project -type d -name *autoresearch* -o -type d -name *tasks*)",
-      "Bash(find /pfs/data6/home/ul/ul_student/ul_hfj15/Lecuture-AGI-Project -type f \\\\\\(-name *.yaml -o -name *.yml \\\\\\))"
+      "Bash(find /pfs/data6/home/ul/ul_student/ul_hfj15/Lecuture-AGI-Project -type f \\\\\\(-name *.yaml -o -name *.yml \\\\\\))",
+      "Bash(python -m pytest tests/test_parser.py -v)",
+      "Bash(mkdir -p logs output)",
+      "Bash(GAME=nonogram sbatch scripts/run_autoresearch_dev.sh)",
+      "Bash(squeue -u $USER --format=\"%.10i %.15j %.8T %.10M %.6D %R\")",
+      "Bash(squeue -u $USER --format=\"%.10i %.15j %.8T %.10M\")",
+      "Bash(ln -s /pfs/data6/home/ul/ul_student/ul_hfj15/Lecuture-AGI-Project/LLM/model /pfs/data6/home/ul/ul_student/ul_hfj15/Lecuture-AGI-Project/worktrees/cube/LLM/model)",
+      "Bash(ln -s /pfs/data6/home/ul/ul_student/ul_hfj15/Lecuture-AGI-Project/LLM/models /pfs/data6/home/ul/ul_student/ul_hfj15/Lecuture-AGI-Project/worktrees/cube/LLM/models)",
+      "Bash(python3 -c \"import torch; print\\(''CUDA available:'', torch.cuda.is_available\\(\\)\\)\")",
+      "Bash(chmod +x /pfs/data6/home/ul/ul_student/ul_hfj15/Lecuture-AGI-Project/worktrees/cube/scripts/smoke_test.sh)",
+      "Bash(sbatch scripts/smoke_test.sh)",
+      "Bash(squeue -u ul_hfj15 --format=\"%.10i %.20j %.8T %.10M %.6D %R\")",
+      "Bash(squeue -u ul_hfj15 -j 3720205 --format=\"%.10i %.20j %.8T %.10M\")",
+      "Bash(squeue -u ul_hfj15 --format=\"%.10i %.20j %.8T %.10M\")",
+      "Bash(ssh uc3n082:*)",
+      "Bash(GAME=nonogram sbatch scripts/run_autoresearch.sh)",
+      "Bash(uv add:*)",
+      "Bash(uv sync:*)",
+      "Bash(squeue -u ul_hfj15 -j 3721280 --format=\"%.10i %.8T\")",
+      "Bash(sbatch scripts/run_autoresearch_dev.sh)",
+      "Bash(squeue -j 3721704)",
+      "Bash(python3 -c \"import transformers; print\\(transformers.__version__\\)\")"
+    ],
+    "additionalDirectories": [
+      "/pfs/data6/home/ul/ul_student/ul_hfj15/Lecuture-AGI-Project/docs/superpowers"
     ]
   }
 }
