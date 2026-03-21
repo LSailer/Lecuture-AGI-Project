@@ -23,3 +23,5 @@ a9fca40	0.222222	153	2	keep	sliding_puzzle iter12 3x3 easiest devstral T=0.5 exp
 77863f6	1.000000	76	2	keep	sliding_puzzle iter14 3x3 easiest devstral T=0.5 explicit_v7 max_agents=9 — 100% SR 76 steps
 ec77c42	0.222222	200	3	keep	sliding_puzzle iter15 3x3 hardest devstral T=0.5 explicit_v7 max_agents=9 — 22.2% SR stage up baseline
 ac0a222	0.000000	400	3	discard	sliding_puzzle iter16 3x3 hardest devstral T=0.5 explicit_v9 max_agents=9 max_steps=400 — 0% SR Token budget exhausted by Tier-1 field+2nd example, regression from v7
+9754a5e	0.000000	0	1	crash	rubiks_cube dev baseline devstral T=0.1 — kernels package missing in worktree venv (FP8 Triton kernel)
+7fc6ceb	0.592593	0	1	keep	rubiks_cube dev iter2 devstral T=0.1 2-move scramble — Inconsistent prediction all steps, 0 valid moves, SR=59.3% initial state only

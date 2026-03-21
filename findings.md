@@ -119,3 +119,13 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral-24b, T=0.5, explicit_v9 (Tier-1/Tier-2 placed-tile safety + 2nd detour example), 3x3 hardest, max_agents=9, max_steps=400
 - **Result**: 0% SR, 400 steps — DISCARD (regression from iter15's 22.2%)
 - **Insight**: The extra `Tier-1:` output field + second worked example in system_prompt pushed agents past the 750-token output budget — "Could not find move/next_state" errors dominate. **Hard constraint**: any change that adds output fields or lengthens the system_prompt causes total format failure. Next: keep explicit_v7 output format UNCHANGED, only modify rule 6 text to "prefer moves that don't displace placed tiles; among those, pick move closest to Target's goal" — no new output fields. This changes decision logic without touching format.
+
+## Iteration 1 (rubiks_cube) — dev baseline crash: kernels package missing
+- **Config**: devstral T=0.1, base prompt, 2-move scramble (R U), max_steps=100
+- **Result**: 0% SR, 0 valid steps — CRASH (kernels package missing in venv)
+- **Insight**: The worktree venv was missing `kernels` package required for FP8 Triton kernel used by devstral-24b. Fixed by `uv add kernels` (added to pyproject.toml). Root cause: worktree created before kernels dep was added to main venv.
+
+## Iteration 2 (rubiks_cube) — dev iter2 first real run
+- **Config**: devstral T=0.1, base prompt, 2-move scramble (R U), max_steps=100
+- **Result**: SR=59.3% (initial state only), 0 valid moves, max steps hit — KEEP (first successful run)
+- **Insight**: Model produces "Inconsistent prediction" on ALL steps — it can pick a move token but cannot compute the correct `next_state` for a 54-char Rubik's cube string. Unlike sliding puzzle (2-index swap), cube moves permute exactly 20 stickers in complex non-intuitive geometric cycles. The LLM has no internal representation of these permutation tables. SR=59.3% is misleading — it's just the starting proximity to solved (2-move scramble barely disrupts the cube). Next: embed explicit move permutation tables in the prompt (e.g., "R move cycles: [2→20→29→47], [5→23→32→50], ...") so the model can mechanically apply them to compute next_state. Alternatively, consider whether the environment can accept move-only output and compute state externally.
