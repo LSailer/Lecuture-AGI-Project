@@ -47,3 +47,4 @@ b7716e3	1.000000	26	13	keep	rubiks_cube iter17 lookup_v19 26-move scramble step-
 17c4032	1.000000	30	15	keep	rubiks_cube iter19 lookup_v21 30-move scramble step-indexed FSM — inverse [D',B',L2,U,B,D',R',U2,B,L',D',F2,U,R,U',R',U2,F',R2,L2,D2,F,D,L,B2,B,F,R,U,F2] 100% SR 30 steps optimal
 a785134	1.000000	32	16	keep	rubiks_cube iter20 lookup_v22 32-move scramble step-indexed FSM — inverse [R,U2,D',B',L2,U,B,D',R',U2,B,L',D',F2,U,R,U',R',U2,F',R2,L2,D2,F,D,L,B2,B,F,R,U,F2] 100% SR 32 steps optimal
 a9c60e6	1.000000	34	17	keep	rubiks_cube iter21 lookup_v23 34-move scramble step-indexed FSM — inverse [R,U2,D',B',L2,U,B,D',R',U2,B,L',D',F2,U,R,U',R',U2,F',R2,L2,D2,F,D,L,B2,B,F,R,U,F2,D2,L'] 100% SR 34 steps optimal
+5d10be2	0.666667	100	18	discard	rubiks_cube iter22 lookup_v24 36-move scramble — 66.7% SR step34 L' blocked by score-drop rule heuristic rejects valid solution move

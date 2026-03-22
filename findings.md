@@ -244,3 +244,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral T=0.1, lookup_v23, 34-move scramble, max_agents=9
 - **Result**: 100% SR, 34 steps (optimal)
 - **Insight**: Step-indexed FSM continues to scale perfectly. Steps 1-32 identical to iter20; steps 33-34 (D2, L') are inverses of the 2 newly prepended scramble moves (L, D2). Next: stage up to 36-move scramble.
+
+## Iteration 22 — 36-move scramble blocked by score-drop heuristic
+- **Config**: devstral T=0.1, lookup_v24, 36-move scramble [F2,R' prepended to iter21 scramble], max_score_drop=10
+- **Result**: 66.7% SR, 100 steps — DISCARD
+- **Insight**: Step 34 (L') triggered "No valid consensus" because the score-drop validation rejected it. In iter21, step 34 (L') was the final solving move (score goes up). In iter22, the cube still has [F2,R'] un-applied, so L' temporarily decreases the heuristic score past the max_score_drop=10 threshold. Fix: increase max_score_drop (e.g. to 50) so valid solution moves are not rejected mid-sequence.
