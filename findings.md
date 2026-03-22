@@ -264,3 +264,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral-24b, T=0.1, lookup_v26, 40-move scramble [F2,U + prev 38], max_score_drop=50
 - **Result**: 100% SR, 40 steps (optimal)
 - **Insight**: Step-indexed FSM continues to scale perfectly. Prepended F2,U to scramble; appended U',F2 to solution. Next: try 42-move scramble (stage 21).
+
+## Iteration 25 — rubiks_cube stage 21 (42-move scramble)
+- **Config**: devstral T=0.1, lookup_v27, 42-move scramble, step-indexed FSM, stage 21
+- **Result**: 100% SR, 42 steps (optimal)
+- **Insight**: First attempt failed (35.2% SR) — solution steps were prepended instead of appended. Bug: prepending [U', B2] to scramble requires appending [B2, U] (inverses in reverse) to the END of the solution, not the beginning. Fixed and rerun: 100% SR confirmed. Step-indexed FSM scales to 42-move scramble. Next: extend to 44-move scramble (stage 22).
