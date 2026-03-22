@@ -67,3 +67,4 @@ a46ad5d	1.000000	43	1	keep	sudoku iter6 lookup_v7 execute-step label — 100% SR
 d58268e	0.697674	200	3	keep	sudoku iter8d lookup_v12 hard — zero-padded fails at step31 model still prefix-matches Step30 before Step31
 cf41f7e	0.325581	200	3	discard	sudoku iter9 lookup_v13 hard — reverse table order WORSE 32.6% SR model misreads step15 reverse scan creates new errors
 46e4ee7	1.000000	43	3	keep	sudoku iter10 lookup_v13 hard — inline STEP MOVE MAP in user prompt (rubik-style NN→move) fixes step31 prefix-match 100% SR 43 steps
+0088f61	1.000000	51	4	keep	sudoku iter10b lookup_v14 expert — 100% SR 51 steps inline STEP MOVE MAP scales to expert

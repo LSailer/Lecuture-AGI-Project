@@ -333,3 +333,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral T=0.1, lookup_v13, hard, max_agents=3
 - **Result**: 100% SR, 43 steps (optimal) — fixes iter8d's step31 failure (was 69.77% SR)
 - **Insight**: Borrowed rubik's cube's `NN→move` inline map trick. Adding a compact `01→[0,1,6] ... 31→[7,0,7] ...` map in the user prompt gave the model a second, closer-context lookup path with `→` delimiter (distinct from `Step NN:` prefix ambiguity). The `→` format makes `30→` and `31→` syntactically unambiguous. Stage up to expert.
+
+## Iteration 10b (sudoku) — expert stage-up lookup_v14
+- **Config**: devstral T=0.1, lookup_v14, expert, max_agents=3
+- **Result**: 100% SR, 51 steps (optimal) — inline STEP MOVE MAP scales perfectly to expert difficulty
+- **Insight**: Same NN→move inline map strategy works for 51 steps including new ambiguous ranges (30-39, 40-49). Stage up to master.
