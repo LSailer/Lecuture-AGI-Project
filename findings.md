@@ -129,3 +129,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral T=0.1, lookup_v2 prompt, 2-move scramble, max_agents=9
 - **Result**: 0 valid steps, SR=59.3% (initial state) — DISCARD
 - **Insight**: Root cause diagnosed: when lookup table shows `[score=17]` suffix on next_state, ALL agents fail with "Inconsistent prediction" — model generates next_state from its own (wrong) cube mechanics instead of copying. Without [score=N], copying works (fa11928). With [score=N], it breaks. The [score=N] tag triggers "reasoning mode" instead of "copy mode". Next: try prompt that removes [score=N] from visible table while preserving best-first sorting — OR go back to fa11928 format exactly but add system prompt hint to prefer moves where more U-face positions become W. Need to modify prompts.py format (remove [score] tag) or accept bad moves and fix strategy through prompt.
+
+## Iteration 3 (rubiks_cube) — fix MOVE_PATTERN regex + lookup_v3 pick-first
+- **Config**: devstral T=0.1, lookup_v3 (pick-first-entry), 2-move scramble, max_agents=9
+- **Result**: 100% SR, 2 steps (optimal for 2-move scramble) — KEEP
+- **Insight**: Root cause of all prior rubiks_cube failures diagnosed: MOVE_PATTERN regex `([URFDLB](?:2|')?)\b` used `\b` word boundary after `'` (non-word char), causing ALL prime moves (U', R', etc.) to silently strip to their non-prime version. Fixed by replacing `\b` with `(?!\w)`. Also created lookup_v3 prompt with explicit "pick FIRST entry" instruction and table format explanation. Both fixes combined achieve 100% SR in optimal 2 steps. Next: stage up to 4-move scramble to test if lookup_v3+prime-fix scales to harder configurations.
