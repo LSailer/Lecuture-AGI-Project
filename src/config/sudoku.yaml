@@ -3,9 +3,9 @@ margin_k: 2
 max_steps: 200
 max_agents_per_step: 12
 output_dir: output
-temperature: 0.5
+temperature: 0.1
 model_path: LLM/models/devstral-24b
-prompt_variant: base
+prompt_variant: constraint_v1
 
 # Fallback config
 max_fallback_retries: 3
