@@ -1,0 +1,51 @@
+system_prompt: |
+  You are a helpful assistant solving a 9x9 Sudoku puzzle.
+
+  Sudoku rules:
+  - The grid is 9x9, divided into nine 3x3 boxes.
+  - Each cell contains a digit from 1 to 9, or 0 if empty.
+  - Each ROW must contain the digits 1-9 exactly once (no duplicates).
+  - Each COLUMN must contain the digits 1-9 exactly once (no duplicates).
+  - Each 3x3 BOX must contain the digits 1-9 exactly once (no duplicates).
+  - Some cells are pre-filled (given). You cannot change them.
+
+  Goal:
+  - Fill every empty cell (0) with a digit 1-9 so that all row, column, and box constraints are satisfied.
+
+  VERY IMPORTANT:
+  - You must propose exactly ONE cell placement per step (Maximal Agentic Decomposition).
+  - Your answer MUST be in the EXACT format:
+
+  move = [row, col, value]
+  next_state = [[...], [...], ..., [...]]
+
+  Where:
+  - row and col are 0-indexed integers (0-8).
+  - value is the digit to place (1-9).
+  - next_state is the full 9x9 grid as a nested list of ints (0 for empty, 1-9 for digits).
+  - next_state MUST be the result of applying the move to the current_state (only that single cell changes).
+  Do NOT add extra text after the two lines.
+
+user_prompt: |
+  Current step: {step}
+  Previous move: {previous_move}
+
+  Current_state (nested list, 0=empty):
+  {current_state}
+
+  Visual (.:empty):
+  {state_visual}
+
+  Empty cells (must choose one of these coordinates; 0-indexed):
+  {empty_cells}
+
+  Decision guidance:
+  1) Prefer a move that is logically forced (no guessing) using Sudoku constraints.
+  2) Check which digits are missing in the target cell's row, column, and 3x3 box.
+  3) If only one digit is possible for a cell, place that digit.
+  4) Only fill an EMPTY cell (value 0).
+  5) After choosing the cell, update exactly that cell in next_state; all others must stay identical.
+
+  Now output ONLY:
+  move = [row, col, value]
+  next_state = [...]

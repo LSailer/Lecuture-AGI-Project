@@ -49,6 +49,13 @@ def create_game(config: dict[str, Any]) -> Any:
             forbid_undo=config.get("forbid_undo", True),
             max_score_drop=config.get("max_score_drop", 3),
         )
+    elif game_name == "sudoku":
+        from sudoku.enviroment import Sudoku, CONFIGS
+
+        initial = config["initial_state"]
+        if isinstance(initial, str):
+            initial = CONFIGS[initial]
+        return Sudoku.from_config(initial_state=initial)
     else:
         raise ValueError(f"Unknown game: {game_name}")
 
@@ -66,6 +73,8 @@ def create_agent(config: dict[str, Any], game: Any, device: str) -> Agent:
         from nonogram import prompts
     elif game_name == "rubiks_cube":
         from rubiks_cube import prompts
+    elif game_name == "sudoku":
+        from sudoku import prompts
     else:
         raise ValueError(f"Unknown game: {game_name}")
     model_path = config.get("model_path", "LLM/model")
@@ -600,7 +609,7 @@ def main() -> None:
     parser.add_argument(
         "--game",
         required=True,
-        choices=["tower_of_hanoi", "sliding_puzzle", "nonogram", "rubiks_cube"],
+        choices=["tower_of_hanoi", "sliding_puzzle", "nonogram", "rubiks_cube", "sudoku"],
         help="Which puzzle to solve",
     )
     parser.add_argument("--config", default=None, help="Path to YAML config file")

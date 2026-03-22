@@ -1,0 +1,29 @@
+game: sudoku
+margin_k: 2
+max_steps: 200
+max_agents_per_step: 12
+output_dir: output
+temperature: 0.5
+model_path: LLM/models/devstral-24b
+prompt_variant: base
+
+# Fallback config
+max_fallback_retries: 3
+fallback_api: local
+fallback_local_model: LLM/model
+gemini_model: gemini-2.5-flash
+
+# Stage 1 — easy (active default)
+initial_state: easy
+
+# Stage 2 — medium
+# initial_state: medium
+
+# Stage 3 — hard
+# initial_state: hard
+
+# Stage 4 — expert
+# initial_state: expert
+
+# Stage 5 — master
+# initial_state: master
