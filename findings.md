@@ -124,3 +124,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral-24b, T=0.5, base prompt, 4x4 butterfly, max_steps=500, max_agents=12
 - **Result**: 25% SR, 4 steps (only 4/16 cells decided) — KEEP (first prod run, baseline)
 - **Insight**: Model chose row 0 = [1,0,1,0] (valid for row hint [1,1]), but this is globally wrong (unique solution is [1,0,0,1]). After 4 cells, all subsequent moves make columns impossible: col 0 hint [1,1] has row 0 = 1, so row 1 must be empty — but all agents try (1,0,"filled") which violates col 0. Root cause: base prompt asks for "logically forced" moves but doesn't teach HOW to find them. Model greedily fills row 0 without column constraint analysis. After col 1 row 0 = 0 is decided, col 1 hint [2] has only two valid placements, both with row 2 = 1 — that was the truly forced move at step 3. Next: implement overlap method prompt that enumerates valid placements per line and picks forced cells.
+
+## Iteration 2 (nonogram) — overlap method 4x4 butterfly devstral T=0.5
+- **Config**: devstral-24b, T=0.5, overlap prompt, 4x4 butterfly, max_steps=500, max_agents=12
+- **Result**: 100% SR, 16 steps (puzzle solved completely) — KEEP
+- **Insight**: Overlap method prompt completely fixes iter1's failure. Teaching the model to enumerate valid placements and find the intersection of forced cells eliminates greedy row-filling. The constraint propagation approach (list placements → find overlap → pick forced cell) maps directly to nonogram logic. 16 steps is reasonable for a 4x4 (16 cells total, some determined by propagation chains). Next: stage up to 4x4 diamond to test whether overlap method generalizes across different puzzle shapes.
