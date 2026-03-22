@@ -134,3 +134,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral T=0.1, lookup_v3 (pick-first-entry), 2-move scramble, max_agents=9
 - **Result**: 100% SR, 2 steps (optimal for 2-move scramble) — KEEP
 - **Insight**: Root cause of all prior rubiks_cube failures diagnosed: MOVE_PATTERN regex `([URFDLB](?:2|')?)\b` used `\b` word boundary after `'` (non-word char), causing ALL prime moves (U', R', etc.) to silently strip to their non-prime version. Fixed by replacing `\b` with `(?!\w)`. Also created lookup_v3 prompt with explicit "pick FIRST entry" instruction and table format explanation. Both fixes combined achieve 100% SR in optimal 2 steps. Next: stage up to 4-move scramble to test if lookup_v3+prime-fix scales to harder configurations.
+
+## Iteration 4 (rubiks_cube) — stage up to 4-move scramble [R,U,R',U']
+- **Config**: devstral T=0.1, lookup_v3 (pick-first), 4-move scramble, max_agents=9
+- **Result**: 66.7% SR, 100 steps (max steps hit, cycling) — KEEP (first result at stage 2)
+- **Insight**: Greedy "pick FIRST entry" fails for 4-move: model cycles through a 4-state loop from step 1. Root cause: the 4-move scramble [R,U,R',U'] (sexy move) has only 6 states in its orbit. The 1-step greedy score leads into a cycle where A→B→C→D→A. Fallback (Gemini) also cycles because it uses the same sorted table. Anti-cycle fix needed: create lookup_v4 prompt that checks if first entry's move is the inverse of `previous_move` — if so, pick the SECOND entry instead. This breaks the most common 2-state anti-pattern (A↔B oscillation) without requiring full move history.
