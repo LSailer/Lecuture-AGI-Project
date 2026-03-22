@@ -38,3 +38,4 @@ a449506	1.000000	6	3	keep	rubiks_cube iter7 lookup_v9 6-move scramble FSM invers
 8224eba	1.000000	12	6	keep	rubiks_cube iter10 lookup_v12 12-move scramble FSM — inverse [B,L',D',F2,U,R,U',R',U2,F',R2,L2] 100% SR 12 steps optimal
 4be90cd	1.000000	14	7	keep	rubiks_cube iter11 lookup_v13 14-move scramble FSM — inverse [B,L',D',F2,U,R,U',R',U2,F',R2,L2,D2,F] 100% SR 14 steps optimal
 9dcd1ab	1.000000	16	8	keep	rubiks_cube iter12 lookup_v14 16-move scramble FSM — inverse [B,L',D',F2,U,R,U',R',U2,F',R2,L2,D2,F,D,L] 1009dcd1ab	1.000000	16	8	keep	rubiks_cube iter12 lookup_v14 16-move scramble FSM — inverse [B,L',D',F2,U,R,U',R',U2,F',R2,L2,D2,F,D,L] 100% SR 16 steps optimal
+92ef5af	1.000000	18	9	keep	rubiks_cube iter13 lookup_v15 18-move scramble FSM — inverse [B,L',D',F2,U,R,U',R',U2,F',R2,L2,D2,F,D,L,B2,B] 10092ef5af	1.000000	18	9	keep	rubiks_cube iter13 lookup_v15 18-move scramble FSM — inverse [B,L',D',F2,U,R,U',R',U2,F',R2,L2,D2,F,D,L,B2,B] 100% SR 18 steps optimal
