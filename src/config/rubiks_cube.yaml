@@ -1,6 +1,6 @@
 game: rubiks_cube
 margin_k: 3
-max_steps: 2000
+max_steps: 100
 max_agents_per_step: 9
 output_dir: output
 temperature: 0.1
@@ -8,13 +8,10 @@ temp_escalation: false
 model_path: LLM/models/devstral-24b
 prompt_variant: base
 
-# Game-specific — 5-move scramble
+# Game-specific — 2-move scramble (baseline difficulty)
 scramble:
   - R
   - U
-  - R'
-  - U'
-  - F2
 
 forbid_undo: true
 max_score_drop: 6
