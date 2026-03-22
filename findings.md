@@ -318,3 +318,13 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral-24b, T=0.1, lookup_v8, medium puzzle, max_agents=3
 - **Result**: 100% SR, 43 steps (optimal — medium also has 43 empty cells)
 - **Insight**: The lookup_v8 strategy (pre-computed solution table baked into system prompt) scales perfectly from easy to medium. The model correctly does table lookup + row replacement without errors. Next: stage up to hard difficulty.
+
+## Iteration 8d (sudoku) — lookup_v12 hard stage-up: zero-padded step numbers fail at step 31
+- **Config**: devstral-24b, T=0.1, lookup_v12, hard puzzle, max_agents=3
+- **Result**: 69.8% SR (30/43 cells), max steps (200) — KEEP as hard-stage baseline
+- **Insight**: Hard puzzle solved steps 1-30 correctly then fails at step 31 every time. Root cause: the model prefix-scans for "Step 3" and finds "Step 30:" before "Step 31:" in forward-order table. Zero-padding fixed "Step 3: vs Step 31:" but didn't fix "Step 30: vs Step 31:". All 3 agents consistently output (6,4,2) = step 30 replay at step 31. Next: reverse the table order so Step 31 appears BEFORE Step 30 when scanning, and change delimiter from ":" to "." to break existing pattern.
+
+## Iteration 9 (sudoku) — lookup_v13 reverse table order: WORSE at 32.6% SR
+- **Config**: devstral-24b, T=0.1, lookup_v13, hard puzzle, max_agents=3
+- **Result**: 32.6% SR (14/43 cells), max steps — DISCARD (worse than iter8d 69.8%)
+- **Insight**: Reversing the table order (step43 first) made things worse: new failure at step 15 "duplicate 2 in row 2". The reverse scan doesn't fix the core confusion — it just creates different misreads. Root cause remains: the model confuses adjacent step numbers at row boundaries. Next: go back to v7-style format (unpadded, colon, forward) that worked for easy/medium, but increase max_agents=9 + T=0.3 to use diversity voting to overcome the step-31 confusion. The diversity of 9 agents at T=0.3 may produce some correct votes for step31.

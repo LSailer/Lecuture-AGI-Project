@@ -64,3 +64,5 @@ c65d6d2	0.581395	200	1	keep	sudoku iter2c lookup_v2 compact table max_agents=3 T
 bc2d78c	0.651163	200	1	discard	sudoku iter5b lookup_v6 <<N>> markers — 65.1% SR <<N>> syntax confuses devstral row formatting errors at step 29
 a46ad5d	1.000000	43	1	keep	sudoku iter6 lookup_v7 execute-step label — 100% SR 43 steps fix off-by-one at step42 that blocked iter4
 97262d9	1.000000	43	2	keep	sudoku iter7 lookup_v8 medium stage-up devstral T=0.1 — 100% SR 43 steps lookup strategy scales to medium
+d58268e	0.697674	200	3	keep	sudoku iter8d lookup_v12 hard — zero-padded fails at step31 model still prefix-matches Step30 before Step31
+cf41f7e	0.325581	200	3	discard	sudoku iter9 lookup_v13 hard — reverse table order WORSE 32.6% SR model misreads step15 reverse scan creates new errors
