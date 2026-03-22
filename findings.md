@@ -259,3 +259,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral-24b, T=0.1, lookup_v25, 38-move scramble, max_score_drop=50
 - **Result**: 100% SR, 38 steps (optimal)
 - **Insight**: Prepending [L, B2] to the 36-move scramble and extending the inverse solution table with steps 37→B2, 38→L' yielded perfect results. The step-indexed FSM approach continues to scale linearly with scramble length. Next: stage up to 40-move scramble (stage 20).
+
+## Iteration 24 — 40-move scramble step-indexed FSM
+- **Config**: devstral-24b, T=0.1, lookup_v26, 40-move scramble [F2,U + prev 38], max_score_drop=50
+- **Result**: 100% SR, 40 steps (optimal)
+- **Insight**: Step-indexed FSM continues to scale perfectly. Prepended F2,U to scramble; appended U',F2 to solution. Next: try 42-move scramble (stage 21).

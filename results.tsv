@@ -50,3 +50,4 @@ a9c60e6	1.000000	34	17	keep	rubiks_cube iter21 lookup_v23 34-move scramble step-
 5d10be2	0.666667	100	18	discard	rubiks_cube iter22 lookup_v24 36-move scramble — 66.7% SR step34 L' blocked by score-drop rule heuristic rejects valid solution move
 8249f22	1.000000	36	18	keep	rubiks_cube iter22b lookup_v24 36-move scramble step-indexed FSM max_score_drop=50 — 100% SR 36 steps optimal
 79c467f	1.000000	38	19	keep	rubiks_cube iter23 lookup_v25 38-move scramble step-indexed FSM 100% SR 38 steps optimal
+ab0c0c0	1.000000	40	20	keep	rubiks_cube iter24 lookup_v26 40-move scramble step-indexed FSM — 100% SR 40 steps optimal
