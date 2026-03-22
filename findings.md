@@ -119,3 +119,13 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral-24b, T=0.5, explicit_v9 (Tier-1/Tier-2 placed-tile safety + 2nd detour example), 3x3 hardest, max_agents=9, max_steps=400
 - **Result**: 0% SR, 400 steps — DISCARD (regression from iter15's 22.2%)
 - **Insight**: The extra `Tier-1:` output field + second worked example in system_prompt pushed agents past the 750-token output budget — "Could not find move/next_state" errors dominate. **Hard constraint**: any change that adds output fields or lengthens the system_prompt causes total format failure. Next: keep explicit_v7 output format UNCHANGED, only modify rule 6 text to "prefer moves that don't displace placed tiles; among those, pick move closest to Target's goal" — no new output fields. This changes decision logic without touching format.
+
+## Iteration 1 (rubiks_cube) — baseline + iter1b/iter1c
+- **Config**: devstral T=0.1, lookup prompt, 2-move scramble, max_agents=9
+- **iter1b (fa11928)**: 100 valid steps, SR=31.5% — model copies next_state correctly from table (no score tag), but picks bad moves (U not U'), SR drops from 59.3%
+- **iter1c (b9e6b0c)**: 0 valid steps — switching to sorted table with [score=N] suffix broke all copying: "Inconsistent prediction" for every agent
+
+## Iteration 2 (rubiks_cube) — lookup_v2 greedy score selection
+- **Config**: devstral T=0.1, lookup_v2 prompt, 2-move scramble, max_agents=9
+- **Result**: 0 valid steps, SR=59.3% (initial state) — DISCARD
+- **Insight**: Root cause diagnosed: when lookup table shows `[score=17]` suffix on next_state, ALL agents fail with "Inconsistent prediction" — model generates next_state from its own (wrong) cube mechanics instead of copying. Without [score=N], copying works (fa11928). With [score=N], it breaks. The [score=N] tag triggers "reasoning mode" instead of "copy mode". Next: try prompt that removes [score=N] from visible table while preserving best-first sorting — OR go back to fa11928 format exactly but add system prompt hint to prefer moves where more U-face positions become W. Need to modify prompts.py format (remove [score] tag) or accept bad moves and fix strategy through prompt.
