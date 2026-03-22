@@ -39,6 +39,20 @@ def get_system_prompt(environment, variant: str = "base"):
     )
 
 
+def _compute_move_lookup(current_state: str, environment) -> str:
+    """Pre-compute next_state for every valid move and return a formatted lookup table."""
+    import copy
+    lines = []
+    for mv in _ALLOWED:
+        try:
+            temp = copy.deepcopy(environment)
+            temp.apply_move(mv, validate=True)
+            lines.append(f"  {mv:<3}: {temp.state}")
+        except ValueError:
+            pass  # skip forbidden moves (undo, score drop)
+    return "\n".join(lines)
+
+
 def build_user_prompt(current_state, previous_move, environment, step, variant: str = "base"):
     score = environment.score(current_state)
     phase = environment.phase
@@ -49,7 +63,13 @@ def build_user_prompt(current_state, previous_move, environment, step, variant: 
     )
 
     templates = _load_variant(variant)
-    return templates["user_prompt"].format(
+    template = templates["user_prompt"]
+
+    extra = {}
+    if "{move_lookup}" in template:
+        extra["move_lookup"] = _compute_move_lookup(current_state, environment)
+
+    return template.format(
         step=step,
         phase=phase,
         phase_goal=phase_goal,
@@ -57,6 +77,7 @@ def build_user_prompt(current_state, previous_move, environment, step, variant: 
         previous_move=previous_move,
         allowed_moves=", ".join(_ALLOWED),
         current_state=current_state,
+        **extra,
     )
 
 
