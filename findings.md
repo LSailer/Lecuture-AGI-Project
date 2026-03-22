@@ -204,3 +204,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral T=0.1, lookup_v15 (FSM: previous_move→next_move for 18-move inverse), 18-move scramble [B',B2,L',D',F',D2,L2,R2,F,U2,R,U,R',U',F2,D,L,B'], max_score_drop=10, max_agents=9
 - **Result**: 100% SR, 18 steps (optimal) — KEEP
 - **Insight**: FSM approach scales perfectly to 18-move scramble. Prepended [B', B2] to scramble; inverse appends [B2, B] at end of chain — new FSM keys L→B2, B2→B (cycle via existing B→L'). All 18 previous_move keys unique. The MAKER FSM pattern has now solved scrambles up to 18 moves without any reasoning failures. Next: all 18 standard moves are exhausted as unique FSM keys. Future iterations must either (a) use longer non-unique sequences (with step-count disambiguation), (b) try a different scramble sequence entirely, or (c) evaluate on a truly random scramble (not constructed for FSM).
+
+## Iteration 14 — 20-move scramble, step-indexed FSM (lookup_v16)
+- **Config**: devstral T=0.1, lookup_v16, 20-move scramble [R',F',B',B2,L',D',F',D2,L2,R2,F,U2,R,U,R',U',F2,D,L,B']
+- **Result**: 100% SR, 20 steps (optimal)
+- **Insight**: FSM transition from previous_move→next_move to step_number→next_move was necessary: with only 18 unique move tokens, a 20-step solution inevitably repeats a move in positions 1-19, creating a lookup collision (e.g. B→L' at step 2 and B→F at step 19 would conflict). Switching to step-indexed table eliminates this limitation entirely and scales to arbitrarily long sequences. The model follows the step-number table correctly. Next: stage 11 = 22-move scramble using the same step-indexed approach.
