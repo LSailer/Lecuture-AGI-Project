@@ -32,3 +32,4 @@ e859c26	0.389000	16	2	discard	rubiks_cube iter5c lookup_v6 hybrid reasoning — 
 73aa8d0	0.444000	100	2	discard	rubiks_cube iter5d T=0.5 lookup_v3 — 44.4% SR temperature hurts copy accuracy
 fad5729	0.389000	100	2	discard	rubiks_cube iter5e lookup_v7 U-preference white_cross — 38.9% SR U-face hint confuses agents lower than iter4
 25fab4a	1.000000	4	2	keep	rubiks_cube iter6 lookup_v8 known-algorithm FSM sexy-move inverse — 100% SR 4 steps optimal
+a449506	1.000000	6	3	keep	rubiks_cube iter7 lookup_v9 6-move scramble FSM inverse [D',F2,U,R,U',R'] — 100% SR 6 steps optimal
