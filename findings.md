@@ -239,3 +239,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral-24b, T=0.1, lookup_v22, 32-move scramble, stage 16
 - **Result**: 100% SR, 32 steps (optimal)
 - **Insight**: Step-indexed FSM continues to scale perfectly. Appended U2, R' to the 30-move scramble; prepended their inverses (R, U2) to the FSM table. The approach is provably correct since the LLM acts purely as a mechanical lookup: step number → move token → copy next_state from table. Next: continue extending to 34-move scramble (stage 17).
+
+## Iteration 21 — 34-move scramble step-indexed FSM
+- **Config**: devstral T=0.1, lookup_v23, 34-move scramble, max_agents=9
+- **Result**: 100% SR, 34 steps (optimal)
+- **Insight**: Step-indexed FSM continues to scale perfectly. Steps 1-32 identical to iter20; steps 33-34 (D2, L') are inverses of the 2 newly prepended scramble moves (L, D2). Next: stage up to 36-move scramble.
