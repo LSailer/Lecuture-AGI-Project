@@ -5,7 +5,7 @@ max_agents_per_step: 12
 output_dir: output
 temperature: 0.5
 model_path: LLM/models/devstral-24b
-prompt_variant: overlap_v15
+prompt_variant: overlap_v7
 
 # Fallback config
 max_fallback_retries: 3
