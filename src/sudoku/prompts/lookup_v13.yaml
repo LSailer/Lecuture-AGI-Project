@@ -1,0 +1,75 @@
+system_prompt: |
+  You are a Sudoku solver. Follow this pre-computed solution exactly — do NOT reason about Sudoku rules.
+
+  SOLUTION TABLE (latest step listed first):
+  Step 43. move=[8,8,6]  row8=[8, 9, 1, 4, 7, 3, 2, 5, 6]
+  Step 42. move=[8,7,5]  row8=[8, 9, 1, 4, 7, 3, 2, 5, 0]
+  Step 41. move=[8,5,3]  row8=[8, 9, 1, 4, 7, 3, 2, 0, 0]
+  Step 40. move=[8,3,4]  row8=[8, 9, 1, 4, 7, 0, 2, 0, 0]
+  Step 39. move=[8,1,9]  row8=[8, 9, 1, 0, 7, 0, 2, 0, 0]
+  Step 38. move=[8,0,8]  row8=[8, 0, 1, 0, 7, 0, 2, 0, 0]
+  Step 37. move=[7,8,9]  row7=[7, 2, 6, 8, 5, 1, 3, 4, 9]
+  Step 36. move=[7,6,3]  row7=[7, 2, 6, 8, 5, 1, 3, 4, 0]
+  Step 35. move=[7,5,1]  row7=[7, 2, 6, 8, 5, 1, 0, 4, 0]
+  Step 34. move=[7,4,5]  row7=[7, 2, 6, 8, 5, 0, 0, 4, 0]
+  Step 33. move=[7,3,8]  row7=[7, 2, 6, 8, 0, 0, 0, 4, 0]
+  Step 32. move=[7,1,2]  row7=[7, 2, 6, 0, 0, 0, 0, 4, 0]
+  Step 31. move=[7,0,7]  row7=[7, 0, 6, 0, 0, 0, 0, 4, 0]
+  Step 30. move=[6,4,2]  row6=[3, 4, 5, 9, 2, 6, 8, 7, 1]
+  Step 29. move=[6,1,4]  row6=[3, 4, 5, 9, 0, 6, 8, 7, 1]
+  Step 28. move=[5,7,1]  row5=[6, 8, 7, 3, 4, 2, 9, 1, 5]
+  Step 27. move=[5,6,9]  row5=[6, 8, 7, 3, 4, 2, 9, 0, 5]
+  Step 26. move=[5,5,2]  row5=[6, 8, 7, 3, 4, 2, 0, 0, 5]
+  Step 25. move=[5,4,4]  row5=[6, 8, 7, 3, 4, 0, 0, 0, 5]
+  Step 24. move=[5,2,7]  row5=[6, 8, 7, 3, 0, 0, 0, 0, 5]
+  Step 23. move=[5,0,6]  row5=[6, 8, 0, 3, 0, 0, 0, 0, 5]
+  Step 22. move=[4,8,7]  row4=[9, 1, 3, 5, 6, 8, 4, 2, 7]
+  Step 21. move=[4,6,4]  row4=[9, 1, 3, 5, 6, 8, 4, 2, 0]
+  Step 20. move=[4,4,6]  row4=[9, 1, 3, 5, 6, 8, 0, 2, 0]
+  Step 19. move=[4,2,3]  row4=[9, 1, 3, 5, 0, 8, 0, 2, 0]
+  Step 18. move=[3,8,3]  row3=[2, 5, 4, 1, 9, 7, 6, 8, 3]
+  Step 17. move=[3,5,7]  row3=[2, 5, 4, 1, 9, 7, 6, 8, 0]
+  Step 16. move=[3,3,1]  row3=[2, 5, 4, 1, 9, 0, 6, 8, 0]
+  Step 15. move=[3,0,2]  row3=[2, 5, 4, 0, 9, 0, 6, 8, 0]
+  Step 14. move=[2,7,6]  row2=[5, 3, 8, 2, 1, 9, 7, 6, 4]
+  Step 13. move=[2,5,9]  row2=[5, 3, 8, 2, 1, 9, 7, 0, 4]
+  Step 12. move=[2,1,3]  row2=[5, 3, 8, 2, 1, 0, 7, 0, 4]
+  Step 11. move=[2,0,5]  row2=[5, 0, 8, 2, 1, 0, 7, 0, 4]
+  Step 10. move=[1,8,2]  row1=[4, 7, 9, 6, 8, 5, 1, 3, 2]
+  Step 09. move=[1,6,1]  row1=[4, 7, 9, 6, 8, 5, 1, 3, 0]
+  Step 08. move=[1,5,5]  row1=[4, 7, 9, 6, 8, 5, 0, 3, 0]
+  Step 07. move=[1,2,9]  row1=[4, 7, 9, 6, 8, 0, 0, 3, 0]
+  Step 06. move=[1,0,4]  row1=[4, 7, 0, 6, 8, 0, 0, 3, 0]
+  Step 05. move=[0,7,9]  row0=[1, 6, 2, 7, 3, 4, 5, 9, 8]
+  Step 04. move=[0,6,5]  row0=[1, 6, 2, 7, 3, 4, 5, 0, 8]
+  Step 03. move=[0,3,7]  row0=[1, 6, 2, 7, 3, 4, 0, 0, 8]
+  Step 02. move=[0,2,2]  row0=[1, 6, 2, 0, 3, 4, 0, 0, 8]
+  Step 01. move=[0,1,6]  row0=[1, 6, 0, 0, 3, 4, 0, 0, 8]
+
+  How to construct next_state:
+  - The user gives you "Execute step: NN" — this is the step you must execute NOW (it has NOT been played yet)
+  - Find EXACTLY the line "Step NN." where NN matches the two-digit execute-step number — do NOT use any other step
+  - Read move=[r,c,v] and rowR=[...] from that line
+  - Build next_state: copy ALL rows from current_state, then REPLACE only row R with the exact values from rowR=[...]
+  - ALL other rows must be IDENTICAL to current_state — do NOT modify them
+
+  Output EXACTLY two lines, nothing else:
+  move = [r, c, v]
+  next_state = [[...], [...], [...], [...], [...], [...], [...], [...], [...]]
+
+user_prompt: |
+  Execute step: {step:02d}
+  Current_state:
+  {current_state}
+
+  Find EXACTLY "Step {step:02d}." in the SOLUTION TABLE above — this is the step to execute now.
+  Do NOT use any other step number.
+  Get move=[r,c,v] and rowR=[...] from that line.
+
+  Build next_state:
+  - Take ALL 9 rows from current_state above
+  - Replace ONLY row R with the rowR=[...] values from the table
+  - Keep ALL other rows exactly as in current_state
+
+  move = [r, c, v]
+  next_state = [...]
