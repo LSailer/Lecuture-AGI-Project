@@ -31,3 +31,5 @@ df22aac	1.000000	16	2	keep	nonogram iter3 overlap method 4x4 diamond devstral T=
 5a6ce53	0.200000	6	3	discard	nonogram iter7 overlap_v4 explicit FILL/EMPTY shortcuts — 20% SR same step6 failure multi-shortcut overload token exhaustion
 7e9dd3d4b5cb1921bcb044929d982a5e42d07fdc	0.200000	6	3	discard	nonogram iter8 overlap_v5 cross-line example — biased step1 row2-first same step6 failure 20% SR
 1e84b25c556ff215bd8b29ae8bd9c95e1d681c66	0.640000	17	3	keep	nonogram iter9 overlap_v6 exhaustive-scan col-tiebreaker — 64% SR 17 steps improved from 56%, col2 shortcut fires step6 but model switches away after 1 fill
+964a54a	0.640000	17	3	discard	nonogram iter10 overlap_v7 shortcut-persistence — 64% SR 17 steps same as iter9 no improvement
+a36f34f	0.240000	6	3	discard	nonogram iter11 overlap_v8 generalized-shortcut-A — 24% SR prompt too long 5x5 example exhausts token budget 9+/12 agents fail format

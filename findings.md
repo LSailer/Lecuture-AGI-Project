@@ -164,3 +164,13 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral-24b, T=0.5, overlap_v6 (exhaustive scan rule + col-first tiebreaker + 3x3 analog example), 5x5 diamond, max_steps=500, max_agents=12
 - **Result**: 64% SR, 17 steps — KEEP (new best, up from 56%)
 - **Insight**: Exhaustive-scan rule + col-tiebreaker improved SR from 56% to 64%. Step 6 correctly fires SHORTCUT A for col 2 → (0,2)=filled. But model then switches to SHORTCUT B (col 0/4 emptying) for steps 7-16, NEVER returning to fill (1,2), (3,2), (4,2) — col 2 still has 3 unknowns at end. Root cause: one-shot shortcut thinking — model applies SHORTCUT A once per line, then moves on. Fix: add SHORTCUT PERSISTENCE rule: "after filling one cell from SHORTCUT A line, that line fires AGAIN next step for the next unknown — continue until line is fully determined." This is overlap_v7.
+
+## Iteration 10 (nonogram) — overlap_v7 shortcut-persistence rule
+- **Config**: devstral-24b, T=0.5, overlap_v7 (shortcut-persistence added), 5x5 diamond, 12 agents
+- **Result**: SR=64%, 17 steps — DISCARD (same as iter9, no improvement)
+- **Insight**: Shortcut-persistence rule made no difference. Root cause of step 17 failure identified: SHORTCUT A only fires when block_sum = line_length, but at step 17 row 1 has state [0,.,.,.,0] with hint [3] (block_sum=3 ≠ line_length=5). The model can't fire the shortcut, then proposes EMPTYING cells in row 1/3 → "makes row impossible" errors (emptying position 1 or 3 leaves only 2 unknowns, can't fit block [3]). Fix: generalize SHORTCUT A to U+F=S (unknowns + filled = block_sum), which correctly fires for partial lines like [0,.,.,.,0] with hint [3].
+
+## Iteration 11 (nonogram) — overlap_v8 generalized shortcut A (U+F=S)
+- **Config**: devstral-24b, T=0.5, overlap_v8 (generalized SHORTCUT A U+F=S, 5x5 step-17 example), 12 agents
+- **Result**: SR=24%, 6 steps — DISCARD/REVERT (massive regression from 64%)
+- **Insight**: The 5x5 step-17 example and extended shortcut explanation made the system prompt too long. 9+/12 agents fail with "Could not find move/next_state" — model exhausts its token budget before reaching the output lines. The U+F=S generalization is CORRECT but the prompt is too verbose. Fix: add U+F=S formula as a ONE-LINE replacement for the existing shortcut A rule, with a single short example (no big 5x5 worked example). Keep total prompt length ≤ overlap_v7 length. Next: overlap_v9 = overlap_v7 + minimal U+F=S formula only.
