@@ -269,3 +269,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral T=0.1, lookup_v27, 42-move scramble, step-indexed FSM, stage 21
 - **Result**: 100% SR, 42 steps (optimal)
 - **Insight**: First attempt failed (35.2% SR) — solution steps were prepended instead of appended. Bug: prepending [U', B2] to scramble requires appending [B2, U] (inverses in reverse) to the END of the solution, not the beginning. Fixed and rerun: 100% SR confirmed. Step-indexed FSM scales to 42-move scramble. Next: extend to 44-move scramble (stage 22).
+
+## Iteration 26 — 44-move scramble step-indexed FSM
+- **Config**: devstral T=0.1, lookup_v28, 44-move scramble [D,L2,U',B2,...,U2,R'], max_agents=9
+- **Result**: 100% SR, 44 steps (optimal)
+- **Insight**: Step-indexed FSM continues to scale perfectly. Prepended [D,L2] to scramble; appended [L2,D'] to inverse solution table (steps 43→L2, 44→D'). Next: stage 23 (46-move scramble).

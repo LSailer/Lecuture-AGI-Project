@@ -52,3 +52,4 @@ a9c60e6	1.000000	34	17	keep	rubiks_cube iter21 lookup_v23 34-move scramble step-
 79c467f	1.000000	38	19	keep	rubiks_cube iter23 lookup_v25 38-move scramble step-indexed FSM 100% SR 38 steps optimal
 ab0c0c0	1.000000	40	20	keep	rubiks_cube iter24 lookup_v26 40-move scramble step-indexed FSM — 100% SR 40 steps optimal
 0ddc62a	1.000000	42	21	keep	rubiks_cube iter25 lookup_v27 42-move scramble step-indexed FSM — 100% SR 42 steps optimal
+119e663	1.000000	44	22	keep	rubiks_cube iter26 lookup_v28 44-move scramble step-indexed FSM — inverse [...,L2,D'] 100% SR 44 steps optimal
