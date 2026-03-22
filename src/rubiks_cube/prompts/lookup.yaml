@@ -25,4 +25,4 @@ system_prompt: |
   - Output MUST be EXACTLY TWO LINES (no extra text, no explanations, no markdown).
   - next_state MUST be copied EXACTLY from the LOOKUP TABLE provided in the user prompt.
 
-user_prompt: "Step: {step}\nPhase: {phase}\nGoal: {phase_goal}\nCurrent score: {score}\nPrevious move: {previous_move}\n\nCurrent state:\n{current_state}\n\nMOVE->NEXT_STATE LOOKUP TABLE (pre-computed, guaranteed correct):\n{move_lookup}\n\nPick the move that best advances toward the goal. Copy its next_state EXACTLY from the table.\nOutput EXACTLY TWO LINES:\nmove = <chosen move>\nnext_state = <exact next_state from table>"
+user_prompt: "Step: {step}\nPhase: {phase}\nGoal: {phase_goal}\nCurrent score: {score}\nPrevious move: {previous_move}\n\nCurrent state:\n{current_state}\n\nMOVE->NEXT_STATE LOOKUP TABLE (sorted by score, highest first):\n{move_lookup}\n\nPick the move with the HIGHEST score. Copy its next_state EXACTLY from the table.\nOutput EXACTLY TWO LINES:\nmove = <chosen move>\nnext_state = <exact next_state from table>"

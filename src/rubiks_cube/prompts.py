@@ -40,17 +40,19 @@ def get_system_prompt(environment, variant: str = "base"):
 
 
 def _compute_move_lookup(current_state: str, environment) -> str:
-    """Pre-compute next_state for every valid move and return a formatted lookup table."""
+    """Pre-compute next_state + score for every valid move, sorted by score descending."""
     import copy
-    lines = []
+    entries = []
     for mv in _ALLOWED:
         try:
             temp = copy.deepcopy(environment)
             temp.apply_move(mv, validate=True)
-            lines.append(f"  {mv:<3}: {temp.state}")
+            sc = temp.score()
+            entries.append((sc, mv, temp.state))
         except ValueError:
             pass  # skip forbidden moves (undo, score drop)
-    return "\n".join(lines)
+    entries.sort(key=lambda x: -x[0])
+    return "\n".join(f"  {mv:<3} (score={sc}): {ns}" for sc, mv, ns in entries)
 
 
 def build_user_prompt(current_state, previous_move, environment, step, variant: str = "base"):
