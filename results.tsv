@@ -26,3 +26,8 @@ ac0a222	0.000000	400	3	discard	sliding_puzzle iter16 3x3 hardest devstral T=0.5 
 8412e7a	0.250000	5	1	discard	nonogram dev baseline devstral T=0.5 base prompt 4x4 butterfly — 250cf9a27	0.593000	1	1	discard	rubiks_cube iter2 lookup_v2 greedy — 0 valid steps Inconsistent prediction [score=N] tag confuses model
 1c280c8	1.000000	2	1	keep	rubiks_cube iter3 fix-prime-regex + lookup_v3 pick-first — 100% SR 2 steps
 76bd93b	0.666667	100	2	keep	rubiks_cube iter4 4-move scramble lookup_v3 — 66.7% SR cycles from step1 greedy heuristic stuck in 4-state sub-cycle
+093f225	0.666667	100	2	discard	rubiks_cube iter5 lookup_v4 anti-same-consecutive-move — 66.7% SR same as iter4 now cycles R→R2→R→R2 same-face orbit
+79fe86b	0.463000	100	2	discard	rubiks_cube iter5b lookup_v5 anti-same-face — 46.3% SR R→F→R→F 2-cycles worse
+e859c26	0.389000	16	2	discard	rubiks_cube iter5c lookup_v6 hybrid reasoning — 38.9% SR 16 steps cycle-stop agent disagreement
+73aa8d0	0.444000	100	2	discard	rubiks_cube iter5d T=0.5 lookup_v3 — 44.4% SR temperature hurts copy accuracy
+fad5729	0.389000	100	2	discard	rubiks_cube iter5e lookup_v7 U-preference white_cross — 38.9% SR U-face hint confuses agents lower than iter4
