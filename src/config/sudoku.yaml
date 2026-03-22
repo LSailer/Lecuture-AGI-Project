@@ -5,8 +5,8 @@ max_agents_per_step: 12
 output_dir: output
 temperature: 0.1
 model_path: LLM/models/devstral-24b
-prompt_variant: lookup_v2
-max_agents_per_step: 3
+prompt_variant: lookup_v3
+max_agents_per_step: 5
 
 # Fallback config
 max_fallback_retries: 3
