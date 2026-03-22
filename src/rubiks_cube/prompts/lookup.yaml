@@ -16,7 +16,6 @@ system_prompt: |
   - Phase white_cross: get W at U positions 1,3,5,7 and matching side edges.
   - Phase full_solve: match current state to solved state.
   - Prefer moves that increase or maintain the current score.
-  - Avoid immediately undoing the previous move.
 
   REQUIREMENTS (STRICT):
   - Output MUST contain a single next move in this EXACT FORMAT:
@@ -24,25 +23,6 @@ system_prompt: |
   - Output MUST contain the next state after applying that move in this EXACT FORMAT:
   next_state = <54-character string>
   - Output MUST be EXACTLY TWO LINES (no extra text, no explanations, no markdown).
-  - next_state MUST be copied EXACTLY from the MOVE→NEXT_STATE LOOKUP TABLE in the user prompt.
+  - next_state MUST be copied EXACTLY from the LOOKUP TABLE provided in the user prompt.
 
-user_prompt: |
-  Step: {step}
-  Phase: {phase}
-  Goal: {phase_goal}
-  Current score: {score}
-  Previous move: {previous_move}
-
-  Current state:
-  {current_state}
-
-  MOVE→NEXT_STATE LOOKUP TABLE (pre-computed, guaranteed correct):
-{move_lookup}
-
-  Instructions:
-  1. Pick the move from the table above that best advances toward the goal.
-  2. Copy the corresponding next_state EXACTLY from the table (do not modify it).
-  3. Output EXACTLY TWO LINES:
-
-  move = <chosen move>
-  next_state = <exact next_state from table above>
+user_prompt: "Step: {step}\nPhase: {phase}\nGoal: {phase_goal}\nCurrent score: {score}\nPrevious move: {previous_move}\n\nCurrent state:\n{current_state}\n\nMOVE->NEXT_STATE LOOKUP TABLE (pre-computed, guaranteed correct):\n{move_lookup}\n\nPick the move that best advances toward the goal. Copy its next_state EXACTLY from the table.\nOutput EXACTLY TWO LINES:\nmove = <chosen move>\nnext_state = <exact next_state from table>"
