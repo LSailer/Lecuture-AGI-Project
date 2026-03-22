@@ -8,10 +8,12 @@ temp_escalation: false
 model_path: LLM/models/devstral-24b
 prompt_variant: lookup_v3
 
-# Game-specific — 2-move scramble (baseline difficulty)
+# Game-specific — 4-move scramble (stage 2)
 scramble:
   - R
   - U
+  - "R'"
+  - "U'"
 
 forbid_undo: true
 max_score_drop: 6
