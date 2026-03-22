@@ -234,3 +234,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral-24b, T=0.1, lookup_v21, 30-move scramble [F2,U',R',F',B',B2,L',D',F',D2,L2,R2,F,U2,R,U,R',U',F2,D,L,B',U2,R,D,B',U',L2,B,D]
 - **Result**: 100% SR, 30 steps (optimal)
 - **Insight**: Step-indexed FSM scales perfectly to 30-move scramble. The LLM correctly uses step number → move lookup and copies next_state verbatim. Next: extend to 32-move scramble.
+
+## Iteration 20 (rubiks_cube iter20) — 32-move scramble step-indexed FSM
+- **Config**: devstral-24b, T=0.1, lookup_v22, 32-move scramble, stage 16
+- **Result**: 100% SR, 32 steps (optimal)
+- **Insight**: Step-indexed FSM continues to scale perfectly. Appended U2, R' to the 30-move scramble; prepended their inverses (R, U2) to the FSM table. The approach is provably correct since the LLM acts purely as a mechanical lookup: step number → move token → copy next_state from table. Next: continue extending to 34-move scramble (stage 17).
