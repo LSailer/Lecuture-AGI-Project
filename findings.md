@@ -129,3 +129,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral-24b, T=0.5, overlap prompt, 4x4 butterfly, max_steps=500, max_agents=12
 - **Result**: 100% SR, 16 steps (puzzle solved completely) — KEEP
 - **Insight**: Overlap method prompt completely fixes iter1's failure. Teaching the model to enumerate valid placements and find the intersection of forced cells eliminates greedy row-filling. The constraint propagation approach (list placements → find overlap → pick forced cell) maps directly to nonogram logic. 16 steps is reasonable for a 4x4 (16 cells total, some determined by propagation chains). Next: stage up to 4x4 diamond to test whether overlap method generalizes across different puzzle shapes.
+
+## Iteration 3 (nonogram) — overlap method 4x4 diamond devstral T=0.5
+- **Config**: devstral-24b, T=0.5, overlap prompt, 4x4 diamond, max_steps=500, max_agents=12
+- **Result**: 100% SR, 16 steps — KEEP (stage up: 4x4 butterfly → 4x4 diamond)
+- **Insight**: Overlap method generalizes perfectly to the diamond puzzle (same 16 steps as butterfly). Both puzzles have identical symmetric structure with only diagonal cells filled, so constraint propagation finds forced cells immediately. Next: stage up to 5x5 diamond — larger grid tests whether the overlap method scales to more complex propagation chains.

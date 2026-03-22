@@ -25,3 +25,4 @@ ec77c42	0.222222	200	3	keep	sliding_puzzle iter15 3x3 hardest devstral T=0.5 exp
 ac0a222	0.000000	400	3	discard	sliding_puzzle iter16 3x3 hardest devstral T=0.5 explicit_v9 max_agents=9 max_steps=400 — 0% SR Token budget exhausted by Tier-1 field+2nd example, regression from v7
 88ee1ed	0.250000	4	1	keep	nonogram iter1 baseline devstral T=0.5 base prompt 4x4 butterfly — SR=25tuck after 4 cells wrong row0 guess makes columns impossible
 f0a0608	1.000000	16	1	keep	nonogram iter2 overlap method devstral T=0.5 4x4 butterfly — 100% SR 16 steps constraint propagation
+df22aac	1.000000	16	2	keep	nonogram iter3 overlap method 4x4 diamond devstral T=0.5 — 100% SR 16 steps constraint propagation
