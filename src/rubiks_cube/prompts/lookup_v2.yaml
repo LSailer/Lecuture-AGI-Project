@@ -12,9 +12,7 @@ system_prompt: |
   Reference solved state:
   {solved_state}
 
-  STRATEGY: Always pick the move with the HIGHEST [score=N] from the lookup table.
-  The score counts stickers matching the solved state — higher score = closer to solved.
-  Greedy rule: pick the move whose next_state has the highest score.
+  STRATEGY: The lookup table is sorted best-first. Always pick the FIRST entry.
 
   REQUIREMENTS (STRICT):
   - Output MUST contain a single next move in this EXACT FORMAT:
@@ -24,4 +22,4 @@ system_prompt: |
   - Output MUST be EXACTLY TWO LINES (no extra text, no explanations, no markdown).
   - next_state MUST be copied EXACTLY from the LOOKUP TABLE in the user prompt. Do NOT compute it yourself.
 
-user_prompt: "Step: {step}\nPhase: {phase}\nGoal: {phase_goal}\nCurrent score: {score}\nPrevious move: {previous_move}\n\nCurrent state:\n{current_state}\n\nMOVE->NEXT_STATE LOOKUP TABLE (sorted by score descending):\n{move_lookup}\n\nINSTRUCTION: Find the entry with the HIGHEST [score=N]. That is your move.\nCopy its next_state character-for-character from the table. Do NOT generate it yourself.\nOutput EXACTLY TWO LINES:\nmove = <move with highest score>\nnext_state = <exact next_state copied from table>"
+user_prompt: "Step: {step}\nPhase: {phase}\nGoal: {phase_goal}\nCurrent score: {score}\nPrevious move: {previous_move}\n\nCurrent state:\n{current_state}\n\nMOVE->NEXT_STATE LOOKUP TABLE (first entry = best move):\n{move_lookup}\n\nINSTRUCTION: Pick the FIRST move in the table. Copy its next_state EXACTLY from the table above.\nDo NOT compute next_state yourself. Copy the 54-character string character-by-character.\nOutput EXACTLY TWO LINES:\nmove = <first move in table>\nnext_state = <exact 54-char next_state from first line of table>"
