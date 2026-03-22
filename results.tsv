@@ -23,3 +23,4 @@ a9fca40	0.222222	153	2	keep	sliding_puzzle iter12 3x3 easiest devstral T=0.5 exp
 77863f6	1.000000	76	2	keep	sliding_puzzle iter14 3x3 easiest devstral T=0.5 explicit_v7 max_agents=9 — 100% SR 76 steps
 ec77c42	0.222222	200	3	keep	sliding_puzzle iter15 3x3 hardest devstral T=0.5 explicit_v7 max_agents=9 — 22.2% SR stage up baseline
 ac0a222	0.000000	400	3	discard	sliding_puzzle iter16 3x3 hardest devstral T=0.5 explicit_v9 max_agents=9 max_steps=400 — 0% SR Token budget exhausted by Tier-1 field+2nd example, regression from v7
+88ee1ed	0.250000	4	1	keep	nonogram iter1 baseline devstral T=0.5 base prompt 4x4 butterfly — SR=25tuck after 4 cells wrong row0 guess makes columns impossible
