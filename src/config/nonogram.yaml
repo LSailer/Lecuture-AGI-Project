@@ -13,31 +13,31 @@ fallback_api: local
 fallback_local_model: LLM/model
 gemini_model: gemini-2.5-flash
 
-# Stage 1 — 4x4 butterfly (active default)
-row_hints:
-  - [1, 1]
-  - [2]
-  - [2]
-  - [1, 1]
-
-col_hints:
-  - [1, 1]
-  - [2]
-  - [2]
-  - [1, 1]
-
-# Stage 2 — 4x4 diamond
+# Stage 1 — 4x4 butterfly
 # row_hints:
-#   - [1]
+#   - [1, 1]
 #   - [2]
 #   - [2]
-#   - [1]
+#   - [1, 1]
 #
 # col_hints:
-#   - [1]
+#   - [1, 1]
 #   - [2]
 #   - [2]
-#   - [1]
+#   - [1, 1]
+
+# Stage 2 — 4x4 diamond (active)
+row_hints:
+  - [1]
+  - [2]
+  - [2]
+  - [1]
+
+col_hints:
+  - [1]
+  - [2]
+  - [2]
+  - [1]
 
 # Stage 3 — 5x5 diamond
 # row_hints:
