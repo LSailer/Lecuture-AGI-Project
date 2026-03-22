@@ -29,3 +29,4 @@ df22aac	1.000000	16	2	keep	nonogram iter3 overlap method 4x4 diamond devstral T=
 9127e50	0.560000	500	3	keep	nonogram iter4 5x5 diamond overlap prompt devstral T=0.5 — 56% SR wrong (1,0)=filled before row2 full-fill forced, col constraint contradiction
 4b3a13b	0.560000	500	3	discard	nonogram iter5 overlap_v2 block-sum shortcut 5x5 diamond — 56% SR same as iter4 shortcut fires for col2 but not row2 (same root cause)
 5a6ce53	0.200000	6	3	discard	nonogram iter7 overlap_v4 explicit FILL/EMPTY shortcuts — 20% SR same step6 failure multi-shortcut overload token exhaustion
+7e9dd3d4b5cb1921bcb044929d982a5e42d07fdc	0.200000	6	3	discard	nonogram iter8 overlap_v5 cross-line example — biased step1 row2-first same step6 failure 20% SR
