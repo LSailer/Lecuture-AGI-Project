@@ -209,3 +209,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral T=0.1, lookup_v16, 20-move scramble [R',F',B',B2,L',D',F',D2,L2,R2,F,U2,R,U,R',U',F2,D,L,B']
 - **Result**: 100% SR, 20 steps (optimal)
 - **Insight**: FSM transition from previous_move→next_move to step_number→next_move was necessary: with only 18 unique move tokens, a 20-step solution inevitably repeats a move in positions 1-19, creating a lookup collision (e.g. B→L' at step 2 and B→F at step 19 would conflict). Switching to step-indexed table eliminates this limitation entirely and scales to arbitrarily long sequences. The model follows the step-number table correctly. Next: stage 11 = 22-move scramble using the same step-indexed approach.
+
+## Iteration 15 (rubiks_cube) — 22-move scramble step-indexed FSM
+- **Config**: devstral-24b, T=0.1, lookup_v17, 22-move scramble [R',F',B',B2,L',D',F',D2,L2,R2,F,U2,R,U,R',U',F2,D,L,B',U2,R], stage 11
+- **Result**: 100% SR, 22 steps (optimal)
+- **Insight**: Step-indexed FSM continues to scale perfectly to 22-move scramble. Extended prior scramble with +2 moves (U2, R). Inverse [R',U2,B,L',D',F2,U,R,U',R',U2,F',R2,L2,D2,F,D,L,B2,B,F,R] executed flawlessly. Next: advance to 24-move scramble (stage 12).
