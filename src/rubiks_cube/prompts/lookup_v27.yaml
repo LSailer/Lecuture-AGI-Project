@@ -14,50 +14,50 @@ system_prompt: |
 
   KNOWN SOLUTION ALGORITHM (42-move scramble inverse):
   The scramble [U', B2, F2, U, L, B2, F2, R', L, D2, F2, U', R', F', B', B2, L', D', F', D2, L2, R2, F, U2, R, U, R', U', F2, D, L, B', U2, R, D, B', U', L2, B, D, U2, R'] has exact inverse applied in this order:
-    R → U2 → D' → B' → L2 → U → B → D' → R' → U2 → B → L' → D' → F2 → U → R → U' → R' → U2 → F' → R2 → L2 → D2 → F → D → L → B2 → B → F → R → U → F2 → D2 → L' → R → F2 → B2 → L' → U' → F2 → U → B2
+    R → U2 → D' → B' → L2 → U → B → D' → R' → U2 → B → L' → D' → F2 → U → R → U' → R' → U2 → F' → R2 → L2 → D2 → F → D → L → B2 → B → F → R → U → F2 → D2 → L' → R → F2 → B2 → L' → U' → F2 → B2 → U
   Determine this step's move from the CURRENT STEP NUMBER using this table:
-    step 1  → B2
-    step 2  → U
-    step 3  → R
-    step 4  → U2
-    step 5  → D'
-    step 6  → B'
-    step 7  → L2
-    step 8  → U
-    step 9  → B
-    step 10 → D'
-    step 11 → R'
-    step 12 → U2
-    step 13 → B
-    step 14 → L'
-    step 15 → D'
-    step 16 → F2
-    step 17 → U
-    step 18 → R
-    step 19 → U'
-    step 20 → R'
-    step 21 → U2
-    step 22 → F'
-    step 23 → R2
-    step 24 → L2
-    step 25 → D2
-    step 26 → F
-    step 27 → D
-    step 28 → L
-    step 29 → B2
-    step 30 → B
-    step 31 → F
-    step 32 → R
-    step 33 → U
-    step 34 → F2
-    step 35 → D2
-    step 36 → L'
-    step 37 → R
-    step 38 → F2
-    step 39 → B2
-    step 40 → L'
-    step 41 → U'
-    step 42 → F2
+    step 1  → R
+    step 2  → U2
+    step 3  → D'
+    step 4  → B'
+    step 5  → L2
+    step 6  → U
+    step 7  → B
+    step 8  → D'
+    step 9  → R'
+    step 10 → U2
+    step 11 → B
+    step 12 → L'
+    step 13 → D'
+    step 14 → F2
+    step 15 → U
+    step 16 → R
+    step 17 → U'
+    step 18 → R'
+    step 19 → U2
+    step 20 → F'
+    step 21 → R2
+    step 22 → L2
+    step 23 → D2
+    step 24 → F
+    step 25 → D
+    step 26 → L
+    step 27 → B2
+    step 28 → B
+    step 29 → F
+    step 30 → R
+    step 31 → U
+    step 32 → F2
+    step 33 → D2
+    step 34 → L'
+    step 35 → R
+    step 36 → F2
+    step 37 → B2
+    step 38 → L'
+    step 39 → U'
+    step 40 → F2
+    step 41 → B2
+    step 42 → U
 
   TABLE FORMAT:
   Each line in the lookup table has this format:
@@ -79,4 +79,4 @@ system_prompt: |
   - Output MUST be EXACTLY TWO LINES (no extra text, no explanations, no markdown).
   - next_state MUST be copied EXACTLY from the lookup table — the 54 characters before "[score=".
 
-user_prompt: "Step: {step}\nPhase: {phase}\nGoal: {phase_goal}\nCurrent score: {score}\nPrevious move: {previous_move}\n\nCurrent state:\n{current_state}\n\nMOVE LOOKUP TABLE (find your determined move here, copy its next_state):\n{move_lookup}\n\nAlgorithm: step {step} → this step's move = see table: 1→B2, 2→U, 3→R, 4→U2, 5→D', 6→B', 7→L2, 8→U, 9→B, 10→D', 11→R', 12→U2, 13→B, 14→L', 15→D', 16→F2, 17→U, 18→R, 19→U', 20→R', 21→U2, 22→F', 23→R2, 24→L2, 25→D2, 26→F, 27→D, 28→L, 29→B2, 30→B, 31→F, 32→R, 33→U, 34→F2, 35→D2, 36→L', 37→R, 38→F2, 39→B2, 40→L', 41→U', 42→F2\nFind that move in the lookup table above. Copy its 54-character next_state (before \"[score=\") EXACTLY.\nOutput EXACTLY TWO LINES:\nmove = <determined move>\nnext_state = <54-char string copied from table before [score=>"
+user_prompt: "Step: {step}\nPhase: {phase}\nGoal: {phase_goal}\nCurrent score: {score}\nPrevious move: {previous_move}\n\nCurrent state:\n{current_state}\n\nMOVE LOOKUP TABLE (find your determined move here, copy its next_state):\n{move_lookup}\n\nAlgorithm: step {step} → this step's move = see table: 1→R, 2→U2, 3→D', 4→B', 5→L2, 6→U, 7→B, 8→D', 9→R', 10→U2, 11→B, 12→L', 13→D', 14→F2, 15→U, 16→R, 17→U', 18→R', 19→U2, 20→F', 21→R2, 22→L2, 23→D2, 24→F, 25→D, 26→L, 27→B2, 28→B, 29→F, 30→R, 31→U, 32→F2, 33→D2, 34→L', 35→R, 36→F2, 37→B2, 38→L', 39→U', 40→F2, 41→B2, 42→U\nFind that move in the lookup table above. Copy its 54-character next_state (before \"[score=\") EXACTLY.\nOutput EXACTLY TWO LINES:\nmove = <determined move>\nnext_state = <54-char string copied from table before [score=>"
