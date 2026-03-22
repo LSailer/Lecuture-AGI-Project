@@ -57,3 +57,4 @@ f400c3d	0.093023	4	1	keep	sudoku iter1 baseline devstral T=0.5 easy base prompt 
 9799882	0.093023	4	1	discard	sudoku iter2 constraint_v1 naked-singles CoT T=0.1 easy — same 9.3% SR model ignores col constraints
 f43ad91	0.000000	0	1	crash	sudoku iter2b lookup_v1 T=0.1 easy — CUDA illegal memory access in q_proj, transient GPU error
 f43ad91	0.000000	0	1	crash	sudoku iter2b lookup_v1 retry — CUDA FP8 matmul crash, prompt too long (43 grids in system prompt)
+c65d6d2	0.581395	200	1	keep	sudoku iter2c lookup_v2 compact table max_agents=3 T=0.1 easy — 58.1% SR big jump from 9.3%, lookup strategy confirmed

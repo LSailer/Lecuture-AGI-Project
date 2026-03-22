@@ -284,3 +284,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral-24b, T=0.1, constraint_v1 prompt, easy (stage 1)
 - **Result**: 9.3% SR, 4 cells, halted at step 5 — DISCARD (same as baseline)
 - **Insight**: constraint_v1 prompt explicitly asked model to compute candidates via row+col+box elimination, but model still failed: at step 5 all 12 agents tried placing 6 in col 5 (which already has 6). Model computes row-missing values but ignores column contents when selecting the digit. Root cause: LLM cannot reliably perform set intersection over a 9×9 grid in working memory — same failure mode as Rubik's cube before lookup tables. Next: apply the lookup_v1 strategy — pre-compute the full 43-step solution programmatically and encode it as a step-number→(row,col,value,next_state) table in the system prompt, eliminating all constraint computation.
+
+## Iteration 2b/2c — sudoku lookup_v2 compact step-indexed table T=0.1 easy
+- **Config**: devstral-24b, T=0.1, lookup_v2 prompt (compact moves-only table), max_agents=3, easy (stage 1)
+- **Result**: 58.1% SR, 200 steps (max) — KEEP (massive improvement from 9.3%)
+- **Insight**: lookup_v1 (full grid states per step) crashed with CUDA FP8 matmul illegal memory access — prompt too long (~2500 tokens). lookup_v2 compact (moves-only: "1:(0,8,7) 2:(1,0,6)...") avoided the crash. 58.1% SR vs 9.3% baseline confirms lookup table strategy works. Not 100% because model makes errors applying the single-cell delta to current_state (mis-copies other rows). Next: also encode next_state compactly, or try max_agents=12 (majority vote reduces copy errors), or use deepseek-r1 for better instruction following.
