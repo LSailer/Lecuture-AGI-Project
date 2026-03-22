@@ -5,7 +5,7 @@ max_agents_per_step: 12
 output_dir: output
 temperature: 0.1
 model_path: LLM/models/devstral-24b
-prompt_variant: lookup_v13
+prompt_variant: lookup_v14
 max_agents_per_step: 3
 
 # Fallback config
@@ -20,8 +20,11 @@ gemini_model: gemini-2.5-flash
 # Stage 2 — medium
 # initial_state: medium
 
-# Stage 3 — hard (active)
-initial_state: hard
+# Stage 3 — hard
+# initial_state: hard
+
+# Stage 4 — expert (active)
+initial_state: expert
 
 # Stage 4 — expert
 # initial_state: expert
