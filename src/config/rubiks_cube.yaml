@@ -3,7 +3,7 @@ margin_k: 3
 max_steps: 100
 max_agents_per_step: 9
 output_dir: output
-temperature: 0.1
+temperature: 0.5
 temp_escalation: false
 model_path: LLM/models/devstral-24b
 prompt_variant: lookup_v3
