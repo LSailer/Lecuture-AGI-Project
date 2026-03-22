@@ -229,3 +229,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral-24b, T=0.1, lookup_v20, 28-move scramble (prepended F2,U' to prior 26-move scramble)
 - **Result**: 100% SR, 28 steps (optimal)
 - **Insight**: Step-indexed FSM continues to scale perfectly — 14th consecutive stage-up with 100% SR. The approach of encoding the full inverse sequence as a step→move lookup table in the prompt has zero failure rate. Next: stage up to 30-move scramble (stage 15).
+
+## Iteration 19 — 30-move scramble step-indexed FSM (stage 15)
+- **Config**: devstral-24b, T=0.1, lookup_v21, 30-move scramble [F2,U',R',F',B',B2,L',D',F',D2,L2,R2,F,U2,R,U,R',U',F2,D,L,B',U2,R,D,B',U',L2,B,D]
+- **Result**: 100% SR, 30 steps (optimal)
+- **Insight**: Step-indexed FSM scales perfectly to 30-move scramble. The LLM correctly uses step number → move lookup and copies next_state verbatim. Next: extend to 32-move scramble.
