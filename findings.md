@@ -249,3 +249,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral T=0.1, lookup_v24, 36-move scramble [F2,R' prepended to iter21 scramble], max_score_drop=10
 - **Result**: 66.7% SR, 100 steps — DISCARD
 - **Insight**: Step 34 (L') triggered "No valid consensus" because the score-drop validation rejected it. In iter21, step 34 (L') was the final solving move (score goes up). In iter22, the cube still has [F2,R'] un-applied, so L' temporarily decreases the heuristic score past the max_score_drop=10 threshold. Fix: increase max_score_drop (e.g. to 50) so valid solution moves are not rejected mid-sequence.
+
+## Iteration 22b — 36-move scramble, fix score-drop threshold
+- **Config**: devstral T=0.1, lookup_v24, 36-move scramble [F2,R' prepended], max_score_drop=50
+- **Result**: 100% SR, 36 steps (optimal)
+- **Insight**: Raising max_score_drop from 10 to 50 fixed the step34 blocking issue. When the FSM solution includes moves that temporarily decrease the heuristic score mid-sequence (because un-solving the 2 extra prepended moves creates a temporary worse state), the strict 10-point drop threshold rejects valid solution moves. With 50, all solution moves pass. Key lesson: for longer scrambles, the heuristic score is not monotonically increasing throughout the solution — relax max_score_drop proportionally with scramble length. Next: stage up to 38-move scramble with max_score_drop=50.
