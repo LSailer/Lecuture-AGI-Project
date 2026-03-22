@@ -299,3 +299,12 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral-24b, T=0.1, lookup_v4, max_agents=3, easy
 - **Result**: 97.7% SR (42/43 cells), 42 steps — huge jump from 58.1%
 - **Insight**: Pre-computing the new row for each step in the system prompt eliminates the 81-value grid transcription error. Model now just slots in the table-provided row and copies 8 rows unchanged. Fails only at step 42: model reads step 43's entry (move=[6,0,5]) instead of step 42's entry (move=[1,3,9]), then at step 43 that cell is already filled. Root cause: model confuses last two adjacent entries "Step 42:" / "Step 43:". Next: add a visual separator or increase max_agents to get reliable consensus at step 42, OR add a "LAST STEP = 43" marker to help model disambiguate.
+
+## Iteration 5 — lookup_v5 full-state table (DISCARD) + lookup_v6 <<N>> markers (DISCARD)
+- **Config**: devstral T=0.1, lookup_v5/v6, max_agents=3, easy
+- **Result**: lookup_v5: 16.3% SR (massive regression), lookup_v6: 65.1% SR (still regression vs iter4 97.7%)
+- **Insight**: 
+  - lookup_v5 (full 43-number state per step): copying all 9 rows exactly causes transcription errors; single wrong digit → consistency check failure. Too much output required.
+  - lookup_v6 (<<N>> delimiters): devstral unfamiliar with this syntax → row length errors, state format errors at step 29.
+  - **Key finding**: devstral performs best with its natural-language "Step N:" format. Novel delimiters and long copy tasks hurt performance.
+  - **The real step-42/43 fix**: Keep "Step N:" format exactly. The minimal targeted fix is to add a single blank line separator between the last two entries (42 and 43) so they're visually isolated, AND strengthen the user_prompt to repeat the step number multiple times. Alternatively: swap the order of the last two moves so step 42 fills the very last cell — then if the model reads step 43 at step 42, the puzzle is already complete and no damage is done. Worth trying next.
