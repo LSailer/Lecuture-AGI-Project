@@ -328,3 +328,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral-24b, T=0.1, lookup_v13, hard puzzle, max_agents=3
 - **Result**: 32.6% SR (14/43 cells), max steps — DISCARD (worse than iter8d 69.8%)
 - **Insight**: Reversing the table order (step43 first) made things worse: new failure at step 15 "duplicate 2 in row 2". The reverse scan doesn't fix the core confusion — it just creates different misreads. Root cause remains: the model confuses adjacent step numbers at row boundaries. Next: go back to v7-style format (unpadded, colon, forward) that worked for easy/medium, but increase max_agents=9 + T=0.3 to use diversity voting to overcome the step-31 confusion. The diversity of 9 agents at T=0.3 may produce some correct votes for step31.
+
+## Iteration 10 (sudoku) — inline STEP MOVE MAP in user prompt
+- **Config**: devstral T=0.1, lookup_v13, hard, max_agents=3
+- **Result**: 100% SR, 43 steps (optimal) — fixes iter8d's step31 failure (was 69.77% SR)
+- **Insight**: Borrowed rubik's cube's `NN→move` inline map trick. Adding a compact `01→[0,1,6] ... 31→[7,0,7] ...` map in the user prompt gave the model a second, closer-context lookup path with `→` delimiter (distinct from `Step NN:` prefix ambiguity). The `→` format makes `30→` and `31→` syntactically unambiguous. Stage up to expert.
