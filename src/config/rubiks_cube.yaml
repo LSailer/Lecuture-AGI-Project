@@ -6,10 +6,12 @@ output_dir: output
 temperature: 0.1
 temp_escalation: false
 model_path: LLM/models/devstral-24b
-prompt_variant: lookup_v23
+prompt_variant: lookup_v24
 
-# Game-specific — 34-move scramble (stage 17)
+# Game-specific — 36-move scramble (stage 18)
 scramble:
+  - F2
+  - "R'"
   - L
   - D2
   - F2
@@ -46,7 +48,7 @@ scramble:
   - "R'"
 
 forbid_undo: true
-max_score_drop: 10
+max_score_drop: 50
 
 # Cycle detection
 max_state_revisits: 3
