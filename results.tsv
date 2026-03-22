@@ -40,3 +40,4 @@ e4eeddd	0.640000	500	3	discard	nonogram iter15 overlap_v12 partial-fill example 
 1bc235a943c435cb0f830e8ba2173615d86eea52	0.560000	500	3	discard	nonogram iter16 overlap_v13 remove 3x3 scan example + partial-fill [3] — 56% SR 14 steps regression, col-first lost, row-first path hits exhaustion earlier
 f847ac47f5d3ed7e5de549c07b1d049d44003161	0.560000	500	3	discard	nonogram iter17 overlap_v14 stop-at-first-match user prompt — 56% SR exhaustive scan system prompt overrides stop instruction
 e01b828	0.560000	500	3	discard	nonogram iter18 overlap_v15 remove EXHAUSTIVE SCAN rule — 56% SR regression, lost col-first path, token exhaustion at step15
+d25e56f	0.760000	500	3	keep	nonogram iter19 overlap_v16 concise stop-at-first user prompt — 76% SR new best 19 steps, stalls at step20 token exhaustion on 6 unknowns
