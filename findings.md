@@ -214,3 +214,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral-24b, T=0.1, lookup_v17, 22-move scramble [R',F',B',B2,L',D',F',D2,L2,R2,F,U2,R,U,R',U',F2,D,L,B',U2,R], stage 11
 - **Result**: 100% SR, 22 steps (optimal)
 - **Insight**: Step-indexed FSM continues to scale perfectly to 22-move scramble. Extended prior scramble with +2 moves (U2, R). Inverse [R',U2,B,L',D',F2,U,R,U',R',U2,F',R2,L2,D2,F,D,L,B2,B,F,R] executed flawlessly. Next: advance to 24-move scramble (stage 12).
+
+## Iteration 16 — 24-move scramble step-indexed FSM
+- **Config**: devstral T=0.1, lookup_v18, 24-move scramble, max_agents=9
+- **Result**: 100% SR, 24 steps (optimal)
+- **Insight**: Step-indexed FSM continues to scale flawlessly. Added D and B' to end of scramble; prepended B and D' to solution. No collisions or degradation at 24 moves. Next: stage up to 26-move scramble.
