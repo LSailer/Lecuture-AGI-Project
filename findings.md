@@ -224,3 +224,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral T=0.1, lookup_v19, step-indexed FSM, 26-move scramble
 - **Result**: 100% SR, 26 steps (optimal)
 - **Insight**: Step-indexed FSM continues to scale perfectly. Each +2 move extension succeeds by adding L2,U at the head of the inverse table. The pattern is highly reliable — next: continue to 28-move (stage 14).
+
+## Iteration 18 — 28-move scramble stage 14 step-indexed FSM
+- **Config**: devstral-24b, T=0.1, lookup_v20, 28-move scramble (prepended F2,U' to prior 26-move scramble)
+- **Result**: 100% SR, 28 steps (optimal)
+- **Insight**: Step-indexed FSM continues to scale perfectly — 14th consecutive stage-up with 100% SR. The approach of encoding the full inverse sequence as a step→move lookup table in the prompt has zero failure rate. Next: stage up to 30-move scramble (stage 15).
