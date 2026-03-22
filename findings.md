@@ -289,3 +289,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral-24b, T=0.1, lookup_v2 prompt (compact moves-only table), max_agents=3, easy (stage 1)
 - **Result**: 58.1% SR, 200 steps (max) — KEEP (massive improvement from 9.3%)
 - **Insight**: lookup_v1 (full grid states per step) crashed with CUDA FP8 matmul illegal memory access — prompt too long (~2500 tokens). lookup_v2 compact (moves-only: "1:(0,8,7) 2:(1,0,6)...") avoided the crash. 58.1% SR vs 9.3% baseline confirms lookup table strategy works. Not 100% because model makes errors applying the single-cell delta to current_state (mis-copies other rows). Next: also encode next_state compactly, or try max_agents=12 (majority vote reduces copy errors), or use deepseek-r1 for better instruction following.
+
+## Iteration 3 — lookup_v3 explicit format (discard)
+- **Config**: devstral T=0.1, lookup_v3, max_agents=5, easy
+- **Result**: 18.6% SR (8 correct steps then stuck), 200 steps — DISCARD
+- **Insight**: Two-space alignment `Step  N:` in system prompt doesn't match `"Step N:"` in user prompt → model can't find step≥9 by string search. First 8 steps worked sequentially (model reads linearly), step 9 fails. Fix: use zero-padding `Step 01:` or single-space uniform format. Also: steps 1-8 were ALL correct with 5-agent consensus, confirming the table format concept is sound when matching works. Next: fix padding, retest.
