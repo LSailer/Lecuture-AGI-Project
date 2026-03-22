@@ -294,3 +294,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral T=0.1, lookup_v3, max_agents=5, easy
 - **Result**: 18.6% SR (8 correct steps then stuck), 200 steps — DISCARD
 - **Insight**: Two-space alignment `Step  N:` in system prompt doesn't match `"Step N:"` in user prompt → model can't find step≥9 by string search. First 8 steps worked sequentially (model reads linearly), step 9 fails. Fix: use zero-padding `Step 01:` or single-space uniform format. Also: steps 1-8 were ALL correct with 5-agent consensus, confirming the table format concept is sound when matching works. Next: fix padding, retest.
+
+## Iteration 4 — lookup_v4 delta-row table (sudoku easy)
+- **Config**: devstral-24b, T=0.1, lookup_v4, max_agents=3, easy
+- **Result**: 97.7% SR (42/43 cells), 42 steps — huge jump from 58.1%
+- **Insight**: Pre-computing the new row for each step in the system prompt eliminates the 81-value grid transcription error. Model now just slots in the table-provided row and copies 8 rows unchanged. Fails only at step 42: model reads step 43's entry (move=[6,0,5]) instead of step 42's entry (move=[1,3,9]), then at step 43 that cell is already filled. Root cause: model confuses last two adjacent entries "Step 42:" / "Step 43:". Next: add a visual separator or increase max_agents to get reliable consensus at step 42, OR add a "LAST STEP = 43" marker to help model disambiguate.

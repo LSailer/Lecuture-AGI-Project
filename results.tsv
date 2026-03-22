@@ -59,3 +59,4 @@ f43ad91	0.000000	0	1	crash	sudoku iter2b lookup_v1 T=0.1 easy — CUDA illegal m
 f43ad91	0.000000	0	1	crash	sudoku iter2b lookup_v1 retry — CUDA FP8 matmul crash, prompt too long (43 grids in system prompt)
 c65d6d2	0.581395	200	1	keep	sudoku iter2c lookup_v2 compact table max_agents=3 T=0.1 easy — 58.1% SR big jump from 9.3%, lookup strategy confirmed
 456f103	0.186047	200	1	discard	sudoku iter3 lookup_v3 explicit row=R col=C format — 18.6456f103	0.186047	200	1	discard	sudoku iter3 lookup_v3 explicit format — 18.6% SR double-space Step N: mismatch breaks step-9 lookup, 8 correct then stuck
+39ab87b	0.976744	42	1	keep	sudoku iter4 lookup_v4 delta-row table max_agents=3 T=0.1 easy — 97.739ab87b	0.976744	42	1	keep	sudoku iter4 lookup_v4 delta-row table max_agents=3 T=0.1 easy — 97.7% SR step43 fails (model reads step43 entry at step42)
