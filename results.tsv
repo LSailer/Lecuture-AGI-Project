@@ -62,3 +62,4 @@ c65d6d2	0.581395	200	1	keep	sudoku iter2c lookup_v2 compact table max_agents=3 T
 39ab87b	0.976744	42	1	keep	sudoku iter4 lookup_v4 delta-row table max_agents=3 T=0.1 easy — 97.739ab87b	0.976744	42	1	keep	sudoku iter4 lookup_v4 delta-row table max_agents=3 T=0.1 easy — 97.7% SR step43 fails (model reads step43 entry at step42)
 9791f6b	0.163000	200	1	discard	sudoku iter5 lookup_v5 full-state table — 16.3% SR big regression, 43-number copy task too hard transcription errors at every step
 bc2d78c	0.651163	200	1	discard	sudoku iter5b lookup_v6 <<N>> markers — 65.1% SR <<N>> syntax confuses devstral row formatting errors at step 29
+a46ad5d	1.000000	43	1	keep	sudoku iter6 lookup_v7 execute-step label — 100% SR 43 steps fix off-by-one at step42 that blocked iter4

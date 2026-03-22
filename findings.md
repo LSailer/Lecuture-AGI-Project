@@ -308,3 +308,8 @@ Each entry: what was tried, what was learned, and what to try next.
   - lookup_v6 (<<N>> delimiters): devstral unfamiliar with this syntax → row length errors, state format errors at step 29.
   - **Key finding**: devstral performs best with its natural-language "Step N:" format. Novel delimiters and long copy tasks hurt performance.
   - **The real step-42/43 fix**: Keep "Step N:" format exactly. The minimal targeted fix is to add a single blank line separator between the last two entries (42 and 43) so they're visually isolated, AND strengthen the user_prompt to repeat the step number multiple times. Alternatively: swap the order of the last two moves so step 42 fills the very last cell — then if the model reads step 43 at step 42, the puzzle is already complete and no damage is done. Worth trying next.
+
+## Iteration 6 (sudoku) — lookup_v7 execute-step label fixes off-by-one
+- **Config**: devstral T=0.1, lookup_v7, max_agents=3, easy
+- **Result**: 100% SR, 43 steps (optimal — all 43 empty cells filled)
+- **Insight**: Root cause of iter4 failure was semantic ambiguity: "Current step: 42" made all 3 agents interpret step 42 as already done and look up Step 43 instead. Renaming to "Execute step: {step}" + explicit guard "do NOT use any other step number" fixed the off-by-one. Stage up to medium next.
