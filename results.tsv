@@ -34,3 +34,4 @@ df22aac	1.000000	16	2	keep	nonogram iter3 overlap method 4x4 diamond devstral T=
 964a54a	0.640000	17	3	discard	nonogram iter10 overlap_v7 shortcut-persistence — 64% SR 17 steps same as iter9 no improvement
 a36f34f	0.240000	6	3	discard	nonogram iter11 overlap_v8 generalized-shortcut-A — 24% SR prompt too long 5x5 example exhausts token budget 9+/12 agents fail format
 2ebca70	0.440000	11	3	discard	nonogram iter12 overlap_v9 generalized-shortcut-A U+F=S concise — 44% SR 11 steps regression from 64% U+F=S formula causes wrong decisions
+fe45e00	0.600000	500	3	discard	nonogram iter13 overlap_v10 constrained-ends example — 60% SR 500 steps regression from 64% partially-filled block case not covered
