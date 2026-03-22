@@ -54,3 +54,4 @@ ab0c0c0	1.000000	40	20	keep	rubiks_cube iter24 lookup_v26 40-move scramble step-
 0ddc62a	1.000000	42	21	keep	rubiks_cube iter25 lookup_v27 42-move scramble step-indexed FSM — 100% SR 42 steps optimal
 119e663	1.000000	44	22	keep	rubiks_cube iter26 lookup_v28 44-move scramble step-indexed FSM — inverse [...,L2,D'] 100% SR 44 steps optimal
 f400c3d	0.093023	4	1	keep	sudoku iter1 baseline devstral T=0.5 easy base prompt — 9.3% SR 4 cells filled then dead-end col constraints violated
+9799882	0.093023	4	1	discard	sudoku iter2 constraint_v1 naked-singles CoT T=0.1 easy — same 9.3% SR model ignores col constraints
