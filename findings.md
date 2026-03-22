@@ -179,3 +179,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral T=0.1, lookup_v10 (FSM: previous_move→next_move for 8-move inverse), 8-move scramble [R,U,R',U',F2,D,L,B'], max_score_drop=10, max_agents=9
 - **Result**: 100% SR, 8 steps (optimal) — KEEP
 - **Insight**: FSM approach continues to generalize — 8-move inverse [B,L',D',F2,U,R,U',R'] achieved 100% SR at optimal 8 steps. The pattern is clear: for any scramble with a known inverse, embed it as a deterministic previous_move→next_move table and the model follows it perfectly. Next: stage up to 10-move scramble. Need to define a 10-move scramble and compute its inverse (reverse order, invert each move).
+
+## Iteration 9 (rubiks_cube) — lookup_v11 10-move scramble FSM
+- **Config**: devstral T=0.1, lookup_v11 (FSM: previous_move→next_move for 10-move inverse), 10-move scramble [F,U2,R,U,R',U',F2,D,L,B'], max_score_drop=10, max_agents=9
+- **Result**: 100% SR, 10 steps (optimal) — KEEP
+- **Insight**: FSM approach continues to scale — 10-move inverse [B,L',D',F2,U,R,U',R',U2,F'] achieved 100% SR at optimal 10 steps. The pattern is robust: the first 8 steps of the 10-move inverse are identical to the 8-move inverse (extending by prepending F,U2 to the scramble appends U2,F' to the end of the inverse). Next: stage up to 12-move scramble. Proposed scramble: [R2,F',F,U2,R,U,R',U',F2,D,L,B'] → extend further or use a fresh 12-move sequence.

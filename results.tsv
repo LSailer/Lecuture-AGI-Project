@@ -34,3 +34,4 @@ fad5729	0.389000	100	2	discard	rubiks_cube iter5e lookup_v7 U-preference white_c
 25fab4a	1.000000	4	2	keep	rubiks_cube iter6 lookup_v8 known-algorithm FSM sexy-move inverse — 100% SR 4 steps optimal
 a449506	1.000000	6	3	keep	rubiks_cube iter7 lookup_v9 6-move scramble FSM inverse [D',F2,U,R,U',R'] — 100% SR 6 steps optimal
 9d31d03	1.000000	8	4	keep	rubiks_cube iter8 lookup_v10 8-move scramble FSM inverse [B,L',D',F2,U,R,U',R'] — 100% SR 8 steps optimal
+3cb118c	1.000000	10	5	keep	rubiks_cube iter9 lookup_v11 10-move scramble FSM inverse [B,L',D',F2,U,R,U',R',U2,F'] — 100% SR 10 steps optimal
