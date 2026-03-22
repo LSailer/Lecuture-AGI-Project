@@ -274,3 +274,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral T=0.1, lookup_v28, 44-move scramble [D,L2,U',B2,...,U2,R'], max_agents=9
 - **Result**: 100% SR, 44 steps (optimal)
 - **Insight**: Step-indexed FSM continues to scale perfectly. Prepended [D,L2] to scramble; appended [L2,D'] to inverse solution table (steps 43→L2, 44→D'). Next: stage 23 (46-move scramble).
+
+## Iteration 1 — sudoku baseline devstral T=0.5 easy
+- **Config**: devstral-24b, T=0.5, base prompt, easy difficulty (stage 1), 43 empty cells
+- **Result**: 9.3% SR, 4 cells filled, halted at step 5 (fallback exhausted)
+- **Insight**: Model fills cells in row-order with locally valid but globally inconsistent moves. Steps 1-4 filled (0,0)=4,(0,2)=6,(0,3)=8,(0,4)=3 — all pass validate_move — but created a dead-end: (0,5) needed value in {2,7} but 2 was already in the top-middle 3x3 box and 7 was already in col 5. At step 5, all agents proposed "value 8 in col 0" but col 0 already has 8 at r5. Base prompt says "prefer forced moves" but model is pattern-matching, not computing naked singles. Next: redesign prompt to explicitly enumerate candidates per cell (row∩col∩box exclusion) and require the model to output only cells with a single candidate. Try T=0.1 for more greedy/consistent choices, and a structured CoT prompt that walks through elimination.
