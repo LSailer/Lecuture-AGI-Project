@@ -134,3 +134,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral-24b, T=0.5, overlap prompt, 4x4 diamond, max_steps=500, max_agents=12
 - **Result**: 100% SR, 16 steps — KEEP (stage up: 4x4 butterfly → 4x4 diamond)
 - **Insight**: Overlap method generalizes perfectly to the diamond puzzle (same 16 steps as butterfly). Both puzzles have identical symmetric structure with only diagonal cells filled, so constraint propagation finds forced cells immediately. Next: stage up to 5x5 diamond — larger grid tests whether the overlap method scales to more complex propagation chains.
+
+## Iteration 4 (nonogram) — overlap method 5x5 diamond devstral T=0.5
+- **Config**: devstral-24b, T=0.5, overlap prompt, 5x5 diamond, max_steps=500, max_agents=12
+- **Result**: 56% SR, 500 steps (max hit) — KEEP (first result at stage 3)
+- **Insight**: Model correctly filled all of col 2 (hint [5], full column → all forced) in steps 1-5, then emptied row 0 in steps 6-9. At step 10 it incorrectly filled (1,0)=1 — violating col 0 hint [1] (which can only have one filled cell, and row 2 hint [5] forces (2,0)=1, leaving no room for (1,0)=1). Root cause: model never applied the "block sum = line length → all cells forced" shortcut to row 2 hint [5]. Had it filled row 2 first, col 0 would have (0,0)=0, (2,0)=1 → only one slot remains → (1,0)=0 forced. All subsequent agents detected "makes row impossible" — stuck in unsolvable state. Next: add explicit "block sum = line length → all cells forced" shortcut as HIGHEST priority rule in prompt, plus ordering: check this shortcut before enumeration.
