@@ -6,9 +6,9 @@ output_dir: output
 temperature: 0.1
 temp_escalation: false
 model_path: LLM/models/devstral-24b
-prompt_variant: lookup_v18
+prompt_variant: lookup_v19
 
-# Game-specific — 24-move scramble (stage 12)
+# Game-specific — 26-move scramble (stage 13)
 scramble:
   - "R'"
   - "F'"
@@ -34,6 +34,8 @@ scramble:
   - R
   - D
   - "B'"
+  - "U'"
+  - L2
 
 forbid_undo: true
 max_score_drop: 10
