@@ -5,7 +5,7 @@ import yaml
 
 
 # Robust patterns (safety net) – find fields anywhere even if model adds extra text.
-MOVE_PATTERN = re.compile(r"(?is)\bmove\b\s*[:=]\s*([URFDLB](?:2|')?)\b")
+MOVE_PATTERN = re.compile(r"(?is)\bmove\b\s*[:=]\s*([URFDLB](?:2|')?)(?!\w)")
 STATE_PATTERN = re.compile(r"(?is)\bnext_state\b\s*[:=]\s*([WRGYOB]{54})\b")
 
 _ALLOWED = [
