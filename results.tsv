@@ -37,3 +37,4 @@ a36f34f	0.240000	6	3	discard	nonogram iter11 overlap_v8 generalized-shortcut-A �
 fe45e00	0.600000	500	3	discard	nonogram iter13 overlap_v10 constrained-ends example — 60% SR 500 steps regression from 64% partially-filled block case not covered
 87502e2	0.560000	500	3	discard	nonogram iter14 overlap_v11 partial-fill example — 56% SR regression from 64% token exhaustion at step 14 all 12 agents fail
 e4eeddd	0.640000	500	3	discard	nonogram iter15 overlap_v12 partial-fill example replaces [1,1] — 64% SR 500 steps same SR worse steps token exhaustion step 17 still
+1bc235a943c435cb0f830e8ba2173615d86eea52	0.560000	500	3	discard	nonogram iter16 overlap_v13 remove 3x3 scan example + partial-fill [3] — 56% SR 14 steps regression, col-first lost, row-first path hits exhaustion earlier
