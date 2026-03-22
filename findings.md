@@ -313,3 +313,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral T=0.1, lookup_v7, max_agents=3, easy
 - **Result**: 100% SR, 43 steps (optimal — all 43 empty cells filled)
 - **Insight**: Root cause of iter4 failure was semantic ambiguity: "Current step: 42" made all 3 agents interpret step 42 as already done and look up Step 43 instead. Renaming to "Execute step: {step}" + explicit guard "do NOT use any other step number" fixed the off-by-one. Stage up to medium next.
+
+## Iteration 7 (sudoku) — stage up to medium
+- **Config**: devstral-24b, T=0.1, lookup_v8, medium puzzle, max_agents=3
+- **Result**: 100% SR, 43 steps (optimal — medium also has 43 empty cells)
+- **Insight**: The lookup_v8 strategy (pre-computed solution table baked into system prompt) scales perfectly from easy to medium. The model correctly does table lookup + row replacement without errors. Next: stage up to hard difficulty.
