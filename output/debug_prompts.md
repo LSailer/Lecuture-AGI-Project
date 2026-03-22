@@ -2,92 +2,880 @@
 ## Actual LLM Prompt at Step 1 (default)
 
 ### System Prompt
-You are a Nonogram (Picross) solver using constraint propagation.
+You are a Rubik's Cube solver assistant.
 
-Nonogram rules:
-- 4x4 grid. Each cell: -1 (unknown/.), 0 (empty/x), 1 (filled/#).
-- Row/column hints describe the consecutive FILLED block lengths in order, separated by ≥1 empty.
-- Hint [2] → exactly one block of 2 consecutive filled cells.
-- Hint [1,1] → exactly two single filled cells, each separated by ≥1 empty cell.
+State encoding:
+- The cube state is a SINGLE 54-character string over letters: W,R,G,Y,O,B.
+- Face order is EXACTLY: U(0-8), R(9-17), F(18-26), D(27-35), L(36-44), B(45-53).
+- Within each face indices are row-major:
+  0 1 2
+  3 4 5
+  6 7 8
 
-SOLVING STRATEGY — always find a LOGICALLY FORCED cell:
+Reference solved state:
+WWWWWWWWWRRRRRRRRRGGGGGGGGGYYYYYYYYYOOOOOOOOOBBBBBBBBB
 
-Rule 1 — Overlap analysis (single-clue lines):
-  For a line of length n with a single hint k, positions [(n-k) .. (k-1)] are DEFINITELY FILLED.
-  Example: n=5, k=3 → positions 2 to 2 are forced filled. n=4, k=3 → positions 1 to 2 forced filled.
+STRATEGY: The lookup table is sorted best-first. Always pick the FIRST entry.
 
-Rule 2 — Constraint propagation from known cells:
-  After placing any FILLED cell in a line, check if the hint is now partially satisfied.
-  - Hint [1,1]: if one filled cell is already placed at position p, then positions p-1 and p+1 MUST be EMPTY (no consecutive allowed).
-  - Hint [2]: if one filled cell is at position p, then p-1 OR p+1 must also be filled (the block is exactly 2).
-
-Rule 3 — Feasibility check (MOST IMPORTANT):
-  For each unknown cell (r,c), test both values before proposing:
-  - If marking (r,c)=FILLED makes row r OR column c infeasible → (r,c) MUST be EMPTY.
-  - If marking (r,c)=EMPTY makes row r OR column c infeasible → (r,c) MUST be FILLED.
-  A line with hint [1,1] and cells [1, -1, ...] is INFEASIBLE if the next cell is set to 1 (consecutive filled = block of 2, not [1,1]).
-
-Rule 4 — Completed lines:
-  If a row/column's filled count already equals sum(hints), all remaining unknown cells in that line are EMPTY.
-
-Worked example — 4x4 butterfly (row hints [1,1],[2],[2],[1,1]; col hints [1,1],[2],[2],[1,1]):
-Start: all unknown.
-- Col 1 hint [2] in 4 rows: no overlap alone. But cross-checking row hints:
-  Row 1 hint [2] must place a block of 2. Col 0 hint [1,1] allows at most 1 filled per half.
-  If row 1's block were at cols 0-1: col 0 gets row 1 filled. Then col 0 = [?, 1, ?, ?] with hint [1,1]. If row 0 also fills col 0 (row 0 hint [1,1] starts at col 0), col 0 = [1,1,?,?] → infeasible for [1,1]. So row 1's block CANNOT start at col 0.
-  If row 1's block is at cols 1-2: row 1 = [0,1,1,0]. Check col 0: row 1=0. Col 0 hint [1,1] → rows 0 and 3 are the two filled cells. Col 1: rows 1 and 2 filled = hint [2] ✓.
-  If row 1's block is at cols 2-3: col 3 gets row 1 filled. By symmetry same argument → forces row 1 block to cols 1-2.
-- Therefore row 1 = [0,1,1,0] and row 2 = [0,1,1,0] (symmetric). Row 0 = [1,0,0,1]. Row 3 = [1,0,0,1].
-- After row 0 col 0 = FILLED: col 0 is [1,-1,-1,-1] with hint [1,1]. Setting (1,0)=FILLED → [1,1,-1,-1] → INFEASIBLE for [1,1]. So (1,0) MUST be EMPTY. (Rule 3)
-
-VERY IMPORTANT output format (EXACT):
-
-move = [row, col, "filled"]
-next_state = [[...], [...], ...]
-
-or
-
-move = [row, col, "empty"]
-next_state = [[...], [...], ...]
-
-- row/col are 0-indexed integers.
-- next_state is the FULL grid as a nested list of ints using only -1, 0, 1.
-- Only the chosen cell changes; ALL others stay IDENTICAL to current_state.
-- Do NOT add extra text after the two lines.
+REQUIREMENTS (STRICT):
+- Output MUST contain a single next move in this EXACT FORMAT:
+move = <one move token>
+- Output MUST contain the next state after applying that move in this EXACT FORMAT:
+next_state = <54-character string>
+- Output MUST be EXACTLY TWO LINES (no extra text, no explanations, no markdown).
+- next_state MUST be copied EXACTLY from the LOOKUP TABLE in the user prompt. Do NOT compute it yourself.
 
 
 ### User Prompt
-Current step: 1
+Step: 1
+Phase: white_cross
+Goal: Solve the WHITE CROSS on the U face (white).
+Current score: 9
 Previous move: None
 
-Row hints (0..3):
-[[1, 1], [2], [2], [1, 1]]
+Current state:
+BBBWWWWWWGGWRRRRRROOOGGWGGWYYGYYGYYGYBBOOOOOORRRYBBYBB
 
-Column hints (0..3):
-[[1, 1], [2], [2], [1, 1]]
+MOVE->NEXT_STATE LOOKUP TABLE (first entry = best move):
+  U' : WWBWWBWWBRRRRRRRRRGGWGGWGGWYYGYYGYYGOOOOOOOOOYBBYBBYBB  [score=17]
+  R' : BBOWWWWWWRRGRRGRRWOOGGGGGGGYYYYYYYYRYBBOOOOOOWRRWBBBBB  [score=11]
+  B' : OOYWWWWWWGGBRRBRRBOOOGGWGGWYYGYYGRRWYBBYOOGOORBBRBBRYY  [score=11]
+  B2 : GYYWWWWWWGGORRORRYOOOGGWGGWYYGYYGBBBRBBROOWOOBBYBBYRRR  [score=11]
+  U  : BWWBWWBWWOOORRRRRRYBBGGWGGWYYGYYGYYGRRROOOOOOGGWYBBYBB  [score=9]
+  U2 : WWWWWWBBBYBBRRRRRRRRRGGWGGWYYGYYGYYGGGWOOOOOOOOOYBBYBB  [score=9]
+  R  : BBYWWYWWRWRRGRRGRROOBGGWGGWYYOYYWYYWYBBOOOOOOGRRGBBGBB  [score=9]
+  R2 : BBGWWGWWGRRRRRRWGGOOYGGYGGRYYBYYWYYWYBBOOOOOOWRRWBBOBB  [score=9]
+  F  : BBBWWWOOBWGWWRRWRRGGOGGOWWORRGYYGYYGYBYOOYOOGRRRYBBYBB  [score=9]
+  F2 : BBBWWWGYYOGWORRBRRWGGWGGOOOWWWYYGYYGYBROOROOGRRRYBBYBB  [score=9]
+  D  : BBBWWWWWWGGWRRRYBBOOOGGWRRRGGGYYYYYYYBBOOOGGWRRRYBBOOO  [score=9]
+  D' : BBBWWWWWWGGWRRRGGWOOOGGWOOOYYYYYYGGGYBBOOOYBBRRRYBBRRR  [score=9]
+  D2 : BBBWWWWWWGGWRRROOOOOOGGWYBBGYYGYYGYYYBBOOORRRRRRYBBGGW  [score=9]
+  L  : OBBGWWGWWGGWRRRRRRYOOYGWYGWBYGBYGRYGBOOBOOYOORRWYBWYBB  [score=9]
+  L' : BBBBWWRWWGGWRRRRRRBOOWGWWGWOYGGYGGYGOOYOOBOOBRRYYBYYBY  [score=9]
+  L2 : YBBYWWYWWGGWRRRRRRBOOBGWRGWBYGWYGWYGOOOOOOBBYRRGYBGYBO  [score=9]
+  B  : WRRWWWWWWGGGRRYRRYOOOGGWGGWYYGYYGYOOBBBBOOBOOYYRBBRBBR  [score=9]
+  F' : BBBWWWGRRGGWYRRYRROWWOGGOGGBOOYYGYYGYBWOOWOOWRRRYBBYBB  [score=7]
 
-Current_state (nested list):
-[[-1, -1, -1, -1], [-1, -1, -1, -1], [-1, -1, -1, -1], [-1, -1, -1, -1]]
+INSTRUCTION: Pick the FIRST move in the table. Copy its next_state EXACTLY from the table above.
+Do NOT compute next_state yourself. Copy the 54-character string character-by-character.
+Output EXACTLY TWO LINES:
+move = <first move in table>
+next_state = <exact 54-char next_state from first line of table>
 
-Visual (.:unknown, x:empty, #:filled):
-....
-....
-....
-....
+---
 
-Allowed cells (must choose one of these coordinates; 0-indexed):
-[(0, 0), (0, 1), (0, 2), (0, 3), (1, 0), (1, 1), (1, 2), (1, 3), (2, 0), (2, 1), (2, 2), (2, 3), (3, 0), (3, 1), (3, 2), (3, 3)]
+## Fallback at Step 1, Retry 1
 
-Decision guidance:
-1) Apply Rule 3 first: for EACH allowed cell, check if setting it FILLED makes its row or column infeasible → it must be EMPTY (and vice versa). This is the most reliable way to find forced cells.
-2) Apply Rule 2: if a FILLED cell exists in a line with hint [1,1], the cells adjacent to it MUST be EMPTY.
-3) Apply Rule 4: if a row/column's filled count equals the total cells to fill (sum of hints), all remaining unknowns in that line are EMPTY.
-4) Only pick from the allowed cells list. Only decide UNKNOWN cells (value -1).
-5) Update ONLY the chosen cell in next_state; all other cells must be identical to current_state.
+### System Prompt
+You are a Rubik's Cube solver assistant.
 
-Now output ONLY:
-move = [row, col, "filled"|"empty"]
-next_state = [...]
+State encoding:
+- The cube state is a SINGLE 54-character string over letters: W,R,G,Y,O,B.
+- Face order is EXACTLY: U(0-8), R(9-17), F(18-26), D(27-35), L(36-44), B(45-53).
+- Within each face indices are row-major:
+  0 1 2
+  3 4 5
+  6 7 8
 
+Reference solved state:
+WWWWWWWWWRRRRRRRRRGGGGGGGGGYYYYYYYYYOOOOOOOOOBBBBBBBBB
+
+STRATEGY: The lookup table is sorted best-first. Always pick the FIRST entry.
+
+REQUIREMENTS (STRICT):
+- Output MUST contain a single next move in this EXACT FORMAT:
+move = <one move token>
+- Output MUST contain the next state after applying that move in this EXACT FORMAT:
+next_state = <54-character string>
+- Output MUST be EXACTLY TWO LINES (no extra text, no explanations, no markdown).
+- next_state MUST be copied EXACTLY from the LOOKUP TABLE in the user prompt. Do NOT compute it yourself.
+
+
+### User Prompt
+Step: 1
+Phase: white_cross
+Goal: Solve the WHITE CROSS on the U face (white).
+Current score: 9
+Previous move: None
+
+Current state:
+BBBWWWWWWGGWRRRRRROOOGGWGGWYYGYYGYYGYBBOOOOOORRRYBBYBB
+
+MOVE->NEXT_STATE LOOKUP TABLE (first entry = best move):
+  U' : WWBWWBWWBRRRRRRRRRGGWGGWGGWYYGYYGYYGOOOOOOOOOYBBYBBYBB  [score=17]
+  R' : BBOWWWWWWRRGRRGRRWOOGGGGGGGYYYYYYYYRYBBOOOOOOWRRWBBBBB  [score=11]
+  B' : OOYWWWWWWGGBRRBRRBOOOGGWGGWYYGYYGRRWYBBYOOGOORBBRBBRYY  [score=11]
+  B2 : GYYWWWWWWGGORRORRYOOOGGWGGWYYGYYGBBBRBBROOWOOBBYBBYRRR  [score=11]
+  U  : BWWBWWBWWOOORRRRRRYBBGGWGGWYYGYYGYYGRRROOOOOOGGWYBBYBB  [score=9]
+  U2 : WWWWWWBBBYBBRRRRRRRRRGGWGGWYYGYYGYYGGGWOOOOOOOOOYBBYBB  [score=9]
+  R  : BBYWWYWWRWRRGRRGRROOBGGWGGWYYOYYWYYWYBBOOOOOOGRRGBBGBB  [score=9]
+  R2 : BBGWWGWWGRRRRRRWGGOOYGGYGGRYYBYYWYYWYBBOOOOOOWRRWBBOBB  [score=9]
+  F  : BBBWWWOOBWGWWRRWRRGGOGGOWWORRGYYGYYGYBYOOYOOGRRRYBBYBB  [score=9]
+  F2 : BBBWWWGYYOGWORRBRRWGGWGGOOOWWWYYGYYGYBROOROOGRRRYBBYBB  [score=9]
+  D  : BBBWWWWWWGGWRRRYBBOOOGGWRRRGGGYYYYYYYBBOOOGGWRRRYBBOOO  [score=9]
+  D' : BBBWWWWWWGGWRRRGGWOOOGGWOOOYYYYYYGGGYBBOOOYBBRRRYBBRRR  [score=9]
+  D2 : BBBWWWWWWGGWRRROOOOOOGGWYBBGYYGYYGYYYBBOOORRRRRRYBBGGW  [score=9]
+  L  : OBBGWWGWWGGWRRRRRRYOOYGWYGWBYGBYGRYGBOOBOOYOORRWYBWYBB  [score=9]
+  L' : BBBBWWRWWGGWRRRRRRBOOWGWWGWOYGGYGGYGOOYOOBOOBRRYYBYYBY  [score=9]
+  L2 : YBBYWWYWWGGWRRRRRRBOOBGWRGWBYGWYGWYGOOOOOOBBYRRGYBGYBO  [score=9]
+  B  : WRRWWWWWWGGGRRYRRYOOOGGWGGWYYGYYGYOOBBBBOOBOOYYRBBRBBR  [score=9]
+  F' : BBBWWWGRRGGWYRRYRROWWOGGOGGBOOYYGYYGYBWOOWOOWRRRYBBYBB  [score=7]
+
+INSTRUCTION: Pick the FIRST move in the table. Copy its next_state EXACTLY from the table above.
+Do NOT compute next_state yourself. Copy the 54-character string character-by-character.
+Output EXACTLY TWO LINES:
+move = <first move in table>
+next_state = <exact 54-char next_state from first line of table>
+
+### Failed Predictions
+- Agent 1:1: action=None, state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+- Agent 1:2: action=None, state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+- Agent 1:3: action=None, state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+- Agent 1:4: action=None, state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+- Agent 1:5: action=None, state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+- Agent 1:6: action=None, state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+- Agent 1:7: action=None, state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+- Agent 1:8: action=None, state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+- Agent 1:9: action=None, state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+
+### Meta Prompt Sent To Fallback
+You are a prompt-engineering expert. A multi-agent voting system is trying to solve
+a puzzle. All agents failed on the current step. Your job is to analyze the failures
+and produce improved system and user prompts that will help the agents reason better.
+
+## Original System Prompt
+You are a Rubik's Cube solver assistant.
+
+State encoding:
+- The cube state is a SINGLE 54-character string over letters: W,R,G,Y,O,B.
+- Face order is EXACTLY: U(0-8), R(9-17), F(18-26), D(27-35), L(36-44), B(45-53).
+- Within each face indices are row-major:
+  0 1 2
+  3 4 5
+  6 7 8
+
+Reference solved state:
+WWWWWWWWWRRRRRRRRRGGGGGGGGGYYYYYYYYYOOOOOOOOOBBBBBBBBB
+
+STRATEGY: The lookup table is sorted best-first. Always pick the FIRST entry.
+
+REQUIREMENTS (STRICT):
+- Output MUST contain a single next move in this EXACT FORMAT:
+move = <one move token>
+- Output MUST contain the next state after applying that move in this EXACT FORMAT:
+next_state = <54-character string>
+- Output MUST be EXACTLY TWO LINES (no extra text, no explanations, no markdown).
+- next_state MUST be copied EXACTLY from the LOOKUP TABLE in the user prompt. Do NOT compute it yourself.
+
+
+## Original User Prompt
+Step: 1
+Phase: white_cross
+Goal: Solve the WHITE CROSS on the U face (white).
+Current score: 9
+Previous move: None
+
+Current state:
+BBBWWWWWWGGWRRRRRROOOGGWGGWYYGYYGYYGYBBOOOOOORRRYBBYBB
+
+MOVE->NEXT_STATE LOOKUP TABLE (first entry = best move):
+  U' : WWBWWBWWBRRRRRRRRRGGWGGWGGWYYGYYGYYGOOOOOOOOOYBBYBBYBB  [score=17]
+  R' : BBOWWWWWWRRGRRGRRWOOGGGGGGGYYYYYYYYRYBBOOOOOOWRRWBBBBB  [score=11]
+  B' : OOYWWWWWWGGBRRBRRBOOOGGWGGWYYGYYGRRWYBBYOOGOORBBRBBRYY  [score=11]
+  B2 : GYYWWWWWWGGORRORRYOOOGGWGGWYYGYYGBBBRBBROOWOOBBYBBYRRR  [score=11]
+  U  : BWWBWWBWWOOORRRRRRYBBGGWGGWYYGYYGYYGRRROOOOOOGGWYBBYBB  [score=9]
+  U2 : WWWWWWBBBYBBRRRRRRRRRGGWGGWYYGYYGYYGGGWOOOOOOOOOYBBYBB  [score=9]
+  R  : BBYWWYWWRWRRGRRGRROOBGGWGGWYYOYYWYYWYBBOOOOOOGRRGBBGBB  [score=9]
+  R2 : BBGWWGWWGRRRRRRWGGOOYGGYGGRYYBYYWYYWYBBOOOOOOWRRWBBOBB  [score=9]
+  F  : BBBWWWOOBWGWWRRWRRGGOGGOWWORRGYYGYYGYBYOOYOOGRRRYBBYBB  [score=9]
+  F2 : BBBWWWGYYOGWORRBRRWGGWGGOOOWWWYYGYYGYBROOROOGRRRYBBYBB  [score=9]
+  D  : BBBWWWWWWGGWRRRYBBOOOGGWRRRGGGYYYYYYYBBOOOGGWRRRYBBOOO  [score=9]
+  D' : BBBWWWWWWGGWRRRGGWOOOGGWOOOYYYYYYGGGYBBOOOYBBRRRYBBRRR  [score=9]
+  D2 : BBBWWWWWWGGWRRROOOOOOGGWYBBGYYGYYGYYYBBOOORRRRRRYBBGGW  [score=9]
+  L  : OBBGWWGWWGGWRRRRRRYOOYGWYGWBYGBYGRYGBOOBOOYOORRWYBWYBB  [score=9]
+  L' : BBBBWWRWWGGWRRRRRRBOOWGWWGWOYGGYGGYGOOYOOBOOBRRYYBYYBY  [score=9]
+  L2 : YBBYWWYWWGGWRRRRRRBOOBGWRGWBYGWYGWYGOOOOOOBBYRRGYBGYBO  [score=9]
+  B  : WRRWWWWWWGGGRRYRRYOOOGGWGGWYYGYYGYOOBBBBOOBOOYYRBBRBBR  [score=9]
+  F' : BBBWWWGRRGGWYRRYRROWWOGGOGGBOOYYGYYGYBWOOWOOWRRRYBBYBB  [score=7]
+
+INSTRUCTION: Pick the FIRST move in the table. Copy its next_state EXACTLY from the table above.
+Do NOT compute next_state yourself. Copy the 54-character string character-by-character.
+Output EXACTLY TWO LINES:
+move = <first move in table>
+next_state = <exact 54-char next_state from first line of table>
+
+## Failed Predictions
+  - Agent 1:1: predicted action=None, predicted state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+  - Agent 1:2: predicted action=None, predicted state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+  - Agent 1:3: predicted action=None, predicted state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+  - Agent 1:4: predicted action=None, predicted state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+  - Agent 1:5: predicted action=None, predicted state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+  - Agent 1:6: predicted action=None, predicted state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+  - Agent 1:7: predicted action=None, predicted state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+  - Agent 1:8: predicted action=None, predicted state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+  - Agent 1:9: predicted action=None, predicted state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+
+## Instructions
+1. Analyze why the agents failed (wrong parsing, bad reasoning, invalid moves, etc.).
+2. Produce an improved system prompt and user prompt that address the failure modes.
+3. Keep the same output format requirements (move = [...], next_state = [...]).
+4. You CAN and SHOULD use the placeholders `{current_state}`, `{previous_move}`, and `{state_visual}` (if applicable) in your improved user prompt. Do NOT hardcode the state from the failed step.
+5. Output your response in EXACTLY this format:
+
+<SYSTEM_PROMPT>
+(your improved system prompt here)
+</SYSTEM_PROMPT>
+
+<USER_PROMPT>
+(your improved user prompt here)
+</USER_PROMPT>
+
+
+### Fallback Raw Response
+[None]
+
+---
+
+## Actual LLM Prompt at Step 1 (fallback)
+
+### System Prompt
+You are a Rubik's Cube solver assistant.
+
+State encoding:
+- The cube state is a SINGLE 54-character string over letters: W,R,G,Y,O,B.
+- Face order is EXACTLY: U(0-8), R(9-17), F(18-26), D(27-35), L(36-44), B(45-53).
+- Within each face indices are row-major:
+  0 1 2
+  3 4 5
+  6 7 8
+
+Reference solved state:
+WWWWWWWWWRRRRRRRRRGGGGGGGGGYYYYYYYYYOOOOOOOOOBBBBBBBBB
+
+STRATEGY: The lookup table is sorted best-first. Always pick the FIRST entry.
+
+REQUIREMENTS (STRICT):
+- Output MUST contain a single next move in this EXACT FORMAT:
+move = <one move token>
+- Output MUST contain the next state after applying that move in this EXACT FORMAT:
+next_state = <54-character string>
+- Output MUST be EXACTLY TWO LINES (no extra text, no explanations, no markdown).
+- next_state MUST be copied EXACTLY from the LOOKUP TABLE in the user prompt. Do NOT compute it yourself.
+
+
+### User Prompt
+Step: 1
+Phase: white_cross
+Goal: Solve the WHITE CROSS on the U face (white).
+Current score: 9
+Previous move: None
+
+Current state:
+BBBWWWWWWGGWRRRRRROOOGGWGGWYYGYYGYYGYBBOOOOOORRRYBBYBB
+
+MOVE->NEXT_STATE LOOKUP TABLE (first entry = best move):
+  U' : WWBWWBWWBRRRRRRRRRGGWGGWGGWYYGYYGYYGOOOOOOOOOYBBYBBYBB  [score=17]
+  R' : BBOWWWWWWRRGRRGRRWOOGGGGGGGYYYYYYYYRYBBOOOOOOWRRWBBBBB  [score=11]
+  B' : OOYWWWWWWGGBRRBRRBOOOGGWGGWYYGYYGRRWYBBYOOGOORBBRBBRYY  [score=11]
+  B2 : GYYWWWWWWGGORRORRYOOOGGWGGWYYGYYGBBBRBBROOWOOBBYBBYRRR  [score=11]
+  U  : BWWBWWBWWOOORRRRRRYBBGGWGGWYYGYYGYYGRRROOOOOOGGWYBBYBB  [score=9]
+  U2 : WWWWWWBBBYBBRRRRRRRRRGGWGGWYYGYYGYYGGGWOOOOOOOOOYBBYBB  [score=9]
+  R  : BBYWWYWWRWRRGRRGRROOBGGWGGWYYOYYWYYWYBBOOOOOOGRRGBBGBB  [score=9]
+  R2 : BBGWWGWWGRRRRRRWGGOOYGGYGGRYYBYYWYYWYBBOOOOOOWRRWBBOBB  [score=9]
+  F  : BBBWWWOOBWGWWRRWRRGGOGGOWWORRGYYGYYGYBYOOYOOGRRRYBBYBB  [score=9]
+  F2 : BBBWWWGYYOGWORRBRRWGGWGGOOOWWWYYGYYGYBROOROOGRRRYBBYBB  [score=9]
+  D  : BBBWWWWWWGGWRRRYBBOOOGGWRRRGGGYYYYYYYBBOOOGGWRRRYBBOOO  [score=9]
+  D' : BBBWWWWWWGGWRRRGGWOOOGGWOOOYYYYYYGGGYBBOOOYBBRRRYBBRRR  [score=9]
+  D2 : BBBWWWWWWGGWRRROOOOOOGGWYBBGYYGYYGYYYBBOOORRRRRRYBBGGW  [score=9]
+  L  : OBBGWWGWWGGWRRRRRRYOOYGWYGWBYGBYGRYGBOOBOOYOORRWYBWYBB  [score=9]
+  L' : BBBBWWRWWGGWRRRRRRBOOWGWWGWOYGGYGGYGOOYOOBOOBRRYYBYYBY  [score=9]
+  L2 : YBBYWWYWWGGWRRRRRRBOOBGWRGWBYGWYGWYGOOOOOOBBYRRGYBGYBO  [score=9]
+  B  : WRRWWWWWWGGGRRYRRYOOOGGWGGWYYGYYGYOOBBBBOOBOOYYRBBRBBR  [score=9]
+  F' : BBBWWWGRRGGWYRRYRROWWOGGOGGBOOYYGYYGYBWOOWOOWRRRYBBYBB  [score=7]
+
+INSTRUCTION: Pick the FIRST move in the table. Copy its next_state EXACTLY from the table above.
+Do NOT compute next_state yourself. Copy the 54-character string character-by-character.
+Output EXACTLY TWO LINES:
+move = <first move in table>
+next_state = <exact 54-char next_state from first line of table>
+
+Step: 1
+Phase: white_cross
+Goal: Solve the WHITE CROSS on the U face (white).
+Current score: 9
+Previous move: None
+
+Current state:
+BBBWWWWWWGGWRRRRRROOOGGWGGWYYGYYGYYGYBBOOOOOORRRYBBYBB
+
+MOVE->NEXT_STATE LOOKUP TABLE (first entry = best move):
+  U' : WWBWWBWWBRRRRRRRRRGGWGGWGGWYYGYYGYYGOOOOOOOOOYBBYBBYBB  [score=17]
+  R' : BBOWWWWWWRRGRRGRRWOOGGGGGGGYYYYYYYYRYBBOOOOOOWRRWBBBBB  [score=11]
+  B' : OOYWWWWWWGGBRRBRRBOOOGGWGGWYYGYYGRRWYBBYOOGOORBBRBBRYY  [score=11]
+  B2 : GYYWWWWWWGGORRORRYOOOGGWGGWYYGYYGBBBRBBROOWOOBBYBBYRRR  [score=11]
+  U  : BWWBWWBWWOOORRRRRRYBBGGWGGWYYGYYGYYGRRROOOOOOGGWYBBYBB  [score=9]
+  U2 : WWWWWWBBBYBBRRRRRRRRRGGWGGWYYGYYGYYGGGWOOOOOOOOOYBBYBB  [score=9]
+  R  : BBYWWYWWRWRRGRRGRROOBGGWGGWYYOYYWYYWYBBOOOOOOGRRGBBGBB  [score=9]
+  R2 : BBGWWGWWGRRRRRRWGGOOYGGYGGRYYBYYWYYWYBBOOOOOOWRRWBBOBB  [score=9]
+  F  : BBBWWWOOBWGWWRRWRRGGOGGOWWORRGYYGYYGYBYOOYOOGRRRYBBYBB  [score=9]
+  F2 : BBBWWWGYYOGWORRBRRWGGWGGOOOWWWYYGYYGYBROOROOGRRRYBBYBB  [score=9]
+  D  : BBBWWWWWWGGWRRRYBBOOOGGWRRRGGGYYYYYYYBBOOOGGWRRRYBBOOO  [score=9]
+  D' : BBBWWWWWWGGWRRRGGWOOOGGWOOOYYYYYYGGGYBBOOOYBBRRRYBBRRR  [score=9]
+  D2 : BBBWWWWWWGGWRRROOOOOOGGWYBBGYYGYYGYYYBBOOORRRRRRYBBGGW  [score=9]
+  L  : OBBGWWGWWGGWRRRRRRYOOYGWYGWBYGBYGRYGBOOBOOYOORRWYBWYBB  [score=9]
+  L' : BBBBWWRWWGGWRRRRRRBOOWGWWGWOYGGYGGYGOOYOOBOOBRRYYBYYBY  [score=9]
+  L2 : YBBYWWYWWGGWRRRRRRBOOBGWRGWBYGWYGWYGOOOOOOBBYRRGYBGYBO  [score=9]
+  B  : WRRWWWWWWGGGRRYRRYOOOGGWGGWYYGYYGYOOBBBBOOBOOYYRBBRBBR  [score=9]
+  F' : BBBWWWGRRGGWYRRYRROWWOGGOGGBOOYYGYYGYBWOOWOOWRRRYBBYBB  [score=7]
+
+INSTRUCTION: Pick the FIRST move in the table. Copy its next_state EXACTLY from the table above.
+Do NOT compute next_state yourself. Copy the 54-character string character-by-character.
+Output EXACTLY TWO LINES:
+move = <first move in table>
+next_state = <exact 54-char next_state from first line of table>
+
+---
+
+## Fallback at Step 1, Retry 2
+
+### System Prompt
+You are a Rubik's Cube solver assistant.
+
+State encoding:
+- The cube state is a SINGLE 54-character string over letters: W,R,G,Y,O,B.
+- Face order is EXACTLY: U(0-8), R(9-17), F(18-26), D(27-35), L(36-44), B(45-53).
+- Within each face indices are row-major:
+  0 1 2
+  3 4 5
+  6 7 8
+
+Reference solved state:
+WWWWWWWWWRRRRRRRRRGGGGGGGGGYYYYYYYYYOOOOOOOOOBBBBBBBBB
+
+STRATEGY: The lookup table is sorted best-first. Always pick the FIRST entry.
+
+REQUIREMENTS (STRICT):
+- Output MUST contain a single next move in this EXACT FORMAT:
+move = <one move token>
+- Output MUST contain the next state after applying that move in this EXACT FORMAT:
+next_state = <54-character string>
+- Output MUST be EXACTLY TWO LINES (no extra text, no explanations, no markdown).
+- next_state MUST be copied EXACTLY from the LOOKUP TABLE in the user prompt. Do NOT compute it yourself.
+
+
+### User Prompt
+Step: 1
+Phase: white_cross
+Goal: Solve the WHITE CROSS on the U face (white).
+Current score: 9
+Previous move: None
+
+Current state:
+BBBWWWWWWGGWRRRRRROOOGGWGGWYYGYYGYYGYBBOOOOOORRRYBBYBB
+
+MOVE->NEXT_STATE LOOKUP TABLE (first entry = best move):
+  U' : WWBWWBWWBRRRRRRRRRGGWGGWGGWYYGYYGYYGOOOOOOOOOYBBYBBYBB  [score=17]
+  R' : BBOWWWWWWRRGRRGRRWOOGGGGGGGYYYYYYYYRYBBOOOOOOWRRWBBBBB  [score=11]
+  B' : OOYWWWWWWGGBRRBRRBOOOGGWGGWYYGYYGRRWYBBYOOGOORBBRBBRYY  [score=11]
+  B2 : GYYWWWWWWGGORRORRYOOOGGWGGWYYGYYGBBBRBBROOWOOBBYBBYRRR  [score=11]
+  U  : BWWBWWBWWOOORRRRRRYBBGGWGGWYYGYYGYYGRRROOOOOOGGWYBBYBB  [score=9]
+  U2 : WWWWWWBBBYBBRRRRRRRRRGGWGGWYYGYYGYYGGGWOOOOOOOOOYBBYBB  [score=9]
+  R  : BBYWWYWWRWRRGRRGRROOBGGWGGWYYOYYWYYWYBBOOOOOOGRRGBBGBB  [score=9]
+  R2 : BBGWWGWWGRRRRRRWGGOOYGGYGGRYYBYYWYYWYBBOOOOOOWRRWBBOBB  [score=9]
+  F  : BBBWWWOOBWGWWRRWRRGGOGGOWWORRGYYGYYGYBYOOYOOGRRRYBBYBB  [score=9]
+  F2 : BBBWWWGYYOGWORRBRRWGGWGGOOOWWWYYGYYGYBROOROOGRRRYBBYBB  [score=9]
+  D  : BBBWWWWWWGGWRRRYBBOOOGGWRRRGGGYYYYYYYBBOOOGGWRRRYBBOOO  [score=9]
+  D' : BBBWWWWWWGGWRRRGGWOOOGGWOOOYYYYYYGGGYBBOOOYBBRRRYBBRRR  [score=9]
+  D2 : BBBWWWWWWGGWRRROOOOOOGGWYBBGYYGYYGYYYBBOOORRRRRRYBBGGW  [score=9]
+  L  : OBBGWWGWWGGWRRRRRRYOOYGWYGWBYGBYGRYGBOOBOOYOORRWYBWYBB  [score=9]
+  L' : BBBBWWRWWGGWRRRRRRBOOWGWWGWOYGGYGGYGOOYOOBOOBRRYYBYYBY  [score=9]
+  L2 : YBBYWWYWWGGWRRRRRRBOOBGWRGWBYGWYGWYGOOOOOOBBYRRGYBGYBO  [score=9]
+  B  : WRRWWWWWWGGGRRYRRYOOOGGWGGWYYGYYGYOOBBBBOOBOOYYRBBRBBR  [score=9]
+  F' : BBBWWWGRRGGWYRRYRROWWOGGOGGBOOYYGYYGYBWOOWOOWRRRYBBYBB  [score=7]
+
+INSTRUCTION: Pick the FIRST move in the table. Copy its next_state EXACTLY from the table above.
+Do NOT compute next_state yourself. Copy the 54-character string character-by-character.
+Output EXACTLY TWO LINES:
+move = <first move in table>
+next_state = <exact 54-char next_state from first line of table>
+
+### Failed Predictions
+- Agent 1:1: action=None, state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+- Agent 1:2: action=None, state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+- Agent 1:3: action=None, state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+- Agent 1:4: action=None, state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+- Agent 1:5: action=None, state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+- Agent 1:6: action=None, state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+- Agent 1:7: action=None, state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+- Agent 1:8: action=None, state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+- Agent 1:9: action=None, state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+
+### Meta Prompt Sent To Fallback
+You are a prompt-engineering expert. A multi-agent voting system is trying to solve
+a puzzle. All agents failed on the current step. Your job is to analyze the failures
+and produce improved system and user prompts that will help the agents reason better.
+
+## Original System Prompt
+You are a Rubik's Cube solver assistant.
+
+State encoding:
+- The cube state is a SINGLE 54-character string over letters: W,R,G,Y,O,B.
+- Face order is EXACTLY: U(0-8), R(9-17), F(18-26), D(27-35), L(36-44), B(45-53).
+- Within each face indices are row-major:
+  0 1 2
+  3 4 5
+  6 7 8
+
+Reference solved state:
+WWWWWWWWWRRRRRRRRRGGGGGGGGGYYYYYYYYYOOOOOOOOOBBBBBBBBB
+
+STRATEGY: The lookup table is sorted best-first. Always pick the FIRST entry.
+
+REQUIREMENTS (STRICT):
+- Output MUST contain a single next move in this EXACT FORMAT:
+move = <one move token>
+- Output MUST contain the next state after applying that move in this EXACT FORMAT:
+next_state = <54-character string>
+- Output MUST be EXACTLY TWO LINES (no extra text, no explanations, no markdown).
+- next_state MUST be copied EXACTLY from the LOOKUP TABLE in the user prompt. Do NOT compute it yourself.
+
+
+## Original User Prompt
+Step: 1
+Phase: white_cross
+Goal: Solve the WHITE CROSS on the U face (white).
+Current score: 9
+Previous move: None
+
+Current state:
+BBBWWWWWWGGWRRRRRROOOGGWGGWYYGYYGYYGYBBOOOOOORRRYBBYBB
+
+MOVE->NEXT_STATE LOOKUP TABLE (first entry = best move):
+  U' : WWBWWBWWBRRRRRRRRRGGWGGWGGWYYGYYGYYGOOOOOOOOOYBBYBBYBB  [score=17]
+  R' : BBOWWWWWWRRGRRGRRWOOGGGGGGGYYYYYYYYRYBBOOOOOOWRRWBBBBB  [score=11]
+  B' : OOYWWWWWWGGBRRBRRBOOOGGWGGWYYGYYGRRWYBBYOOGOORBBRBBRYY  [score=11]
+  B2 : GYYWWWWWWGGORRORRYOOOGGWGGWYYGYYGBBBRBBROOWOOBBYBBYRRR  [score=11]
+  U  : BWWBWWBWWOOORRRRRRYBBGGWGGWYYGYYGYYGRRROOOOOOGGWYBBYBB  [score=9]
+  U2 : WWWWWWBBBYBBRRRRRRRRRGGWGGWYYGYYGYYGGGWOOOOOOOOOYBBYBB  [score=9]
+  R  : BBYWWYWWRWRRGRRGRROOBGGWGGWYYOYYWYYWYBBOOOOOOGRRGBBGBB  [score=9]
+  R2 : BBGWWGWWGRRRRRRWGGOOYGGYGGRYYBYYWYYWYBBOOOOOOWRRWBBOBB  [score=9]
+  F  : BBBWWWOOBWGWWRRWRRGGOGGOWWORRGYYGYYGYBYOOYOOGRRRYBBYBB  [score=9]
+  F2 : BBBWWWGYYOGWORRBRRWGGWGGOOOWWWYYGYYGYBROOROOGRRRYBBYBB  [score=9]
+  D  : BBBWWWWWWGGWRRRYBBOOOGGWRRRGGGYYYYYYYBBOOOGGWRRRYBBOOO  [score=9]
+  D' : BBBWWWWWWGGWRRRGGWOOOGGWOOOYYYYYYGGGYBBOOOYBBRRRYBBRRR  [score=9]
+  D2 : BBBWWWWWWGGWRRROOOOOOGGWYBBGYYGYYGYYYBBOOORRRRRRYBBGGW  [score=9]
+  L  : OBBGWWGWWGGWRRRRRRYOOYGWYGWBYGBYGRYGBOOBOOYOORRWYBWYBB  [score=9]
+  L' : BBBBWWRWWGGWRRRRRRBOOWGWWGWOYGGYGGYGOOYOOBOOBRRYYBYYBY  [score=9]
+  L2 : YBBYWWYWWGGWRRRRRRBOOBGWRGWBYGWYGWYGOOOOOOBBYRRGYBGYBO  [score=9]
+  B  : WRRWWWWWWGGGRRYRRYOOOGGWGGWYYGYYGYOOBBBBOOBOOYYRBBRBBR  [score=9]
+  F' : BBBWWWGRRGGWYRRYRROWWOGGOGGBOOYYGYYGYBWOOWOOWRRRYBBYBB  [score=7]
+
+INSTRUCTION: Pick the FIRST move in the table. Copy its next_state EXACTLY from the table above.
+Do NOT compute next_state yourself. Copy the 54-character string character-by-character.
+Output EXACTLY TWO LINES:
+move = <first move in table>
+next_state = <exact 54-char next_state from first line of table>
+
+## Failed Predictions
+  - Agent 1:1: predicted action=None, predicted state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+  - Agent 1:2: predicted action=None, predicted state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+  - Agent 1:3: predicted action=None, predicted state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+  - Agent 1:4: predicted action=None, predicted state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+  - Agent 1:5: predicted action=None, predicted state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+  - Agent 1:6: predicted action=None, predicted state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+  - Agent 1:7: predicted action=None, predicted state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+  - Agent 1:8: predicted action=None, predicted state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+  - Agent 1:9: predicted action=None, predicted state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+
+## Instructions
+1. Analyze why the agents failed (wrong parsing, bad reasoning, invalid moves, etc.).
+2. Produce an improved system prompt and user prompt that address the failure modes.
+3. Keep the same output format requirements (move = [...], next_state = [...]).
+4. You CAN and SHOULD use the placeholders `{current_state}`, `{previous_move}`, and `{state_visual}` (if applicable) in your improved user prompt. Do NOT hardcode the state from the failed step.
+5. Output your response in EXACTLY this format:
+
+<SYSTEM_PROMPT>
+(your improved system prompt here)
+</SYSTEM_PROMPT>
+
+<USER_PROMPT>
+(your improved user prompt here)
+</USER_PROMPT>
+
+
+### Fallback Raw Response
+[None]
+
+---
+
+## Actual LLM Prompt at Step 1 (fallback)
+
+### System Prompt
+You are a Rubik's Cube solver assistant.
+
+State encoding:
+- The cube state is a SINGLE 54-character string over letters: W,R,G,Y,O,B.
+- Face order is EXACTLY: U(0-8), R(9-17), F(18-26), D(27-35), L(36-44), B(45-53).
+- Within each face indices are row-major:
+  0 1 2
+  3 4 5
+  6 7 8
+
+Reference solved state:
+WWWWWWWWWRRRRRRRRRGGGGGGGGGYYYYYYYYYOOOOOOOOOBBBBBBBBB
+
+STRATEGY: The lookup table is sorted best-first. Always pick the FIRST entry.
+
+REQUIREMENTS (STRICT):
+- Output MUST contain a single next move in this EXACT FORMAT:
+move = <one move token>
+- Output MUST contain the next state after applying that move in this EXACT FORMAT:
+next_state = <54-character string>
+- Output MUST be EXACTLY TWO LINES (no extra text, no explanations, no markdown).
+- next_state MUST be copied EXACTLY from the LOOKUP TABLE in the user prompt. Do NOT compute it yourself.
+
+
+### User Prompt
+Step: 1
+Phase: white_cross
+Goal: Solve the WHITE CROSS on the U face (white).
+Current score: 9
+Previous move: None
+
+Current state:
+BBBWWWWWWGGWRRRRRROOOGGWGGWYYGYYGYYGYBBOOOOOORRRYBBYBB
+
+MOVE->NEXT_STATE LOOKUP TABLE (first entry = best move):
+  U' : WWBWWBWWBRRRRRRRRRGGWGGWGGWYYGYYGYYGOOOOOOOOOYBBYBBYBB  [score=17]
+  R' : BBOWWWWWWRRGRRGRRWOOGGGGGGGYYYYYYYYRYBBOOOOOOWRRWBBBBB  [score=11]
+  B' : OOYWWWWWWGGBRRBRRBOOOGGWGGWYYGYYGRRWYBBYOOGOORBBRBBRYY  [score=11]
+  B2 : GYYWWWWWWGGORRORRYOOOGGWGGWYYGYYGBBBRBBROOWOOBBYBBYRRR  [score=11]
+  U  : BWWBWWBWWOOORRRRRRYBBGGWGGWYYGYYGYYGRRROOOOOOGGWYBBYBB  [score=9]
+  U2 : WWWWWWBBBYBBRRRRRRRRRGGWGGWYYGYYGYYGGGWOOOOOOOOOYBBYBB  [score=9]
+  R  : BBYWWYWWRWRRGRRGRROOBGGWGGWYYOYYWYYWYBBOOOOOOGRRGBBGBB  [score=9]
+  R2 : BBGWWGWWGRRRRRRWGGOOYGGYGGRYYBYYWYYWYBBOOOOOOWRRWBBOBB  [score=9]
+  F  : BBBWWWOOBWGWWRRWRRGGOGGOWWORRGYYGYYGYBYOOYOOGRRRYBBYBB  [score=9]
+  F2 : BBBWWWGYYOGWORRBRRWGGWGGOOOWWWYYGYYGYBROOROOGRRRYBBYBB  [score=9]
+  D  : BBBWWWWWWGGWRRRYBBOOOGGWRRRGGGYYYYYYYBBOOOGGWRRRYBBOOO  [score=9]
+  D' : BBBWWWWWWGGWRRRGGWOOOGGWOOOYYYYYYGGGYBBOOOYBBRRRYBBRRR  [score=9]
+  D2 : BBBWWWWWWGGWRRROOOOOOGGWYBBGYYGYYGYYYBBOOORRRRRRYBBGGW  [score=9]
+  L  : OBBGWWGWWGGWRRRRRRYOOYGWYGWBYGBYGRYGBOOBOOYOORRWYBWYBB  [score=9]
+  L' : BBBBWWRWWGGWRRRRRRBOOWGWWGWOYGGYGGYGOOYOOBOOBRRYYBYYBY  [score=9]
+  L2 : YBBYWWYWWGGWRRRRRRBOOBGWRGWBYGWYGWYGOOOOOOBBYRRGYBGYBO  [score=9]
+  B  : WRRWWWWWWGGGRRYRRYOOOGGWGGWYYGYYGYOOBBBBOOBOOYYRBBRBBR  [score=9]
+  F' : BBBWWWGRRGGWYRRYRROWWOGGOGGBOOYYGYYGYBWOOWOOWRRRYBBYBB  [score=7]
+
+INSTRUCTION: Pick the FIRST move in the table. Copy its next_state EXACTLY from the table above.
+Do NOT compute next_state yourself. Copy the 54-character string character-by-character.
+Output EXACTLY TWO LINES:
+move = <first move in table>
+next_state = <exact 54-char next_state from first line of table>
+
+Step: 1
+Phase: white_cross
+Goal: Solve the WHITE CROSS on the U face (white).
+Current score: 9
+Previous move: None
+
+Current state:
+BBBWWWWWWGGWRRRRRROOOGGWGGWYYGYYGYYGYBBOOOOOORRRYBBYBB
+
+MOVE->NEXT_STATE LOOKUP TABLE (first entry = best move):
+  U' : WWBWWBWWBRRRRRRRRRGGWGGWGGWYYGYYGYYGOOOOOOOOOYBBYBBYBB  [score=17]
+  R' : BBOWWWWWWRRGRRGRRWOOGGGGGGGYYYYYYYYRYBBOOOOOOWRRWBBBBB  [score=11]
+  B' : OOYWWWWWWGGBRRBRRBOOOGGWGGWYYGYYGRRWYBBYOOGOORBBRBBRYY  [score=11]
+  B2 : GYYWWWWWWGGORRORRYOOOGGWGGWYYGYYGBBBRBBROOWOOBBYBBYRRR  [score=11]
+  U  : BWWBWWBWWOOORRRRRRYBBGGWGGWYYGYYGYYGRRROOOOOOGGWYBBYBB  [score=9]
+  U2 : WWWWWWBBBYBBRRRRRRRRRGGWGGWYYGYYGYYGGGWOOOOOOOOOYBBYBB  [score=9]
+  R  : BBYWWYWWRWRRGRRGRROOBGGWGGWYYOYYWYYWYBBOOOOOOGRRGBBGBB  [score=9]
+  R2 : BBGWWGWWGRRRRRRWGGOOYGGYGGRYYBYYWYYWYBBOOOOOOWRRWBBOBB  [score=9]
+  F  : BBBWWWOOBWGWWRRWRRGGOGGOWWORRGYYGYYGYBYOOYOOGRRRYBBYBB  [score=9]
+  F2 : BBBWWWGYYOGWORRBRRWGGWGGOOOWWWYYGYYGYBROOROOGRRRYBBYBB  [score=9]
+  D  : BBBWWWWWWGGWRRRYBBOOOGGWRRRGGGYYYYYYYBBOOOGGWRRRYBBOOO  [score=9]
+  D' : BBBWWWWWWGGWRRRGGWOOOGGWOOOYYYYYYGGGYBBOOOYBBRRRYBBRRR  [score=9]
+  D2 : BBBWWWWWWGGWRRROOOOOOGGWYBBGYYGYYGYYYBBOOORRRRRRYBBGGW  [score=9]
+  L  : OBBGWWGWWGGWRRRRRRYOOYGWYGWBYGBYGRYGBOOBOOYOORRWYBWYBB  [score=9]
+  L' : BBBBWWRWWGGWRRRRRRBOOWGWWGWOYGGYGGYGOOYOOBOOBRRYYBYYBY  [score=9]
+  L2 : YBBYWWYWWGGWRRRRRRBOOBGWRGWBYGWYGWYGOOOOOOBBYRRGYBGYBO  [score=9]
+  B  : WRRWWWWWWGGGRRYRRYOOOGGWGGWYYGYYGYOOBBBBOOBOOYYRBBRBBR  [score=9]
+  F' : BBBWWWGRRGGWYRRYRROWWOGGOGGBOOYYGYYGYBWOOWOOWRRRYBBYBB  [score=7]
+
+INSTRUCTION: Pick the FIRST move in the table. Copy its next_state EXACTLY from the table above.
+Do NOT compute next_state yourself. Copy the 54-character string character-by-character.
+Output EXACTLY TWO LINES:
+move = <first move in table>
+next_state = <exact 54-char next_state from first line of table>
+
+---
+
+## Fallback at Step 1, Retry 3
+
+### System Prompt
+You are a Rubik's Cube solver assistant.
+
+State encoding:
+- The cube state is a SINGLE 54-character string over letters: W,R,G,Y,O,B.
+- Face order is EXACTLY: U(0-8), R(9-17), F(18-26), D(27-35), L(36-44), B(45-53).
+- Within each face indices are row-major:
+  0 1 2
+  3 4 5
+  6 7 8
+
+Reference solved state:
+WWWWWWWWWRRRRRRRRRGGGGGGGGGYYYYYYYYYOOOOOOOOOBBBBBBBBB
+
+STRATEGY: The lookup table is sorted best-first. Always pick the FIRST entry.
+
+REQUIREMENTS (STRICT):
+- Output MUST contain a single next move in this EXACT FORMAT:
+move = <one move token>
+- Output MUST contain the next state after applying that move in this EXACT FORMAT:
+next_state = <54-character string>
+- Output MUST be EXACTLY TWO LINES (no extra text, no explanations, no markdown).
+- next_state MUST be copied EXACTLY from the LOOKUP TABLE in the user prompt. Do NOT compute it yourself.
+
+
+### User Prompt
+Step: 1
+Phase: white_cross
+Goal: Solve the WHITE CROSS on the U face (white).
+Current score: 9
+Previous move: None
+
+Current state:
+BBBWWWWWWGGWRRRRRROOOGGWGGWYYGYYGYYGYBBOOOOOORRRYBBYBB
+
+MOVE->NEXT_STATE LOOKUP TABLE (first entry = best move):
+  U' : WWBWWBWWBRRRRRRRRRGGWGGWGGWYYGYYGYYGOOOOOOOOOYBBYBBYBB  [score=17]
+  R' : BBOWWWWWWRRGRRGRRWOOGGGGGGGYYYYYYYYRYBBOOOOOOWRRWBBBBB  [score=11]
+  B' : OOYWWWWWWGGBRRBRRBOOOGGWGGWYYGYYGRRWYBBYOOGOORBBRBBRYY  [score=11]
+  B2 : GYYWWWWWWGGORRORRYOOOGGWGGWYYGYYGBBBRBBROOWOOBBYBBYRRR  [score=11]
+  U  : BWWBWWBWWOOORRRRRRYBBGGWGGWYYGYYGYYGRRROOOOOOGGWYBBYBB  [score=9]
+  U2 : WWWWWWBBBYBBRRRRRRRRRGGWGGWYYGYYGYYGGGWOOOOOOOOOYBBYBB  [score=9]
+  R  : BBYWWYWWRWRRGRRGRROOBGGWGGWYYOYYWYYWYBBOOOOOOGRRGBBGBB  [score=9]
+  R2 : BBGWWGWWGRRRRRRWGGOOYGGYGGRYYBYYWYYWYBBOOOOOOWRRWBBOBB  [score=9]
+  F  : BBBWWWOOBWGWWRRWRRGGOGGOWWORRGYYGYYGYBYOOYOOGRRRYBBYBB  [score=9]
+  F2 : BBBWWWGYYOGWORRBRRWGGWGGOOOWWWYYGYYGYBROOROOGRRRYBBYBB  [score=9]
+  D  : BBBWWWWWWGGWRRRYBBOOOGGWRRRGGGYYYYYYYBBOOOGGWRRRYBBOOO  [score=9]
+  D' : BBBWWWWWWGGWRRRGGWOOOGGWOOOYYYYYYGGGYBBOOOYBBRRRYBBRRR  [score=9]
+  D2 : BBBWWWWWWGGWRRROOOOOOGGWYBBGYYGYYGYYYBBOOORRRRRRYBBGGW  [score=9]
+  L  : OBBGWWGWWGGWRRRRRRYOOYGWYGWBYGBYGRYGBOOBOOYOORRWYBWYBB  [score=9]
+  L' : BBBBWWRWWGGWRRRRRRBOOWGWWGWOYGGYGGYGOOYOOBOOBRRYYBYYBY  [score=9]
+  L2 : YBBYWWYWWGGWRRRRRRBOOBGWRGWBYGWYGWYGOOOOOOBBYRRGYBGYBO  [score=9]
+  B  : WRRWWWWWWGGGRRYRRYOOOGGWGGWYYGYYGYOOBBBBOOBOOYYRBBRBBR  [score=9]
+  F' : BBBWWWGRRGGWYRRYRROWWOGGOGGBOOYYGYYGYBWOOWOOWRRRYBBYBB  [score=7]
+
+INSTRUCTION: Pick the FIRST move in the table. Copy its next_state EXACTLY from the table above.
+Do NOT compute next_state yourself. Copy the 54-character string character-by-character.
+Output EXACTLY TWO LINES:
+move = <first move in table>
+next_state = <exact 54-char next_state from first line of table>
+
+### Failed Predictions
+- Agent 1:1: action=None, state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+- Agent 1:2: action=None, state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+- Agent 1:3: action=None, state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+- Agent 1:4: action=None, state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+- Agent 1:5: action=None, state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+- Agent 1:6: action=None, state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+- Agent 1:7: action=None, state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+- Agent 1:8: action=None, state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+- Agent 1:9: action=None, state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+
+### Meta Prompt Sent To Fallback
+You are a prompt-engineering expert. A multi-agent voting system is trying to solve
+a puzzle. All agents failed on the current step. Your job is to analyze the failures
+and produce improved system and user prompts that will help the agents reason better.
+
+## Original System Prompt
+You are a Rubik's Cube solver assistant.
+
+State encoding:
+- The cube state is a SINGLE 54-character string over letters: W,R,G,Y,O,B.
+- Face order is EXACTLY: U(0-8), R(9-17), F(18-26), D(27-35), L(36-44), B(45-53).
+- Within each face indices are row-major:
+  0 1 2
+  3 4 5
+  6 7 8
+
+Reference solved state:
+WWWWWWWWWRRRRRRRRRGGGGGGGGGYYYYYYYYYOOOOOOOOOBBBBBBBBB
+
+STRATEGY: The lookup table is sorted best-first. Always pick the FIRST entry.
+
+REQUIREMENTS (STRICT):
+- Output MUST contain a single next move in this EXACT FORMAT:
+move = <one move token>
+- Output MUST contain the next state after applying that move in this EXACT FORMAT:
+next_state = <54-character string>
+- Output MUST be EXACTLY TWO LINES (no extra text, no explanations, no markdown).
+- next_state MUST be copied EXACTLY from the LOOKUP TABLE in the user prompt. Do NOT compute it yourself.
+
+
+## Original User Prompt
+Step: 1
+Phase: white_cross
+Goal: Solve the WHITE CROSS on the U face (white).
+Current score: 9
+Previous move: None
+
+Current state:
+BBBWWWWWWGGWRRRRRROOOGGWGGWYYGYYGYYGYBBOOOOOORRRYBBYBB
+
+MOVE->NEXT_STATE LOOKUP TABLE (first entry = best move):
+  U' : WWBWWBWWBRRRRRRRRRGGWGGWGGWYYGYYGYYGOOOOOOOOOYBBYBBYBB  [score=17]
+  R' : BBOWWWWWWRRGRRGRRWOOGGGGGGGYYYYYYYYRYBBOOOOOOWRRWBBBBB  [score=11]
+  B' : OOYWWWWWWGGBRRBRRBOOOGGWGGWYYGYYGRRWYBBYOOGOORBBRBBRYY  [score=11]
+  B2 : GYYWWWWWWGGORRORRYOOOGGWGGWYYGYYGBBBRBBROOWOOBBYBBYRRR  [score=11]
+  U  : BWWBWWBWWOOORRRRRRYBBGGWGGWYYGYYGYYGRRROOOOOOGGWYBBYBB  [score=9]
+  U2 : WWWWWWBBBYBBRRRRRRRRRGGWGGWYYGYYGYYGGGWOOOOOOOOOYBBYBB  [score=9]
+  R  : BBYWWYWWRWRRGRRGRROOBGGWGGWYYOYYWYYWYBBOOOOOOGRRGBBGBB  [score=9]
+  R2 : BBGWWGWWGRRRRRRWGGOOYGGYGGRYYBYYWYYWYBBOOOOOOWRRWBBOBB  [score=9]
+  F  : BBBWWWOOBWGWWRRWRRGGOGGOWWORRGYYGYYGYBYOOYOOGRRRYBBYBB  [score=9]
+  F2 : BBBWWWGYYOGWORRBRRWGGWGGOOOWWWYYGYYGYBROOROOGRRRYBBYBB  [score=9]
+  D  : BBBWWWWWWGGWRRRYBBOOOGGWRRRGGGYYYYYYYBBOOOGGWRRRYBBOOO  [score=9]
+  D' : BBBWWWWWWGGWRRRGGWOOOGGWOOOYYYYYYGGGYBBOOOYBBRRRYBBRRR  [score=9]
+  D2 : BBBWWWWWWGGWRRROOOOOOGGWYBBGYYGYYGYYYBBOOORRRRRRYBBGGW  [score=9]
+  L  : OBBGWWGWWGGWRRRRRRYOOYGWYGWBYGBYGRYGBOOBOOYOORRWYBWYBB  [score=9]
+  L' : BBBBWWRWWGGWRRRRRRBOOWGWWGWOYGGYGGYGOOYOOBOOBRRYYBYYBY  [score=9]
+  L2 : YBBYWWYWWGGWRRRRRRBOOBGWRGWBYGWYGWYGOOOOOOBBYRRGYBGYBO  [score=9]
+  B  : WRRWWWWWWGGGRRYRRYOOOGGWGGWYYGYYGYOOBBBBOOBOOYYRBBRBBR  [score=9]
+  F' : BBBWWWGRRGGWYRRYRROWWOGGOGGBOOYYGYYGYBWOOWOOWRRRYBBYBB  [score=7]
+
+INSTRUCTION: Pick the FIRST move in the table. Copy its next_state EXACTLY from the table above.
+Do NOT compute next_state yourself. Copy the 54-character string character-by-character.
+Output EXACTLY TWO LINES:
+move = <first move in table>
+next_state = <exact 54-char next_state from first line of table>
+
+## Failed Predictions
+  - Agent 1:1: predicted action=None, predicted state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+  - Agent 1:2: predicted action=None, predicted state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+  - Agent 1:3: predicted action=None, predicted state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+  - Agent 1:4: predicted action=None, predicted state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+  - Agent 1:5: predicted action=None, predicted state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+  - Agent 1:6: predicted action=None, predicted state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+  - Agent 1:7: predicted action=None, predicted state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+  - Agent 1:8: predicted action=None, predicted state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+  - Agent 1:9: predicted action=None, predicted state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+
+## Instructions
+1. Analyze why the agents failed (wrong parsing, bad reasoning, invalid moves, etc.).
+2. Produce an improved system prompt and user prompt that address the failure modes.
+3. Keep the same output format requirements (move = [...], next_state = [...]).
+4. You CAN and SHOULD use the placeholders `{current_state}`, `{previous_move}`, and `{state_visual}` (if applicable) in your improved user prompt. Do NOT hardcode the state from the failed step.
+5. Output your response in EXACTLY this format:
+
+<SYSTEM_PROMPT>
+(your improved system prompt here)
+</SYSTEM_PROMPT>
+
+<USER_PROMPT>
+(your improved user prompt here)
+</USER_PROMPT>
+
+
+### Fallback Raw Response
+[None]
+
+---
+
+## Actual LLM Prompt at Step 1 (fallback)
+
+### System Prompt
+You are a Rubik's Cube solver assistant.
+
+State encoding:
+- The cube state is a SINGLE 54-character string over letters: W,R,G,Y,O,B.
+- Face order is EXACTLY: U(0-8), R(9-17), F(18-26), D(27-35), L(36-44), B(45-53).
+- Within each face indices are row-major:
+  0 1 2
+  3 4 5
+  6 7 8
+
+Reference solved state:
+WWWWWWWWWRRRRRRRRRGGGGGGGGGYYYYYYYYYOOOOOOOOOBBBBBBBBB
+
+STRATEGY: The lookup table is sorted best-first. Always pick the FIRST entry.
+
+REQUIREMENTS (STRICT):
+- Output MUST contain a single next move in this EXACT FORMAT:
+move = <one move token>
+- Output MUST contain the next state after applying that move in this EXACT FORMAT:
+next_state = <54-character string>
+- Output MUST be EXACTLY TWO LINES (no extra text, no explanations, no markdown).
+- next_state MUST be copied EXACTLY from the LOOKUP TABLE in the user prompt. Do NOT compute it yourself.
+
+
+### User Prompt
+Step: 1
+Phase: white_cross
+Goal: Solve the WHITE CROSS on the U face (white).
+Current score: 9
+Previous move: None
+
+Current state:
+BBBWWWWWWGGWRRRRRROOOGGWGGWYYGYYGYYGYBBOOOOOORRRYBBYBB
+
+MOVE->NEXT_STATE LOOKUP TABLE (first entry = best move):
+  U' : WWBWWBWWBRRRRRRRRRGGWGGWGGWYYGYYGYYGOOOOOOOOOYBBYBBYBB  [score=17]
+  R' : BBOWWWWWWRRGRRGRRWOOGGGGGGGYYYYYYYYRYBBOOOOOOWRRWBBBBB  [score=11]
+  B' : OOYWWWWWWGGBRRBRRBOOOGGWGGWYYGYYGRRWYBBYOOGOORBBRBBRYY  [score=11]
+  B2 : GYYWWWWWWGGORRORRYOOOGGWGGWYYGYYGBBBRBBROOWOOBBYBBYRRR  [score=11]
+  U  : BWWBWWBWWOOORRRRRRYBBGGWGGWYYGYYGYYGRRROOOOOOGGWYBBYBB  [score=9]
+  U2 : WWWWWWBBBYBBRRRRRRRRRGGWGGWYYGYYGYYGGGWOOOOOOOOOYBBYBB  [score=9]
+  R  : BBYWWYWWRWRRGRRGRROOBGGWGGWYYOYYWYYWYBBOOOOOOGRRGBBGBB  [score=9]
+  R2 : BBGWWGWWGRRRRRRWGGOOYGGYGGRYYBYYWYYWYBBOOOOOOWRRWBBOBB  [score=9]
+  F  : BBBWWWOOBWGWWRRWRRGGOGGOWWORRGYYGYYGYBYOOYOOGRRRYBBYBB  [score=9]
+  F2 : BBBWWWGYYOGWORRBRRWGGWGGOOOWWWYYGYYGYBROOROOGRRRYBBYBB  [score=9]
+  D  : BBBWWWWWWGGWRRRYBBOOOGGWRRRGGGYYYYYYYBBOOOGGWRRRYBBOOO  [score=9]
+  D' : BBBWWWWWWGGWRRRGGWOOOGGWOOOYYYYYYGGGYBBOOOYBBRRRYBBRRR  [score=9]
+  D2 : BBBWWWWWWGGWRRROOOOOOGGWYBBGYYGYYGYYYBBOOORRRRRRYBBGGW  [score=9]
+  L  : OBBGWWGWWGGWRRRRRRYOOYGWYGWBYGBYGRYGBOOBOOYOORRWYBWYBB  [score=9]
+  L' : BBBBWWRWWGGWRRRRRRBOOWGWWGWOYGGYGGYGOOYOOBOOBRRYYBYYBY  [score=9]
+  L2 : YBBYWWYWWGGWRRRRRRBOOBGWRGWBYGWYGWYGOOOOOOBBYRRGYBGYBO  [score=9]
+  B  : WRRWWWWWWGGGRRYRRYOOOGGWGGWYYGYYGYOOBBBBOOBOOYYRBBRBBR  [score=9]
+  F' : BBBWWWGRRGGWYRRYRROWWOGGOGGBOOYYGYYGYBWOOWOOWRRRYBBYBB  [score=7]
+
+INSTRUCTION: Pick the FIRST move in the table. Copy its next_state EXACTLY from the table above.
+Do NOT compute next_state yourself. Copy the 54-character string character-by-character.
+Output EXACTLY TWO LINES:
+move = <first move in table>
+next_state = <exact 54-char next_state from first line of table>
+
+Step: 1
+Phase: white_cross
+Goal: Solve the WHITE CROSS on the U face (white).
+Current score: 9
+Previous move: None
+
+Current state:
+BBBWWWWWWGGWRRRRRROOOGGWGGWYYGYYGYYGYBBOOOOOORRRYBBYBB
+
+MOVE->NEXT_STATE LOOKUP TABLE (first entry = best move):
+  U' : WWBWWBWWBRRRRRRRRRGGWGGWGGWYYGYYGYYGOOOOOOOOOYBBYBBYBB  [score=17]
+  R' : BBOWWWWWWRRGRRGRRWOOGGGGGGGYYYYYYYYRYBBOOOOOOWRRWBBBBB  [score=11]
+  B' : OOYWWWWWWGGBRRBRRBOOOGGWGGWYYGYYGRRWYBBYOOGOORBBRBBRYY  [score=11]
+  B2 : GYYWWWWWWGGORRORRYOOOGGWGGWYYGYYGBBBRBBROOWOOBBYBBYRRR  [score=11]
+  U  : BWWBWWBWWOOORRRRRRYBBGGWGGWYYGYYGYYGRRROOOOOOGGWYBBYBB  [score=9]
+  U2 : WWWWWWBBBYBBRRRRRRRRRGGWGGWYYGYYGYYGGGWOOOOOOOOOYBBYBB  [score=9]
+  R  : BBYWWYWWRWRRGRRGRROOBGGWGGWYYOYYWYYWYBBOOOOOOGRRGBBGBB  [score=9]
+  R2 : BBGWWGWWGRRRRRRWGGOOYGGYGGRYYBYYWYYWYBBOOOOOOWRRWBBOBB  [score=9]
+  F  : BBBWWWOOBWGWWRRWRRGGOGGOWWORRGYYGYYGYBYOOYOOGRRRYBBYBB  [score=9]
+  F2 : BBBWWWGYYOGWORRBRRWGGWGGOOOWWWYYGYYGYBROOROOGRRRYBBYBB  [score=9]
+  D  : BBBWWWWWWGGWRRRYBBOOOGGWRRRGGGYYYYYYYBBOOOGGWRRRYBBOOO  [score=9]
+  D' : BBBWWWWWWGGWRRRGGWOOOGGWOOOYYYYYYGGGYBBOOOYBBRRRYBBRRR  [score=9]
+  D2 : BBBWWWWWWGGWRRROOOOOOGGWYBBGYYGYYGYYYBBOOORRRRRRYBBGGW  [score=9]
+  L  : OBBGWWGWWGGWRRRRRRYOOYGWYGWBYGBYGRYGBOOBOOYOORRWYBWYBB  [score=9]
+  L' : BBBBWWRWWGGWRRRRRRBOOWGWWGWOYGGYGGYGOOYOOBOOBRRYYBYYBY  [score=9]
+  L2 : YBBYWWYWWGGWRRRRRRBOOBGWRGWBYGWYGWYGOOOOOOBBYRRGYBGYBO  [score=9]
+  B  : WRRWWWWWWGGGRRYRRYOOOGGWGGWYYGYYGYOOBBBBOOBOOYYRBBRBBR  [score=9]
+  F' : BBBWWWGRRGGWYRRYRROWWOGGOGGBOOYYGYYGYBWOOWOOWRRRYBBYBB  [score=7]
+
+INSTRUCTION: Pick the FIRST move in the table. Copy its next_state EXACTLY from the table above.
+Do NOT compute next_state yourself. Copy the 54-character string character-by-character.
+Output EXACTLY TWO LINES:
+move = <first move in table>
+next_state = <exact 54-char next_state from first line of table>
 
 ---

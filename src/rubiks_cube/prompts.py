@@ -52,7 +52,7 @@ def _compute_move_lookup(current_state: str, environment) -> str:
         except ValueError:
             pass  # skip forbidden moves (undo, score drop)
     entries.sort(key=lambda x: -x[0])
-    return "\n".join(f"  {mv:<3} (score={sc}): {ns}" for sc, mv, ns in entries)
+    return "\n".join(f"  {mv:<3}: {ns}  [score={sc}]" for sc, mv, ns in entries)
 
 
 def build_user_prompt(current_state, previous_move, environment, step, variant: str = "base"):
