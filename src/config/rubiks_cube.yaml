@@ -6,10 +6,12 @@ output_dir: output
 temperature: 0.1
 temp_escalation: false
 model_path: LLM/models/devstral-24b
-prompt_variant: lookup_v27
+prompt_variant: lookup_v28
 
-# Game-specific — 42-move scramble (stage 21)
+# Game-specific — 44-move scramble (stage 22)
 scramble:
+  - D
+  - L2
   - "U'"
   - B2
   - F2
