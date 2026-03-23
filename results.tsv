@@ -4,3 +4,4 @@ commit	sr	steps	stage	status	description
 4da3a1b	0.593000	2000	1	discard	deepseek-r1-32b + permutation prompt — ignores 2-line format, generates verbose reasoning instead
 87aec53	0.593000	2000	1	discard	qwen3-32b + permutation — outputs <think> tags, parser can't find move/next_state
 5ec7d8e	0.778000	2000	1	keep	qwen3-32b + qwen3_permutation /no_think — step1 U' perfect 9/9, step2 R' all fail wrong state
+60a8809	1.000000	2	1	keep	qwen3-32b + R' worked example — 100% SR 2steps, both moves perfect
