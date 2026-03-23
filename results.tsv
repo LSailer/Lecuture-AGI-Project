@@ -7,3 +7,4 @@ commit	sr	steps	stage	status	description
 60a8809	1.000000	2	1	keep	qwen3-32b + R' worked example — 100% SR 2steps, both moves perfect
 ce454b2	0.000000	0	2	crash	qwen3-32b + 4 chained examples 4-move — CUDA OOM prompt too long
 e639308	1.000000	4	2	keep	qwen3-32b + qwen3_compact 4-move — 100% SR 4steps compact examples no OOM
+0e38cfa	1.000000	6	3	keep	qwen3-32b + qwen3_compact_6 6-move — 100% SR 6steps stage up to 8-move
