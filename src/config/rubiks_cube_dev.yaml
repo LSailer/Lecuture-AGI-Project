@@ -1,0 +1,25 @@
+game: rubiks_cube
+margin_k: 2
+max_steps: 100
+max_agents_per_step: 3
+output_dir: output
+temperature: 0.1
+temp_escalation: false
+model_path: LLM/models/devstral-24b
+prompt_variant: base
+
+# Game-specific — 2-move scramble (easiest)
+scramble:
+  - R
+  - U
+
+forbid_undo: true
+max_score_drop: 6
+
+# Cycle detection
+max_state_revisits: 3
+
+# Fallback config — reduced retries for speed
+max_fallback_retries: 1
+fallback_api: gemini
+gemini_model: gemini-2.5-flash

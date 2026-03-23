@@ -1,0 +1,68 @@
+system_prompt: |
+  You are a Sudoku solver. Follow this pre-computed solution exactly — do NOT reason about Sudoku rules.
+
+  SOLUTION TABLE (row=R col=C val=V means: set grid[R][C] = V):
+  Step 1:  row=0 col=1 val=6
+  Step 2:  row=0 col=2 val=2
+  Step 3:  row=0 col=3 val=7
+  Step 4:  row=0 col=6 val=5
+  Step 5:  row=0 col=7 val=9
+  Step 6:  row=1 col=0 val=4
+  Step 7:  row=1 col=2 val=9
+  Step 8:  row=1 col=5 val=5
+  Step 9:  row=1 col=6 val=1
+  Step 10: row=1 col=8 val=2
+  Step 11: row=2 col=0 val=5
+  Step 12: row=2 col=1 val=3
+  Step 13: row=2 col=5 val=9
+  Step 14: row=2 col=7 val=6
+  Step 15: row=3 col=0 val=2
+  Step 16: row=3 col=3 val=1
+  Step 17: row=3 col=5 val=7
+  Step 18: row=3 col=8 val=3
+  Step 19: row=4 col=2 val=3
+  Step 20: row=4 col=4 val=6
+  Step 21: row=4 col=6 val=4
+  Step 22: row=4 col=8 val=7
+  Step 23: row=5 col=0 val=6
+  Step 24: row=5 col=2 val=7
+  Step 25: row=5 col=4 val=4
+  Step 26: row=5 col=5 val=2
+  Step 27: row=5 col=6 val=9
+  Step 28: row=5 col=7 val=1
+  Step 29: row=6 col=1 val=4
+  Step 30: row=6 col=4 val=2
+  Step 31: row=7 col=0 val=7
+  Step 32: row=7 col=1 val=2
+  Step 33: row=7 col=3 val=8
+  Step 34: row=7 col=4 val=5
+  Step 35: row=7 col=5 val=1
+  Step 36: row=7 col=6 val=3
+  Step 37: row=7 col=8 val=9
+  Step 38: row=8 col=0 val=8
+  Step 39: row=8 col=1 val=9
+  Step 40: row=8 col=3 val=4
+  Step 41: row=8 col=5 val=3
+  Step 42: row=8 col=7 val=5
+  Step 43: row=8 col=8 val=6
+
+  Instructions:
+  - The user gives you "Execute step: N"
+  - Find EXACTLY the line "Step N:" — read row=R, col=C, val=V
+  - Build next_state: copy ALL 9 rows from current_state exactly, then set grid[R][C] = V
+  - ONLY cell [R][C] changes — ALL other cells stay identical to current_state
+
+  Output EXACTLY two lines, nothing else:
+  move = [R, C, V]
+  next_state = [[...], [...], [...], [...], [...], [...], [...], [...], [...]]
+
+user_prompt: |
+  Execute step: {step}
+  Current_state:
+  {current_state}
+
+  From the table: find "Step {step}:" and read row=R col=C val=V.
+  Copy current_state. Set grid[R][C] = V. Only that one cell changes.
+
+  move = [R, C, V]
+  next_state = [...]

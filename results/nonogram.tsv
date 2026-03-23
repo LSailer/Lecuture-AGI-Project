@@ -1,0 +1,23 @@
+commit	sr	steps	stage	status	description
+8412e7a	0.250000	5	1	discard	nonogram dev baseline devstral T=0.5 base prompt 4x4 butterfly
+88ee1ed	0.250000	4	1	keep	nonogram iter1 baseline devstral T=0.5 base prompt 4x4 butterfly — SR=25% stuck after 4 cells wrong row0 guess makes columns impossible
+f0a0608	1.000000	16	1	keep	nonogram iter2 overlap method devstral T=0.5 4x4 butterfly — 100% SR 16 steps constraint propagation
+df22aac	1.000000	16	2	keep	nonogram iter3 overlap method 4x4 diamond devstral T=0.5 — 100% SR 16 steps constraint propagation
+9127e50	0.560000	500	3	keep	nonogram iter4 5x5 diamond overlap prompt devstral T=0.5 — 56% SR wrong (1,0)=filled before row2 full-fill forced, col constraint contradiction
+4b3a13b	0.560000	500	3	discard	nonogram iter5 overlap_v2 block-sum shortcut 5x5 diamond — 56% SR same as iter4 shortcut fires for col2 but not row2 (same root cause)
+5a6ce53	0.200000	6	3	discard	nonogram iter7 overlap_v4 explicit FILL/EMPTY shortcuts — 20% SR same step6 failure multi-shortcut overload token exhaustion
+7e9dd3d4b5cb1921bcb044929d982a5e42d07fdc	0.200000	6	3	discard	nonogram iter8 overlap_v5 cross-line example — biased step1 row2-first same step6 failure 20% SR
+1e84b25c556ff215bd8b29ae8bd9c95e1d681c66	0.640000	17	3	keep	nonogram iter9 overlap_v6 exhaustive-scan col-tiebreaker — 64% SR 17 steps improved from 56%, col2 shortcut fires step6 but model switches away after 1 fill
+964a54a	0.640000	17	3	discard	nonogram iter10 overlap_v7 shortcut-persistence — 64% SR 17 steps same as iter9 no improvement
+a36f34f	0.240000	6	3	discard	nonogram iter11 overlap_v8 generalized-shortcut-A — 24% SR prompt too long 5x5 example exhausts token budget 9+/12 agents fail format
+2ebca70	0.440000	11	3	discard	nonogram iter12 overlap_v9 generalized-shortcut-A U+F=S concise — 44% SR 11 steps regression from 64% U+F=S formula causes wrong decisions
+fe45e00	0.600000	500	3	discard	nonogram iter13 overlap_v10 constrained-ends example — 60% SR 500 steps regression from 64% partially-filled block case not covered
+87502e2	0.560000	500	3	discard	nonogram iter14 overlap_v11 partial-fill example — 56% SR regression from 64% token exhaustion at step 14 all 12 agents fail
+e4eeddd	0.640000	500	3	discard	nonogram iter15 overlap_v12 partial-fill example replaces [1,1] — 64% SR 500 steps same SR worse steps token exhaustion step 17 still
+1bc235a943c435cb0f830e8ba2173615d86eea52	0.560000	500	3	discard	nonogram iter16 overlap_v13 remove 3x3 scan example + partial-fill [3] — 56% SR 14 steps regression, col-first lost, row-first path hits exhaustion earlier
+f847ac47f5d3ed7e5de549c07b1d049d44003161	0.560000	500	3	discard	nonogram iter17 overlap_v14 stop-at-first-match user prompt — 56% SR exhaustive scan system prompt overrides stop instruction
+e01b828	0.560000	500	3	discard	nonogram iter18 overlap_v15 remove EXHAUSTIVE SCAN rule — 56% SR regression, lost col-first path, token exhaustion at step15
+d25e56f	0.760000	500	3	keep	nonogram iter19 overlap_v16 concise stop-at-first user prompt — 76% SR new best 19 steps, stalls at step20 token exhaustion on 6 unknowns
+3c91dff	0.760000	19	3	discard	nonogram iter20 overlap_v17 allowed-cells-only line filter — same 76% SR 19 steps as iter19, user-prompt filter overridden by system EXHAUSTIVE SCAN
+dcd2c7c	0.000000	0	3	crash	nonogram iter21 overlap_v18 — OOM at step 10 fallback, GPU loaded by other process
+a2b988f	0.080000	500	3	discard	nonogram iter22 overlap_v19 concise-reasoning — 8% SR massive regression, concise format broke overlap analysis

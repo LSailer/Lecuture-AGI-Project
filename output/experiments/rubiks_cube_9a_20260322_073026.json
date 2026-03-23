@@ -1,0 +1,2025 @@
+{
+  "game_type": "rubiks_cube",
+  "success_rate": 0.6666666666666666,
+  "steps": [
+    {
+      "step": 1,
+      "current_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "processed_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "candidate_votes": {
+        "{'action': 'R', 'state': 'WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB'}": 9
+      },
+      "best_action": "R",
+      "best_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 2,
+      "current_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "processed_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 3,
+      "current_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "processed_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "candidate_votes": {
+        "{'action': 'R', 'state': 'WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB'}": 7,
+        "{'action': \"R'\", 'state': 'WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB'}": 2
+      },
+      "best_action": "R",
+      "best_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 4,
+      "current_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "processed_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 5,
+      "current_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "processed_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 6,
+      "current_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "processed_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 7,
+      "current_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "processed_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 8,
+      "current_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "processed_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 9,
+      "current_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "processed_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "candidate_votes": {
+        "{'action': 'R', 'state': 'WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB'}": 7,
+        "{'action': \"R'\", 'state': 'WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB'}": 2
+      },
+      "best_action": "R",
+      "best_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 10,
+      "current_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "processed_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 11,
+      "current_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "processed_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "candidate_votes": {
+        "{'action': 'R', 'state': 'WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB'}": 9
+      },
+      "best_action": "R",
+      "best_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 12,
+      "current_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "processed_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+          "error": "Cycle detected: state visited 4 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 13,
+      "current_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "processed_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB'}": 7,
+        "{'action': 'R', 'state': 'WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB'}": 4
+      },
+      "best_action": "R'",
+      "best_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 11
+    },
+    {
+      "step": 14,
+      "current_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "processed_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+          "error": "Cycle detected: state visited 4 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 15,
+      "current_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "processed_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+          "error": "Cycle detected: state visited 4 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 16,
+      "current_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "processed_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+          "error": "Cycle detected: state visited 4 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 17,
+      "current_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "processed_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+          "error": "Cycle detected: state visited 5 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 18,
+      "current_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "processed_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+          "error": "Cycle detected: state visited 5 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 19,
+      "current_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "processed_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+          "error": "Cycle detected: state visited 5 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 20,
+      "current_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "processed_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+          "error": "Cycle detected: state visited 6 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 21,
+      "current_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "processed_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+          "error": "Cycle detected: state visited 5 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 22,
+      "current_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "processed_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+          "error": "Cycle detected: state visited 6 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 23,
+      "current_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "processed_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+          "error": "Cycle detected: state visited 6 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 24,
+      "current_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "processed_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+          "error": "Cycle detected: state visited 6 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 25,
+      "current_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "processed_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+          "error": "Cycle detected: state visited 7 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 26,
+      "current_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "processed_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+          "error": "Cycle detected: state visited 7 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 27,
+      "current_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "processed_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+          "error": "Cycle detected: state visited 7 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 28,
+      "current_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "processed_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+          "error": "Cycle detected: state visited 8 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 29,
+      "current_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "processed_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+          "error": "Cycle detected: state visited 7 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 30,
+      "current_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "processed_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+          "error": "Cycle detected: state visited 8 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 31,
+      "current_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "processed_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+          "error": "Cycle detected: state visited 8 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 32,
+      "current_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "processed_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+          "error": "Cycle detected: state visited 8 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 33,
+      "current_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "processed_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+          "error": "Cycle detected: state visited 9 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 34,
+      "current_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "processed_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+          "error": "Cycle detected: state visited 9 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 35,
+      "current_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "processed_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+          "error": "Cycle detected: state visited 9 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 36,
+      "current_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "processed_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+          "error": "Cycle detected: state visited 10 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 37,
+      "current_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "processed_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+          "error": "Cycle detected: state visited 9 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 38,
+      "current_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "processed_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+          "error": "Cycle detected: state visited 10 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 39,
+      "current_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "processed_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+          "error": "Cycle detected: state visited 10 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 40,
+      "current_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "processed_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+          "error": "Cycle detected: state visited 10 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 41,
+      "current_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "processed_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+          "error": "Cycle detected: state visited 11 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 42,
+      "current_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "processed_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+          "error": "Cycle detected: state visited 11 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 43,
+      "current_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "processed_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+          "error": "Cycle detected: state visited 11 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 44,
+      "current_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "processed_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+          "error": "Cycle detected: state visited 12 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 45,
+      "current_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "processed_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+          "error": "Cycle detected: state visited 11 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 46,
+      "current_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "processed_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+          "error": "Cycle detected: state visited 12 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 47,
+      "current_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "processed_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+          "error": "Cycle detected: state visited 12 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 48,
+      "current_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "processed_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+          "error": "Cycle detected: state visited 12 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 49,
+      "current_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "processed_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+          "error": "Cycle detected: state visited 13 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 50,
+      "current_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "processed_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+          "error": "Cycle detected: state visited 13 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 51,
+      "current_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "processed_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+          "error": "Cycle detected: state visited 13 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 52,
+      "current_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "processed_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+          "error": "Cycle detected: state visited 14 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 53,
+      "current_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "processed_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+          "error": "Cycle detected: state visited 13 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 54,
+      "current_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "processed_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+          "error": "Cycle detected: state visited 14 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 55,
+      "current_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "processed_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+          "error": "Cycle detected: state visited 14 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 56,
+      "current_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "processed_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+          "error": "Cycle detected: state visited 14 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 57,
+      "current_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "processed_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+          "error": "Cycle detected: state visited 15 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 58,
+      "current_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "processed_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+          "error": "Cycle detected: state visited 15 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 59,
+      "current_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "processed_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+          "error": "Cycle detected: state visited 15 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 60,
+      "current_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "processed_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+          "error": "Cycle detected: state visited 16 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 61,
+      "current_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "processed_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+          "error": "Cycle detected: state visited 15 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 62,
+      "current_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "processed_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+          "error": "Cycle detected: state visited 16 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 63,
+      "current_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "processed_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+          "error": "Cycle detected: state visited 16 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 64,
+      "current_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "processed_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+          "error": "Cycle detected: state visited 16 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 65,
+      "current_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "processed_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+          "error": "Cycle detected: state visited 17 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 66,
+      "current_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "processed_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+          "error": "Cycle detected: state visited 17 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 67,
+      "current_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "processed_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+          "error": "Cycle detected: state visited 17 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 68,
+      "current_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "processed_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+          "error": "Cycle detected: state visited 18 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 69,
+      "current_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "processed_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+          "error": "Cycle detected: state visited 17 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 70,
+      "current_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "processed_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+          "error": "Cycle detected: state visited 18 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 71,
+      "current_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "processed_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+          "error": "Cycle detected: state visited 18 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 72,
+      "current_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "processed_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+          "error": "Cycle detected: state visited 18 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 73,
+      "current_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "processed_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+          "error": "Cycle detected: state visited 19 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 74,
+      "current_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "processed_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+          "error": "Cycle detected: state visited 19 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 75,
+      "current_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "processed_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+          "error": "Cycle detected: state visited 19 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 76,
+      "current_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "processed_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+          "error": "Cycle detected: state visited 20 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 77,
+      "current_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "processed_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+          "error": "Cycle detected: state visited 19 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 78,
+      "current_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "processed_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+          "error": "Cycle detected: state visited 20 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 79,
+      "current_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "processed_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+          "error": "Cycle detected: state visited 20 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 80,
+      "current_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "processed_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+          "error": "Cycle detected: state visited 20 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 81,
+      "current_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "processed_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+          "error": "Cycle detected: state visited 21 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 82,
+      "current_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "processed_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+          "error": "Cycle detected: state visited 21 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 83,
+      "current_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "processed_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+          "error": "Cycle detected: state visited 21 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 84,
+      "current_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "processed_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+          "error": "Cycle detected: state visited 22 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 85,
+      "current_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "processed_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+          "error": "Cycle detected: state visited 21 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 86,
+      "current_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "processed_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+          "error": "Cycle detected: state visited 22 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 87,
+      "current_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "processed_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+          "error": "Cycle detected: state visited 22 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 88,
+      "current_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "processed_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+          "error": "Cycle detected: state visited 22 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 89,
+      "current_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "processed_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+          "error": "Cycle detected: state visited 23 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 90,
+      "current_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "processed_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+          "error": "Cycle detected: state visited 23 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 91,
+      "current_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "processed_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+          "error": "Cycle detected: state visited 23 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 92,
+      "current_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "processed_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+          "error": "Cycle detected: state visited 24 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 93,
+      "current_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "processed_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+          "error": "Cycle detected: state visited 23 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 94,
+      "current_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "processed_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+          "error": "Cycle detected: state visited 24 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 95,
+      "current_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "processed_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+          "error": "Cycle detected: state visited 24 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 96,
+      "current_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "processed_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+          "error": "Cycle detected: state visited 24 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 97,
+      "current_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "processed_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+          "error": "Cycle detected: state visited 25 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 98,
+      "current_state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+      "processed_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWGWWGWWGRRWRRRWGRRRYGGYGGRYYBYYWYYYOOGOOOOOOOBBBBBBBB",
+          "error": "Cycle detected: state visited 25 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 99,
+      "current_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "processed_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+          "error": "Cycle detected: state visited 25 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 100,
+      "current_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "processed_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+          "error": "Cycle detected: state visited 26 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    }
+  ]
+}

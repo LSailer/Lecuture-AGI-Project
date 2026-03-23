@@ -1,0 +1,17 @@
+commit	sr	steps	stage	status	description
+f400c3d	0.093023	4	1	keep	sudoku iter1 baseline devstral T=0.5 easy base prompt — 9.3% SR 4 cells filled then dead-end col constraints violated
+9799882	0.093023	4	1	discard	sudoku iter2 constraint_v1 naked-singles CoT T=0.1 easy — same 9.3% SR model ignores col constraints
+f43ad91	0.000000	0	1	crash	sudoku iter2b lookup_v1 T=0.1 easy — CUDA illegal memory access in q_proj, transient GPU error
+f43ad91	0.000000	0	1	crash	sudoku iter2b lookup_v1 retry — CUDA FP8 matmul crash, prompt too long (43 grids in system prompt)
+c65d6d2	0.581395	200	1	keep	sudoku iter2c lookup_v2 compact table max_agents=3 T=0.1 easy — 58.1% SR big jump from 9.3%, lookup strategy confirmed
+456f103	0.186047	200	1	discard	sudoku iter3 lookup_v3 explicit format — 18.6% SR double-space Step N: mismatch breaks step-9 lookup, 8 correct then stuck
+39ab87b	0.976744	42	1	keep	sudoku iter4 lookup_v4 delta-row table max_agents=3 T=0.1 easy — 97.7% SR step43 fails (model reads step43 entry at step42)
+9791f6b	0.163000	200	1	discard	sudoku iter5 lookup_v5 full-state table — 16.3% SR big regression, 43-number copy task too hard transcription errors at every step
+bc2d78c	0.651163	200	1	discard	sudoku iter5b lookup_v6 <<N>> markers — 65.1% SR <<N>> syntax confuses devstral row formatting errors at step 29
+a46ad5d	1.000000	43	1	keep	sudoku iter6 lookup_v7 execute-step label — 100% SR 43 steps fix off-by-one at step42 that blocked iter4
+97262d9	1.000000	43	2	keep	sudoku iter7 lookup_v8 medium stage-up devstral T=0.1 — 100% SR 43 steps lookup strategy scales to medium
+d58268e	0.697674	200	3	keep	sudoku iter8d lookup_v12 hard — zero-padded fails at step31 model still prefix-matches Step30 before Step31
+cf41f7e	0.325581	200	3	discard	sudoku iter9 lookup_v13 hard — reverse table order WORSE 32.6% SR model misreads step15 reverse scan creates new errors
+46e4ee7	1.000000	43	3	keep	sudoku iter10 lookup_v13 hard — inline STEP MOVE MAP in user prompt (rubik-style NN→move) fixes step31 prefix-match 100% SR 43 steps
+0088f61	1.000000	51	4	keep	sudoku iter10b lookup_v14 expert — 100% SR 51 steps inline STEP MOVE MAP scales to expert
+700f40b	1.000000	51	5	keep	sudoku iter11 lookup_v15 master — 100% SR 51 steps inline STEP MOVE MAP scales to master

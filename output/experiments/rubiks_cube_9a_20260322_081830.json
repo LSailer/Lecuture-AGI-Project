@@ -1,0 +1,304 @@
+{
+  "game_type": "rubiks_cube",
+  "success_rate": 0.3888888888888889,
+  "steps": [
+    {
+      "step": 1,
+      "current_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "processed_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "candidate_votes": {
+        "{'action': 'B', 'state': 'RGWWWBWWOWRRRRYRRYRRGGGGGGGYYYYYYOOOBOGWOOWOOBWYBBBBBB'}": 1,
+        "{'action': 'F', 'state': 'WWBWWBOOGWRRWRGORWGGRGGRGGGRRWYYYYYROOYOOYOOYYBBWBBBBB'}": 3,
+        "{'action': 'R', 'state': 'WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB'}": 6
+      },
+      "best_action": "R",
+      "best_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 2,
+      "current_state": "WWBWWWWWYRGWRRRWRRRRBGGBGGOYYGYYGYYGOOGOOOOOORBBYBBYBB",
+      "processed_state": "WWBWWWOOGWGWWRRYRRGGRGGROBBWRRYYGYYGOOYOOYOOGRBBYBBYBB",
+      "candidate_votes": {
+        "{'action': 'F', 'state': 'WWBWWWOOGWGWWRRYRRGGRGGROBBWRRYYGYYGOOYOOYOOGRBBYBBYBB'}": 8,
+        "{'action': 'R', 'state': 'WWYWWYWWRWRRGRRRRWRRBGGWGGYYYBYYBYYOOOGOOOOOOGBBGBBGBB'}": 1
+      },
+      "best_action": "F",
+      "best_state": "WWBWWWOOGWGWWRRYRRGGRGGROBBWRRYYGYYGOOYOOYOOGRBBYBBYBB",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 3,
+      "current_state": "WWBWWWOOGWGWWRRYRRGGRGGROBBWRRYYGYYGOOYOOYOOGRBBYBBYBB",
+      "processed_state": "WWYWWYOORWRRGRRWWYGGBGGWOBGWRRYYRYYBOOYOOYOOGGBBGBBRBB",
+      "candidate_votes": {
+        "{'action': 'R', 'state': 'WWYWWYOORWRRGRRWWYGGBGGWOBGWRRYYRYYBOOYOOYOOGGBBGBBRBB'}": 9
+      },
+      "best_action": "R",
+      "best_state": "WWYWWYOORWRRGRRWWYGGBGGWOBGWRRYYRYYBOOYOOYOOGGBBGBBRBB",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 4,
+      "current_state": "WWYWWYOORWRRGRRWWYGGBGGWOBGWRRYYRYYBOOYOOYOOGGBBGBBRBB",
+      "processed_state": "WWYWWYGYYORRORRRWYOGGBGGGWBWGWYYRYYBOOWOOROORGBBGBBRBB",
+      "candidate_votes": {
+        "{'action': 'F', 'state': 'WWYWWYGYYORRORRRWYOGGBGGGWBWGWYYRYYBOOWOOROORGBBGBBRBB'}": 5,
+        "{'action': 'D', 'state': 'WWYWWYOORWRRGRRRBBGGBGGWWWYRRBRYYWYYOOYOOYOBGGBBGBBOOG'}": 1
+      },
+      "best_action": "F",
+      "best_state": "WWYWWYGYYORRORRRWYOGGBGGGWBWGWYYRYYBOOWOOROORGBBGBBRBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "4:1",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "4:3",
+          "action": "None",
+          "state": "None",
+          "error": "Error parsing next_state."
+        },
+        {
+          "agent_id": "4:6",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 5,
+      "current_state": "WWYWWYGYYORRORRRWYOGGBGGGWBWGWYYRYYBOOWOOROORGBBGBBRBB",
+      "processed_state": "WWRWWGGYGRRYRRWOOROGYBGYGWYWGGYYGYYBOOWOOROORBBBRBBWBB",
+      "candidate_votes": {
+        "{'action': 'R', 'state': 'WWRWWGGYGRRYRRWOOROGYBGYGWYWGGYYGYYBOOWOOROORBBBRBBWBB'}": 6
+      },
+      "best_action": "R",
+      "best_state": "WWRWWGGYGRRYRRWOOROGYBGYGWYWGGYYGYYBOOWOOROORBBBRBBWBB",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "5:1",
+          "action": "None",
+          "state": "None",
+          "error": "Error parsing next_state."
+        },
+        {
+          "agent_id": "5:3",
+          "action": "None",
+          "state": "None",
+          "error": "Error parsing next_state."
+        },
+        {
+          "agent_id": "5:8",
+          "action": "None",
+          "state": "None",
+          "error": "Error parsing next_state."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 6,
+      "current_state": "WWRWWGGYGRRYRRWOOROGYBGYGWYWGGYYGYYBOOWOOROORBBBRBBWBB",
+      "processed_state": "WWRWWGGYGRRYRRWWBBOGYBGYOORGGBGYYWYYOOWOORGWYBBBRBBOOR",
+      "candidate_votes": {
+        "{'action': 'D', 'state': 'WWRWWGGYGRRYRRWWBBOGYBGYOORGGBGYYWYYOOWOORGWYBBBRBBOOR'}": 7,
+        "{'action': \"D'\", 'state': 'WWRWWGGYGRRYRRWGWYOGYBGYOORYYWYYGBGGOOWOORWBBBBBRBBOOR'}": 1,
+        "{'action': 'F', 'state': 'WWRWWGRRWGRYYRWGORGBOWGGYYYORRYYGYYBOOWOOGOOGBBBRBBWBB'}": 1
+      },
+      "best_action": "D",
+      "best_state": "WWRWWGGYGRRYRRWWBBOGYBGYOORGGBGYYWYYOOWOORGWYBBBRBBOOR",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 7,
+      "current_state": "WWRWWGGYGRRYRRWWBBOGYBGYOORGGBGYYWYYOOWOORGWYBBBRBBOOR",
+      "processed_state": "WWYWWYGYRWRRBRRBWYOGBBGYOOYGGOGYRWYBOOWOORGWYGBBGBBROR",
+      "candidate_votes": {
+        "{'action': 'R', 'state': 'WWOWWRGYBYWBRRBRRWOGRBGGOOGGGYGYYWYROOWOORGWYYBBYBBBOR'}": 2,
+        "{'action': \"R'\", 'state': 'WWYWWYGYRWRRBRRBWYOGBBGYOOYGGOGYRWYBOOWOORGWYGBBGBBROR'}": 6
+      },
+      "best_action": "R'",
+      "best_state": "WWYWWYGYRWRRBRRBWYOGBBGYOOYGGOGYRWYBOOWOORGWYGBBGBBROR",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "7:5",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 8,
+      "current_state": "WWYWWYGYRWRRBRRBWYOGBBGYOOYGGOGYRWYBOOWOORGWYGBBGBBROR",
+      "processed_state": "WWYWWYYRWGRRYRRRWYOBOOGGYYBBBWGYRWYBOOGOOGGWOGBBGBBROR",
+      "candidate_votes": {
+        "{'action': 'F', 'state': 'WWYWWYYRWGRRYRRRWYOBOOGGYYBBBWGYRWYBOOGOOGGWOGBBGBBROR'}": 9
+      },
+      "best_action": "F",
+      "best_state": "WWYWWYYRWGRRYRRRWYOBOOGGYYBBBWGYRWYBOOGOOGGWOGBBGBBROR",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 9,
+      "current_state": "WWYWWYYRWGRRYRRRWYOBOOGGYYBBBWGYRWYBOOGOOGGWOGBBGBBROR",
+      "processed_state": "WWRWWGYRGRRYRRWGYROBYOGYYYWBBOGYGWYBOOGOOGGWOBBBRBBWOR",
+      "candidate_votes": {
+        "{'action': 'R', 'state': 'WWRWWGYRGRRYRRWGYROBYOGYYYWBBOGYGWYBOOGOOGGWOBBBRBBWOR'}": 7,
+        "{'action': 'U', 'state': 'YYWWWRWWYOBOYRRRWYOOGOGGYYBBBWGYRWYBGBBOOGGWOGRRGBBROR'}": 1
+      },
+      "best_action": "R",
+      "best_state": "WWRWWGYRGRRYRRWGYROBYOGYYYWBBOGYGWYBOOGOOGGWOBBBRBBWOR",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "9:9",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 10,
+      "current_state": "WWRWWGYRGRRYRRWGYROBYOGYYYWBBOGYGWYBOOGOOGGWOBBBRBBWOR",
+      "processed_state": "WWRWWGOGGYRYRRWGYRYOOYGBWYYGRRGYGWYBOOBOOBGWOBBBRBBWOR",
+      "candidate_votes": {
+        "{'action': 'F', 'state': 'WWRWWGOGGYRYRRWGYRYOOYGBWYYGRRGYGWYBOOBOOBGWOBBBRBBWOR'}": 9
+      },
+      "best_action": "F",
+      "best_state": "WWRWWGOGGYRYRRWGYRYOOYGBWYYGRRGYGWYBOOBOOBGWOBBBRBBWOR",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 11,
+      "current_state": "WWRWWGOGGYRYRRWGYRYOOYGBWYYGRRGYGWYBOOBOOBGWOBBBRBBWOR",
+      "processed_state": "WWWWWROGBYWRRRYYRGYORYGGWYGGROGYBWYYOOBOOBGWOBBBGBBROR",
+      "candidate_votes": {
+        "{'action': 'R', 'state': 'WWWWWROGBYWRRRYYRGYORYGGWYGGROGYBWYYOOBOOBGWOBBBGBBROR'}": 7,
+        "{'action': 'F2', 'state': 'WWRWWGRRGORYBRWBYRYYWBGYOOYGGOGYGWYBOOGOORGWYBBBRBBWOR'}": 1
+      },
+      "best_action": "R",
+      "best_state": "WWWWWROGBYWRRRYYRGYORYGGWYGGROGYBWYYOOBOOBGWOBBBGBBROR",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "11:4",
+          "action": "None",
+          "state": "None",
+          "error": "Inconsistent prediction: next_state does not match current_state + move."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 12,
+      "current_state": "WWWWWROGBYWRRRYYRGYORYGGWYGGROGYBWYYOOBOOBGWOBBBGBBROR",
+      "processed_state": "WWOWWBOGYGRYYRRRWYYORYGGWYBGRWGYRWYBOOBOOBGWOGBBGBBROR",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWOWWBOGYGRYYRRRWYYORYGGWYBGRWGYRWYBOOBOOBGWOGBBGBBROR'}": 9
+      },
+      "best_action": "R2",
+      "best_state": "WWOWWBOGYGRYYRRRWYYORYGGWYBGRWGYRWYBOOBOOBGWOGBBGBBROR",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 13,
+      "current_state": "WWOWWBOGYGRYYRRRWYYORYGGWYBGRWGYRWYBOOBOOBGWOGBBGBBROR",
+      "processed_state": "WWOWWBGYRWRYRRRGWYRGBOGYYYWBBOGYRWYBOOYOOGGWOGBBGBBROR",
+      "candidate_votes": {
+        "{'action': \"F'\", 'state': 'WWOWWBGYRWRYRRRGWYRGBOGYYYWBBOGYRWYBOOYOOGGWOGBBGBBROR'}": 9
+      },
+      "best_action": "F'",
+      "best_state": "WWOWWBGYRWRYRRRGWYRGBOGYYYWBBOGYRWYBOOYOOGGWOGBBGBBROR",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 14,
+      "current_state": "WWOWWBGYRWRYRRRGWYRGBOGYYYWBBOGYRWYBOOYOOGGWOGBBGBBROR",
+      "processed_state": "WWRWWGGYGYRYRRWWRGRGOOGBYYRBBBGYYWYWOOYOOGGWOBBBRBBOOR",
+      "candidate_votes": {
+        "{'action': 'D', 'state': 'WWOWWBGYRWRYRRRRORRGBOGYGWYORBBYYBGWOOYOOGYYWGBBGBBGWO'}": 1,
+        "{'action': 'R', 'state': 'WWRWWGGYGYRYRRWWRGRGOOGBYYRBBBGYYWYWOOYOOGGWOBBBRBBOOR'}": 6,
+        "{'action': 'F2', 'state': 'WWOWWBOBBORYGRRYWYWYYYGOBGRRYGGYRWYBOOGOORGWWGBBGBBROR'}": 1,
+        "{'action': \"F'\", 'state': 'WWOWWBWRGORYBRRBWYBYWGGYROYYGOGYRWYBOOROOYGWGGBBGBBROR'}": 1
+      },
+      "best_action": "R",
+      "best_state": "WWRWWGGYGYRYRRWWRGRGOOGBYYRBBBGYYWYWOOYOOGGWOBBBRBBOOR",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 15,
+      "current_state": "WWRWWGGYGYRYRRWWRGRGOOGBYYRBBBGYYWYWOOYOOGGWOBBBRBBOOR",
+      "processed_state": "WWBWWYGYWGRWWRRYRYRGOOGRYYBBBRGYGWYGOOYOOGGWORBBBBBOOR",
+      "candidate_votes": {
+        "{'action': 'R2', 'state': 'WWBWWYGYWGRWWRRYRYRGOOGRYYBBBRGYGWYGOOYOOGGWORBBBBBOOR'}": 7,
+        "{'action': 'D', 'state': 'WWRWWGGYGYRYRRWOORRGOOGBWRGBYWBYYBGWOOYOOGYYRBBBRBBGWO'}": 2
+      },
+      "best_action": "R2",
+      "best_state": "WWBWWYGYWGRWWRRYRYRGOOGRYYBBBRGYGWYGOOYOOGGWORBBBBBOOR",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 16,
+      "current_state": "WWBWWYGYWGRWWRRYRYRGOOGRYYBBBRGYGWYGOOYOOGGWORBBBBBOOR",
+      "processed_state": "WWOWWBGYRWRYRRRGWYRGBOGYYYWBBOGYRWYBOOYOOGGWOGBBGBBROR",
+      "candidate_votes": {
+        "{'action': 'R', 'state': 'WWOWWBGYRWRYRRRGWYRGBOGYYYWBBOGYRWYBOOYOOGGWOGBBGBBROR'}": 7,
+        "{'action': 'F', 'state': 'WWBWWYOGYGRWYRRWRYYORYGGBROYWGGYGWYGOOBOOBGWRRBBBBBOOR'}": 1,
+        "{'action': \"D'\", 'state': 'WWBWWYGYWGRWWRRYYBRGOOGRGWOWGBYYBGGROOYOOGOORRBBBBBYRY'}": 1
+      },
+      "best_action": "R",
+      "best_state": "WWOWWBGYRWRYRRRGWYRGBOGYYYWBBOGYRWYBOOYOOGGWOGBBGBBROR",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    }
+  ]
+}

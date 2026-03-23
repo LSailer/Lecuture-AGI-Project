@@ -1,0 +1,1474 @@
+{
+  "game_type": "rubiks_cube",
+  "success_rate": 0.3888888888888889,
+  "steps": [
+    {
+      "step": 1,
+      "current_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "processed_state": "WWWWWWOBBYBBRRGRRWWRRGGGGGGYYYYYYYYRRRGOOOOOOOOGWBBBBB",
+      "candidate_votes": {
+        "{'action': \"U'\", 'state': 'WWWWWWOBBYBBRRGRRWWRRGGGGGGYYYYYYYYRRRGOOOOOOOOGWBBBBB'}": 9
+      },
+      "best_action": "U'",
+      "best_state": "WWWWWWOBBYBBRRGRRWWRRGGGGGGYYYYYYYYRRRGOOOOOOOOGWBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 2,
+      "current_state": "WWWWWWOBBYBBRRGRRWWRRGGGGGGYYYYYYYYRRRGOOOOOOOOGWBBBBB",
+      "processed_state": "BBOWWWWWWRRGRRGRRWOOGGGGGGGYYYYYYYYRYBBOOOOOOWRRWBBBBB",
+      "candidate_votes": {
+        "{'action': 'U2', 'state': 'BBOWWWWWWRRGRRGRRWOOGGGGGGGYYYYYYYYRYBBOOOOOOWRRWBBBBB'}": 9
+      },
+      "best_action": "U2",
+      "best_state": "BBOWWWWWWRRGRRGRRWOOGGGGGGGYYYYYYYYRYBBOOOOOOWRRWBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 3,
+      "current_state": "BBOWWWWWWRRGRRGRRWOOGGGGGGGYYYYYYYYRYBBOOOOOOWRRWBBBBB",
+      "processed_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "candidate_votes": {
+        "{'action': \"U'\", 'state': 'WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB'}": 9
+      },
+      "best_action": "U'",
+      "best_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 4,
+      "current_state": "WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB",
+      "processed_state": "WWWWWWOBBYBBRRGRRWWRRGGGGGGYYYYYYYYRRRGOOOOOOOOGWBBBBB",
+      "candidate_votes": {
+        "{'action': \"U'\", 'state': 'WWWWWWOBBYBBRRGRRWWRRGGGGGGYYYYYYYYRRRGOOOOOOOOGWBBBBB'}": 9
+      },
+      "best_action": "U'",
+      "best_state": "WWWWWWOBBYBBRRGRRWWRRGGGGGGYYYYYYYYRRRGOOOOOOOOGWBBBBB",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 5,
+      "current_state": "WWWWWWOBBYBBRRGRRWWRRGGGGGGYYYYYYYYRRRGOOOOOOOOGWBBBBB",
+      "processed_state": "BGWWWWOBBYBRRRYRRYWRRGGGGGGYYYYYYROOWRGWOOWOOBWOBBOBBG",
+      "candidate_votes": {
+        "{'action': 'B', 'state': 'BGWWWWOBBYBRRRYRRYWRRGGGGGGYYYYYYROOWRGWOOWOOBWOBBOBBG'}": 9
+      },
+      "best_action": "B",
+      "best_state": "BGWWWWOBBYBRRRYRRYWRRGGGGGGYYYYYYROOWRGWOOWOOBWOBBOBBG",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 6,
+      "current_state": "BGWWWWOBBYBRRRYRRYWRRGGGGGGYYYYYYROOWRGWOOWOOBWOBBOBBG",
+      "processed_state": "WWBGWBBWOWRRRRYRRYWRGGGGGGGYYYYYYROOBWOWOOWOOYBRBBOBBG",
+      "candidate_votes": {
+        "{'action': 'U', 'state': 'WWBGWBBWOWRRRRYRRYWRGGGGGGGYYYYYYROOBWOWOOWOOYBRBBOBBG'}": 9
+      },
+      "best_action": "U",
+      "best_state": "WWBGWBBWOWRRRRYRRYWRGGGGGGGYYYYYYROOBWOWOOWOOYBRBBOBBG",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 7,
+      "current_state": "WWBGWBBWOWRRRRYRRYWRGGGGGGGYYYYYYROOBWOWOOWOOYBRBBOBBG",
+      "processed_state": "BBOWWWWGBWRGRRYRRYBWOGGGGGGYYYYYYROOYBRWOOWOOWRRBBOBBG",
+      "candidate_votes": {
+        "{'action': 'U', 'state': 'BBOWWWWGBWRGRRYRRYBWOGGGGGGYYYYYYROOYBRWOOWOOWRRBBOBBG'}": 9
+      },
+      "best_action": "U",
+      "best_state": "BBOWWWWGBWRGRRYRRYBWOGGGGGGYYYYYYROOYBRWOOWOOWRRBBOBBG",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 8,
+      "current_state": "BBOWWWWGBWRGRRYRRYBWOGGGGGGYYYYYYROOYBRWOOWOOWRRBBOBBG",
+      "processed_state": "BBBWWBWGWGYYRRRWRRBWOGGWGGBYYOYYGROGYBRWOOWOOORRYBOYBG",
+      "candidate_votes": {
+        "{'action': 'R', 'state': 'BBBWWBWGWGYYRRRWRRBWOGGWGGBYYOYYGROGYBRWOOWOOORRYBOYBG'}": 9
+      },
+      "best_action": "R",
+      "best_state": "BBBWWBWGWGYYRRRWRRBWOGGWGGBYYOYYGROGYBRWOOWOOORRYBOYBG",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 9,
+      "current_state": "BBBWWBWGWGYYRRRWRRBWOGGWGGBYYOYYGROGYBRWOOWOOORRYBOYBG",
+      "processed_state": "WWBGWBWBBORRRRRWRRGYYGGWGGBYYOYYGROGBWOWOOWOOYBRYBOYBG",
+      "candidate_votes": {
+        "{'action': \"U'\", 'state': 'WWBGWBWBBORRRRRWRRGYYGGWGGBYYOYYGROGBWOWOOWOOYBRYBOYBG'}": 9
+      },
+      "best_action": "U'",
+      "best_state": "WWBGWBWBBORRRRRWRRGYYGGWGGBYYOYYGROGBWOWOOWOOYBRYBOYBG",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 10,
+      "current_state": "WWBGWBWBBORRRRRWRRGYYGGWGGBYYOYYGROGBWOWOOWOOYBRYBOYBG",
+      "processed_state": "WGWBWWBBBYBRRRRWRRORRGGWGGBYYOYYGROGGYYWOOWOOBWOYBOYBG",
+      "candidate_votes": {
+        "{'action': \"U'\", 'state': 'WGWBWWBBBYBRRRRWRRORRGGWGGBYYOYYGROGGYYWOOWOOBWOYBOYBG'}": 7,
+        "{'action': \"B'\", 'state': 'WWBGWBWBBORWRRWWRBGYYGGWGGBYYOYYGRRRRWOOOOGOOROGBBBYYY'}": 1
+      },
+      "best_action": "U'",
+      "best_state": "WGWBWWBBBYBRRRRWRRORRGGWGGBYYOYYGROGGYYWOOWOOBWOYBOYBG",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "10:3",
+          "action": "None",
+          "state": "None",
+          "error": "Inconsistent prediction: next_state does not match current_state + move."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 11,
+      "current_state": "WGWBWWBBBYBRRRRWRRORRGGWGGBYYOYYGROGGYYWOOWOOBWOYBOYBG",
+      "processed_state": "WGRBWWBBBWRYRRBRRROROGGGGGGYYYYYYROBGYYWOOWOOBWOWBOWBG",
+      "candidate_votes": {
+        "{'action': \"U'\", 'state': 'BBWBWGBWWBWORRRWRRYBRGGWGGBYYOYYGROGORRWOOWOOGYYYBOYBG'}": 2,
+        "{'action': \"R'\", 'state': 'WGRBWWBBBWRYRRBRRROROGGGGGGYYYYYYROBGYYWOOWOOBWOWBOWBG'}": 7
+      },
+      "best_action": "R'",
+      "best_state": "WGRBWWBBBWRYRRBRRROROGGGGGGYYYYYYROBGYYWOOWOOBWOWBOWBG",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 12,
+      "current_state": "WGRBWWBBBWRYRRBRRROROGGGGGGYYYYYYROBGYYWOOWOOBWOWBOWBG",
+      "processed_state": "RWBGWBWBBORORRBRRRGYYGGGGGGYYYYYYROBBWOWOOWOOWRYWBOWBG",
+      "candidate_votes": {
+        "{'action': 'U', 'state': 'RWBGWBWBBORORRBRRRGYYGGGGGGYYYYYYROBBWOWOOWOOWRYWBOWBG'}": 9
+      },
+      "best_action": "U",
+      "best_state": "RWBGWBWBBORORRBRRRGYYGGGGGGYYYYYYROBBWOWOOWOOWRYWBOWBG",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 13,
+      "current_state": "RWBGWBWBBORORRBRRRGYYGGGGGGYYYYYYROBBWOWOOWOOWRYWBOWBG",
+      "processed_state": "BBBWWBRGWGYYRRBRRRBWOGGGGGGYYYYYYROBWRYWOOWOOOROWBOWBG",
+      "candidate_votes": {
+        "{'action': 'U', 'state': 'BBBWWBRGWGYYRRBRRRBWOGGGGGGYYYYYYROBWRYWOOWOOOROWBOWBG'}": 9
+      },
+      "best_action": "U",
+      "best_state": "BBBWWBRGWGYYRRBRRRBWOGGGGGGYYYYYYROBWRYWOOWOOOROWBOWBG",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 14,
+      "current_state": "BBBWWBRGWGYYRRBRRRBWOGGGGGGYYYYYYROBWRYWOOWOOOROWBOWBG",
+      "processed_state": "GBBOWBOGWGYYRRBRRRBWOWGGRGGBYYGYYGOBWWWOOROOYORRWBYWBY",
+      "candidate_votes": {
+        "{'action': 'U2', 'state': 'WGRBWWBBBWRYRRBRRROROGGGGGGYYYYYYROBGYYWOOWOOBWOWBOWBG'}": 1,
+        "{'action': \"L'\", 'state': 'GBBOWBOGWGYYRRBRRRBWOWGGRGGBYYGYYGOBWWWOOROOYORRWBYWBY'}": 8
+      },
+      "best_action": "L'",
+      "best_state": "GBBOWBOGWGYYRRBRRRBWOWGGRGGBYYGYYGOBWWWOOROOYORRWBYWBY",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 15,
+      "current_state": "GBBOWBOGWGYYRRBRRRBWOWGGRGGBYYGYYGOBWWWOOROOYORRWBYWBY",
+      "processed_state": "OOGGWBWBBORRRRBRRRGYYWGGRGGBYYGYYGOBBWOOOROOYWWWWBYWBY",
+      "candidate_votes": {
+        "{'action': \"U'\", 'state': 'OOGGWBWBBORRRRBRRRGYYWGGRGGBYYGYYGOBBWOOOROOYWWWWBYWBY'}": 9
+      },
+      "best_action": "U'",
+      "best_state": "OOGGWBWBBORRRRBRRRGYYWGGRGGBYYGYYGOBBWOOOROOYWWWWBYWBY",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 16,
+      "current_state": "OOGGWBWBBORRRRBRRRGYYWGGRGGBYYGYYGOBBWOOOROOYWWWWBYWBY",
+      "processed_state": "WGOBWOBBGWWWRRBRRRORRWGGRGGBYYGYYGOBGYYOOROOYBWOWBYWBY",
+      "candidate_votes": {
+        "{'action': \"U'\", 'state': 'WGOBWOBBGWWWRRBRRRORRWGGRGGBYYGYYGOBGYYOOROOYBWOWBYWBY'}": 9
+      },
+      "best_action": "U'",
+      "best_state": "WGOBWOBBGWWWRRBRRRORRWGGRGGBYYGYYGOBGYYOOROOYBWOWBYWBY",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 17,
+      "current_state": "WGOBWOBBGWWWRRBRRRORRWGGRGGBYYGYYGOBGYYOOROOYBWOWBYWBY",
+      "processed_state": "BBWBWGGOOBWORRBRRRWWWWGGRGGBYYGYYGOBORROOROOYGYYWBYWBY",
+      "candidate_votes": {
+        "{'action': \"U'\", 'state': 'BBWBWGGOOBWORRBRRRWWWWGGRGGBYYGYYGOBORROOROOYGYYWBYWBY'}": 9
+      },
+      "best_action": "U'",
+      "best_state": "BBWBWGGOOBWORRBRRRWWWWGGRGGBYYGYYGOBORROOROOYGYYWBYWBY",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 18,
+      "current_state": "BBWBWGGOOBWORRBRRRWWWWGGRGGBYYGYYGOBORROOROOYGYYWBYWBY",
+      "processed_state": "OOGGWBWBBORRRRBRRRGYYWGGRGGBYYGYYGOBBWOOOROOYWWWWBYWBY",
+      "candidate_votes": {
+        "{'action': 'U2', 'state': 'OOGGWBWBBORRRRBRRRGYYWGGRGGBYYGYYGOBBWOOOROOYWWWWBYWBY'}": 9
+      },
+      "best_action": "U2",
+      "best_state": "OOGGWBWBBORRRRBRRRGYYWGGRGGBYYGYYGOBBWOOOROOYWWWWBYWBY",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 19,
+      "current_state": "OOGGWBWBBORRRRBRRRGYYWGGRGGBYYGYYGOBBWOOOROOYWWWWBYWBY",
+      "processed_state": "GBBOWBOGWGYYRRBRRRBWOWGGRGGBYYGYYGOBWWWOOROOYORRWBYWBY",
+      "candidate_votes": {
+        "{'action': 'U', 'state': 'GBBOWBOGWGYYRRBRRRBWOWGGRGGBYYGYYGOBWWWOOROOYORRWBYWBY'}": 9
+      },
+      "best_action": "U",
+      "best_state": "GBBOWBOGWGYYRRBRRRBWOWGGRGGBYYGYYGOBWWWOOROOYORRWBYWBY",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 20,
+      "current_state": "GBBOWBOGWGYYRRBRRRBWOWGGRGGBYYGYYGOBWWWOOROOYORRWBYWBY",
+      "processed_state": "BBWBWGGOOBWORRBRRRWWWWGGRGGBYYGYYGOBORROOROOYGYYWBYWBY",
+      "candidate_votes": {
+        "{'action': 'U', 'state': 'BBWBWGGOOBWORRBRRRWWWWGGRGGBYYGYYGOBORROOROOYGYYWBYWBY'}": 9
+      },
+      "best_action": "U",
+      "best_state": "BBWBWGGOOBWORRBRRRWWWWGGRGGBYYGYYGOBORROOROOYGYYWBYWBY",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 21,
+      "current_state": "BBWBWGGOOBWORRBRRRWWWWGGRGGBYYGYYGOBORROOROOYGYYWBYWBY",
+      "processed_state": "OOGGWBWBBORRRRBRRRGYYWGGRGGBYYGYYGOBBWOOOROOYWWWWBYWBY",
+      "candidate_votes": {
+        "{'action': 'U2', 'state': 'OOGGWBWBBORRRRBRRRGYYWGGRGGBYYGYYGOBBWOOOROOYWWWWBYWBY'}": 9
+      },
+      "best_action": "U2",
+      "best_state": "OOGGWBWBBORRRRBRRRGYYWGGRGGBYYGYYGOBBWOOOROOYWWWWBYWBY",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 22,
+      "current_state": "OOGGWBWBBORRRRBRRRGYYWGGRGGBYYGYYGOBBWOOOROOYWWWWBYWBY",
+      "processed_state": "GBBOWBOGWGYYRRBRRRBWOWGGRGGBYYGYYGOBWWWOOROOYORRWBYWBY",
+      "candidate_votes": {
+        "{'action': 'U', 'state': 'GBBOWBOGWGYYRRBRRRBWOWGGRGGBYYGYYGOBWWWOOROOYORRWBYWBY'}": 9
+      },
+      "best_action": "U",
+      "best_state": "GBBOWBOGWGYYRRBRRRBWOWGGRGGBYYGYYGOBWWWOOROOYORRWBYWBY",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 23,
+      "current_state": "GBBOWBOGWGYYRRBRRRBWOWGGRGGBYYGYYGOBWWWOOROOYORRWBYWBY",
+      "processed_state": "BBWBWGGOOBWORRBRRRWWWWGGRGGBYYGYYGOBORROOROOYGYYWBYWBY",
+      "candidate_votes": {
+        "{'action': 'U', 'state': 'BBWBWGGOOBWORRBRRRWWWWGGRGGBYYGYYGOBORROOROOYGYYWBYWBY'}": 9
+      },
+      "best_action": "U",
+      "best_state": "BBWBWGGOOBWORRBRRRWWWWGGRGGBYYGYYGOBORROOROOYGYYWBYWBY",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 24,
+      "current_state": "BBWBWGGOOBWORRBRRRWWWWGGRGGBYYGYYGOBORROOROOYGYYWBYWBY",
+      "processed_state": "OOGGWBWBBORRRRBRRRGYYWGGRGGBYYGYYGOBBWOOOROOYWWWWBYWBY",
+      "candidate_votes": {
+        "{'action': 'U2', 'state': 'OOGGWBWBBORRRRBRRRGYYWGGRGGBYYGYYGOBBWOOOROOYWWWWBYWBY'}": 9
+      },
+      "best_action": "U2",
+      "best_state": "OOGGWBWBBORRRRBRRRGYYWGGRGGBYYGYYGOBBWOOOROOYWWWWBYWBY",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 25,
+      "current_state": "OOGGWBWBBORRRRBRRRGYYWGGRGGBYYGYYGOBBWOOOROOYWWWWBYWBY",
+      "processed_state": "GBBOWBOGWGYYRRBRRRBWOWGGRGGBYYGYYGOBWWWOOROOYORRWBYWBY",
+      "candidate_votes": {
+        "{'action': 'U', 'state': 'GBBOWBOGWGYYRRBRRRBWOWGGRGGBYYGYYGOBWWWOOROOYORRWBYWBY'}": 9
+      },
+      "best_action": "U",
+      "best_state": "GBBOWBOGWGYYRRBRRRBWOWGGRGGBYYGYYGOBWWWOOROOYORRWBYWBY",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "OOGGWBWBBORRRRBRRRGYYWGGRGGBYYGYYGOBBWOOOROOYWWWWBYWBY",
+          "error": "Cycle detected: state visited 4 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 3,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 26,
+      "current_state": "GBBOWBOGWGYYRRBRRRBWOWGGRGGBYYGYYGOBWWWOOROOYORRWBYWBY",
+      "processed_state": "GBWOWWOGOYBRYRRGRRBWBWGBRGWBYOGYGGOGWWWOOROOYBRRYBYYBY",
+      "candidate_votes": {
+        "{'action': 'R', 'state': 'GBWOWWOGOYBRYRRGRRBWBWGBRGWBYOGYGGOGWWWOOROOYBRRYBYYBY'}": 9
+      },
+      "best_action": "R",
+      "best_state": "GBWOWWOGOYBRYRRGRRBWBWGBRGWBYOGYGGOGWWWOOROOYBRRYBYYBY",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "GBBOWBOGWGYYRRBRRRBWOWGGRGGBYYGYYGOBWWWOOROOYORRWBYWBY",
+          "error": "Cycle detected: state visited 4 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 27,
+      "current_state": "GBWOWWOGOYBRYRRGRRBWBWGBRGWBYOGYGGOGWWWOOROOYBRRYBYYBY",
+      "processed_state": "WWOBWGGOOBWBYRRGRRWWWWGBRGWBYOGYGGOGBRROOROOYYBRYBYYBY",
+      "candidate_votes": {
+        "{'action': 'U', 'state': 'WWOBWGGOOBWBYRRGRRWWWWGBRGWBYOGYGGOGBRROOROOYYBRYBYYBY'}": 9
+      },
+      "best_action": "U",
+      "best_state": "WWOBWGGOOBWBYRRGRRWWWWGBRGWBYOGYGGOGBRROOROOYYBRYBYYBY",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 28,
+      "current_state": "WWOBWGGOOBWBYRRGRRWWWWGBRGWBYOGYGGOGBRROOROOYYBRYBYYBY",
+      "processed_state": "OGOWWOWBGWWWYRRGRRBRRWGBRGWBYOGYGGOGYBROOROOYBWBYBYYBY",
+      "candidate_votes": {
+        "{'action': 'U2', 'state': 'OOGGWBOWWBRRYRRGRRYBRWGBRGWBYOGYGGOGBWBOOROOYWWWYBYYBY'}": 1,
+        "{'action': 'U', 'state': 'OGOWWOWBGWWWYRRGRRBRRWGBRGWBYOGYGGOGYBROOROOYBWBYBYYBY'}": 8
+      },
+      "best_action": "U",
+      "best_state": "OGOWWOWBGWWWYRRGRRBRRWGBRGWBYOGYGGOGYBROOROOYBWBYBYYBY",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 29,
+      "current_state": "OGOWWOWBGWWWYRRGRRBRRWGBRGWBYOGYGGOGYBROOROOYBWBYBYYBY",
+      "processed_state": "OOGGWBOWWBRRYRRGRRYBRWGBRGWBYOGYGGOGBWBOOROOYWWWYBYYBY",
+      "candidate_votes": {
+        "{'action': 'U', 'state': 'OOGGWBOWWBRRYRRGRRYBRWGBRGWBYOGYGGOGBWBOOROOYWWWYBYYBY'}": 9
+      },
+      "best_action": "U",
+      "best_state": "OOGGWBOWWBRRYRRGRRYBRWGBRGWBYOGYGGOGBWBOOROOYWWWYBYYBY",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 30,
+      "current_state": "OOGGWBOWWBRRYRRGRRYBRWGBRGWBYOGYGGOGBWBOOROOYWWWYBYYBY",
+      "processed_state": "WWOBWGGOOBWBYRRGRRWWWWGBRGWBYOGYGGOGBRROOROOYYBRYBYYBY",
+      "candidate_votes": {
+        "{'action': 'U2', 'state': 'WWOBWGGOOBWBYRRGRRWWWWGBRGWBYOGYGGOGBRROOROOYYBRYBYYBY'}": 9
+      },
+      "best_action": "U2",
+      "best_state": "WWOBWGGOOBWBYRRGRRWWWWGBRGWBYOGYGGOGBRROOROOYYBRYBYYBY",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 31,
+      "current_state": "WWOBWGGOOBWBYRRGRRWWWWGBRGWBYOGYGGOGBRROOROOYYBRYBYYBY",
+      "processed_state": "OGOWWOWBGWWWYRRGRRBRRWGBRGWBYOGYGGOGYBROOROOYBWBYBYYBY",
+      "candidate_votes": {
+        "{'action': 'U', 'state': 'OGOWWOWBGWWWYRRGRRBRRWGBRGWBYOGYGGOGYBROOROOYBWBYBYYBY'}": 9
+      },
+      "best_action": "U",
+      "best_state": "OGOWWOWBGWWWYRRGRRBRRWGBRGWBYOGYGGOGYBROOROOYBWBYBYYBY",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 32,
+      "current_state": "OGOWWOWBGWWWYRRGRRBRRWGBRGWBYOGYGGOGYBROOROOYBWBYBYYBY",
+      "processed_state": "OOGGWBOWWBRRYRRGRRYBRWGBRGWBYOGYGGOGBWBOOROOYWWWYBYYBY",
+      "candidate_votes": {
+        "{'action': 'U', 'state': 'OOGGWBOWWBRRYRRGRRYBRWGBRGWBYOGYGGOGBWBOOROOYWWWYBYYBY'}": 9,
+        "{'action': 'U2', 'state': 'GBWOWWOGOYBRYRRGRRBWBWGBRGWBYOGYGGOGWWWOOROOYBRRYBYYBY'}": 6
+      },
+      "best_action": "U",
+      "best_state": "OOGGWBOWWBRRYRRGRRYBRWGBRGWBYOGYGGOGBWBOOROOYWWWYBYYBY",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 15
+    },
+    {
+      "step": 33,
+      "current_state": "OOGGWBOWWBRRYRRGRRYBRWGBRGWBYOGYGGOGBWBOOROOYWWWYBYYBY",
+      "processed_state": "WWOBWGGOOBWBYRRGRRWWWWGBRGWBYOGYGGOGBRROOROOYYBRYBYYBY",
+      "candidate_votes": {
+        "{'action': 'U2', 'state': 'WWOBWGGOOBWBYRRGRRWWWWGBRGWBYOGYGGOGBRROOROOYYBRYBYYBY'}": 8
+      },
+      "best_action": "U2",
+      "best_state": "WWOBWGGOOBWBYRRGRRWWWWGBRGWBYOGYGGOGBRROOROOYYBRYBYYBY",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "33:6",
+          "action": "None",
+          "state": "None",
+          "error": "Inconsistent prediction: next_state does not match current_state + move."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 34,
+      "current_state": "WWOBWGGOOBWBYRRGRRWWWWGBRGWBYOGYGGOGBRROOROOYYBRYBYYBY",
+      "processed_state": "OGOWWOWBGWWWYRRGRRBRRWGBRGWBYOGYGGOGYBROOROOYBWBYBYYBY",
+      "candidate_votes": {
+        "{'action': 'U', 'state': 'OGOWWOWBGWWWYRRGRRBRRWGBRGWBYOGYGGOGYBROOROOYBWBYBYYBY'}": 9
+      },
+      "best_action": "U",
+      "best_state": "OGOWWOWBGWWWYRRGRRBRRWGBRGWBYOGYGGOGYBROOROOYBWBYBYYBY",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 35,
+      "current_state": "OGOWWOWBGWWWYRRGRRBRRWGBRGWBYOGYGGOGYBROOROOYBWBYBYYBY",
+      "processed_state": "OOGGWBOWWBRRYRRGRRYBRWGBRGWBYOGYGGOGBWBOOROOYWWWYBYYBY",
+      "candidate_votes": {
+        "{'action': 'U', 'state': 'OOGGWBOWWBRRYRRGRRYBRWGBRGWBYOGYGGOGBWBOOROOYWWWYBYYBY'}": 9
+      },
+      "best_action": "U",
+      "best_state": "OOGGWBOWWBRRYRRGRRYBRWGBRGWBYOGYGGOGBWBOOROOYWWWYBYYBY",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 36,
+      "current_state": "OOGGWBOWWBRRYRRGRRYBRWGBRGWBYOGYGGOGBWBOOROOYWWWYBYYBY",
+      "processed_state": "GBWOWWOGOYBRYRRGRRBWBWGBRGWBYOGYGGOGWWWOOROOYBRRYBYYBY",
+      "candidate_votes": {
+        "{'action': 'U', 'state': 'GBWOWWOGOYBRYRRGRRBWBWGBRGWBYOGYGGOGWWWOOROOYBRRYBYYBY'}": 6
+      },
+      "best_action": "U",
+      "best_state": "GBWOWWOGOYBRYRRGRRBWBWGBRGWBYOGYGGOGWWWOOROOYBRRYBYYBY",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "36:1",
+          "action": "None",
+          "state": "None",
+          "error": "Inconsistent prediction: next_state does not match current_state + move."
+        },
+        {
+          "agent_id": "36:2",
+          "action": "None",
+          "state": "None",
+          "error": "Inconsistent prediction: next_state does not match current_state + move."
+        },
+        {
+          "agent_id": "36:8",
+          "action": "None",
+          "state": "None",
+          "error": "Inconsistent prediction: next_state does not match current_state + move."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 37,
+      "current_state": "GBWOWWOGOYBRYRRGRRBWBWGBRGWBYOGYGGOGWWWOOROOYBRRYBYYBY",
+      "processed_state": "WWOBWGGOOBWBYRRGRRWWWWGBRGWBYOGYGGOGBRROOROOYYBRYBYYBY",
+      "candidate_votes": {
+        "{'action': 'U', 'state': 'WWOBWGGOOBWBYRRGRRWWWWGBRGWBYOGYGGOGBRROOROOYYBRYBYYBY'}": 9
+      },
+      "best_action": "U",
+      "best_state": "WWOBWGGOOBWBYRRGRRWWWWGBRGWBYOGYGGOGBRROOROOYYBRYBYYBY",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 38,
+      "current_state": "WWOBWGGOOBWBYRRGRRWWWWGBRGWBYOGYGGOGBRROOROOYYBRYBYYBY",
+      "processed_state": "WWYBWYGOYBRRWRRBYGWWOWGGRGOBYWGYBGOWBRROOROOYGBRGBYOBY",
+      "candidate_votes": {
+        "{'action': 'R', 'state': 'WWYBWYGOYBRRWRRBYGWWOWGGRGOBYWGYBGOWBRROOROOYGBRGBYOBY'}": 9
+      },
+      "best_action": "R",
+      "best_state": "WWYBWYGOYBRRWRRBYGWWOWGGRGOBYWGYBGOWBRROOROOYGBRGBYOBY",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWOBWGGOOBWBYRRGRRWWWWGBRGWBYOGYGGOGBRROOROOYYBRYBYYBY",
+          "error": "Cycle detected: state visited 4 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 1,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 39,
+      "current_state": "WWYBWYGOYBRRWRRBYGWWOWGGRGOBYWGYBGOWBRROOROOYGBRGBYOBY",
+      "processed_state": "YYYWWOWBGWWOWRRBYGBRRWGGRGOBYWGYBGOWGBROOROOYBRRGBYOBY",
+      "candidate_votes": {
+        "{'action': 'U', 'state': 'YYYWWOWBGWWOWRRBYGBRRWGGRGOBYWGYBGOWGBROOROOYBRRGBYOBY'}": 7,
+        "{'action': 'U2', 'state': 'YOGYWBYWWBRRWRRBYGGBRWGGRGOBYWGYBGOWBRROOROOYWWOGBYOBY'}": 2
+      },
+      "best_action": "U",
+      "best_state": "YYYWWOWBGWWOWRRBYGBRRWGGRGOBYWGYBGOWGBROOROOYBRRGBYOBY",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 40,
+      "current_state": "YYYWWOWBGWWOWRRBYGBRRWGGRGOBYWGYBGOWGBROOROOYBRRGBYOBY",
+      "processed_state": "YOGYWBYWWBRRWRRBYGGBRWGGRGOBYWGYBGOWBRROOROOYWWOGBYOBY",
+      "candidate_votes": {
+        "{'action': 'U', 'state': 'YOGYWBYWWBRRWRRBYGGBRWGGRGOBYWGYBGOWBRROOROOYWWOGBYOBY'}": 9
+      },
+      "best_action": "U",
+      "best_state": "YOGYWBYWWBRRWRRBYGGBRWGGRGOBYWGYBGOWBRROOROOYWWOGBYOBY",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 41,
+      "current_state": "YOGYWBYWWBRRWRRBYGGBRWGGRGOBYWGYBGOWBRROOROOYWWOGBYOBY",
+      "processed_state": "WWYBWYGOYBRRWRRBYGWWOWGGRGOBYWGYBGOWBRROOROOYGBRGBYOBY",
+      "candidate_votes": {
+        "{'action': 'U2', 'state': 'WWYBWYGOYBRRWRRBYGWWOWGGRGOBYWGYBGOWBRROOROOYGBRGBYOBY'}": 9
+      },
+      "best_action": "U2",
+      "best_state": "WWYBWYGOYBRRWRRBYGWWOWGGRGOBYWGYBGOWBRROOROOYGBRGBYOBY",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 42,
+      "current_state": "WWYBWYGOYBRRWRRBYGWWOWGGRGOBYWGYBGOWBRROOROOYGBRGBYOBY",
+      "processed_state": "YYYWWOWBGWWOWRRBYGBRRWGGRGOBYWGYBGOWGBROOROOYBRRGBYOBY",
+      "candidate_votes": {
+        "{'action': 'U', 'state': 'YYYWWOWBGWWOWRRBYGBRRWGGRGOBYWGYBGOWGBROOROOYBRRGBYOBY'}": 9
+      },
+      "best_action": "U",
+      "best_state": "YYYWWOWBGWWOWRRBYGBRRWGGRGOBYWGYBGOWGBROOROOYBRRGBYOBY",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 43,
+      "current_state": "YYYWWOWBGWWOWRRBYGBRRWGGRGOBYWGYBGOWGBROOROOYBRRGBYOBY",
+      "processed_state": "YOGYWBYWWBRRWRRBYGGBRWGGRGOBYWGYBGOWBRROOROOYWWOGBYOBY",
+      "candidate_votes": {
+        "{'action': 'U', 'state': 'YOGYWBYWWBRRWRRBYGGBRWGGRGOBYWGYBGOWBRROOROOYWWOGBYOBY'}": 9
+      },
+      "best_action": "U",
+      "best_state": "YOGYWBYWWBRRWRRBYGGBRWGGRGOBYWGYBGOWBRROOROOYWWOGBYOBY",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 44,
+      "current_state": "YOGYWBYWWBRRWRRBYGGBRWGGRGOBYWGYBGOWBRROOROOYWWOGBYOBY",
+      "processed_state": "WWYBWYGOYBRRWRRBYGWWOWGGRGOBYWGYBGOWBRROOROOYGBRGBYOBY",
+      "candidate_votes": {
+        "{'action': 'U2', 'state': 'WWYBWYGOYBRRWRRBYGWWOWGGRGOBYWGYBGOWBRROOROOYGBRGBYOBY'}": 9
+      },
+      "best_action": "U2",
+      "best_state": "WWYBWYGOYBRRWRRBYGWWOWGGRGOBYWGYBGOWBRROOROOYGBRGBYOBY",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 45,
+      "current_state": "WWYBWYGOYBRRWRRBYGWWOWGGRGOBYWGYBGOWBRROOROOYGBRGBYOBY",
+      "processed_state": "WWYBWYBWBWRRYRRBYGOGOWGGWWRRRYGYBGOWBRYOOOOOGGBRGBYOBY",
+      "candidate_votes": {
+        "{'action': \"F'\", 'state': 'WWYBWYBWBWRRYRRBYGOGOWGGWWRRRYGYBGOWBRYOOOOOGGBRGBYOBY'}": 9
+      },
+      "best_action": "F'",
+      "best_state": "WWYBWYBWBWRRYRRBYGOGOWGGWWRRRYGYBGOWBRYOOOOOGGBRGBYOBY",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 46,
+      "current_state": "WWYBWYBWBWRRYRRBYGOGOWGGWWRRRYGYBGOWBRYOOOOOGGBRGBYOBY",
+      "processed_state": "BWBYWBYWWBRYYRRBYGGBRWGGWWRRRYGYBGOWWRROOOOOGOGOGBYOBY",
+      "candidate_votes": {
+        "{'action': 'U2', 'state': 'BWBYWBYWWBRYYRRBYGGBRWGGWWRRRYGYBGOWWRROOOOOGOGOGBYOBY'}": 9
+      },
+      "best_action": "U2",
+      "best_state": "BWBYWBYWWBRYYRRBYGGBRWGGWWRRRYGYBGOWWRROOOOOGOGOGBYOBY",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 47,
+      "current_state": "BWBYWBYWWBRYYRRBYGGBRWGGWWRRRYGYBGOWWRROOOOOGOGOGBYOBY",
+      "processed_state": "BBWWWWBYYGBRYRRBYGWRRWGGWWRRRYGYBGOWOGOOOOOOGBRYGBYOBY",
+      "candidate_votes": {
+        "{'action': 'U', 'state': 'BBWWWWBYYGBRYRRBYGWRRWGGWWRRRYGYBGOWOGOOOOOOGBRYGBYOBY'}": 9
+      },
+      "best_action": "U",
+      "best_state": "BBWWWWBYYGBRYRRBYGWRRWGGWWRRRYGYBGOWOGOOOOOOGBRYGBYOBY",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 48,
+      "current_state": "BBWWWWBYYGBRYRRBYGWRRWGGWWRRRYGYBGOWOGOOOOOOGBRYGBYOBY",
+      "processed_state": "WWYBWYBWBWRRYRRBYGOGOWGGWWRRRYGYBGOWBRYOOOOOGGBRGBYOBY",
+      "candidate_votes": {
+        "{'action': 'U', 'state': 'WWYBWYBWBWRRYRRBYGOGOWGGWWRRRYGYBGOWBRYOOOOOGGBRGBYOBY'}": 9
+      },
+      "best_action": "U",
+      "best_state": "WWYBWYBWBWRRYRRBYGOGOWGGWWRRRYGYBGOWBRYOOOOOGGBRGBYOBY",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 49,
+      "current_state": "WWYBWYBWBWRRYRRBYGOGOWGGWWRRRYGYBGOWBRYOOOOOGGBRGBYOBY",
+      "processed_state": "BWBYWBYWWBRYYRRBYGGBRWGGWWRRRYGYBGOWWRROOOOOGOGOGBYOBY",
+      "candidate_votes": {
+        "{'action': 'U2', 'state': 'BWBYWBYWWBRYYRRBYGGBRWGGWWRRRYGYBGOWWRROOOOOGOGOGBYOBY'}": 7,
+        "{'action': 'U', 'state': 'YYBWWWWBBOGOYRRBYGBRYWGGWWRRRYGYBGOWGBROOOOOGWRRGBYOBY'}": 2
+      },
+      "best_action": "U2",
+      "best_state": "BWBYWBYWWBRYYRRBYGGBRWGGWWRRRYGYBGOWWRROOOOOGOGOGBYOBY",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 50,
+      "current_state": "BWBYWBYWWBRYYRRBYGGBRWGGWWRRRYGYBGOWWRROOOOOGOGOGBYOBY",
+      "processed_state": "BBWWWWBYYGBRYRRBYGWRRWGGWWRRRYGYBGOWOGOOOOOOGBRYGBYOBY",
+      "candidate_votes": {
+        "{'action': 'U', 'state': 'BBWWWWBYYGBRYRRBYGWRRWGGWWRRRYGYBGOWOGOOOOOOGBRYGBYOBY'}": 9
+      },
+      "best_action": "U",
+      "best_state": "BBWWWWBYYGBRYRRBYGWRRWGGWWRRRYGYBGOWOGOOOOOOGBRYGBYOBY",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 51,
+      "current_state": "BBWWWWBYYGBRYRRBYGWRRWGGWWRRRYGYBGOWOGOOOOOOGBRYGBYOBY",
+      "processed_state": "WWYBWYBWBWRRYRRBYGOGOWGGWWRRRYGYBGOWBRYOOOOOGGBRGBYOBY",
+      "candidate_votes": {
+        "{'action': 'U', 'state': 'WWYBWYBWBWRRYRRBYGOGOWGGWWRRRYGYBGOWBRYOOOOOGGBRGBYOBY'}": 9
+      },
+      "best_action": "U",
+      "best_state": "WWYBWYBWBWRRYRRBYGOGOWGGWWRRRYGYBGOWBRYOOOOOGGBRGBYOBY",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 52,
+      "current_state": "WWYBWYBWBWRRYRRBYGOGOWGGWWRRRYGYBGOWBRYOOOOOGGBRGBYOBY",
+      "processed_state": "BWBYWBYWWBRYYRRBYGGBRWGGWWRRRYGYBGOWWRROOOOOGOGOGBYOBY",
+      "candidate_votes": {
+        "{'action': 'U2', 'state': 'BWBYWBYWWBRYYRRBYGGBRWGGWWRRRYGYBGOWWRROOOOOGOGOGBYOBY'}": 9
+      },
+      "best_action": "U2",
+      "best_state": "BWBYWBYWWBRYYRRBYGGBRWGGWWRRRYGYBGOWWRROOOOOGOGOGBYOBY",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 53,
+      "current_state": "BWBYWBYWWBRYYRRBYGGBRWGGWWRRRYGYBGOWWRROOOOOGOGOGBYOBY",
+      "processed_state": "BBWWWWBYYGBRYRRBYGWRRWGGWWRRRYGYBGOWOGOOOOOOGBRYGBYOBY",
+      "candidate_votes": {
+        "{'action': 'U', 'state': 'BBWWWWBYYGBRYRRBYGWRRWGGWWRRRYGYBGOWOGOOOOOOGBRYGBYOBY'}": 9
+      },
+      "best_action": "U",
+      "best_state": "BBWWWWBYYGBRYRRBYGWRRWGGWWRRRYGYBGOWOGOOOOOOGBRYGBYOBY",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 54,
+      "current_state": "BBWWWWBYYGBRYRRBYGWRRWGGWWRRRYGYBGOWOGOOOOOOGBRYGBYOBY",
+      "processed_state": "WWYBWYBWBWRRYRRBYGOGOWGGWWRRRYGYBGOWBRYOOOOOGGBRGBYOBY",
+      "candidate_votes": {
+        "{'action': 'U', 'state': 'WWYBWYBWBWRRYRRBYGOGOWGGWWRRRYGYBGOWBRYOOOOOGGBRGBYOBY'}": 9
+      },
+      "best_action": "U",
+      "best_state": "WWYBWYBWBWRRYRRBYGOGOWGGWWRRRYGYBGOWBRYOOOOOGGBRGBYOBY",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 55,
+      "current_state": "WWYBWYBWBWRRYRRBYGOGOWGGWWRRRYGYBGOWBRYOOOOOGGBRGBYOBY",
+      "processed_state": "OWYWWYWWBWRRYRRBYGRGOGGGGWRYRYYYBROWYOGROOBOOGBBGBBOBW",
+      "candidate_votes": {
+        "{'action': 'L', 'state': 'OWYWWYWWBWRRYRRBYGRGOGGGGWRYRYYYBROWYOGROOBOOGBBGBBOBW'}": 9
+      },
+      "best_action": "L",
+      "best_state": "OWYWWYWWBWRRYRRBYGRGOGGGGWRYRYYYBROWYOGROOBOOGBBGBBOBW",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "cycle_detector",
+          "action": "N/A",
+          "state": "WWYBWYBWBWRRYRRBYGOGOWGGWWRRRYGYBGOWBRYOOOOOGGBRGBYOBY",
+          "error": "Cycle detected: state visited 4 times (limit 3). The agent is stuck in a loop. You MUST choose a completely different move."
+        }
+      ],
+      "fallback_retries": 2,
+      "num_agents_queried": 10
+    },
+    {
+      "step": 56,
+      "current_state": "OWYWWYWWBWRRYRRBYGRGOGGGGWRYRYYYBROWYOGROOBOOGBBGBBOBW",
+      "processed_state": "OWOWWGWWGRRGRRYWYBRGYGGYGWBYROYYGRORYOGROOBOOWBBBBBYBW",
+      "candidate_votes": {
+        "{'action': 'R', 'state': 'OWOWWGWWGRRGRRYWYBRGYGGYGWBYROYYGRORYOGROOBOOWBBBBBYBW'}": 9
+      },
+      "best_action": "R",
+      "best_state": "OWOWWGWWGRRGRRYWYBRGYGGYGWBYROYYGRORYOGROOBOOWBBBBBYBW",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 57,
+      "current_state": "OWOWWGWWGRRGRRYWYBRGYGGYGWBYROYYGRORYOGROOBOOWBBBBBYBW",
+      "processed_state": "OWOWWGWWGRRGRRYYBWRGYGGYWYBOGRRYOYYRYOGROOGWBWBBBBBBOO",
+      "candidate_votes": {
+        "{'action': 'D', 'state': 'OWOWWGWWGRRGRRYYBWRGYGGYWYBOGRRYOYYRYOGROOGWBWBBBBBBOO'}": 9
+      },
+      "best_action": "D",
+      "best_state": "OWOWWGWWGRRGRRYYBWRGYGGYWYBOGRRYOYYRYOGROOGWBWBBBBBBOO",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 58,
+      "current_state": "OWOWWGWWGRRGRRYYBWRGYGGYWYBOGRRYOYYRYOGROOGWBWBBBBBBOO",
+      "processed_state": "OWYWWYWWBYRRBRRWYGRGRGGOWYROGBRYBYYWYOGROOGWBGBBGBBOOO",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'OWYWWYWWBYRRBRRWYGRGRGGOWYROGBRYBYYWYOGROOGWBGBBGBBOOO'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "OWYWWYWWBYRRBRRWYGRGRGGOWYROGBRYBYYWYOGROOGWBGBBGBBOOO",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 59,
+      "current_state": "OWYWWYWWBYRRBRRWYGRGRGGOWYROGBRYBYYWYOGROOGWBGBBGBBOOO",
+      "processed_state": "OWYWWYWWBYRRBRROOORGRGGOWYGBBWGYYORYYOGROOWYRGBBGBBGWB",
+      "candidate_votes": {
+        "{'action': 'D', 'state': 'OWYWWYWWBYRRBRROOORGRGGOWYGBBWGYYORYYOGROOWYRGBBGBBGWB'}": 9
+      },
+      "best_action": "D",
+      "best_state": "OWYWWYWWBYRRBRROOORGRGGOWYGBBWGYYORYYOGROOWYRGBBGBBGWB",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 60,
+      "current_state": "OWYWWYWWBYRRBRROOORGRGGOWYGBBWGYYORYYOGROOWYRGBBGBBGWB",
+      "processed_state": "OWGWWGWWGRRORROYBORGYGGYWYBBBRGYOORGYOGROOWYRYBBYBBWWB",
+      "candidate_votes": {
+        "{'action': 'R', 'state': 'OWGWWGWWGRRORROYBORGYGGYWYBBBRGYOORGYOGROOWYRYBBYBBWWB'}": 9
+      },
+      "best_action": "R",
+      "best_state": "OWGWWGWWGRRORROYBORGYGGYWYBBBRGYOORGYOGROOWYRYBBYBBWWB",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 61,
+      "current_state": "OWGWWGWWGRRORROYBORGYGGYWYBBBRGYOORGYOGROOWYRYBBYBBWWB",
+      "processed_state": "OWGWWGWWGRRORROWWBRGYGGYYBOROGBYRBGOYOGROOWYBYBBYBBWYR",
+      "candidate_votes": {
+        "{'action': 'D', 'state': 'OWGWWGWWGRRORROWWBRGYGGYYBOROGBYRBGOYOGROOWYBYBBYBBWYR'}": 9
+      },
+      "best_action": "D",
+      "best_state": "OWGWWGWWGRRORROWWBRGYGGYYBOROGBYRBGOYOGROOWYBYBBYBBWYR",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 62,
+      "current_state": "OWGWWGWWGRRORROWWBRGYGGYYBOROGBYRBGOYOGROOWYBYBBYBBWYR",
+      "processed_state": "OWYWWYWWOWRRWRRBOORGGGGRYBOROWBYYBGYYOGROOWYBGBBGBBGYR",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'OWYWWYWWOWRRWRRBOORGGGGRYBOROWBYYBGYYOGROOWYBGBBGBBGYR'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "OWYWWYWWOWRRWRRBOORGGGGRYBOROWBYYBGYYOGROOWYBGBBGBBGYR",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 63,
+      "current_state": "OWYWWYWWOWRRWRRBOORGGGGRYBOROWBYYBGYYOGROOWYBGBBGBBGYR",
+      "processed_state": "OWYWWYWWOWRRWRRGYRRGGGGRBOOWYYOYGRBBYOGROOYBOGBBGBBWYB",
+      "candidate_votes": {
+        "{'action': 'D', 'state': 'OWYWWYWWOWRRWRRGYRRGGGGRBOOWYYOYGRBBYOGROOYBOGBBGBBWYB'}": 9
+      },
+      "best_action": "D",
+      "best_state": "OWYWWYWWOWRRWRRGYRRGGGGRBOOWYYOYGRBBYOGROOYBOGBBGBBWYB",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 64,
+      "current_state": "OWYWWYWWOWRRWRRGYRRGGGGRBOOWYYOYGRBBYOGROOYBOGBBGBBWYB",
+      "processed_state": "OWWWWGWWGRRRRRYWWGRGYGGYBOOWYGOYRRBOYOGROOYBOBBBGBBYYB",
+      "candidate_votes": {
+        "{'action': 'R', 'state': 'OWWWWGWWGRRRRRYWWGRGYGGYBOOWYGOYRRBOYOGROOYBOBBBGBBYYB'}": 9
+      },
+      "best_action": "R",
+      "best_state": "OWWWWGWWGRRRRRYWWGRGYGGYBOOWYGOYRRBOYOGROOYBOBBBGBBYYB",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 65,
+      "current_state": "OWWWWGWWGRRRRRYWWGRGYGGYBOOWYGOYRRBOYOGROOYBOBBBGBBYYB",
+      "processed_state": "OWWWWGWWGRRRRRYYYBRGYGGYWWGGROYYBWORYOGROOBOOBBBGBBYBO",
+      "candidate_votes": {
+        "{'action': 'D', 'state': 'OWWWWGWWGRRRRRYYYBRGYGGYWWGGROYYBWORYOGROOBOOBBBGBBYBO'}": 9
+      },
+      "best_action": "D",
+      "best_state": "OWWWWGWWGRRRRRYYYBRGYGGYWWGGROYYBWORYOGROOBOOBBBGBBYBO",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 66,
+      "current_state": "OWWWWGWWGRRRRRYYYBRGYGGYWWGGROYYBWORYOGROOBOOBBBGBBYBO",
+      "processed_state": "OWYWWYWWGYRRYRRBYRRGOGGBWWRGRYYYGWOBYOGROOBOOGBBGBBWBO",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'OWYWWYWWGYRRYRRBYRRGOGGBWWRGRYYYGWOBYOGROOBOOGBBGBBWBO'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "OWYWWYWWGYRRYRRBYRRGOGGBWWRGRYYYGWOBYOGROOBOOGBBGBBWBO",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 67,
+      "current_state": "OWYWWYWWGYRRYRRBYRRGOGGBWWRGRYYYGWOBYOGROOBOOGBBGBBWBO",
+      "processed_state": "OWYWWYWWGYRRYRRWBORGOGGBBYRYGBRYOGYWYOGROOWWRGBBGBBBOO",
+      "candidate_votes": {
+        "{'action': 'D', 'state': 'OWYWWYWWGYRRYRRWBORGOGGBBYRYGBRYOGYWYOGROOWWRGBBGBBBOO'}": 9
+      },
+      "best_action": "D",
+      "best_state": "OWYWWYWWGYRRYRRWBORGOGGBBYRYGBRYOGYWYOGROOWWRGBBGBBBOO",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 68,
+      "current_state": "OWYWWYWWGYRRYRRWBORGOGGBBYRYGBRYOGYWYOGROOWWRGBBGBBBOO",
+      "processed_state": "OWBWWGWWGRRORRBYYWRGYGGYBYGYGORYBGYRYOGROOWWRWBBOBBBOO",
+      "candidate_votes": {
+        "{'action': 'R', 'state': 'OWBWWGWWGRRORRBYYWRGYGGYBYGYGORYBGYRYOGROOWWRWBBOBBBOO'}": 9
+      },
+      "best_action": "R",
+      "best_state": "OWBWWGWWGRRORRBYYWRGYGGYBYGYGORYBGYRYOGROOWWRWBBOBBBOO",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 69,
+      "current_state": "OWBWWGWWGRRORRBYYWRGYGGYBYGYGORYBGYRYOGROOWWRWBBOBBBOO",
+      "processed_state": "OWBWWGWWGRRORRBBOORGYGGYYYWOBRGYYYRGYOGROOBYGWBBOBBWWR",
+      "candidate_votes": {
+        "{'action': 'D', 'state': 'OWBWWGWWGRRORRBBOORGYGGYYYWOBRGYYYRGYOGROOBYGWBBOBBWWR'}": 9
+      },
+      "best_action": "D",
+      "best_state": "OWBWWGWWGRRORRBBOORGYGGYYYWOBRGYYYRGYOGROOBYGWBBOBBWWR",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 70,
+      "current_state": "OWBWWGWWGRRORRBBOORGYGGYYYWOBRGYYYRGYOGROOBYGWBBOBBWWR",
+      "processed_state": "OWYWWYWWWBRRORROBORGRGGYYYGOBWGYOYRWYOGROOBYGGBBGBBBWR",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'OWYWWYWWWBRRORROBORGRGGYYYGOBWGYOYRWYOGROOBYGGBBGBBBWR'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "OWYWWYWWWBRRORROBORGRGGYYYGOBWGYOYRWYOGROOBYGGBBGBBBWR",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 71,
+      "current_state": "OWYWWYWWWBRRORROBORGRGGYYYGOBWGYOYRWYOGROOBYGGBBGBBBWR",
+      "processed_state": "OWYWWYWWWBRRORRBWRRGRGGYOBOWOWBYROGYYOGROOYYGGBBGBBBYG",
+      "candidate_votes": {
+        "{'action': 'D', 'state': 'OWYWWYWWWBRRORRBWRRGRGGYOBOWOWBYROGYYOGROOYYGGBBGBBBYG'}": 9
+      },
+      "best_action": "D",
+      "best_state": "OWYWWYWWWBRRORRBWRRGRGGYOBOWOWBYROGYYOGROOYYGGBBGBBBYG",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 72,
+      "current_state": "OWYWWYWWWBRRORRBWRRGRGGYOBOWOWBYROGYYOGROOYYGGBBGBBBYG",
+      "processed_state": "OWBWWGWWGRRRRRWBOBRGYGGYOBWWORBYYOGOYOGROOYYGYBBRBBWYG",
+      "candidate_votes": {
+        "{'action': 'R', 'state': 'OWBWWGWWGRRRRRWBOBRGYGGYOBWWORBYYOGOYOGROOYYGYBBRBBWYG'}": 9
+      },
+      "best_action": "R",
+      "best_state": "OWBWWGWWGRRRRRWBOBRGYGGYOBWWORBYYOGOYOGROOYYGYBBRBBWYG",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 73,
+      "current_state": "OWBWWGWWGRRRRRWBOBRGYGGYOBWWORBYYOGOYOGROOYYGYBBRBBWYG",
+      "processed_state": "OWBWWGWWGRRRRRWWYGRGYGGYBOBRYOOYGWBOYOGROOOBWYBBRBBYYG",
+      "candidate_votes": {
+        "{'action': 'D', 'state': 'OWBWWGWWGRRRRRWWYGRGYGGYBOBRYOOYGWBOYOGROOOBWYBBRBBYYG'}": 9
+      },
+      "best_action": "D",
+      "best_state": "OWBWWGWWGRRRRRWWYGRGYGGYBOBRYOOYGWBOYOGROOOBWYBBRBBYYG",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 74,
+      "current_state": "OWBWWGWWGRRRRRWWYGRGYGGYBOBRYOOYGWBOYOGROOOBWYBBRBBYYG",
+      "processed_state": "OWYWWYWWBWRRYRRGWRRGOGGGBOORYYOYRWBYYOGROOOBWGBBGBBBYG",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'OWYWWYWWBWRRYRRGWRRGOGGGBOORYYOYRWBYYOGROOOBWGBBGBBBYG'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "OWYWWYWWBWRRYRRGWRRGOGGGBOORYYOYRWBYYOGROOOBWGBBGBBBYG",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 75,
+      "current_state": "OWYWWYWWBWRRYRRGWRRGOGGGBOORYYOYRWBYYOGROOOBWGBBGBBBYG",
+      "processed_state": "OWYWWYWWBWRRYRRBYGRGOGGGGWRYRYYYBROWYOGROOBOOGBBGBBOBW",
+      "candidate_votes": {
+        "{'action': 'D', 'state': 'OWYWWYWWBWRRYRRBYGRGOGGGGWRYRYYYBROWYOGROOBOOGBBGBBOBW'}": 9
+      },
+      "best_action": "D",
+      "best_state": "OWYWWYWWBWRRYRRBYGRGOGGGGWRYRYYYBROWYOGROOBOOGBBGBBOBW",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 76,
+      "current_state": "OWYWWYWWBWRRYRRBYGRGOGGGGWRYRYYYBROWYOGROOBOOGBBGBBOBW",
+      "processed_state": "OWOWWGWWGRRGRRYWYBRGYGGYGWBYROYYGRORYOGROOBOOWBBBBBYBW",
+      "candidate_votes": {
+        "{'action': 'R', 'state': 'OWOWWGWWGRRGRRYWYBRGYGGYGWBYROYYGRORYOGROOBOOWBBBBBYBW'}": 9
+      },
+      "best_action": "R",
+      "best_state": "OWOWWGWWGRRGRRYWYBRGYGGYGWBYROYYGRORYOGROOBOOWBBBBBYBW",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 77,
+      "current_state": "OWOWWGWWGRRGRRYWYBRGYGGYGWBYROYYGRORYOGROOBOOWBBBBBYBW",
+      "processed_state": "OWOWWGWWGRRGRRYYBWRGYGGYWYBOGRRYOYYRYOGROOGWBWBBBBBBOO",
+      "candidate_votes": {
+        "{'action': 'D', 'state': 'OWOWWGWWGRRGRRYYBWRGYGGYWYBOGRRYOYYRYOGROOGWBWBBBBBBOO'}": 9
+      },
+      "best_action": "D",
+      "best_state": "OWOWWGWWGRRGRRYYBWRGYGGYWYBOGRRYOYYRYOGROOGWBWBBBBBBOO",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 78,
+      "current_state": "OWOWWGWWGRRGRRYYBWRGYGGYWYBOGRRYOYYRYOGROOGWBWBBBBBBOO",
+      "processed_state": "OWYWWYWWBYRRBRRWYGRGRGGOWYROGBRYBYYWYOGROOGWBGBBGBBOOO",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'OWYWWYWWBYRRBRRWYGRGRGGOWYROGBRYBYYWYOGROOGWBGBBGBBOOO'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "OWYWWYWWBYRRBRRWYGRGRGGOWYROGBRYBYYWYOGROOGWBGBBGBBOOO",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 79,
+      "current_state": "OWYWWYWWBYRRBRRWYGRGRGGOWYROGBRYBYYWYOGROOGWBGBBGBBOOO",
+      "processed_state": "OWYWWYWWBYRRBRROOORGRGGOWYGBBWGYYORYYOGROOWYRGBBGBBGWB",
+      "candidate_votes": {
+        "{'action': 'D', 'state': 'OWYWWYWWBYRRBRROOORGRGGOWYGBBWGYYORYYOGROOWYRGBBGBBGWB'}": 9
+      },
+      "best_action": "D",
+      "best_state": "OWYWWYWWBYRRBRROOORGRGGOWYGBBWGYYORYYOGROOWYRGBBGBBGWB",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 80,
+      "current_state": "OWYWWYWWBYRRBRROOORGRGGOWYGBBWGYYORYYOGROOWYRGBBGBBGWB",
+      "processed_state": "OWGWWGWWGRRORROYBORGYGGYWYBBBRGYOORGYOGROOWYRYBBYBBWWB",
+      "candidate_votes": {
+        "{'action': 'R', 'state': 'OWGWWGWWGRRORROYBORGYGGYWYBBBRGYOORGYOGROOWYRYBBYBBWWB'}": 9
+      },
+      "best_action": "R",
+      "best_state": "OWGWWGWWGRRORROYBORGYGGYWYBBBRGYOORGYOGROOWYRYBBYBBWWB",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 81,
+      "current_state": "OWGWWGWWGRRORROYBORGYGGYWYBBBRGYOORGYOGROOWYRYBBYBBWWB",
+      "processed_state": "OWGWWGWWGRRORROWWBRGYGGYYBOROGBYRBGOYOGROOWYBYBBYBBWYR",
+      "candidate_votes": {
+        "{'action': 'D', 'state': 'OWGWWGWWGRRORROWWBRGYGGYYBOROGBYRBGOYOGROOWYBYBBYBBWYR'}": 9
+      },
+      "best_action": "D",
+      "best_state": "OWGWWGWWGRRORROWWBRGYGGYYBOROGBYRBGOYOGROOWYBYBBYBBWYR",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 82,
+      "current_state": "OWGWWGWWGRRORROWWBRGYGGYYBOROGBYRBGOYOGROOWYBYBBYBBWYR",
+      "processed_state": "OWYWWYWWOWRRWRRBOORGGGGRYBOROWBYYBGYYOGROOWYBGBBGBBGYR",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'OWYWWYWWOWRRWRRBOORGGGGRYBOROWBYYBGYYOGROOWYBGBBGBBGYR'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "OWYWWYWWOWRRWRRBOORGGGGRYBOROWBYYBGYYOGROOWYBGBBGBBGYR",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 83,
+      "current_state": "OWYWWYWWOWRRWRRBOORGGGGRYBOROWBYYBGYYOGROOWYBGBBGBBGYR",
+      "processed_state": "OWYWWYWWOWRRWRRGYRRGGGGRBOOWYYOYGRBBYOGROOYBOGBBGBBWYB",
+      "candidate_votes": {
+        "{'action': 'D', 'state': 'OWYWWYWWOWRRWRRGYRRGGGGRBOOWYYOYGRBBYOGROOYBOGBBGBBWYB'}": 9
+      },
+      "best_action": "D",
+      "best_state": "OWYWWYWWOWRRWRRGYRRGGGGRBOOWYYOYGRBBYOGROOYBOGBBGBBWYB",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 84,
+      "current_state": "OWYWWYWWOWRRWRRGYRRGGGGRBOOWYYOYGRBBYOGROOYBOGBBGBBWYB",
+      "processed_state": "OWWWWGWWGRRRRRYWWGRGYGGYBOOWYGOYRRBOYOGROOYBOBBBGBBYYB",
+      "candidate_votes": {
+        "{'action': 'R', 'state': 'OWWWWGWWGRRRRRYWWGRGYGGYBOOWYGOYRRBOYOGROOYBOBBBGBBYYB'}": 9
+      },
+      "best_action": "R",
+      "best_state": "OWWWWGWWGRRRRRYWWGRGYGGYBOOWYGOYRRBOYOGROOYBOBBBGBBYYB",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 85,
+      "current_state": "OWWWWGWWGRRRRRYWWGRGYGGYBOOWYGOYRRBOYOGROOYBOBBBGBBYYB",
+      "processed_state": "OWWWWGWWGRRRRRYYYBRGYGGYWWGGROYYBWORYOGROOBOOBBBGBBYBO",
+      "candidate_votes": {
+        "{'action': 'D', 'state': 'OWWWWGWWGRRRRRYYYBRGYGGYWWGGROYYBWORYOGROOBOOBBBGBBYBO'}": 9
+      },
+      "best_action": "D",
+      "best_state": "OWWWWGWWGRRRRRYYYBRGYGGYWWGGROYYBWORYOGROOBOOBBBGBBYBO",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 86,
+      "current_state": "OWWWWGWWGRRRRRYYYBRGYGGYWWGGROYYBWORYOGROOBOOBBBGBBYBO",
+      "processed_state": "OWYWWYWWGYRRYRRBYRRGOGGBWWRGRYYYGWOBYOGROOBOOGBBGBBWBO",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'OWYWWYWWGYRRYRRBYRRGOGGBWWRGRYYYGWOBYOGROOBOOGBBGBBWBO'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "OWYWWYWWGYRRYRRBYRRGOGGBWWRGRYYYGWOBYOGROOBOOGBBGBBWBO",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 87,
+      "current_state": "OWYWWYWWGYRRYRRBYRRGOGGBWWRGRYYYGWOBYOGROOBOOGBBGBBWBO",
+      "processed_state": "OWYWWYWWGYRRYRRWBORGOGGBBYRYGBRYOGYWYOGROOWWRGBBGBBBOO",
+      "candidate_votes": {
+        "{'action': 'D', 'state': 'OWYWWYWWGYRRYRRWBORGOGGBBYRYGBRYOGYWYOGROOWWRGBBGBBBOO'}": 9
+      },
+      "best_action": "D",
+      "best_state": "OWYWWYWWGYRRYRRWBORGOGGBBYRYGBRYOGYWYOGROOWWRGBBGBBBOO",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 88,
+      "current_state": "OWYWWYWWGYRRYRRWBORGOGGBBYRYGBRYOGYWYOGROOWWRGBBGBBBOO",
+      "processed_state": "OWBWWGWWGRRORRBYYWRGYGGYBYGYGORYBGYRYOGROOWWRWBBOBBBOO",
+      "candidate_votes": {
+        "{'action': 'R', 'state': 'OWBWWGWWGRRORRBYYWRGYGGYBYGYGORYBGYRYOGROOWWRWBBOBBBOO'}": 9
+      },
+      "best_action": "R",
+      "best_state": "OWBWWGWWGRRORRBYYWRGYGGYBYGYGORYBGYRYOGROOWWRWBBOBBBOO",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 89,
+      "current_state": "OWBWWGWWGRRORRBYYWRGYGGYBYGYGORYBGYRYOGROOWWRWBBOBBBOO",
+      "processed_state": "OWBWWGWWGRRORRBBOORGYGGYYYWOBRGYYYRGYOGROOBYGWBBOBBWWR",
+      "candidate_votes": {
+        "{'action': 'D', 'state': 'OWBWWGWWGRRORRBBOORGYGGYYYWOBRGYYYRGYOGROOBYGWBBOBBWWR'}": 9
+      },
+      "best_action": "D",
+      "best_state": "OWBWWGWWGRRORRBBOORGYGGYYYWOBRGYYYRGYOGROOBYGWBBOBBWWR",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 90,
+      "current_state": "OWBWWGWWGRRORRBBOORGYGGYYYWOBRGYYYRGYOGROOBYGWBBOBBWWR",
+      "processed_state": "OWYWWYWWWBRRORROBORGRGGYYYGOBWGYOYRWYOGROOBYGGBBGBBBWR",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'OWYWWYWWWBRRORROBORGRGGYYYGOBWGYOYRWYOGROOBYGGBBGBBBWR'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "OWYWWYWWWBRRORROBORGRGGYYYGOBWGYOYRWYOGROOBYGGBBGBBBWR",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 91,
+      "current_state": "OWYWWYWWWBRRORROBORGRGGYYYGOBWGYOYRWYOGROOBYGGBBGBBBWR",
+      "processed_state": "OWYWWYWWWBRRORRBWRRGRGGYOBOWOWBYROGYYOGROOYYGGBBGBBBYG",
+      "candidate_votes": {
+        "{'action': 'D', 'state': 'OWYWWYWWWBRRORRBWRRGRGGYOBOWOWBYROGYYOGROOYYGGBBGBBBYG'}": 9
+      },
+      "best_action": "D",
+      "best_state": "OWYWWYWWWBRRORRBWRRGRGGYOBOWOWBYROGYYOGROOYYGGBBGBBBYG",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 92,
+      "current_state": "OWYWWYWWWBRRORRBWRRGRGGYOBOWOWBYROGYYOGROOYYGGBBGBBBYG",
+      "processed_state": "OWBWWGWWGRRRRRWBOBRGYGGYOBWWORBYYOGOYOGROOYYGYBBRBBWYG",
+      "candidate_votes": {
+        "{'action': 'R', 'state': 'OWBWWGWWGRRRRRWBOBRGYGGYOBWWORBYYOGOYOGROOYYGYBBRBBWYG'}": 9
+      },
+      "best_action": "R",
+      "best_state": "OWBWWGWWGRRRRRWBOBRGYGGYOBWWORBYYOGOYOGROOYYGYBBRBBWYG",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 93,
+      "current_state": "OWBWWGWWGRRRRRWBOBRGYGGYOBWWORBYYOGOYOGROOYYGYBBRBBWYG",
+      "processed_state": "OWBWWGWWGRRRRRWWYGRGYGGYBOBRYOOYGWBOYOGROOOBWYBBRBBYYG",
+      "candidate_votes": {
+        "{'action': 'D', 'state': 'OWBWWGWWGRRRRRWWYGRGYGGYBOBRYOOYGWBOYOGROOOBWYBBRBBYYG'}": 9
+      },
+      "best_action": "D",
+      "best_state": "OWBWWGWWGRRRRRWWYGRGYGGYBOBRYOOYGWBOYOGROOOBWYBBRBBYYG",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 94,
+      "current_state": "OWBWWGWWGRRRRRWWYGRGYGGYBOBRYOOYGWBOYOGROOOBWYBBRBBYYG",
+      "processed_state": "OWYWWYWWBWRRYRRGWRRGOGGGBOORYYOYRWBYYOGROOOBWGBBGBBBYG",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'OWYWWYWWBWRRYRRGWRRGOGGGBOORYYOYRWBYYOGROOOBWGBBGBBBYG'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "OWYWWYWWBWRRYRRGWRRGOGGGBOORYYOYRWBYYOGROOOBWGBBGBBBYG",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 95,
+      "current_state": "OWYWWYWWBWRRYRRGWRRGOGGGBOORYYOYRWBYYOGROOOBWGBBGBBBYG",
+      "processed_state": "OWYWWYWWBWRRYRRBYGRGOGGGGWRYRYYYBROWYOGROOBOOGBBGBBOBW",
+      "candidate_votes": {
+        "{'action': 'D', 'state': 'OWYWWYWWBWRRYRRBYGRGOGGGGWRYRYYYBROWYOGROOBOOGBBGBBOBW'}": 9
+      },
+      "best_action": "D",
+      "best_state": "OWYWWYWWBWRRYRRBYGRGOGGGGWRYRYYYBROWYOGROOBOOGBBGBBOBW",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 96,
+      "current_state": "OWYWWYWWBWRRYRRBYGRGOGGGGWRYRYYYBROWYOGROOBOOGBBGBBOBW",
+      "processed_state": "OWOWWGWWGRRGRRYWYBRGYGGYGWBYROYYGRORYOGROOBOOWBBBBBYBW",
+      "candidate_votes": {
+        "{'action': 'R', 'state': 'OWOWWGWWGRRGRRYWYBRGYGGYGWBYROYYGRORYOGROOBOOWBBBBBYBW'}": 9
+      },
+      "best_action": "R",
+      "best_state": "OWOWWGWWGRRGRRYWYBRGYGGYGWBYROYYGRORYOGROOBOOWBBBBBYBW",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 97,
+      "current_state": "OWOWWGWWGRRGRRYWYBRGYGGYGWBYROYYGRORYOGROOBOOWBBBBBYBW",
+      "processed_state": "OWOWWGWWGRRGRRYYBWRGYGGYWYBOGRRYOYYRYOGROOGWBWBBBBBBOO",
+      "candidate_votes": {
+        "{'action': 'D', 'state': 'OWOWWGWWGRRGRRYYBWRGYGGYWYBOGRRYOYYRYOGROOGWBWBBBBBBOO'}": 9
+      },
+      "best_action": "D",
+      "best_state": "OWOWWGWWGRRGRRYYBWRGYGGYWYBOGRRYOYYRYOGROOGWBWBBBBBBOO",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 98,
+      "current_state": "OWOWWGWWGRRGRRYYBWRGYGGYWYBOGRRYOYYRYOGROOGWBWBBBBBBOO",
+      "processed_state": "OWYWWYWWBYRRBRRWYGRGRGGOWYROGBRYBYYWYOGROOGWBGBBGBBOOO",
+      "candidate_votes": {
+        "{'action': \"R'\", 'state': 'OWYWWYWWBYRRBRRWYGRGRGGOWYROGBRYBYYWYOGROOGWBGBBGBBOOO'}": 9
+      },
+      "best_action": "R'",
+      "best_state": "OWYWWYWWBYRRBRRWYGRGRGGOWYROGBRYBYYWYOGROOGWBGBBGBBOOO",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 99,
+      "current_state": "OWYWWYWWBYRRBRRWYGRGRGGOWYROGBRYBYYWYOGROOGWBGBBGBBOOO",
+      "processed_state": "OWYWWYWWBYRRBRROOORGRGGOWYGBBWGYYORYYOGROOWYRGBBGBBGWB",
+      "candidate_votes": {
+        "{'action': 'D', 'state': 'OWYWWYWWBYRRBRROOORGRGGOWYGBBWGYYORYYOGROOWYRGBBGBBGWB'}": 9
+      },
+      "best_action": "D",
+      "best_state": "OWYWWYWWBYRRBRROOORGRGGOWYGBBWGYYORYYOGROOWYRGBBGBBGWB",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    },
+    {
+      "step": 100,
+      "current_state": "OWYWWYWWBYRRBRROOORGRGGOWYGBBWGYYORYYOGROOWYRGBBGBBGWB",
+      "processed_state": "OWGWWGWWGRRORROYBORGYGGYWYBBBRGYOORGYOGROOWYRYBBYBBWWB",
+      "candidate_votes": {
+        "{'action': 'R', 'state': 'OWGWWGWWGRRORROYBORGYGGYWYBBBRGYOORGYOGROOWYRYBBYBBWWB'}": 9
+      },
+      "best_action": "R",
+      "best_state": "OWGWWGWWGRRORROYBORGYGGYWYBBBRGYOORGYOGROOWYRYBBYBBWWB",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 9
+    }
+  ]
+}

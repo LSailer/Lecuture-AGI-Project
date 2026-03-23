@@ -1,62 +1,23 @@
 game: rubiks_cube
 margin_k: 3
-max_steps: 100
+max_steps: 2000
 max_agents_per_step: 9
 output_dir: output
 temperature: 0.1
 temp_escalation: false
 model_path: LLM/models/devstral-24b
-prompt_variant: lookup_v28
+prompt_variant: base
 
-# Game-specific — 44-move scramble (stage 22)
+# Game-specific — 5-move scramble
 scramble:
-  - D
-  - L2
-  - "U'"
-  - B2
-  - F2
-  - U
-  - L
-  - B2
-  - F2
-  - "R'"
-  - L
-  - D2
-  - F2
-  - "U'"
-  - "R'"
-  - "F'"
-  - "B'"
-  - B2
-  - "L'"
-  - "D'"
-  - "F'"
-  - D2
-  - L2
-  - R2
-  - F
-  - U2
   - R
   - U
-  - "R'"
-  - "U'"
+  - R'
+  - U'
   - F2
-  - D
-  - L
-  - "B'"
-  - U2
-  - R
-  - D
-  - "B'"
-  - "U'"
-  - L2
-  - B
-  - D
-  - U2
-  - "R'"
 
 forbid_undo: true
-max_score_drop: 50
+max_score_drop: 6
 
 # Cycle detection
 max_state_revisits: 3
