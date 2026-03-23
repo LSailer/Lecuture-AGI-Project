@@ -12,8 +12,7 @@
 cd "${SLURM_SUBMIT_DIR:-$(dirname "$(readlink -f "$0")")/..}"
 mkdir -p logs output
 
-
-GAME=${GAME:-tower_of_hanoi}
+GAME=${GAME:-rubiks_cube}
 MAX_ITER=${MAX_ITER:-50}
 ITER=0
 
