@@ -223,3 +223,8 @@ Each entry: what was tried, what was learned, and what to try next.
 ## Iteration 21 (nonogram) — overlap_v18 EXHAUSTIVE SCAN skip-decided + stop-at-first
 - **Config**: devstral-24b, T=0.5, overlap_v18 (EXHAUSTIVE SCAN: skip decided lines + stop at first forced), 5x5 diamond, 12 agents, max_steps=500
 - **Result**: CRASH (OOM) — GPU contention from Process 1133209 using 33 GiB; devstral-24b needs ~47 GiB; 47+33>79 GiB total GPU capacity; OOM occurs at fallback call. Steps 1-9 ran correctly (col-first path maintained), model shows correct behavior before crash. Not a prompt issue — infrastructure failure. Next: retry when GPU is free. The overlap_v18 change (EXHAUSTIVE SCAN: skip decided lines + STOP at first) should fix the step-20 token exhaustion by preventing enumeration of fully-decided lines.
+
+## Iteration 22 — overlap_v19 concise-reasoning (DISCARD)
+- **Config**: devstral T=0.5, overlap_v19, max_agents=8, 5x5 diamond
+- **Result**: 8% SR, 500 steps — DISCARD (massive regression from 76%)
+- **Insight**: Adding "CONCISE REASONING" fill-in template (one-line per checked line) broke the overlap analysis: model output answer immediately without doing the scan (step1 chose (0,0)=filled, which is wrong). Output-format lines at bottom of user prompt combined with brevity instructions caused premature answer generation. The system prompt reasoning structure CANNOT be shortened this way — the model needs to enumerate placements to find forced cells. Next: revert to exact v16 prompt + max_agents=8 to safely restore 76% SR and reduce OOM risk.
