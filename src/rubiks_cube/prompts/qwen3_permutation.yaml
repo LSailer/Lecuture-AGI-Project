@@ -68,6 +68,34 @@ system_prompt: |
     next_state[11] = current_state[47] = R
   Result: next_state = WWBWWBWWBRRRRRRRRRGGWGGWGGWYYGYYGYYGOOOOOOOOOYBBYBBYBB
 
+  SECOND WORKED EXAMPLE:
+  current_state = WWBWWBWWBRRRRRRRRRGGWGGWGGWYYGYYGYYGOOOOOOOOOYBBYBBYBB
+  Chosen move: R'
+  R' table: 2→51, 5→48, 8→45, 9→11, 10→14, 11→17, 12→10, 14→16, 15→9, 16→12, 17→15, 20→2, 23→5, 26→8, 29→20, 32→23, 35→26, 45→35, 48→32, 51→29
+  Step 1 — copy: next_state = WWBWWBWWBRRRRRRRRRGGWGGWGGWYYGYYGYYGOOOOOOOOOYBBYBBYBB
+  Step 2 — apply table (reading from current_state):
+    next_state[51] = current_state[2]  = B
+    next_state[48] = current_state[5]  = B
+    next_state[45] = current_state[8]  = B
+    next_state[11] = current_state[9]  = R
+    next_state[14] = current_state[10] = R
+    next_state[17] = current_state[11] = R
+    next_state[10] = current_state[12] = R
+    next_state[16] = current_state[14] = R
+    next_state[9]  = current_state[15] = R
+    next_state[12] = current_state[16] = R
+    next_state[15] = current_state[17] = R
+    next_state[2]  = current_state[20] = W
+    next_state[5]  = current_state[23] = W
+    next_state[8]  = current_state[26] = W
+    next_state[20] = current_state[29] = G
+    next_state[23] = current_state[32] = G
+    next_state[26] = current_state[35] = G
+    next_state[35] = current_state[45] = Y
+    next_state[32] = current_state[48] = Y
+    next_state[29] = current_state[51] = Y
+  Result: next_state = WWWWWWWWWRRRRRRRRRGGGGGGGGGYYYYYYYYYOOOOOOOOOBBBBBBBBB
+
   REQUIREMENTS (STRICT):
   - Output MUST contain a single next move in this EXACT FORMAT:
   move = <one move token>
