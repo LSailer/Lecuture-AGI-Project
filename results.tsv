@@ -15,3 +15,4 @@ e515820	1.000000	12	6	keep	qwen3-32b compact_12 LOOKUP RULE 12-move — 100% SR 
 5e1dbdd	1.000000	14	7	keep	qwen3-32b compact_14 LOOKUP RULE 14-move — 100% SR 14steps stage up to 16-move
 5bc65b4	1.000000	16	8	keep	qwen3-32b compact_16 LOOKUP RULE 16-move — 100% SR 16steps stage up to 18-move
 edaffd6	1.000000	18	9	keep	qwen3-32b compact_18 no-tables LOOKUP — 18-move solved, stage up to 20-move
+d0dabd4	1.000000	20	10	keep	qwen3-32b compact_20 LOOKUP 20-move — 100% SR 20steps stage up to 22-move
