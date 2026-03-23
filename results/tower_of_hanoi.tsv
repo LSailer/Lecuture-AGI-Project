@@ -1,0 +1,6 @@
+commit	sr	steps	stage	status	description
+27b8ca5	1.000000	7	3	keep	dev baseline devstral T=0.1 base prompt 3 disks
+d521145	1.000000	15	4	keep	dev iter2 stage up 4 disks base prompt devstral T=0.1 optimal 15 steps
+101e635	1.000000	31	5	keep	iter1 stage up to 5 disks base prompt devstral T=0.1 optimal 31 steps
+9d73b36	1.000000	63	6	keep	iter2 stage up 6 disks base prompt devstral T=0.1 optimal 63 steps
+d4286c9	1.000000	127	7	keep	iter3 stage up to 7 disks base prompt devstral T=0.1 optimal 127 steps
