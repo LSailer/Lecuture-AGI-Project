@@ -40,7 +40,63 @@ system_prompt: |
   B': 0→11, 1→14, 2→17, 11→35, 14→34, 17→33, 33→36, 34→39, 35→42, 36→2, 39→1, 42→0, 45→51, 46→48, 47→45, 48→52, 50→46, 51→53, 52→50, 53→47
   B2: 0→35, 1→34, 2→33, 11→42, 14→39, 17→36, 33→2, 34→1, 35→0, 36→17, 39→14, 42→11, 45→53, 46→52, 47→51, 48→50, 50→48, 51→47, 52→46, 53→45
 
-  WORKED EXAMPLE:
+  FIRST WORKED EXAMPLE (4-move step 1):
+  current_state = WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB
+  Chosen move: U
+  U table: 0→6, 1→3, 2→0, 3→7, 5→1, 6→8, 7→5, 8→2, 9→45, 10→46, 11→47, 18→9, 19→10, 20→11, 36→18, 37→19, 38→20, 45→36, 46→37, 47→38
+  Step 1 — copy: next_state = WWBWWBWWOWRRRRGRRWRRGGGGGGGYYYYYYYYROOGOOOOOOYBBWBBBBB
+  Step 2 — apply table (reading from current_state):
+    next_state[6]  = current_state[0]  = W
+    next_state[3]  = current_state[1]  = W
+    next_state[0]  = current_state[2]  = B
+    next_state[7]  = current_state[3]  = W
+    next_state[1]  = current_state[5]  = B
+    next_state[8]  = current_state[6]  = W
+    next_state[5]  = current_state[7]  = W
+    next_state[2]  = current_state[8]  = O
+    next_state[45] = current_state[9]  = W
+    next_state[46] = current_state[10] = R
+    next_state[47] = current_state[11] = R
+    next_state[9]  = current_state[18] = R
+    next_state[10] = current_state[19] = R
+    next_state[11] = current_state[20] = G
+    next_state[18] = current_state[36] = O
+    next_state[19] = current_state[37] = O
+    next_state[20] = current_state[38] = G
+    next_state[36] = current_state[45] = Y
+    next_state[37] = current_state[46] = B
+    next_state[38] = current_state[47] = B
+  Result: next_state = BBOWWWWWWRRGRRGRRWOOGGGGGGGYYYYYYYYRYBBOOOOOOWRRWBBBBB
+
+  SECOND WORKED EXAMPLE (4-move step 2):
+  current_state = BBOWWWWWWRRGRRGRRWOOGGGGGGGYYYYYYYYRYBBOOOOOOWRRWBBBBB
+  Chosen move: R
+  R table: 2→20, 5→23, 8→26, 9→15, 10→12, 11→9, 12→16, 14→10, 15→17, 16→14, 17→11, 20→29, 23→32, 26→35, 29→51, 32→48, 35→45, 45→8, 48→5, 51→2
+  Step 1 — copy: next_state = BBOWWWWWWRRGRRGRRWOOGGGGGGGYYYYYYYYRYBBOOOOOOWRRWBBBBB
+  Step 2 — apply table (reading from current_state):
+    next_state[20] = current_state[2]  = O
+    next_state[23] = current_state[5]  = W
+    next_state[26] = current_state[8]  = W
+    next_state[15] = current_state[9]  = R
+    next_state[12] = current_state[10] = R
+    next_state[9]  = current_state[11] = G
+    next_state[16] = current_state[12] = R
+    next_state[10] = current_state[14] = G
+    next_state[17] = current_state[15] = R
+    next_state[14] = current_state[16] = R
+    next_state[11] = current_state[17] = W
+    next_state[29] = current_state[20] = G
+    next_state[32] = current_state[23] = G
+    next_state[35] = current_state[26] = G
+    next_state[51] = current_state[29] = Y
+    next_state[48] = current_state[32] = Y
+    next_state[45] = current_state[35] = R
+    next_state[8]  = current_state[45] = W
+    next_state[5]  = current_state[48] = W
+    next_state[2]  = current_state[51] = B
+  Result: next_state = BBBWWWWWWGGWRRRRRROOOGGWGGWYYGYYGYYGYBBOOOOOORRRYBBYBB
+
+  THIRD WORKED EXAMPLE (4-move step 3):
   current_state = BBBWWWWWWGGWRRRRRROOOGGWGGWYYGYYGYYGYBBOOOOOORRRYBBYBB
   Chosen move: U'
   U' table: 0→2, 1→5, 2→8, 3→1, 5→7, 6→0, 7→3, 8→6, 9→18, 10→19, 11→20, 18→36, 19→37, 20→38, 36→45, 37→46, 38→47, 45→9, 46→10, 47→11
@@ -68,7 +124,7 @@ system_prompt: |
     next_state[11] = current_state[47] = R
   Result: next_state = WWBWWBWWBRRRRRRRRRGGWGGWGGWYYGYYGYYGOOOOOOOOOYBBYBBYBB
 
-  SECOND WORKED EXAMPLE:
+  FOURTH WORKED EXAMPLE (4-move step 4):
   current_state = WWBWWBWWBRRRRRRRRRGGWGGWGGWYYGYYGYYGOOOOOOOOOYBBYBBYBB
   Chosen move: R'
   R' table: 2→51, 5→48, 8→45, 9→11, 10→14, 11→17, 12→10, 14→16, 15→9, 16→12, 17→15, 20→2, 23→5, 26→8, 29→20, 32→23, 35→26, 45→35, 48→32, 51→29
