@@ -25,3 +25,4 @@ b8514b8	1.000000	30	15	keep	qwen3-32b compact_30 LOOKUP 30-move — 100% SR 30st
 47b28ec	0.259000	2000	17	discard	qwen3-32b compact_34 34-move — step13 LOOKUP fail: model finds U2 but hallucinates 52-char next_state with <think> tags
 3254661	0.259000	2000	17	discard	qwen3-32b compact_34 T=0.5 — same step13 fail, 'Error parsing next_state' all 9 agents (T=0.1 gave 52-char truncation; T has no effect on copy failure)
 8d58302	1.000000	34	17	keep	qwen3-32b compact_34 step13-recency-anchor 34-move — 100% SR 34steps stage up to 36-move
+81cdfa2	1.000000	36	18	keep	qwen3-32b compact_36 LOOKUP 36-move — 100% SR 36steps stage up to 38-move
