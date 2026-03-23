@@ -3,12 +3,12 @@ margin_k: 3
 max_steps: 2000
 max_agents_per_step: 9
 output_dir: output
-temperature: 0.5
+temperature: 0.1
 temp_escalation: false
 model_path: LLM/models/qwen3-32b
-prompt_variant: qwen3_compact_34
+prompt_variant: qwen3_compact_32
 
-# Game-specific — 34-move scramble
+# Game-specific — 32-move scramble
 scramble:
   - R
   - U
@@ -42,8 +42,6 @@ scramble:
   - D
   - B
   - "U'"
-  - "F'"
-  - R2
 
 forbid_undo: true
 max_score_drop: 6
