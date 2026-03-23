@@ -9,10 +9,10 @@
 #SBATCH --time=24:00:00
 #SBATCH --partition=gpu_h100_il
 
-cd "$(dirname "$(readlink -f "$0")")/.."
+cd "${SLURM_SUBMIT_DIR:-$(dirname "$(readlink -f "$0")")/..}"
 mkdir -p logs output
 
-GAME=${GAME:-tower_of_hanoi}
+GAME=${GAME:-rubiks_cube}
 MAX_ITER=${MAX_ITER:-50}
 ITER=0
 
