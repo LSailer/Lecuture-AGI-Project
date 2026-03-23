@@ -54,3 +54,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: model=qwen3-32b, temperature=0.1, prompt=qwen3_compact_10 (10 examples + LOOKUP RULE), scramble=10-move (R,U,R',U',F2,D,L,B',U2,R)
 - **Result**: SR=100%, steps=10 (optimal), **KEEP + STAGE UP**
 - **Insight**: First attempt (no LOOKUP RULE) failed at step 3: agents correctly identified move=B via trajectory copying but then tried to compute the permutation, producing the wrong next_state (25.9% SR). Adding an explicit "LOOKUP RULE (HIGHEST PRIORITY): if current_state matches an example, copy next_state VERBATIM — do NOT compute" fixed this immediately. The lesson: with 10 examples in context, qwen3 defaults to computing when it sees permutation tables; explicit "copy > compute" priority instruction overrides this. **Next**: advance to 12-move scramble (add D',F examples → steps 11-12); also add LOOKUP RULE to ALL future prompts as standard practice.
+
+## Iteration 12 — 12-move scramble + LOOKUP RULE → 100% SR
+- **Config**: model=qwen3-32b, temperature=0.1, prompt=qwen3_compact_12 (12 examples + LOOKUP RULE), scramble=12-move (R,U,R',U',F2,D,L,B',U2,R,D',F)
+- **Result**: SR=100%, steps=12 (optimal), **KEEP + STAGE UP**
+- **Insight**: Extended the 10-step trajectory by prepending 2 new examples (F', D at steps 1-2) that undo the new scramble moves (D', F at positions 11-12 of the scramble). After steps 1-2, the cube reaches the 10-move scrambled state, so steps 3-12 are identical to the 10-step examples — full reuse. LOOKUP RULE (copy verbatim when state matches) continues to be essential. **Next**: advance to 14-move scramble — need to compute 2 new starting states for moves undoing the 2 new scramble moves, and prepend as steps 1-2 in qwen3_compact_14.yaml.
