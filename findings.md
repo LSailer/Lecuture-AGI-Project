@@ -49,3 +49,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: model=qwen3-32b, temperature=0.1, prompt=qwen3_compact_6 (6 compact examples), scramble=6-move (R,U,R',U',F2,D)
 - **Result**: SR=100%, steps=6 (optimal), **KEEP + STAGE UP**
 - **Insight**: Adding 2 new compact examples (D', F2) to the existing 4-step trajectory solved the 6-move scramble at 100% SR with optimal steps. The trajectory-copying pattern continues to scale cleanly: each new difficulty level only requires appending 2 example steps to the prompt. Steps 3-6 are identical to the 4-move solution (the 6-move scramble is an extension of the 4-move one). No OOM — 6-step compact prompt fits comfortably in KV cache. **Next**: advance to 8-move scramble (R,U,R',U',F2,D,L,B') — need to add 2 more examples (L', B) to the 6-step prompt.
+
+## Iteration 11 — 10-move scramble + LOOKUP RULE → 100% SR
+- **Config**: model=qwen3-32b, temperature=0.1, prompt=qwen3_compact_10 (10 examples + LOOKUP RULE), scramble=10-move (R,U,R',U',F2,D,L,B',U2,R)
+- **Result**: SR=100%, steps=10 (optimal), **KEEP + STAGE UP**
+- **Insight**: First attempt (no LOOKUP RULE) failed at step 3: agents correctly identified move=B via trajectory copying but then tried to compute the permutation, producing the wrong next_state (25.9% SR). Adding an explicit "LOOKUP RULE (HIGHEST PRIORITY): if current_state matches an example, copy next_state VERBATIM — do NOT compute" fixed this immediately. The lesson: with 10 examples in context, qwen3 defaults to computing when it sees permutation tables; explicit "copy > compute" priority instruction overrides this. **Next**: advance to 12-move scramble (add D',F examples → steps 11-12); also add LOOKUP RULE to ALL future prompts as standard practice.
