@@ -42,3 +42,4 @@ f847ac47f5d3ed7e5de549c07b1d049d44003161	0.560000	500	3	discard	nonogram iter17 
 e01b828	0.560000	500	3	discard	nonogram iter18 overlap_v15 remove EXHAUSTIVE SCAN rule — 56% SR regression, lost col-first path, token exhaustion at step15
 d25e56f	0.760000	500	3	keep	nonogram iter19 overlap_v16 concise stop-at-first user prompt — 76% SR new best 19 steps, stalls at step20 token exhaustion on 6 unknowns
 3c91dff	0.760000	19	3	discard	nonogram iter20 overlap_v17 allowed-cells-only line filter — same 76% SR 19 steps as iter19, user-prompt filter overridden by system EXHAUSTIVE SCAN
+dcd2c7c	0.000000	0	3	crash	nonogram iter21 overlap_v18 — OOM at step 10 fallback, GPU loaded by other process
