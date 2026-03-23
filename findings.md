@@ -14,3 +14,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: model=devstral-24b, temperature=0.1, prompt=permutation, scramble=2-move (R,U)
 - **Result**: SR=59.3%, steps=2000 (max — not solved), same as baseline
 - **Insight**: With the permutation table prompt, all 9 agents output `next_state = current_state` (unchanged). The LLM correctly parses the format but makes zero changes to the string — it cannot execute 20 index-swap operations on a 54-character string even with explicit tables. This is a model capability issue, not prompt design: Devstral-24B lacks reliable string manipulation. **Next**: switch to `deepseek-r1-32b` which has strong step-by-step chain-of-thought reasoning — pair it with the permutation prompt so the model can think through each index substitution explicitly.
+
+## Iteration 3 — deepseek-r1-32b + permutation prompt
+- **Config**: model=deepseek-r1-32b, temperature=0.1, prompt=permutation, scramble=2-move (R,U)
+- **Result**: SR=59.3%, steps=2000 (max — fallback exhausted at step 1), discard
+- **Insight**: DeepSeek-R1-32B is a reasoning model that generates verbose natural-language responses ("Okay, so I'm trying to solve...") regardless of strict 2-line formatting instructions. It cannot comply with "output EXACTLY TWO LINES". **Next**: try `qwen3-32b` — strong instruction-following + step-by-step CoT without the free-form reasoning of R1. Pair with permutation prompt since devstral has already demonstrated the format can be parsed.
