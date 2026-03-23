@@ -8,13 +8,10 @@ temp_escalation: false
 model_path: LLM/models/devstral-24b
 prompt_variant: base
 
-# Game-specific — 5-move scramble
+# Game-specific — 2-move scramble
 scramble:
   - R
   - U
-  - R'
-  - U'
-  - F2
 
 forbid_undo: true
 max_score_drop: 6
