@@ -21,3 +21,4 @@ f6f485e	1.000000	24	12	keep	qwen3-32b compact_24 LOOKUP 24-move — 100% SR 24st
 de9148f	1.000000	26	13	keep	qwen3-32b compact_26 LOOKUP 26-move — 100% SR 26steps stage up to 28-move
 c804f98	1.000000	28	14	keep	qwen3-32b compact_28 LOOKUP 28-move — 100% SR 28steps stage up to 30-move
 b8514b8	1.000000	30	15	keep	qwen3-32b compact_30 LOOKUP 30-move — 100% SR 30steps stage up to 32-move
+8c2b4f9	1.000000	32	16	keep	qwen3-32b compact_32 LOOKUP 32-move — 100% SR 32steps stage up to 34-move
