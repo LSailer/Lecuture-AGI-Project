@@ -12,3 +12,4 @@ e639308	1.000000	4	2	keep	qwen3-32b + qwen3_compact 4-move — 100% SR 4steps co
 d65ea61	0.259000	2000	5	discard	qwen3-32b + qwen3_compact_10 10-move — step1-2 perfect, step3 B computes wrong state (needs LOOKUP RULE)
 fd9aed1	1.000000	10	5	keep	qwen3-32b + qwen3_compact_10 LOOKUP RULE 10-move — 100% SR 10steps stage up to 12-move
 e515820	1.000000	12	6	keep	qwen3-32b compact_12 LOOKUP RULE 12-move — 100% SR 12steps stage up to 14-move
+5e1dbdd	1.000000	14	7	keep	qwen3-32b compact_14 LOOKUP RULE 14-move — 100% SR 14steps stage up to 16-move
