@@ -6,7 +6,7 @@ output_dir: output
 temperature: 0.1
 temp_escalation: false
 model_path: LLM/models/qwen3-32b
-prompt_variant: qwen3_permutation
+prompt_variant: qwen3_compact
 
 # Game-specific — 4-move scramble
 scramble:
