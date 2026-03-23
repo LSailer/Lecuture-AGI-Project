@@ -1,0 +1,759 @@
+{
+  "game_type": "nonogram",
+  "success_rate": 0.44,
+  "steps": [
+    {
+      "step": 1,
+      "current_state": "[[-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1]]",
+      "processed_state": "[[-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1]]",
+      "candidate_votes": {
+        "{'action': (2, 2, 1), 'state': [[-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1]]}": 12
+      },
+      "best_action": "(2, 2, 1)",
+      "best_state": "[[-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1]]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 12
+    },
+    {
+      "step": 2,
+      "current_state": "[[-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1]]",
+      "processed_state": "[[-1, -1, 1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1]]",
+      "candidate_votes": {
+        "{'action': (0, 2, 1), 'state': [[-1, -1, 1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1]]}": 10,
+        "{'action': (2, 0, 1), 'state': [[-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1], [1, -1, 1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1]]}": 2
+      },
+      "best_action": "(0, 2, 1)",
+      "best_state": "[[-1, -1, 1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1]]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 12
+    },
+    {
+      "step": 3,
+      "current_state": "[[-1, -1, 1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1]]",
+      "processed_state": "[[-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1]]",
+      "candidate_votes": {
+        "{'action': (1, 2, 1), 'state': [[-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1]]}": 8
+      },
+      "best_action": "(1, 2, 1)",
+      "best_state": "[[-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1]]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "3:1",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "3:8",
+          "action": "None",
+          "state": "None",
+          "error": "Invalid move: cell already decided."
+        },
+        {
+          "agent_id": "3:10",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "3:11",
+          "action": "None",
+          "state": "None",
+          "error": "Invalid move: cell already decided."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 12
+    },
+    {
+      "step": 4,
+      "current_state": "[[-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1]]",
+      "processed_state": "[[-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, -1, -1, -1]]",
+      "candidate_votes": {
+        "{'action': (3, 2, 1), 'state': [[-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, -1, -1, -1]]}": 7
+      },
+      "best_action": "(3, 2, 1)",
+      "best_state": "[[-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, -1, -1, -1]]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "4:1",
+          "action": "None",
+          "state": "None",
+          "error": "Invalid move: cell already decided."
+        },
+        {
+          "agent_id": "4:4",
+          "action": "None",
+          "state": "None",
+          "error": "Invalid move: cell already decided."
+        },
+        {
+          "agent_id": "4:6",
+          "action": "None",
+          "state": "None",
+          "error": "Invalid move: cell already decided."
+        },
+        {
+          "agent_id": "4:9",
+          "action": "None",
+          "state": "None",
+          "error": "Invalid move: cell already decided."
+        },
+        {
+          "agent_id": "4:12",
+          "action": "None",
+          "state": "None",
+          "error": "Invalid move: cell already decided."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 12
+    },
+    {
+      "step": 5,
+      "current_state": "[[-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, -1, -1, -1]]",
+      "processed_state": "[[-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1]]",
+      "candidate_votes": {
+        "{'action': (4, 2, 1), 'state': [[-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1]]}": 12
+      },
+      "best_action": "(4, 2, 1)",
+      "best_state": "[[-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1]]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 12
+    },
+    {
+      "step": 6,
+      "current_state": "[[-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1]]",
+      "processed_state": "[[0, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1]]",
+      "candidate_votes": {
+        "{'action': (0, 0, 0), 'state': [[0, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1]]}": 4,
+        "{'action': (2, 0, 1), 'state': [[-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1]]}": 2
+      },
+      "best_action": "(0, 0, 0)",
+      "best_state": "[[0, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1]]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "6:2",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "6:3",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "6:5",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "6:6",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "6:8",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "6:9",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "6:10",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "6:11",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 14
+    },
+    {
+      "step": 7,
+      "current_state": "[[0, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1]]",
+      "processed_state": "[[0, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1]]",
+      "candidate_votes": {
+        "{'action': (2, 0, 1), 'state': [[0, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1]]}": 2
+      },
+      "best_action": "(2, 0, 1)",
+      "best_state": "[[0, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1]]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "7:1",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "7:2",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "7:3",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "7:4",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "7:5",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "7:7",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "7:8",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "7:9",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "7:10",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "7:11",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 12
+    },
+    {
+      "step": 8,
+      "current_state": "[[0, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1]]",
+      "processed_state": "[[0, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [1, 1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1]]",
+      "candidate_votes": {
+        "{'action': (2, 1, 1), 'state': [[0, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [1, 1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1]]}": 2
+      },
+      "best_action": "(2, 1, 1)",
+      "best_state": "[[0, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [1, 1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1]]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "8:1",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "8:2",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "8:3",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "8:4",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "8:5",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "8:6",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "8:7",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "8:8",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "8:9",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "8:10",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "8:12",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "8:13",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "8:14",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "8:15",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "8:16",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "8:17",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "8:18",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "8:19",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "8:20",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "8:21",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "8:22",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "8:23",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "8:24",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "8:25",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "8:26",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "8:27",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "8:28",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "8:29",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "8:30",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "8:31",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "8:32",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 33
+    },
+    {
+      "step": 9,
+      "current_state": "[[0, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [1, 1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1]]",
+      "processed_state": "[[0, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [1, 1, 1, 1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1]]",
+      "candidate_votes": {
+        "{'action': (2, 3, 1), 'state': [[0, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [1, 1, 1, 1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1]]}": 5
+      },
+      "best_action": "(2, 3, 1)",
+      "best_state": "[[0, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [1, 1, 1, 1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1]]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "9:2",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "9:3",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "9:5",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "9:7",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "9:10",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "9:11",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "9:12",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 12
+    },
+    {
+      "step": 10,
+      "current_state": "[[0, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [1, 1, 1, 1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1]]",
+      "processed_state": "[[0, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [1, 1, 1, 1, 1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1]]",
+      "candidate_votes": {
+        "{'action': (2, 4, 1), 'state': [[0, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [1, 1, 1, 1, 1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1]]}": 11
+      },
+      "best_action": "(2, 4, 1)",
+      "best_state": "[[0, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [1, 1, 1, 1, 1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1]]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "10:7",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 12
+    },
+    {
+      "step": 11,
+      "current_state": "[[0, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [1, 1, 1, 1, 1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1]]",
+      "processed_state": "[[0, 0, 1, -1, -1], [-1, -1, 1, -1, -1], [1, 1, 1, 1, 1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1]]",
+      "candidate_votes": {
+        "{'action': (1, 0, 0), 'state': [[0, -1, 1, -1, -1], [0, -1, 1, -1, -1], [1, 1, 1, 1, 1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1]]}": 1,
+        "{'action': (0, 1, 0), 'state': [[0, 0, 1, -1, -1], [-1, -1, 1, -1, -1], [1, 1, 1, 1, 1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1]]}": 3
+      },
+      "best_action": "(0, 1, 0)",
+      "best_state": "[[0, 0, 1, -1, -1], [-1, -1, 1, -1, -1], [1, 1, 1, 1, 1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1]]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "11:1",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "11:2",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "11:3",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "11:4",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "11:5",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "11:7",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "11:8",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "11:9",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "11:10",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "11:11",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "11:12",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "11:13",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "11:14",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "11:15",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "11:16",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "11:17",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "11:18",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "11:19",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "11:20",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "11:21",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "11:23",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "11:24",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "11:25",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "11:26",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "11:27",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "11:28",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "11:29",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "11:30",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "11:31",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "11:32",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "11:33",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "11:35",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 36
+    }
+  ]
+}
