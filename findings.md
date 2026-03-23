@@ -64,3 +64,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: model=qwen3-32b, temperature=0.1, prompt=qwen3_compact_14 (14 examples + LOOKUP RULE), scramble=14-move (R,U,R',U',F2,D,L,B',U2,R,D',F,B2,L')
 - **Result**: SR=100%, steps=14 (optimal), **KEEP + STAGE UP**
 - **Insight**: Extended the 12-step trajectory by prepending 2 new examples (L, B2) that undo the 2 new scramble moves (B2, L' at positions 13-14). After steps 1-2, the cube reaches the 12-move scrambled state, so steps 3-14 are identical to the 12-step examples — full reuse at zero extra design cost. LOOKUP RULE + /no_think continues to be reliable. The trajectory-extension pattern scales cleanly: O(2) new examples per difficulty level. **Next**: advance to 16-move scramble — compute 2 new starting states for moves undoing 2 new scramble moves, prepend as steps 1-2 in qwen3_compact_16.yaml.
+
+## Iteration 14 — 16-move scramble + LOOKUP RULE → 100% SR
+- **Config**: model=qwen3-32b, temperature=0.1, prompt=qwen3_compact_16 (16 examples + LOOKUP RULE), scramble=16-move (R,U,R',U',F2,D,L,B',U2,R,D',F,B2,L',R2,U)
+- **Result**: SR=100%, steps=16 (optimal), **KEEP + STAGE UP**
+- **Insight**: Extended the 14-step trajectory by prepending 2 new examples (U', R2) that undo the 2 new scramble moves (R2, U at positions 15-16). After steps 1-2, the cube reaches the 14-move scrambled state, so steps 3-16 are identical to the 14-step examples — full reuse. The trajectory-extension pattern continues to scale at O(2) new examples per difficulty level with no OOM. LOOKUP RULE + /no_think remains reliable. **Next**: advance to 18-move scramble — compute 2 new starting states for moves undoing 2 new scramble moves, prepend as steps 1-2 in qwen3_compact_18.yaml.
