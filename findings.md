@@ -114,3 +114,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: model=qwen3-32b, temperature=0.1, prompt=qwen3_compact_34 (34 examples + LOOKUP RULE), scramble=34-move (32-move + F',R2)
 - **Result**: SR=25.9%, steps=2000, **DISCARD**
 - **Insight**: Steps 1-12 correct (100% consensus), but at step 13 all 9 agents emit `<think></think>` + correct move U2 + truncated 52-char next_state (should be 54). The state WOYBWRGOWRYBORWOYGYWGGGYBRWOBBWYGWBYBYOBOROGYRGRRBORWG is in the example at step 13 and matches exactly, but the model fails verbatim copy of next_state. Fallback with stronger LOOKUP wording also fails. Hypothesis: model attention degrades for verbatim copying beyond ~32 steps at T=0.1. **Next**: try T=0.5 to add diversity — some of 9 agents may correctly copy at step 13, enabling consensus.
+
+## Iteration 24 — 34-move scramble + T=0.5 retry — same failure
+- **Config**: model=qwen3-32b, temperature=0.5, prompt=qwen3_compact_34 (34 examples + LOOKUP RULE), scramble=34-move
+- **Result**: SR=25.9%, steps=2000, **DISCARD**
+- **Insight**: T=0.5 (vs T=0.1) made no difference — all 9 agents still fail with "Error parsing next_state" at step 13. The failure is structural: the state WOYBWRGOWRYBORWOYGYWGGGYBRWOBBWYGWBYBYOBOROGYRGRRBORWG is at position 13 in the middle of 34 examples. At T=0.1, model truncates next_state to 52 chars; at T=0.5, model produces entirely unparseable output. Both are attention degradation at middle-of-prompt position. **Next**: add a DUPLICATE of step 13 at position 35 (after step 34) so the problematic state also appears at the END of the examples list where recency attention is strongest. The model will find the same state in the "hot zone" and copy the 54-char next_state more reliably.
