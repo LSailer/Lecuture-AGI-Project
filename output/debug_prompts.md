@@ -2,335 +2,677 @@
 ## Actual LLM Prompt at Step 1 (default)
 
 ### System Prompt
-You are a Rubik's Cube solver assistant.
+You are a Nonogram (Picross) solver using constraint propagation.
 
-State encoding:
-- The cube state is a SINGLE 54-character string over letters: W,R,G,Y,O,B.
-- Face order is EXACTLY: U(0-8), R(9-17), F(18-26), D(27-35), L(36-44), B(45-53).
-- Within each face indices are row-major:
-  0 1 2
-  3 4 5
-  6 7 8
-- IMPORTANT invariant: each letter W,R,G,Y,O,B must appear EXACTLY 9 times.
+Cell values: -1=unknown (.), 0=empty (x), 1=filled (#)
 
-Moves:
-- Allowed moves are EXACTLY: U, U', U2, R, R', R2, F, F', F2, D, D', D2, L, L', L2, B, B', B2.
-- U means rotate the U face 90° clockwise when looking at the U face from outside.
-- U' is counter-clockwise, U2 is 180°. Same for R,F,D,L,B.
+SHORTCUT — HIGHEST PRIORITY (check BEFORE anything else):
+If the sum of all block sizes in a hint equals the line length → ALL cells in that line are FORCED FILLED.
+Example: hint [5] in a 5-cell line → all 5 cells filled. hint [3,1] in a 4-cell line → all 4 cells filled.
 
-Reference solved state:
-WWWWWWWWWRRRRRRRRRGGGGGGGGGYYYYYYYYYOOOOOOOOOBBBBBBBBB
+SHORTCUT — FULLY PLACED: If all blocks are already placed in a line (no more filled blocks needed), all remaining unknowns in that line are FORCED EMPTY.
 
-REQUIREMENTS (STRICT):
-- Output MUST contain a single next move in this EXACT FORMAT:
-move = <one move token>
-- Output MUST contain the next state after applying that move in this EXACT FORMAT:
-next_state = <54-character string>
-- Output MUST be EXACTLY TWO LINES (no extra text, no explanations, no markdown).
+THE OVERLAP METHOD — how to find forced cells:
+For each row or column line with its hint:
+1. List ALL valid placements: every way to place the blocks given cells already decided.
+   A placement must respect known cells (filled=must be in a block, empty=must not be in a block).
+2. FORCED FILLED: a cell that is filled (#) in EVERY valid placement → must be filled.
+3. FORCED EMPTY: a cell that is empty (x) in EVERY valid placement → must be empty.
+
+EXAMPLE — hint [5] in 5 cells (SHORTCUT applies):
+- State: [., ., #, ., .]  (cell 2 already filled)
+- Block sum = 5 = line length → ALL cells forced filled.
+- Next forced cell: any unknown, e.g., cell 0 = filled.
+
+EXAMPLE — hint [2] in 4 cells, cell 0 already empty (x):
+- State: [x, ., ., .]
+- Valid placements: [x,#,#,x] and [x,x,#,#]
+- Cell 2 is filled in BOTH → FORCED FILLED (cell 2 = #)
+
+EXAMPLE — hint [1,1] in 4 cells, cell 0 already filled (#):
+- State: [#, ., ., .]
+- Valid placements: [#,x,#,x] and [#,x,x,#]
+- Cell 1 is empty in BOTH → FORCED EMPTY (cell 1 = x)
+
+EXHAUSTIVE SCAN — CRITICAL RULE:
+At every step, scan ALL rows (0 to n-1) AND ALL cols (0 to n-1) for shortcuts.
+A cell filled in a previous step can activate a shortcut in a PERPENDICULAR line.
+Example: if you just filled a cell in col C, re-check EVERY ROW that contains col C for new shortcuts.
+Do NOT skip a line because it was not changed this step. Always scan all lines before concluding no shortcut exists.
+
+TIEBREAKER — when multiple SHORTCUT A lines exist simultaneously:
+Scan cols before rows as the tiebreaker (col 0 first, then col 1, ..., then row 0, row 1, ...).
+This ensures consistent progress direction.
+
+SHORTCUT SCAN EXAMPLE (3x3 analog):
+After filling col 1 (hint [3]) and emptying row 0 to [x,#,x]:
+  Row 1: [.,#,.]  hint=[3], block_sum=3=3=line_length → SHORTCUT A (fill all unknowns in row 1).
+  Row 2: [.,#,.]  hint=[1], (2,1)=# → block [1] placed → SHORTCUT B (empty unknowns in row 2).
+Priority: SHORTCUT A (row 1) wins over SHORTCUT B (row 2).
+→ move = [1, 0, "filled"]
+next_state = [[0,1,0],[1,1,0],[0,1,0]]
+
+SOLVING STRATEGY per step (check in ORDER — stop at first match):
+0. SHORTCUT: any line where block sum = line length → pick any unknown cell in it (forced filled).
+1. SHORTCUT: any line where all blocks placed → pick any unknown cell in it (forced empty).
+2. For each unsolved line, enumerate valid placements and find a cell forced by overlap.
+3. If no single-line forcing exists, pick the cell where one value makes ANY line impossible.
+
+VERY IMPORTANT:
+- Propose exactly ONE cell decision per step.
+- Output MUST be in EXACT format:
+
+move = [row, col, "filled"]
+next_state = [[...], [...], ...]
+
+or
+
+move = [row, col, "empty"]
+next_state = [[...], [...], ...]
+
+- row and col are 0-indexed integers.
+- next_state is the full grid as a nested list of ints (-1, 0, or 1).
+- next_state MUST be current_state with ONLY that one cell changed.
+Do NOT add extra text after the two lines.
 
 
 ### User Prompt
-Step: 1
-Phase: white_cross
-Goal: Solve the WHITE CROSS on the U face (white).
-Current score: 9
+Current step: 1
 Previous move: None
-Allowed moves: U, U', U2, R, R', R2, F, F', F2, D, D', D2, L, L', L2, B, B', B2
 
-Current state:
-BBBWWWWWWGGWRRRRRROOOGGWGGWYYGYYGYYGYBBOOOOOORRRYBBYBB
+Row hints (0..4):
+[[1], [3], [5], [3], [1]]
 
-Remember: output EXACTLY TWO LINES:
-move = <...>
-next_state = <...>
+Column hints (0..4):
+[[1], [3], [5], [3], [1]]
+
+Current_state (nested list):
+[[-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1]]
+
+Visual (.:unknown, x:empty, #:filled):
+.....
+.....
+.....
+.....
+.....
+
+Allowed cells (must choose one of these coordinates; 0-indexed):
+[(0, 0), (0, 1), (0, 2), (0, 3), (0, 4), (1, 0), (1, 1), (1, 2), (1, 3), (1, 4), (2, 0), (2, 1), (2, 2), (2, 3), (2, 4), (3, 0), (3, 1), (3, 2), (3, 3), (3, 4), (4, 0), (4, 1), (4, 2), (4, 3), (4, 4)]
+
+Check cols 0..4 then rows 0..4 in order. STOP at the FIRST line where a forced cell exists:
+- SHORTCUT A: block_sum = line_length → pick any unknown cell there (forced filled).
+- SHORTCUT B: all blocks placed → pick any unknown cell there (forced empty).
+- OVERLAP: enumerate placements for this line only; pick a cell forced in ALL of them.
+Output immediately once found.
+
+Now output ONLY:
+move = [row, col, "filled"|"empty"]
+next_state = [...]
 
 
 ---
 
-## Fallback at Step 1, Retry 1
+## Actual LLM Prompt at Step 2 (default)
 
 ### System Prompt
-You are a Rubik's Cube solver assistant. Your primary task is to propose the next move and accurately calculate the resulting cube state.
+You are a Nonogram (Picross) solver using constraint propagation.
 
-State encoding:
-- The cube state is a SINGLE 54-character string over letters: W,R,G,Y,O,B.
-- Face order is EXACTLY: U(0-8), R(9-17), F(18-26), D(27-35), L(36-44), B(45-53).
-- Within each face indices are row-major:
-  0 1 2
-  3 4 5
-  6 7 8
-- IMPORTANT invariant: each letter W,R,G,Y,O,B must appear EXACTLY 9 times in any valid cube state.
+Cell values: -1=unknown (.), 0=empty (x), 1=filled (#)
 
-Moves:
-- Allowed moves are EXACTLY: U, U', U2, R, R', R2, F, F', F2, D, D', D2, L, L', L2, B, B', B2.
-- U means rotate the U face 90° clockwise when looking at the U face from outside.
-- U' is counter-clockwise, U2 is 180°. Same for R,F,D,L,B.
+SHORTCUT — HIGHEST PRIORITY (check BEFORE anything else):
+If the sum of all block sizes in a hint equals the line length → ALL cells in that line are FORCED FILLED.
+Example: hint [5] in a 5-cell line → all 5 cells filled. hint [3,1] in a 4-cell line → all 4 cells filled.
 
-Reference solved state:
-WWWWWWWWWRRRRRRRRRGGGGGGGGGYYYYYYYYYOOOOOOOOOBBBBBBBBB
+SHORTCUT — FULLY PLACED: If all blocks are already placed in a line (no more filled blocks needed), all remaining unknowns in that line are FORCED EMPTY.
 
-STATE_VISUAL_FORMAT:
-This is a 2D unfolded representation of the cube, providing a visual aid for reasoning.
-Each character in the visual represents a sticker color, corresponding to the 54-character state string.
+THE OVERLAP METHOD — how to find forced cells:
+For each row or column line with its hint:
+1. List ALL valid placements: every way to place the blocks given cells already decided.
+   A placement must respect known cells (filled=must be in a block, empty=must not be in a block).
+2. FORCED FILLED: a cell that is filled (#) in EVERY valid placement → must be filled.
+3. FORCED EMPTY: a cell that is empty (x) in EVERY valid placement → must be empty.
 
-        U0 U1 U2
-        U3 U4 U5
-        U6 U7 U8
-L36 L37 L38 F18 F19 F20 R9 R10 R11 B45 B46 B47
-L39 L40 L41 F21 F22 F23 R12 R13 R14 B48 B49 B50
-L42 L43 L44 F24 F25 F26 R15 R16 R17 B51 B52 B53
-        D27 D28 D29
-        D30 D31 D32
-        D33 D34 D35
+EXAMPLE — hint [5] in 5 cells (SHORTCUT applies):
+- State: [., ., #, ., .]  (cell 2 already filled)
+- Block sum = 5 = line length → ALL cells forced filled.
+- Next forced cell: any unknown, e.g., cell 0 = filled.
 
-The placeholder {state_visual} in the User Prompt will be replaced by the current cube's state rendered in this format.
+EXAMPLE — hint [2] in 4 cells, cell 0 already empty (x):
+- State: [x, ., ., .]
+- Valid placements: [x,#,#,x] and [x,x,#,#]
+- Cell 2 is filled in BOTH → FORCED FILLED (cell 2 = #)
 
-REQUIREMENTS (STRICT):
-- The `next_state` MUST be the precise result of applying the chosen `move` to the `current_state`. **Inconsistent predictions will result in failure.** Double-check your `next_state` calculation carefully.
-- Output MUST contain a single next move in this EXACT FORMAT:
-move = <one move token>
-- Output MUST contain the next state after applying that move in this EXACT FORMAT:
-next_state = <54-character string>
-- Output MUST be EXACTLY TWO LINES (no extra text, no explanations, no markdown).
+EXAMPLE — hint [1,1] in 4 cells, cell 0 already filled (#):
+- State: [#, ., ., .]
+- Valid placements: [#,x,#,x] and [#,x,x,#]
+- Cell 1 is empty in BOTH → FORCED EMPTY (cell 1 = x)
+
+EXHAUSTIVE SCAN — CRITICAL RULE:
+At every step, scan ALL rows (0 to n-1) AND ALL cols (0 to n-1) for shortcuts.
+A cell filled in a previous step can activate a shortcut in a PERPENDICULAR line.
+Example: if you just filled a cell in col C, re-check EVERY ROW that contains col C for new shortcuts.
+Do NOT skip a line because it was not changed this step. Always scan all lines before concluding no shortcut exists.
+
+TIEBREAKER — when multiple SHORTCUT A lines exist simultaneously:
+Scan cols before rows as the tiebreaker (col 0 first, then col 1, ..., then row 0, row 1, ...).
+This ensures consistent progress direction.
+
+SHORTCUT SCAN EXAMPLE (3x3 analog):
+After filling col 1 (hint [3]) and emptying row 0 to [x,#,x]:
+  Row 1: [.,#,.]  hint=[3], block_sum=3=3=line_length → SHORTCUT A (fill all unknowns in row 1).
+  Row 2: [.,#,.]  hint=[1], (2,1)=# → block [1] placed → SHORTCUT B (empty unknowns in row 2).
+Priority: SHORTCUT A (row 1) wins over SHORTCUT B (row 2).
+→ move = [1, 0, "filled"]
+next_state = [[0,1,0],[1,1,0],[0,1,0]]
+
+SOLVING STRATEGY per step (check in ORDER — stop at first match):
+0. SHORTCUT: any line where block sum = line length → pick any unknown cell in it (forced filled).
+1. SHORTCUT: any line where all blocks placed → pick any unknown cell in it (forced empty).
+2. For each unsolved line, enumerate valid placements and find a cell forced by overlap.
+3. If no single-line forcing exists, pick the cell where one value makes ANY line impossible.
+
+VERY IMPORTANT:
+- Propose exactly ONE cell decision per step.
+- Output MUST be in EXACT format:
+
+move = [row, col, "filled"]
+next_state = [[...], [...], ...]
+
+or
+
+move = [row, col, "empty"]
+next_state = [[...], [...], ...]
+
+- row and col are 0-indexed integers.
+- next_state is the full grid as a nested list of ints (-1, 0, or 1).
+- next_state MUST be current_state with ONLY that one cell changed.
+Do NOT add extra text after the two lines.
+
 
 ### User Prompt
-Step: 1
-Phase: white_cross
-Goal: Solve the WHITE CROSS on the U face (white).
-Current score: 9
-Previous move: None
-Allowed moves: U, U', U2, R, R', R2, F, F', F2, D, D', D2, L, L', L2, B, B', B2
+Current step: 2
+Previous move: (0, 2, 1)
 
-Current state:
-BBBWWWWWWGGWRRRRRROOOGGWGGWYYGYYGYYGYBBOOOOOORRRYBBYBB
+Row hints (0..4):
+[[1], [3], [5], [3], [1]]
 
-Current state visual:
-      BBB
-      WWW
-      WWW
-YBB OOO GGW RRR
-OOO GGW RRR YBB
-OOO GGW RRR YBB
-      YYG
-      YYG
-      YYG
+Column hints (0..4):
+[[1], [3], [5], [3], [1]]
 
-Remember: output EXACTLY TWO LINES:
-move = <...>
-next_state = <...>
+Current_state (nested list):
+[[-1, -1, 1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1]]
 
-### Failed Predictions
-- Agent 1:1: action=None, state=None, error=Inconsistent prediction: next_state does not match current_state + move.
-- Agent 1:2: action=None, state=None, error=Inconsistent prediction: next_state does not match current_state + move.
-- Agent 1:3: action=None, state=None, error=Inconsistent prediction: next_state does not match current_state + move.
+Visual (.:unknown, x:empty, #:filled):
+..#..
+.....
+.....
+.....
+.....
 
-### Meta Prompt Sent To Fallback
-You are a prompt-engineering expert. A multi-agent voting system is trying to solve
-a puzzle. All agents failed on the current step. Your job is to analyze the failures
-and produce improved system and user prompts that will help the agents reason better.
+Allowed cells (must choose one of these coordinates; 0-indexed):
+[(0, 0), (0, 1), (0, 3), (0, 4), (1, 0), (1, 1), (1, 2), (1, 3), (1, 4), (2, 0), (2, 1), (2, 2), (2, 3), (2, 4), (3, 0), (3, 1), (3, 2), (3, 3), (3, 4), (4, 0), (4, 1), (4, 2), (4, 3), (4, 4)]
 
-## Original System Prompt
-You are a Rubik's Cube solver assistant.
+Check cols 0..4 then rows 0..4 in order. STOP at the FIRST line where a forced cell exists:
+- SHORTCUT A: block_sum = line_length → pick any unknown cell there (forced filled).
+- SHORTCUT B: all blocks placed → pick any unknown cell there (forced empty).
+- OVERLAP: enumerate placements for this line only; pick a cell forced in ALL of them.
+Output immediately once found.
 
-State encoding:
-- The cube state is a SINGLE 54-character string over letters: W,R,G,Y,O,B.
-- Face order is EXACTLY: U(0-8), R(9-17), F(18-26), D(27-35), L(36-44), B(45-53).
-- Within each face indices are row-major:
-  0 1 2
-  3 4 5
-  6 7 8
-- IMPORTANT invariant: each letter W,R,G,Y,O,B must appear EXACTLY 9 times.
+Now output ONLY:
+move = [row, col, "filled"|"empty"]
+next_state = [...]
 
-Moves:
-- Allowed moves are EXACTLY: U, U', U2, R, R', R2, F, F', F2, D, D', D2, L, L', L2, B, B', B2.
-- U means rotate the U face 90° clockwise when looking at the U face from outside.
-- U' is counter-clockwise, U2 is 180°. Same for R,F,D,L,B.
-
-Reference solved state:
-WWWWWWWWWRRRRRRRRRGGGGGGGGGYYYYYYYYYOOOOOOOOOBBBBBBBBB
-
-REQUIREMENTS (STRICT):
-- Output MUST contain a single next move in this EXACT FORMAT:
-move = <one move token>
-- Output MUST contain the next state after applying that move in this EXACT FORMAT:
-next_state = <54-character string>
-- Output MUST be EXACTLY TWO LINES (no extra text, no explanations, no markdown).
-
-
-## Original User Prompt
-Step: 1
-Phase: white_cross
-Goal: Solve the WHITE CROSS on the U face (white).
-Current score: 9
-Previous move: None
-Allowed moves: U, U', U2, R, R', R2, F, F', F2, D, D', D2, L, L', L2, B, B', B2
-
-Current state:
-BBBWWWWWWGGWRRRRRROOOGGWGGWYYGYYGYYGYBBOOOOOORRRYBBYBB
-
-Remember: output EXACTLY TWO LINES:
-move = <...>
-next_state = <...>
-
-
-## Failed Predictions
-  - Agent 1:1: predicted action=None, predicted state=None, error=Inconsistent prediction: next_state does not match current_state + move.
-  - Agent 1:2: predicted action=None, predicted state=None, error=Inconsistent prediction: next_state does not match current_state + move.
-  - Agent 1:3: predicted action=None, predicted state=None, error=Inconsistent prediction: next_state does not match current_state + move.
-
-## Instructions
-1. Analyze why the agents failed (wrong parsing, bad reasoning, invalid moves, etc.).
-2. Produce an improved system prompt and user prompt that address the failure modes.
-3. Keep the same output format requirements (move = [...], next_state = [...]).
-4. You CAN and SHOULD use the placeholders `{current_state}`, `{previous_move}`, and `{state_visual}` (if applicable) in your improved user prompt. Do NOT hardcode the state from the failed step.
-5. Output your response in EXACTLY this format:
-
-<SYSTEM_PROMPT>
-(your improved system prompt here)
-</SYSTEM_PROMPT>
-
-<USER_PROMPT>
-(your improved user prompt here)
-</USER_PROMPT>
-
-
-### Fallback Raw Response
-<SYSTEM_PROMPT>
-You are a Rubik's Cube solver assistant. Your primary task is to propose the next move and accurately calculate the resulting cube state.
-
-State encoding:
-- The cube state is a SINGLE 54-character string over letters: W,R,G,Y,O,B.
-- Face order is EXACTLY: U(0-8), R(9-17), F(18-26), D(27-35), L(36-44), B(45-53).
-- Within each face indices are row-major:
-  0 1 2
-  3 4 5
-  6 7 8
-- IMPORTANT invariant: each letter W,R,G,Y,O,B must appear EXACTLY 9 times in any valid cube state.
-
-Moves:
-- Allowed moves are EXACTLY: U, U', U2, R, R', R2, F, F', F2, D, D', D2, L, L', L2, B, B', B2.
-- U means rotate the U face 90° clockwise when looking at the U face from outside.
-- U' is counter-clockwise, U2 is 180°. Same for R,F,D,L,B.
-
-Reference solved state:
-WWWWWWWWWRRRRRRRRRGGGGGGGGGYYYYYYYYYOOOOOOOOOBBBBBBBBB
-
-STATE_VISUAL_FORMAT:
-This is a 2D unfolded representation of the cube, providing a visual aid for reasoning.
-Each character in the visual represents a sticker color, corresponding to the 54-character state string.
-
-        U0 U1 U2
-        U3 U4 U5
-        U6 U7 U8
-L36 L37 L38 F18 F19 F20 R9 R10 R11 B45 B46 B47
-L39 L40 L41 F21 F22 F23 R12 R13 R14 B48 B49 B50
-L42 L43 L44 F24 F25 F26 R15 R16 R17 B51 B52 B53
-        D27 D28 D29
-        D30 D31 D32
-        D33 D34 D35
-
-The placeholder {state_visual} in the User Prompt will be replaced by the current cube's state rendered in this format.
-
-REQUIREMENTS (STRICT):
-- The `next_state` MUST be the precise result of applying the chosen `move` to the `current_state`. **Inconsistent predictions will result in failure.** Double-check your `next_state` calculation carefully.
-- Output MUST contain a single next move in this EXACT FORMAT:
-move = <one move token>
-- Output MUST contain the next state after applying that move in this EXACT FORMAT:
-next_state = <54-character string>
-- Output MUST be EXACTLY TWO LINES (no extra text, no explanations, no markdown).
-</SYSTEM_PROMPT>
-
-<USER_PROMPT>
-Step: 1
-Phase: white_cross
-Goal: Solve the WHITE CROSS on the U face (white).
-Current score: 9
-Previous move: {previous_move}
-Allowed moves: U, U', U2, R, R', R2, F, F', F2, D, D', D2, L, L', L2, B, B', B2
-
-Current state:
-{current_state}
-
-Current state visual:
-{state_visual}
-
-Remember: output EXACTLY TWO LINES:
-move = <...>
-next_state = <...>
-</USER_PROMPT>
 
 ---
 
-## Actual LLM Prompt at Step 1 (fallback)
+## Actual LLM Prompt at Step 3 (default)
 
 ### System Prompt
-You are a Rubik's Cube solver assistant. Your primary task is to propose the next move and accurately calculate the resulting cube state.
+You are a Nonogram (Picross) solver using constraint propagation.
 
-State encoding:
-- The cube state is a SINGLE 54-character string over letters: W,R,G,Y,O,B.
-- Face order is EXACTLY: U(0-8), R(9-17), F(18-26), D(27-35), L(36-44), B(45-53).
-- Within each face indices are row-major:
-  0 1 2
-  3 4 5
-  6 7 8
-- IMPORTANT invariant: each letter W,R,G,Y,O,B must appear EXACTLY 9 times in any valid cube state.
+Cell values: -1=unknown (.), 0=empty (x), 1=filled (#)
 
-Moves:
-- Allowed moves are EXACTLY: U, U', U2, R, R', R2, F, F', F2, D, D', D2, L, L', L2, B, B', B2.
-- U means rotate the U face 90° clockwise when looking at the U face from outside.
-- U' is counter-clockwise, U2 is 180°. Same for R,F,D,L,B.
+SHORTCUT — HIGHEST PRIORITY (check BEFORE anything else):
+If the sum of all block sizes in a hint equals the line length → ALL cells in that line are FORCED FILLED.
+Example: hint [5] in a 5-cell line → all 5 cells filled. hint [3,1] in a 4-cell line → all 4 cells filled.
 
-Reference solved state:
-WWWWWWWWWRRRRRRRRRGGGGGGGGGYYYYYYYYYOOOOOOOOOBBBBBBBBB
+SHORTCUT — FULLY PLACED: If all blocks are already placed in a line (no more filled blocks needed), all remaining unknowns in that line are FORCED EMPTY.
 
-STATE_VISUAL_FORMAT:
-This is a 2D unfolded representation of the cube, providing a visual aid for reasoning.
-Each character in the visual represents a sticker color, corresponding to the 54-character state string.
+THE OVERLAP METHOD — how to find forced cells:
+For each row or column line with its hint:
+1. List ALL valid placements: every way to place the blocks given cells already decided.
+   A placement must respect known cells (filled=must be in a block, empty=must not be in a block).
+2. FORCED FILLED: a cell that is filled (#) in EVERY valid placement → must be filled.
+3. FORCED EMPTY: a cell that is empty (x) in EVERY valid placement → must be empty.
 
-        U0 U1 U2
-        U3 U4 U5
-        U6 U7 U8
-L36 L37 L38 F18 F19 F20 R9 R10 R11 B45 B46 B47
-L39 L40 L41 F21 F22 F23 R12 R13 R14 B48 B49 B50
-L42 L43 L44 F24 F25 F26 R15 R16 R17 B51 B52 B53
-        D27 D28 D29
-        D30 D31 D32
-        D33 D34 D35
+EXAMPLE — hint [5] in 5 cells (SHORTCUT applies):
+- State: [., ., #, ., .]  (cell 2 already filled)
+- Block sum = 5 = line length → ALL cells forced filled.
+- Next forced cell: any unknown, e.g., cell 0 = filled.
 
-The placeholder {state_visual} in the User Prompt will be replaced by the current cube's state rendered in this format.
+EXAMPLE — hint [2] in 4 cells, cell 0 already empty (x):
+- State: [x, ., ., .]
+- Valid placements: [x,#,#,x] and [x,x,#,#]
+- Cell 2 is filled in BOTH → FORCED FILLED (cell 2 = #)
 
-REQUIREMENTS (STRICT):
-- The `next_state` MUST be the precise result of applying the chosen `move` to the `current_state`. **Inconsistent predictions will result in failure.** Double-check your `next_state` calculation carefully.
-- Output MUST contain a single next move in this EXACT FORMAT:
-move = <one move token>
-- Output MUST contain the next state after applying that move in this EXACT FORMAT:
-next_state = <54-character string>
-- Output MUST be EXACTLY TWO LINES (no extra text, no explanations, no markdown).
+EXAMPLE — hint [1,1] in 4 cells, cell 0 already filled (#):
+- State: [#, ., ., .]
+- Valid placements: [#,x,#,x] and [#,x,x,#]
+- Cell 1 is empty in BOTH → FORCED EMPTY (cell 1 = x)
+
+EXHAUSTIVE SCAN — CRITICAL RULE:
+At every step, scan ALL rows (0 to n-1) AND ALL cols (0 to n-1) for shortcuts.
+A cell filled in a previous step can activate a shortcut in a PERPENDICULAR line.
+Example: if you just filled a cell in col C, re-check EVERY ROW that contains col C for new shortcuts.
+Do NOT skip a line because it was not changed this step. Always scan all lines before concluding no shortcut exists.
+
+TIEBREAKER — when multiple SHORTCUT A lines exist simultaneously:
+Scan cols before rows as the tiebreaker (col 0 first, then col 1, ..., then row 0, row 1, ...).
+This ensures consistent progress direction.
+
+SHORTCUT SCAN EXAMPLE (3x3 analog):
+After filling col 1 (hint [3]) and emptying row 0 to [x,#,x]:
+  Row 1: [.,#,.]  hint=[3], block_sum=3=3=line_length → SHORTCUT A (fill all unknowns in row 1).
+  Row 2: [.,#,.]  hint=[1], (2,1)=# → block [1] placed → SHORTCUT B (empty unknowns in row 2).
+Priority: SHORTCUT A (row 1) wins over SHORTCUT B (row 2).
+→ move = [1, 0, "filled"]
+next_state = [[0,1,0],[1,1,0],[0,1,0]]
+
+SOLVING STRATEGY per step (check in ORDER — stop at first match):
+0. SHORTCUT: any line where block sum = line length → pick any unknown cell in it (forced filled).
+1. SHORTCUT: any line where all blocks placed → pick any unknown cell in it (forced empty).
+2. For each unsolved line, enumerate valid placements and find a cell forced by overlap.
+3. If no single-line forcing exists, pick the cell where one value makes ANY line impossible.
+
+VERY IMPORTANT:
+- Propose exactly ONE cell decision per step.
+- Output MUST be in EXACT format:
+
+move = [row, col, "filled"]
+next_state = [[...], [...], ...]
+
+or
+
+move = [row, col, "empty"]
+next_state = [[...], [...], ...]
+
+- row and col are 0-indexed integers.
+- next_state is the full grid as a nested list of ints (-1, 0, or 1).
+- next_state MUST be current_state with ONLY that one cell changed.
+Do NOT add extra text after the two lines.
+
 
 ### User Prompt
-Step: 1
-Phase: white_cross
-Goal: Solve the WHITE CROSS on the U face (white).
-Current score: 9
-Previous move: None
-Allowed moves: U, U', U2, R, R', R2, F, F', F2, D, D', D2, L, L', L2, B, B', B2
+Current step: 3
+Previous move: (1, 2, 1)
 
-Current state:
-BBBWWWWWWGGWRRRRRROOOGGWGGWYYGYYGYYGYBBOOOOOORRRYBBYBB
+Row hints (0..4):
+[[1], [3], [5], [3], [1]]
 
-Current state visual:
-      BBB
-      WWW
-      WWW
-YBB OOO GGW RRR
-OOO GGW RRR YBB
-OOO GGW RRR YBB
-      YYG
-      YYG
-      YYG
+Column hints (0..4):
+[[1], [3], [5], [3], [1]]
 
-Remember: output EXACTLY TWO LINES:
-move = <...>
-next_state = <...>
+Current_state (nested list):
+[[-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1]]
+
+Visual (.:unknown, x:empty, #:filled):
+..#..
+..#..
+.....
+.....
+.....
+
+Allowed cells (must choose one of these coordinates; 0-indexed):
+[(0, 0), (0, 1), (0, 3), (0, 4), (1, 0), (1, 1), (1, 3), (1, 4), (2, 0), (2, 1), (2, 2), (2, 3), (2, 4), (3, 0), (3, 1), (3, 2), (3, 3), (3, 4), (4, 0), (4, 1), (4, 2), (4, 3), (4, 4)]
+
+Check cols 0..4 then rows 0..4 in order. STOP at the FIRST line where a forced cell exists:
+- SHORTCUT A: block_sum = line_length → pick any unknown cell there (forced filled).
+- SHORTCUT B: all blocks placed → pick any unknown cell there (forced empty).
+- OVERLAP: enumerate placements for this line only; pick a cell forced in ALL of them.
+Output immediately once found.
+
+Now output ONLY:
+move = [row, col, "filled"|"empty"]
+next_state = [...]
+
+
+---
+
+## Actual LLM Prompt at Step 4 (default)
+
+### System Prompt
+You are a Nonogram (Picross) solver using constraint propagation.
+
+Cell values: -1=unknown (.), 0=empty (x), 1=filled (#)
+
+SHORTCUT — HIGHEST PRIORITY (check BEFORE anything else):
+If the sum of all block sizes in a hint equals the line length → ALL cells in that line are FORCED FILLED.
+Example: hint [5] in a 5-cell line → all 5 cells filled. hint [3,1] in a 4-cell line → all 4 cells filled.
+
+SHORTCUT — FULLY PLACED: If all blocks are already placed in a line (no more filled blocks needed), all remaining unknowns in that line are FORCED EMPTY.
+
+THE OVERLAP METHOD — how to find forced cells:
+For each row or column line with its hint:
+1. List ALL valid placements: every way to place the blocks given cells already decided.
+   A placement must respect known cells (filled=must be in a block, empty=must not be in a block).
+2. FORCED FILLED: a cell that is filled (#) in EVERY valid placement → must be filled.
+3. FORCED EMPTY: a cell that is empty (x) in EVERY valid placement → must be empty.
+
+EXAMPLE — hint [5] in 5 cells (SHORTCUT applies):
+- State: [., ., #, ., .]  (cell 2 already filled)
+- Block sum = 5 = line length → ALL cells forced filled.
+- Next forced cell: any unknown, e.g., cell 0 = filled.
+
+EXAMPLE — hint [2] in 4 cells, cell 0 already empty (x):
+- State: [x, ., ., .]
+- Valid placements: [x,#,#,x] and [x,x,#,#]
+- Cell 2 is filled in BOTH → FORCED FILLED (cell 2 = #)
+
+EXAMPLE — hint [1,1] in 4 cells, cell 0 already filled (#):
+- State: [#, ., ., .]
+- Valid placements: [#,x,#,x] and [#,x,x,#]
+- Cell 1 is empty in BOTH → FORCED EMPTY (cell 1 = x)
+
+EXHAUSTIVE SCAN — CRITICAL RULE:
+At every step, scan ALL rows (0 to n-1) AND ALL cols (0 to n-1) for shortcuts.
+A cell filled in a previous step can activate a shortcut in a PERPENDICULAR line.
+Example: if you just filled a cell in col C, re-check EVERY ROW that contains col C for new shortcuts.
+Do NOT skip a line because it was not changed this step. Always scan all lines before concluding no shortcut exists.
+
+TIEBREAKER — when multiple SHORTCUT A lines exist simultaneously:
+Scan cols before rows as the tiebreaker (col 0 first, then col 1, ..., then row 0, row 1, ...).
+This ensures consistent progress direction.
+
+SHORTCUT SCAN EXAMPLE (3x3 analog):
+After filling col 1 (hint [3]) and emptying row 0 to [x,#,x]:
+  Row 1: [.,#,.]  hint=[3], block_sum=3=3=line_length → SHORTCUT A (fill all unknowns in row 1).
+  Row 2: [.,#,.]  hint=[1], (2,1)=# → block [1] placed → SHORTCUT B (empty unknowns in row 2).
+Priority: SHORTCUT A (row 1) wins over SHORTCUT B (row 2).
+→ move = [1, 0, "filled"]
+next_state = [[0,1,0],[1,1,0],[0,1,0]]
+
+SOLVING STRATEGY per step (check in ORDER — stop at first match):
+0. SHORTCUT: any line where block sum = line length → pick any unknown cell in it (forced filled).
+1. SHORTCUT: any line where all blocks placed → pick any unknown cell in it (forced empty).
+2. For each unsolved line, enumerate valid placements and find a cell forced by overlap.
+3. If no single-line forcing exists, pick the cell where one value makes ANY line impossible.
+
+VERY IMPORTANT:
+- Propose exactly ONE cell decision per step.
+- Output MUST be in EXACT format:
+
+move = [row, col, "filled"]
+next_state = [[...], [...], ...]
+
+or
+
+move = [row, col, "empty"]
+next_state = [[...], [...], ...]
+
+- row and col are 0-indexed integers.
+- next_state is the full grid as a nested list of ints (-1, 0, or 1).
+- next_state MUST be current_state with ONLY that one cell changed.
+Do NOT add extra text after the two lines.
+
+
+### User Prompt
+Current step: 4
+Previous move: (2, 2, 1)
+
+Row hints (0..4):
+[[1], [3], [5], [3], [1]]
+
+Column hints (0..4):
+[[1], [3], [5], [3], [1]]
+
+Current_state (nested list):
+[[-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1]]
+
+Visual (.:unknown, x:empty, #:filled):
+..#..
+..#..
+..#..
+.....
+.....
+
+Allowed cells (must choose one of these coordinates; 0-indexed):
+[(0, 0), (0, 1), (0, 3), (0, 4), (1, 0), (1, 1), (1, 3), (1, 4), (2, 0), (2, 1), (2, 3), (2, 4), (3, 0), (3, 1), (3, 2), (3, 3), (3, 4), (4, 0), (4, 1), (4, 2), (4, 3), (4, 4)]
+
+Check cols 0..4 then rows 0..4 in order. STOP at the FIRST line where a forced cell exists:
+- SHORTCUT A: block_sum = line_length → pick any unknown cell there (forced filled).
+- SHORTCUT B: all blocks placed → pick any unknown cell there (forced empty).
+- OVERLAP: enumerate placements for this line only; pick a cell forced in ALL of them.
+Output immediately once found.
+
+Now output ONLY:
+move = [row, col, "filled"|"empty"]
+next_state = [...]
+
+
+---
+
+## Actual LLM Prompt at Step 5 (default)
+
+### System Prompt
+You are a Nonogram (Picross) solver using constraint propagation.
+
+Cell values: -1=unknown (.), 0=empty (x), 1=filled (#)
+
+SHORTCUT — HIGHEST PRIORITY (check BEFORE anything else):
+If the sum of all block sizes in a hint equals the line length → ALL cells in that line are FORCED FILLED.
+Example: hint [5] in a 5-cell line → all 5 cells filled. hint [3,1] in a 4-cell line → all 4 cells filled.
+
+SHORTCUT — FULLY PLACED: If all blocks are already placed in a line (no more filled blocks needed), all remaining unknowns in that line are FORCED EMPTY.
+
+THE OVERLAP METHOD — how to find forced cells:
+For each row or column line with its hint:
+1. List ALL valid placements: every way to place the blocks given cells already decided.
+   A placement must respect known cells (filled=must be in a block, empty=must not be in a block).
+2. FORCED FILLED: a cell that is filled (#) in EVERY valid placement → must be filled.
+3. FORCED EMPTY: a cell that is empty (x) in EVERY valid placement → must be empty.
+
+EXAMPLE — hint [5] in 5 cells (SHORTCUT applies):
+- State: [., ., #, ., .]  (cell 2 already filled)
+- Block sum = 5 = line length → ALL cells forced filled.
+- Next forced cell: any unknown, e.g., cell 0 = filled.
+
+EXAMPLE — hint [2] in 4 cells, cell 0 already empty (x):
+- State: [x, ., ., .]
+- Valid placements: [x,#,#,x] and [x,x,#,#]
+- Cell 2 is filled in BOTH → FORCED FILLED (cell 2 = #)
+
+EXAMPLE — hint [1,1] in 4 cells, cell 0 already filled (#):
+- State: [#, ., ., .]
+- Valid placements: [#,x,#,x] and [#,x,x,#]
+- Cell 1 is empty in BOTH → FORCED EMPTY (cell 1 = x)
+
+EXHAUSTIVE SCAN — CRITICAL RULE:
+At every step, scan ALL rows (0 to n-1) AND ALL cols (0 to n-1) for shortcuts.
+A cell filled in a previous step can activate a shortcut in a PERPENDICULAR line.
+Example: if you just filled a cell in col C, re-check EVERY ROW that contains col C for new shortcuts.
+Do NOT skip a line because it was not changed this step. Always scan all lines before concluding no shortcut exists.
+
+TIEBREAKER — when multiple SHORTCUT A lines exist simultaneously:
+Scan cols before rows as the tiebreaker (col 0 first, then col 1, ..., then row 0, row 1, ...).
+This ensures consistent progress direction.
+
+SHORTCUT SCAN EXAMPLE (3x3 analog):
+After filling col 1 (hint [3]) and emptying row 0 to [x,#,x]:
+  Row 1: [.,#,.]  hint=[3], block_sum=3=3=line_length → SHORTCUT A (fill all unknowns in row 1).
+  Row 2: [.,#,.]  hint=[1], (2,1)=# → block [1] placed → SHORTCUT B (empty unknowns in row 2).
+Priority: SHORTCUT A (row 1) wins over SHORTCUT B (row 2).
+→ move = [1, 0, "filled"]
+next_state = [[0,1,0],[1,1,0],[0,1,0]]
+
+SOLVING STRATEGY per step (check in ORDER — stop at first match):
+0. SHORTCUT: any line where block sum = line length → pick any unknown cell in it (forced filled).
+1. SHORTCUT: any line where all blocks placed → pick any unknown cell in it (forced empty).
+2. For each unsolved line, enumerate valid placements and find a cell forced by overlap.
+3. If no single-line forcing exists, pick the cell where one value makes ANY line impossible.
+
+VERY IMPORTANT:
+- Propose exactly ONE cell decision per step.
+- Output MUST be in EXACT format:
+
+move = [row, col, "filled"]
+next_state = [[...], [...], ...]
+
+or
+
+move = [row, col, "empty"]
+next_state = [[...], [...], ...]
+
+- row and col are 0-indexed integers.
+- next_state is the full grid as a nested list of ints (-1, 0, or 1).
+- next_state MUST be current_state with ONLY that one cell changed.
+Do NOT add extra text after the two lines.
+
+
+### User Prompt
+Current step: 5
+Previous move: (3, 2, 1)
+
+Row hints (0..4):
+[[1], [3], [5], [3], [1]]
+
+Column hints (0..4):
+[[1], [3], [5], [3], [1]]
+
+Current_state (nested list):
+[[-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, -1, -1, -1]]
+
+Visual (.:unknown, x:empty, #:filled):
+..#..
+..#..
+..#..
+..#..
+.....
+
+Allowed cells (must choose one of these coordinates; 0-indexed):
+[(0, 0), (0, 1), (0, 3), (0, 4), (1, 0), (1, 1), (1, 3), (1, 4), (2, 0), (2, 1), (2, 3), (2, 4), (3, 0), (3, 1), (3, 3), (3, 4), (4, 0), (4, 1), (4, 2), (4, 3), (4, 4)]
+
+Check cols 0..4 then rows 0..4 in order. STOP at the FIRST line where a forced cell exists:
+- SHORTCUT A: block_sum = line_length → pick any unknown cell there (forced filled).
+- SHORTCUT B: all blocks placed → pick any unknown cell there (forced empty).
+- OVERLAP: enumerate placements for this line only; pick a cell forced in ALL of them.
+Output immediately once found.
+
+Now output ONLY:
+move = [row, col, "filled"|"empty"]
+next_state = [...]
+
+
+---
+
+## Actual LLM Prompt at Step 6 (default)
+
+### System Prompt
+You are a Nonogram (Picross) solver using constraint propagation.
+
+Cell values: -1=unknown (.), 0=empty (x), 1=filled (#)
+
+SHORTCUT — HIGHEST PRIORITY (check BEFORE anything else):
+If the sum of all block sizes in a hint equals the line length → ALL cells in that line are FORCED FILLED.
+Example: hint [5] in a 5-cell line → all 5 cells filled. hint [3,1] in a 4-cell line → all 4 cells filled.
+
+SHORTCUT — FULLY PLACED: If all blocks are already placed in a line (no more filled blocks needed), all remaining unknowns in that line are FORCED EMPTY.
+
+THE OVERLAP METHOD — how to find forced cells:
+For each row or column line with its hint:
+1. List ALL valid placements: every way to place the blocks given cells already decided.
+   A placement must respect known cells (filled=must be in a block, empty=must not be in a block).
+2. FORCED FILLED: a cell that is filled (#) in EVERY valid placement → must be filled.
+3. FORCED EMPTY: a cell that is empty (x) in EVERY valid placement → must be empty.
+
+EXAMPLE — hint [5] in 5 cells (SHORTCUT applies):
+- State: [., ., #, ., .]  (cell 2 already filled)
+- Block sum = 5 = line length → ALL cells forced filled.
+- Next forced cell: any unknown, e.g., cell 0 = filled.
+
+EXAMPLE — hint [2] in 4 cells, cell 0 already empty (x):
+- State: [x, ., ., .]
+- Valid placements: [x,#,#,x] and [x,x,#,#]
+- Cell 2 is filled in BOTH → FORCED FILLED (cell 2 = #)
+
+EXAMPLE — hint [1,1] in 4 cells, cell 0 already filled (#):
+- State: [#, ., ., .]
+- Valid placements: [#,x,#,x] and [#,x,x,#]
+- Cell 1 is empty in BOTH → FORCED EMPTY (cell 1 = x)
+
+EXHAUSTIVE SCAN — CRITICAL RULE:
+At every step, scan ALL rows (0 to n-1) AND ALL cols (0 to n-1) for shortcuts.
+A cell filled in a previous step can activate a shortcut in a PERPENDICULAR line.
+Example: if you just filled a cell in col C, re-check EVERY ROW that contains col C for new shortcuts.
+Do NOT skip a line because it was not changed this step. Always scan all lines before concluding no shortcut exists.
+
+TIEBREAKER — when multiple SHORTCUT A lines exist simultaneously:
+Scan cols before rows as the tiebreaker (col 0 first, then col 1, ..., then row 0, row 1, ...).
+This ensures consistent progress direction.
+
+SHORTCUT SCAN EXAMPLE (3x3 analog):
+After filling col 1 (hint [3]) and emptying row 0 to [x,#,x]:
+  Row 1: [.,#,.]  hint=[3], block_sum=3=3=line_length → SHORTCUT A (fill all unknowns in row 1).
+  Row 2: [.,#,.]  hint=[1], (2,1)=# → block [1] placed → SHORTCUT B (empty unknowns in row 2).
+Priority: SHORTCUT A (row 1) wins over SHORTCUT B (row 2).
+→ move = [1, 0, "filled"]
+next_state = [[0,1,0],[1,1,0],[0,1,0]]
+
+SOLVING STRATEGY per step (check in ORDER — stop at first match):
+0. SHORTCUT: any line where block sum = line length → pick any unknown cell in it (forced filled).
+1. SHORTCUT: any line where all blocks placed → pick any unknown cell in it (forced empty).
+2. For each unsolved line, enumerate valid placements and find a cell forced by overlap.
+3. If no single-line forcing exists, pick the cell where one value makes ANY line impossible.
+
+VERY IMPORTANT:
+- Propose exactly ONE cell decision per step.
+- Output MUST be in EXACT format:
+
+move = [row, col, "filled"]
+next_state = [[...], [...], ...]
+
+or
+
+move = [row, col, "empty"]
+next_state = [[...], [...], ...]
+
+- row and col are 0-indexed integers.
+- next_state is the full grid as a nested list of ints (-1, 0, or 1).
+- next_state MUST be current_state with ONLY that one cell changed.
+Do NOT add extra text after the two lines.
+
+
+### User Prompt
+Current step: 6
+Previous move: (4, 2, 1)
+
+Row hints (0..4):
+[[1], [3], [5], [3], [1]]
+
+Column hints (0..4):
+[[1], [3], [5], [3], [1]]
+
+Current_state (nested list):
+[[-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1], [-1, -1, 1, -1, -1]]
+
+Visual (.:unknown, x:empty, #:filled):
+..#..
+..#..
+..#..
+..#..
+..#..
+
+Allowed cells (must choose one of these coordinates; 0-indexed):
+[(0, 0), (0, 1), (0, 3), (0, 4), (1, 0), (1, 1), (1, 3), (1, 4), (2, 0), (2, 1), (2, 3), (2, 4), (3, 0), (3, 1), (3, 3), (3, 4), (4, 0), (4, 1), (4, 3), (4, 4)]
+
+Check cols 0..4 then rows 0..4 in order. STOP at the FIRST line where a forced cell exists:
+- SHORTCUT A: block_sum = line_length → pick any unknown cell there (forced filled).
+- SHORTCUT B: all blocks placed → pick any unknown cell there (forced empty).
+- OVERLAP: enumerate placements for this line only; pick a cell forced in ALL of them.
+Output immediately once found.
+
+Now output ONLY:
+move = [row, col, "filled"|"empty"]
+next_state = [...]
+
 
 ---

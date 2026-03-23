@@ -1,0 +1,119 @@
+{
+  "game_type": "nonogram",
+  "success_rate": 0.2,
+  "steps": [
+    {
+      "step": 1,
+      "current_state": "[[-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1]]",
+      "processed_state": "[[-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1], [1, -1, -1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1]]",
+      "candidate_votes": {
+        "{'action': (2, 0, 1), 'state': [[-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1], [1, -1, -1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1]]}": 12
+      },
+      "best_action": "(2, 0, 1)",
+      "best_state": "[[-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1], [1, -1, -1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1]]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 12
+    },
+    {
+      "step": 2,
+      "current_state": "[[-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1], [1, -1, -1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1]]",
+      "processed_state": "[[-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1], [1, 1, -1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1]]",
+      "candidate_votes": {
+        "{'action': (2, 1, 1), 'state': [[-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1], [1, 1, -1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1]]}": 12
+      },
+      "best_action": "(2, 1, 1)",
+      "best_state": "[[-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1], [1, 1, -1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1]]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 12
+    },
+    {
+      "step": 3,
+      "current_state": "[[-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1], [1, 1, -1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1]]",
+      "processed_state": "[[-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1], [1, 1, 1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1]]",
+      "candidate_votes": {
+        "{'action': (2, 2, 1), 'state': [[-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1], [1, 1, 1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1]]}": 12
+      },
+      "best_action": "(2, 2, 1)",
+      "best_state": "[[-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1], [1, 1, 1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1]]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 12
+    },
+    {
+      "step": 4,
+      "current_state": "[[-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1], [1, 1, 1, -1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1]]",
+      "processed_state": "[[-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1], [1, 1, 1, 1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1]]",
+      "candidate_votes": {
+        "{'action': (2, 3, 1), 'state': [[-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1], [1, 1, 1, 1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1]]}": 12
+      },
+      "best_action": "(2, 3, 1)",
+      "best_state": "[[-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1], [1, 1, 1, 1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1]]",
+      "consensus_reached": true,
+      "failed_predictions": [],
+      "fallback_retries": 0,
+      "num_agents_queried": 12
+    },
+    {
+      "step": 5,
+      "current_state": "[[-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1], [1, 1, 1, 1, -1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1]]",
+      "processed_state": "[[-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1], [1, 1, 1, 1, 1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1]]",
+      "candidate_votes": {
+        "{'action': (2, 4, 1), 'state': [[-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1], [1, 1, 1, 1, 1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1]]}": 5
+      },
+      "best_action": "(2, 4, 1)",
+      "best_state": "[[-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1], [1, 1, 1, 1, 1], [-1, -1, -1, -1, -1], [-1, -1, -1, -1, -1]]",
+      "consensus_reached": true,
+      "failed_predictions": [
+        {
+          "agent_id": "5:1",
+          "action": "None",
+          "state": "None",
+          "error": "Invalid move: makes row impossible."
+        },
+        {
+          "agent_id": "5:2",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "5:4",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "5:6",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        },
+        {
+          "agent_id": "5:7",
+          "action": "None",
+          "state": "None",
+          "error": "Inconsistent prediction: next_state does not match current_state + move."
+        },
+        {
+          "agent_id": "5:8",
+          "action": "None",
+          "state": "None",
+          "error": "Inconsistent prediction: next_state does not match current_state + move."
+        },
+        {
+          "agent_id": "5:12",
+          "action": "None",
+          "state": "None",
+          "error": "Could not find move or next_state in the response."
+        }
+      ],
+      "fallback_retries": 0,
+      "num_agents_queried": 12
+    }
+  ]
+}

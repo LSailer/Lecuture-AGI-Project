@@ -1,11 +1,11 @@
 game: nonogram
 margin_k: 2
 max_steps: 500
-max_agents_per_step: 12
+max_agents_per_step: 8
 output_dir: output
 temperature: 0.5
 model_path: LLM/models/devstral-24b
-prompt_variant: base
+prompt_variant: overlap_v16
 
 # Fallback config
 max_fallback_retries: 3
@@ -13,18 +13,18 @@ fallback_api: local
 fallback_local_model: LLM/model
 gemini_model: gemini-2.5-flash
 
-# Stage 1 — 4x4 butterfly (active default)
-row_hints:
-  - [1, 1]
-  - [2]
-  - [2]
-  - [1, 1]
-
-col_hints:
-  - [1, 1]
-  - [2]
-  - [2]
-  - [1, 1]
+# Stage 1 — 4x4 butterfly
+# row_hints:
+#   - [1, 1]
+#   - [2]
+#   - [2]
+#   - [1, 1]
+#
+# col_hints:
+#   - [1, 1]
+#   - [2]
+#   - [2]
+#   - [1, 1]
 
 # Stage 2 — 4x4 diamond
 # row_hints:
@@ -39,20 +39,20 @@ col_hints:
 #   - [2]
 #   - [1]
 
-# Stage 3 — 5x5 diamond
-# row_hints:
-#   - [1]
-#   - [3]
-#   - [5]
-#   - [3]
-#   - [1]
-#
-# col_hints:
-#   - [1]
-#   - [3]
-#   - [5]
-#   - [3]
-#   - [1]
+# Stage 3 — 5x5 diamond (active)
+row_hints:
+  - [1]
+  - [3]
+  - [5]
+  - [3]
+  - [1]
+
+col_hints:
+  - [1]
+  - [3]
+  - [5]
+  - [3]
+  - [1]
 
 # Stage 4 — 5x5 fragmented benchmark
 # row_hints:
