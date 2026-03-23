@@ -22,3 +22,4 @@ de9148f	1.000000	26	13	keep	qwen3-32b compact_26 LOOKUP 26-move — 100% SR 26st
 c804f98	1.000000	28	14	keep	qwen3-32b compact_28 LOOKUP 28-move — 100% SR 28steps stage up to 30-move
 b8514b8	1.000000	30	15	keep	qwen3-32b compact_30 LOOKUP 30-move — 100% SR 30steps stage up to 32-move
 8c2b4f9	1.000000	32	16	keep	qwen3-32b compact_32 LOOKUP 32-move — 100% SR 32steps stage up to 34-move
+47b28ec	0.259000	2000	17	discard	qwen3-32b compact_34 34-move — step13 LOOKUP fail: model finds U2 but hallucinates 52-char next_state with <think> tags
