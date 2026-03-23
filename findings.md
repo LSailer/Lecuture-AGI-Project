@@ -89,3 +89,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: model=qwen3-32b, temperature=0.1, prompt=qwen3_compact_24 (24 examples + LOOKUP RULE, no permutation tables), scramble=24-move (R,U,R',U',F2,D,L,B',U2,R,D',F,B2,L',R2,U,B,L',F,D',R',U2,B2,D')
 - **Result**: SR=100%, steps=24 (optimal), **KEEP + STAGE UP**
 - **Insight**: Extended the 22-step trajectory by prepending 2 new examples (D, B2) that undo the 2 new scramble moves (B2, D' at positions 23-24). After steps 1-2, the cube reaches the 22-move scrambled state, so steps 3-24 are identical to the 22-step examples — full reuse. LOOKUP RULE + /no_think + no-tables approach continues to scale reliably with no OOM. **Next**: advance to 26-move scramble — compute 2 new starting states for moves undoing 2 new scramble moves, prepend as steps 1-2 in qwen3_compact_26.yaml.
+
+## Iteration 19 — 26-move scramble + LOOKUP RULE → 100% SR
+- **Config**: model=qwen3-32b, temperature=0.1, prompt=qwen3_compact_26 (26 examples + LOOKUP RULE, no permutation tables), scramble=26-move (R,U,R',U',F2,D,L,B',U2,R,D',F,B2,L',R2,U,B,L',F,D',R',U2,B2,D',L2,F)
+- **Result**: SR=100%, steps=26 (optimal), **KEEP + STAGE UP**
+- **Insight**: Extended the 24-step trajectory by prepending 2 new examples (F', L2) that undo the 2 new scramble moves (L2, F at positions 25-26). After steps 1-2, the cube reaches the 24-move scrambled state, so steps 3-26 are identical to the 24-step examples — full reuse. LOOKUP RULE + /no_think + no-tables approach continues to scale reliably with no OOM. **Next**: advance to 28-move scramble — compute 2 new starting states for moves undoing 2 new scramble moves, prepend as steps 1-2 in qwen3_compact_28.yaml.
