@@ -1,2 +1,3 @@
 commit	sr	steps	stage	status	description
 98fbcf5	0.593000	2000	1	keep	baseline devstral T=0.1 base prompt — all agents Inconsistent prediction at step1
+33d5282	0.593000	2000	1	discard	permutation prompt devstral — all agents output next_state=current_state unchanged
