@@ -5,8 +5,8 @@ max_agents_per_step: 9
 output_dir: output
 temperature: 0.1
 temp_escalation: false
-model_path: LLM/models/qwen3-32b
-prompt_variant: permutation
+model_path: LLM/models/devstral-24b
+prompt_variant: base
 
 # Game-specific — 2-move scramble
 scramble:
