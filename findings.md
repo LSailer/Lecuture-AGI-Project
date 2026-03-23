@@ -34,3 +34,13 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: model=qwen3-32b, temperature=0.1, prompt=qwen3_permutation (U' + R' examples), scramble=2-move (R,U)
 - **Result**: SR=100%, steps=2 (optimal), **KEEP + STAGE UP**
 - **Insight**: Adding a second worked example for R' (chained from U' output state) immediately unlocked step 2 — the model matched the exact target path and output the solved state. The key pattern: "concrete-path" few-shot examples where each example's output is the next example's input teach the full solution path without any lookup tables. The LLM is not generalizing from abstract rules; it is copying the demonstrated trajectory. **Next**: advance to 4-move scramble. The 4-move solution requires 4 inverse moves in sequence — the 2-example prompt won't cover all steps. Consider adding more examples or switching to a generalized approach that doesn't hard-code states.
+
+## Iteration 7 — 4-move scramble + 4 chained full examples — CUDA OOM crash
+- **Config**: model=qwen3-32b, temperature=0.1, prompt=qwen3_permutation (4 verbose examples), scramble=4-move (R,U,R',U')
+- **Result**: SR=0%, steps=0, **CRASH** — CUDA OOM during first inference call
+- **Insight**: The 4 chained worked examples with 20-line step-by-step expansions each make the system prompt ~6000 tokens. With qwen3-32b using ~77GB of 79GB GPU memory just for weights, there is insufficient headroom for the KV cache at that context length. The fix: compress worked examples to just current_state/move/next_state triples (remove 20-line expansions). This cuts system prompt by ~2000 tokens while preserving all information the model needs (since it copies the trajectory, not computing from scratch).
+
+## Iteration 8 — qwen3_compact: condensed 4-step examples → 100% SR on 4-move
+- **Config**: model=qwen3-32b, temperature=0.1, prompt=qwen3_compact (4 compact examples), scramble=4-move (R,U,R',U')
+- **Result**: SR=100%, steps=4 (optimal), **KEEP + STAGE UP**
+- **Insight**: Removing the 20-line step-by-step expansion from worked examples resolves OOM — the model solves the 4-move scramble perfectly in 4 steps (optimal). The trajectory-copying pattern holds: compact examples (just input/move/output) are sufficient since the model matches state strings, not computing permutations. The 20-line expansions add no value; they waste context. **Next**: advance to 6-move scramble. The solution path will be 6 moves — need to add 2 more compact examples, or consider whether the model can generalize from 4 examples to 6 steps.
