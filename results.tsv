@@ -8,3 +8,5 @@ commit	sr	steps	stage	status	description
 ce454b2	0.000000	0	2	crash	qwen3-32b + 4 chained examples 4-move — CUDA OOM prompt too long
 e639308	1.000000	4	2	keep	qwen3-32b + qwen3_compact 4-move — 100% SR 4steps compact examples no OOM
 0e38cfa	1.000000	6	3	keep	qwen3-32b + qwen3_compact_6 6-move — 100% SR 6steps stage up to 8-move
+3cfe3af	1.000000	8	4	keep	qwen3-32b + qwen3_compact_8 8-move — 100% SR 8steps stage up to 10-move
+d65ea61	0.259000	2000	5	discard	qwen3-32b + qwen3_compact_10 10-move — step1-2 perfect, step3 B computes wrong state (needs LOOKUP RULE)
