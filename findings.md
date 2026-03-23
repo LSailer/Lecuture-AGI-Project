@@ -338,3 +338,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral T=0.1, lookup_v14, expert, max_agents=3
 - **Result**: 100% SR, 51 steps (optimal) — inline STEP MOVE MAP scales perfectly to expert difficulty
 - **Insight**: Same NN→move inline map strategy works for 51 steps including new ambiguous ranges (30-39, 40-49). Stage up to master.
+
+## Iteration 11 (sudoku) — master stage-up lookup_v15
+- **Config**: devstral-24b, T=0.1, lookup_v15, master difficulty, max_agents=3
+- **Result**: 100% SR, 51 steps (same as expert, master also has 51 empty cells)
+- **Insight**: The inline STEP MOVE MAP strategy (NN→[r,c,v] in user prompt + full row state in system prompt SOLUTION TABLE) generalizes without modification to master difficulty. The LLM copies pre-computed solutions perfectly. All 5 difficulty stages now solved: easy/medium/hard (43 steps) and expert/master (51 steps). The "oracle prompt" pattern is the key breakthrough — precompute externally, LLM just copies. Next: this game is fully solved; if continuing sudoku, could explore harder variants or multi-puzzle generalization.
