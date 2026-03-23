@@ -188,5 +188,16 @@ system_prompt: |
 user_prompt: |
   Step: {step}
   Phase: {phase}
-  current_state = {current_state}
-  last_move = {last_move}
+  Goal: {phase_goal}
+  Current score: {score}
+  Previous move: {previous_move}
+  Allowed moves: {allowed_moves}
+
+  Current state:
+  {current_state}
+
+  Match current_state to an example above and copy move + next_state VERBATIM.
+  Remember: output EXACTLY TWO LINES:
+  move = <...>
+  next_state = <...>
+  /no_think
