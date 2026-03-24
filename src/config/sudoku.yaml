@@ -1,27 +1,24 @@
 game: sudoku
-margin_k: 2
-max_steps: 200
-max_agents_per_step: 12
-output_dir: output
-temperature: 0.1
-voting_temperature: 0.3
-voting_top_p: 0.95
 model_path: LLM/models/devstral-24b
-prompt_variant: lookup_v7
-max_agents_per_step: 3
-max_steps: 50
+prompt_variant: reasoning_v1
 
-# Stage 1 — easy (DEV validation)
+# Voting config
+voting_temperature: 0.1
+voting_top_p: 0.95
+max_agents_per_step: 3
+max_agents_total: 15
+margin_k: 2
+
+# Solver config
+max_steps: 200
+max_state_revisits: 5
+output_dir: output
+
+# Difficulty — Stage 1 (easy)
 initial_state: easy
 
-# Stage 2 — medium
+# Stage ladder (comment/uncomment to advance):
 # initial_state: medium
-
-# Stage 3 — hard
 # initial_state: hard
-
-# Stage 4 — expert
 # initial_state: expert
-
-# Stage 5 — master
 # initial_state: master
