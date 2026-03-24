@@ -199,3 +199,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: model=qwen3-32b, temperature=0.1, prompt=qwen3_compact_64 (64 examples + recency-anchor Step 65 duplicate of Step 43 + LOOKUP RULE), scramble=64-move (62-move + F2,L), max_agents=3
 - **Result**: SR=100%, steps=64 (optimal), **KEEP + STAGE UP**
 - **Insight**: Extended the 62-step trajectory by prepending 2 new examples (L', F2) that undo the 2 new scramble moves (F2, L at positions 63-64). After steps 1-2, the cube reaches the 62-move scrambled state, so steps 3-64 are identical to the 62-step examples — full reuse. The recency anchor (Step 65 = duplicate of Step 43, which is old Step 41 shifted by +2 due to prepending) preemptively covers mid-prompt attention-degradation risk. Used PYTORCH_ALLOC_CONF=expandable_segments:True to avoid CUDA fragmentation OOM. Result: immediate 100% SR with no failures. **Next**: advance to 66-move scramble — compute 2 new starting states for moves undoing 2 new scramble moves, prepend as steps 1-2 in qwen3_compact_66.yaml; update recency anchor to Step 67 (duplicate of Step 45 = new position of old Step 43 after +2 shift).
+
+## Iteration 41 — 66-move scramble qwen3_compact_66
+- **Config**: model=qwen3-32b, temperature=0.1, prompt=qwen3_compact_66, scramble=66-move (64-move + R2,D')
+- **Result**: SR=100%, steps=66 (exact)
+- **Insight**: Extended to 66-move by appending R2,D' to the scramble; prepended 2 new examples (D,R2 to undo them), recency-anchor at step67 for step45. Pattern holds: incremental 2-move extension continues to work reliably. Stage up to 68-move.
