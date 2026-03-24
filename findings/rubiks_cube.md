@@ -159,3 +159,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral T=0.1, lookup_v28, 44-move scramble [D,L2,U',B2,...,U2,R'], max_agents=9
 - **Result**: 100% SR, 44 steps (optimal)
 - **Insight**: Step-indexed FSM continues to scale perfectly. Prepended [D,L2] to scramble; appended [L2,D'] to inverse solution table (steps 43->L2, 44->D'). Next: stage 23 (46-move scramble).
+
+## Iteration run3-1 — Run 3 baseline setup (qwen3_permutation, 5-move)
+- **Config**: qwen3-32b, T=0.1, qwen3_permutation prompt, 5-move [R,U,R',U',F2], max_agents=3
+- **Result**: crash — run.log empty after 15+ min; model load timed out (no GPU or slow cold start)
+- **Insight**: Infrastructure issues on run3 start: (1) LLM/models was missing symlink — fixed by symlinking to ../../LLM/models; (2) .venv/bin/python was not set up — fixed with bash wrapper calling run2_cube venv python; (3) model loading took >15 min suggesting GPU not yet available or model cache cold. Next: verify GPU availability (nvidia-smi), try devstral-24b as fallback if qwen3 load hangs again, or wait for GPU warmup.
