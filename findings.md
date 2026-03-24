@@ -214,3 +214,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: model=qwen3-32b, temperature=0.1, prompt=qwen3_compact_70 (70 examples + recency-anchor Step 71 duplicate of Step 49 + LOOKUP RULE), scramble=70-move (68-move + U,F2), max_agents=3
 - **Result**: SR=100%, steps=70 (exact), **KEEP + STAGE UP**
 - **Insight**: Extended to 70-move by appending U,F2 to the scramble; prepended 2 new examples (F2, U' to undo them), recency-anchor at step71 for step49. Pattern holds: incremental 2-move extension continues to work reliably. Stage up to 72-move.
+
+## Iteration 44 — 72-move scramble qwen3_compact_72
+- **Config**: model=qwen3-32b, temperature=0.1, prompt=qwen3_compact_72 (72 examples + recency-anchor Step 73 duplicate of Step 51 + LOOKUP RULE), scramble=72-move (70-move + D2,B), max_agents=3
+- **Result**: SR=100%, steps=72 (exact), **KEEP + STAGE UP**
+- **Insight**: Extended to 72-move by appending D2,B to the scramble; prepended 2 new examples (B', D2 to undo them), recency-anchor at step73 for step51. Pattern holds: incremental 2-move extension continues to work reliably. Stage up to 74-move.
