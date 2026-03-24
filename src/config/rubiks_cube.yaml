@@ -6,9 +6,9 @@ output_dir: output
 temperature: 0.1
 temp_escalation: false
 model_path: LLM/models/qwen3-32b
-prompt_variant: qwen3_compact_82
+prompt_variant: qwen3_compact_84
 
-# Game-specific — 82-move scramble
+# Game-specific — 84-move scramble
 scramble:
   - R
   - U
@@ -92,6 +92,8 @@ scramble:
   - "L'"
   - F
   - U
+  - B2
+  - "R'"
 
 forbid_undo: true
 max_score_drop: 6
