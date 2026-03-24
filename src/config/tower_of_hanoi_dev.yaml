@@ -14,9 +14,3 @@ num_disks: 3
 
 # Cycle detection
 max_state_revisits: 3
-
-# Fallback config — reduced retries for speed
-max_fallback_retries: 1
-fallback_api: gemini
-fallback_local_model: deepseek-ai/DeepSeek-R1-Distill-Qwen-32B
-gemini_model: gemini-2.5-flash

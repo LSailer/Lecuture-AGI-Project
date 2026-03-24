@@ -13,8 +13,9 @@ from typing import Any
 import yaml
 import torch
 from utils.decomposer import Agent
-from utils.fallback import FailedPrediction
 import wandb
+
+FailedPrediction = dict[str, str]
 import weave
 import matplotlib.pyplot as plt  # noqa: F401
 import json
@@ -129,11 +130,8 @@ def load_config(args: argparse.Namespace) -> dict[str, Any]:
     # Defaults
     config.setdefault("temp_escalation", False)
     config.setdefault("max_state_revisits", 3)
-    config.setdefault("max_fallback_retries", 3)
     config.setdefault("model_path", "LLM/model")
     config.setdefault("prompt_variant", "base")
-    config.setdefault("fallback_api", "gemini")
-    config.setdefault("gemini_model", "gemini-2.5-flash")
 
     return config
 
@@ -297,7 +295,7 @@ def _build_batch_messages(
                     )
                     messages[1]["content"] = formatted_prompt
                 except Exception as e:
-                    print(f"Warning: Failed to format fallback prompt: {e}")
+                    print(f"Warning: Failed to format override prompt: {e}")
                     messages[1]["content"] = (
                         user_prompt_override + "\n\n" + messages[1]["content"]
                     )
@@ -307,7 +305,7 @@ def _build_batch_messages(
                 )
 
         if not logged_this_step:
-            mode = "fallback" if (system_prompt_override or user_prompt_override) else "default"
+            mode = "override" if (system_prompt_override or user_prompt_override) else "default"
             log_actual_llm_prompt(
                 step=current_step,
                 system_prompt=messages[0]["content"],
@@ -330,6 +328,7 @@ def run_voting_batch(
     current_step: int,
     batch_size: int,
     margin_k: int,
+    max_agents_total: int | None = None,
     system_prompt_override: str | None = None,
     user_prompt_override: str | None = None,
     predictions_table: wandb.Table | None = None,
@@ -337,13 +336,15 @@ def run_voting_batch(
     """
     Run agents, vote over full candidates (action + next_state),
     and only return a best prediction if margin_k is actually met.
+    Keeps adding agents until consensus or max_agents_total is reached.
     """
     candidate_voting: dict[Any, int] = {}
     candidate_lookup: dict[Any, dict[str, Any]] = {}
     failed_predictions: list[FailedPrediction] = []
 
     agents_so_far = 0
-    max_agents_total = batch_size * 3
+    if max_agents_total is None:
+        max_agents_total = batch_size * 5
 
     def process_response(response_content: str, agent_num: int) -> None:
         action: Any = "None"
@@ -518,92 +519,6 @@ def run_voting_batch(
     )
 
 
-def _run_fallback_loop(
-    agent: Any,
-    fallback: Any,
-    previous_move: str,
-    current_state: Any,
-    current_step: int,
-    max_fallback_retries: int,
-    max_number_agents_per_step: int,
-    margin_k: int,
-    failed_predictions: list[dict[str, str]],
-    predictions_table: Any,
-) -> tuple[dict[Any, int], dict[str, Any] | None, list[dict[str, str]], bool, int]:
-    """Run fallback retry loop. Returns (candidate_voting, best_prediction, failed_predictions, consensus_reached, fallback_retries_used)."""
-    candidate_voting: dict[Any, int] = {}
-    best_prediction: dict[str, Any] | None = None
-    consensus_reached = False
-    fallback_retry = 0
-
-    while (
-        fallback_retry < max_fallback_retries
-        and not (consensus_reached and best_prediction is not None)
-    ):
-        fallback_retry += 1
-        print(f"Fallback retry {fallback_retry}/{max_fallback_retries}")
-
-        _messages, user_prompt = agent.build_prompt(
-            previous_move, current_state, current_step
-        )
-        state_visual = str(current_state)
-        if hasattr(agent.prompts, "_visualize_state"):
-            state_visual = agent.prompts._visualize_state(current_state)
-        elif hasattr(agent.environment, "visualize"):
-            state_visual = agent.environment.visualize()
-
-        prompt_context: dict[str, Any] = {
-            "current_state": current_state,
-            "previous_move": previous_move,
-            "state_visual": state_visual,
-            "current_step": current_step,
-        }
-
-        if hasattr(agent.environment, "row_hints"):
-            prompt_context["row_hints"] = agent.environment.row_hints
-        if hasattr(agent.environment, "col_hints"):
-            prompt_context["col_hints"] = agent.environment.col_hints
-            prompt_context["column_hints"] = agent.environment.col_hints
-        if hasattr(agent.environment, "n_rows"):
-            prompt_context["n_rows"] = agent.environment.n_rows
-        if hasattr(agent.environment, "n_cols"):
-            prompt_context["n_cols"] = agent.environment.n_cols
-        if hasattr(agent.environment, "row_hints"):
-            allowed_cells = [
-                (r, c)
-                for r, row in enumerate(current_state)
-                for c, v in enumerate(row)
-                if v == -1
-            ]
-            prompt_context["allowed_cells"] = (
-                allowed_cells if len(allowed_cells) <= 80 else allowed_cells[:80] + ["..."]
-            )
-
-        new_sys, new_usr = fallback.update_compose(
-            agent.system_prompt,
-            user_prompt,
-            failed_predictions,
-            step=current_step,
-            retry=fallback_retry,
-            prompt_context=prompt_context,
-        )
-        candidate_voting, best_prediction, failed_predictions, consensus_reached = (
-            run_voting_batch(
-                agent,
-                previous_move,
-                current_state,
-                current_step,
-                batch_size=max_number_agents_per_step,
-                margin_k=margin_k,
-                system_prompt_override=new_sys,
-                user_prompt_override=new_usr,
-                predictions_table=predictions_table,
-            )
-        )
-
-    return candidate_voting, best_prediction, failed_predictions, consensus_reached, fallback_retry
-
-
 def main() -> None:
     parser = argparse.ArgumentParser(description="MAKER framework puzzle solver")
     parser.add_argument(
@@ -683,7 +598,6 @@ def main() -> None:
     margin_k = config["margin_k"]
     max_steps = config["max_steps"]
     max_number_agents_per_step = config["max_agents_per_step"]
-    max_fallback_retries = config["max_fallback_retries"]
     output_dir = config.get("output_dir", "output")
 
     if not os.path.exists(output_dir):
@@ -704,11 +618,6 @@ def main() -> None:
 
     game = create_game(config)
     agent = create_agent(config, game, device)
-
-    # Initialize fallback model
-    from utils.fallback import FallbackModel
-
-    fallback: FallbackModel = FallbackModel(config, device=device)
 
     predictions_table = wandb.Table(
         columns=[
@@ -744,70 +653,38 @@ def main() -> None:
         visited_states[state_key] = visited_states.get(state_key, 0) + 1
         cycle_hit = visited_states[state_key] > max_state_revisits
 
-        fallback_retries_used = 0
-
-        if not cycle_hit:
-            # Normal path: voting → consensus check → fallback if needed
-            candidate_voting, best_prediction, failed_predictions, consensus_reached = (
-                run_voting_batch(
-                    agent,
-                    previous_move,
-                    current_state,
-                    current_step,
-                    batch_size=max_number_agents_per_step,
-                    margin_k=margin_k,
-                    predictions_table=predictions_table,
-                )
-            )
-
-            if not (consensus_reached and best_prediction is not None):
-                print(f"No valid consensus at step {current_step}. Engaging fallback...")
-                candidate_voting, best_prediction, failed_predictions, consensus_reached, fallback_retries_used = (
-                    _run_fallback_loop(
-                        agent, fallback, previous_move, current_state, current_step,
-                        max_fallback_retries, max_number_agents_per_step, margin_k,
-                        failed_predictions, predictions_table,
-                    )
-                )
-
-            if consensus_reached and best_prediction is not None:
-                game.apply_move(best_prediction["action"])
-            else:
-                print("Fallback exhausted. No valid consensus move found.")
-                break
-        else:
-            # Cycle path: skip voting, go directly to fallback with cycle context
-            print(f"Cycle detected: state seen {visited_states[state_key]} times. Trying fallback to escape cycle...")
-            failed_predictions = [
+        if cycle_hit:
+            print(f"Cycle detected: state seen {visited_states[state_key]} times. Stopping.")
+            wandb.log(
                 {
-                    "agent_id": "cycle_detector",
-                    "action": "N/A",
-                    "state": state_key,
-                    "error": f"Cycle detected: state visited {visited_states[state_key]} times (limit {max_state_revisits}). The agent is stuck in a loop. You MUST choose a completely different move.",
+                    "early_stop": "cycle_detected",
+                    "cycle_state": state_key,
+                    "cycle_step": current_step,
                 }
-            ]
-            candidate_voting, best_prediction, _, consensus_reached, fallback_retries_used = (
-                _run_fallback_loop(
-                    agent, fallback, previous_move, current_state, current_step,
-                    max_fallback_retries, max_number_agents_per_step, margin_k,
-                    failed_predictions, predictions_table,
-                )
             )
+            _cancel_sibling_jobs()
+            cycle_detected = True
+            break
 
-            if consensus_reached and best_prediction is not None:
-                game.apply_move(best_prediction["action"])
-            else:
-                print(f"Cycle detected and fallback exhausted. Cancelling all jobs.")
-                wandb.log(
-                    {
-                        "early_stop": "cycle_detected",
-                        "cycle_state": state_key,
-                        "cycle_step": current_step,
-                    }
-                )
-                _cancel_sibling_jobs()
-                cycle_detected = True
-                break
+        max_agents_total = config.get("max_agents_total", max_number_agents_per_step * 5)
+        candidate_voting, best_prediction, failed_predictions, consensus_reached = (
+            run_voting_batch(
+                agent,
+                previous_move,
+                current_state,
+                current_step,
+                batch_size=max_number_agents_per_step,
+                margin_k=margin_k,
+                max_agents_total=max_agents_total,
+                predictions_table=predictions_table,
+            )
+        )
+
+        if consensus_reached and best_prediction is not None:
+            game.apply_move(best_prediction["action"])
+        else:
+            print(f"No consensus reached at step {current_step} after {max_agents_total} agents. Stopping.")
+            break
 
         step_data = {
             "step": current_step,
@@ -828,7 +705,6 @@ def main() -> None:
                 }
                 for f in failed_predictions
             ],
-            "fallback_retries": fallback_retries_used,
             "num_agents_queried": len(failed_predictions) + sum(candidate_voting.values()),
         }
         game_history.append(step_data)

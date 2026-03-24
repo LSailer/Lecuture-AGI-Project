@@ -7,12 +7,6 @@ temperature: 0.5
 model_path: LLM/models/devstral-24b
 prompt_variant: overlap_v16
 
-# Fallback config
-max_fallback_retries: 3
-fallback_api: local
-fallback_local_model: LLM/model
-gemini_model: gemini-2.5-flash
-
 # Stage 1 — 4x4 butterfly
 # row_hints:
 #   - [1, 1]

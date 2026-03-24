@@ -18,8 +18,3 @@ max_score_drop: 6
 
 # Cycle detection
 max_state_revisits: 3
-
-# Fallback config — reduced retries for speed
-max_fallback_retries: 1
-fallback_api: gemini
-gemini_model: gemini-2.5-flash
