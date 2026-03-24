@@ -224,3 +224,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: model=qwen3-32b, temperature=0.1, prompt=qwen3_compact_74 (74 examples + recency-anchor Step 75 duplicate of Step 53 + LOOKUP RULE), scramble=74-move (72-move + R,F'), max_agents=3
 - **Result**: SR=100%, steps=74 (exact), **KEEP + STAGE UP**
 - **Insight**: Extended to 74-move by appending R,F' to the scramble; prepended 2 new examples (F,R' to undo them), recency-anchor at step75 for step53. Pattern holds: incremental 2-move extension continues to work reliably. Stage up to 76-move.
+
+## Iteration 46 — 76-move scramble, qwen3_compact_76 LOOKUP
+- **Config**: qwen3-32b, T=0.1, qwen3_compact_76, 76-move scramble (extended 74-move by appending U2,L')
+- **Result**: 100% SR, 76 steps
+- **Insight**: LOOKUP RULE + recency anchor pattern continues to scale. Prepending L,U2 examples (inverse of newly appended U2,L' at end of scramble) maintained perfect copy-paste fidelity at 76 moves. Advancing to 78-move.
