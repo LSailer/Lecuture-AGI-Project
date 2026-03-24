@@ -239,3 +239,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: qwen3-32b, T=0.1, qwen3_compact_80, 80-move scramble (extended 78-move by appending D,L'), max_agents=3
 - **Result**: SR=100%, steps=80 (exact), **KEEP + STAGE UP**
 - **Insight**: LOOKUP RULE + recency anchor pattern continues to scale. Prepending L,D' examples (inverse of newly appended L',D at end of scramble) maintained perfect copy-paste fidelity at 80 moves. Recency anchor at step81 = duplicate of step59. Advancing to 82-move.
+
+## Iteration 49 — 82-move scramble, qwen3_compact_82 LOOKUP
+- **Config**: qwen3-32b, T=0.1, qwen3_compact_82, 82-move scramble (extended 80-move by appending F,U), max_agents=3
+- **Result**: SR=100%, steps=82 (exact), **KEEP + STAGE UP**
+- **Insight**: LOOKUP RULE + recency anchor pattern continues to scale. Prepending U',F' examples (inverse of newly appended F,U at end of scramble) maintained perfect copy-paste fidelity at 82 moves. Recency anchor at step83 = duplicate of step61. Advancing to 84-move.
