@@ -4,6 +4,8 @@ max_steps: 2000
 max_agents_per_step: 9
 output_dir: output
 temperature: 0.1
+voting_temperature: 0.1
+voting_top_p: 0.95
 temp_escalation: false
 model_path: LLM/models/devstral-24b
 prompt_variant: base

@@ -329,6 +329,8 @@ def run_voting_batch(
     batch_size: int,
     margin_k: int,
     max_agents_total: int | None = None,
+    voting_temperature: float = 0.1,
+    voting_top_p: float = 0.95,
     system_prompt_override: str | None = None,
     user_prompt_override: str | None = None,
     predictions_table: wandb.Table | None = None,
@@ -418,7 +420,7 @@ def run_voting_batch(
     if rest_messages:
         responses.extend(
             agent.llm.generate_batch(
-                rest_messages, do_sample=True, temperature=0.1, top_p=0.95
+                rest_messages, do_sample=True, temperature=voting_temperature, top_p=voting_top_p
             )
         )
 
@@ -442,9 +444,9 @@ def run_voting_batch(
                 current_state,
                 step=current_step,
                 agent_num=agents_so_far,
-                temperature=0.1,
+                temperature=voting_temperature,
                 do_sample=True,
-                top_p=0.95,
+                top_p=voting_top_p,
             )
 
             if isinstance(action, list):
@@ -598,6 +600,8 @@ def main() -> None:
     margin_k = config["margin_k"]
     max_steps = config["max_steps"]
     max_number_agents_per_step = config["max_agents_per_step"]
+    voting_temperature = config.get("voting_temperature", 0.1)
+    voting_top_p = config.get("voting_top_p", 0.95)
     output_dir = config.get("output_dir", "output")
 
     if not os.path.exists(output_dir):
@@ -676,6 +680,8 @@ def main() -> None:
                 batch_size=max_number_agents_per_step,
                 margin_k=margin_k,
                 max_agents_total=max_agents_total,
+                voting_temperature=voting_temperature,
+                voting_top_p=voting_top_p,
                 predictions_table=predictions_table,
             )
         )
