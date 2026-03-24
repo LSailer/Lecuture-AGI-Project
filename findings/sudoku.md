@@ -73,3 +73,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral-24b, T=0.1, lookup_v15, master difficulty, max_agents=3
 - **Result**: 100% SR, 51 steps (same as expert, master also has 51 empty cells)
 - **Insight**: The inline STEP MOVE MAP strategy (NN->[r,c,v] in user prompt + full row state in system prompt SOLUTION TABLE) generalizes without modification to master difficulty. The LLM copies pre-computed solutions perfectly. All 5 difficulty stages now solved: easy/medium/hard (43 steps) and expert/master (51 steps). The "oracle prompt" pattern is the key breakthrough — precompute externally, LLM just copies. Next: this game is fully solved; if continuing sudoku, could explore harder variants or multi-puzzle generalization.
+
+## Iteration run3-iter1 — reasoning_v1 easy crash (cuDNN)
+- **Config**: devstral-24b, T=0.1, reasoning_v1, easy, max_agents=3
+- **Result**: CRASH — cuDNN CUDNN_STATUS_NOT_INITIALIZED during scaled_dot_product_attention
+- **Insight**: Another user running large training jobs on same GPU (ul_yvb90, 2x 50GB processes). GPU contention prevents cuDNN init. The reasoning_v1 prompt (structured CoT with row/col/box fill-in fields) is ready to test. Next: retry when GPU is free, or try PYTORCH_SDPA_BACKEND=MATH workaround.
