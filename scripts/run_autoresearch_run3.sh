@@ -11,6 +11,7 @@
 
 cd "${SLURM_SUBMIT_DIR:-$(dirname "$(readlink -f "$0")")/..}"
 mkdir -p logs output
+export WANDB_MODE=disabled
 
 GAME=${GAME:-rubiks_cube}
 MAX_ITER=${MAX_ITER:-50}

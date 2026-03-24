@@ -11,6 +11,7 @@
 
 cd "${SLURM_SUBMIT_DIR:-$(dirname "$(readlink -f "$0")")/..}"
 mkdir -p logs output
+export WANDB_MODE=disabled
 
 # Critical: load CUDA runtime so torch.cuda.is_available() works
 module load devel/cuda/12.8
