@@ -7,11 +7,12 @@ temperature: 0.1
 voting_temperature: 0.3
 voting_top_p: 0.95
 model_path: LLM/models/devstral-24b
-prompt_variant: lookup_v15
+prompt_variant: lookup_v7
 max_agents_per_step: 3
+max_steps: 50
 
-# Stage 1 — easy
-# initial_state: easy
+# Stage 1 — easy (DEV validation)
+initial_state: easy
 
 # Stage 2 — medium
 # initial_state: medium
@@ -22,5 +23,5 @@ max_agents_per_step: 3
 # Stage 4 — expert
 # initial_state: expert
 
-# Stage 5 — master (active)
-initial_state: master
+# Stage 5 — master
+# initial_state: master
