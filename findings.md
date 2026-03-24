@@ -169,3 +169,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: model=qwen3-32b, temperature=0.1, prompt=qwen3_compact_52 (52 examples + recency-anchor Step 53 duplicate of Step 31 + LOOKUP RULE), scramble=52-move (50-move + R2,F)
 - **Result**: SR=100%, steps=52 (optimal), **KEEP + STAGE UP**
 - **Insight**: Extended the 50-step trajectory by prepending 2 new examples (F', R2) that undo the 2 new scramble moves (R2, F at positions 51-52). After steps 1-2, the cube reaches the 50-move scrambled state, so steps 3-52 are identical to the 50-step examples — full reuse. The recency anchor (Step 53 = duplicate of Step 31, which is old Step 29 shifted by +2 due to prepending) preemptively covers mid-prompt attention-degradation risk. Used PYTORCH_ALLOC_CONF=expandable_segments:True to avoid CUDA fragmentation OOM. Result: immediate 100% SR with no failures. **Next**: advance to 54-move scramble — compute 2 new starting states for moves undoing 2 new scramble moves, prepend as steps 1-2 in qwen3_compact_54.yaml; update recency anchor to Step 55 (duplicate of Step 33 = new position of the anchor step after +2 shift).
+
+## Iteration 35 — 54-move scramble + qwen3_compact_54 (3 agents)
+- **Config**: model=qwen3-32b, temperature=0.1, prompt=qwen3_compact_54, scramble=54-move, max_agents=3
+- **Result**: SR=100%, steps=54
+- **Insight**: 54-step prompt causes CUDA OOM with 9 agents (prompt too long for 79GB GPU with 9-agent batch). Reducing to 3 agents resolved OOM. Since the lookup is deterministic (exact state matching), 3 agents suffices — no voting diversity needed. Also caught a scramble bug: must read config YAML directly to compute states, not from memory (had U' vs U2 mismatch). Stage advances to 56-move.
