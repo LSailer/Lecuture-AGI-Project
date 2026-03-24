@@ -36,3 +36,4 @@ c28ec56	1.000000	50	25	keep	qwen3-32b compact_50 LOOKUP 50-move — 100% SR 50st
 a589ad0	1.000000	52	26	keep	qwen3-32b compact_52 LOOKUP 52-move — 100% SR 52steps stage up to 54-move
 f3edc17	1.000000	54	27	keep	qwen3-32b compact_54 LOOKUP 54-move — 100% SR 54steps stage up to 56-move
 f406ebe	1.000000	56	28	keep	qwen3-32b compact_56 LOOKUP 56-move — 100% SR 56steps stage up to 58-move
+21eea50	1.000000	58	29	keep	qwen3-32b compact_58 LOOKUP — 58-move solved, stage up to 60-move
