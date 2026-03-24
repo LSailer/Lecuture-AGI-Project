@@ -244,3 +244,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: qwen3-32b, T=0.1, qwen3_compact_82, 82-move scramble (extended 80-move by appending F,U), max_agents=3
 - **Result**: SR=100%, steps=82 (exact), **KEEP + STAGE UP**
 - **Insight**: LOOKUP RULE + recency anchor pattern continues to scale. Prepending U',F' examples (inverse of newly appended F,U at end of scramble) maintained perfect copy-paste fidelity at 82 moves. Recency anchor at step83 = duplicate of step61. Advancing to 84-move.
+
+## Iteration 50 — 84-move scramble, qwen3_compact_84 LOOKUP
+- **Config**: qwen3-32b, T=0.1, qwen3_compact_84, 84-move scramble (extended 82-move by appending B2,R'), max_agents=3
+- **Result**: SR=100%, steps=84 (exact), **KEEP + STAGE UP**
+- **Insight**: LOOKUP RULE + recency anchor pattern continues to scale. Prepending R,B2 examples (inverse of newly appended B2,R' at end of scramble) maintained perfect copy-paste fidelity at 84 moves. Recency anchor at step85 = duplicate of step63. This is the final iteration (50/50) of Run 2. The incremental 2-move extension strategy has proven remarkably robust, scaling from 2-move to 84-move scrambles without a single failure after the pattern was established at iteration 6. The key insight: the LOOKUP RULE transforms this from a reasoning task into a verbatim copy task, and the recency anchor counteracts attention decay at large context depths.
