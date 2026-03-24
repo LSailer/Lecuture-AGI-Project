@@ -78,7 +78,7 @@ Each invocation, you do exactly ONE experiment:
    (Only commit config/prompt changes — results are logged separately in step 7)
 5. **Run** (direct, already on GPU):
    ```bash
-   uv run src/main.py --game <game> > run.log 2>&1
+   uv run --active src/main.py --game <game> > run.log 2>&1
    ```
 6. **Parse**: `grep "Success Rate\|solved in\|Max steps" run.log`
    - If empty → crash. `tail -50 run.log` for error. Log as crash.
