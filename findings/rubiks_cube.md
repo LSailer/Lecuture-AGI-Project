@@ -164,3 +164,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: qwen3-32b, T=0.1, qwen3_permutation prompt, 5-move [R,U,R',U',F2], max_agents=3
 - **Result**: crash — run.log empty after 15+ min; model load timed out (no GPU or slow cold start)
 - **Insight**: Infrastructure issues on run3 start: (1) LLM/models was missing symlink — fixed by symlinking to ../../LLM/models; (2) .venv/bin/python was not set up — fixed with bash wrapper calling run2_cube venv python; (3) model loading took >15 min suggesting GPU not yet available or model cache cold. Next: verify GPU availability (nvidia-smi), try devstral-24b as fallback if qwen3 load hangs again, or wait for GPU warmup.
+
+## Iteration run3-2 — Lustre PFS degraded, Python cannot start
+- **Config**: qwen3-32b, T=0.1, qwen3_permutation prompt, 5-move scramble [R,U,R',U',F2], max_agents=3
+- **Result**: crash — run.log empty after 20+ min; Python 3.13 (uv-managed, on PFS) cannot execute even trivial scripts within 30s
+- **Insight**: Root cause is Lustre filesystem degradation: `/home/ul/ul_student/ul_hfj15/.local/share/uv/python/cpython-3.13.3.../python3.13` is on PFS, which today is so slow that even `python -c "print()"` times out (exit 124 at 30s). System Python 3.9 works immediately (local filesystem). Two consecutive crashes (iter1: GPU cold start, iter2: PFS I/O stall). Config is correct — retry next iteration when PFS recovers. Diagnosis: check `ptlrpc_set_wait` in `/proc/PID/wchan` to detect Lustre stalls early.
