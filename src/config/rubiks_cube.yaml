@@ -1,14 +1,14 @@
 game: rubiks_cube
 margin_k: 3
 max_steps: 2000
-max_agents_per_step: 9
+max_agents_per_step: 3
 output_dir: output
 temperature: 0.1
 voting_temperature: 0.1
 voting_top_p: 0.95
 temp_escalation: false
-model_path: LLM/models/devstral-24b
-prompt_variant: base
+model_path: LLM/models/qwen3-32b
+prompt_variant: qwen3_permutation
 
 # Game-specific — 5-move scramble
 scramble:
