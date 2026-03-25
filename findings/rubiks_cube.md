@@ -214,3 +214,18 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral-24b, T=0.1, devstral_face_v5 (forced compute: edge+face+new-faces sections), 5-move scramble, max_agents=3
 - **Result**: SR=61.1% (no progress) — DISCARD
 - **Insight**: The `compute:` scratchpad fixed the identity-copy failure: model now attempts actual edge cycle extraction and face rotation. Edge cycle extraction is mostly correct. Face rotation formula (row-by-row new[r][c]=old[2-c][r]) is followed and often correct. But face assembly introduces errors: model copies wrong rows for unchanged faces and produces color-count violations (not exactly 9 of each color). The 54-char manual computation exceeds devstral's reliable ability. Next: provide explicit per-face position-index tables (U-row0=s[0,1,2], U-col2=s[2,5,8], etc.) to reduce indexing errors, and add a second worked example (R CW) so the model has templates for side-face moves.
+
+## Iteration 15 — devstral_face_v6 bracket notation + source annotation
+- **Config**: devstral T=0.1, devstral_face_v6, 5-move scramble (R U R' U' F2)
+- **Result**: SR=61.1%, 0 valid steps — DISCARD
+- **Insight**: Root cause confirmed via failures.csv: model writes ~150-token English preamble ("Let's analyze... A good strategy is..."), an intermediate misformatted "New faces" block, then a "Final output:" header before the proper compute: block — all before reaching move=/next_state= lines. Token budget exhausted. Fix: (1) compact the example in system prompt (5 lines not 20), (2) use "RESPOND WITH ONLY THIS FORMAT (no preamble)" in user_prompt, (3) compact one-line new faces format to reduce required output tokens.
+
+## Iteration 16 — devstral_face_v7 compact example + no-preamble
+- **Config**: devstral T=0.1, devstral_face_v7, 5-move scramble
+- **Result**: SR=61.1%, 0 valid steps — DISCARD
+- **Insight**: KEY PROGRESS: "RESPOND WITH ONLY THIS FORMAT (no preamble)" worked perfectly — model now generates structured output without prose preamble, and move=/next_state= lines appear. But next_state=55 chars (parse rejects). Root cause: one-line format `new: U=X R=Y...` causes model to include face label 'R' (which is also a color code) in next_state concatenation → extra char. Fix: use multi-line faces format (one face per line) + explicit "next_state = concat of 6×9-char values (labels excluded)".
+
+## Iteration 16b — devstral_face_v8 multi-line new faces
+- **Config**: devstral T=0.1, devstral_face_v8, 5-move scramble
+- **Result**: SR=61.1%, 0 valid steps — DISCARD
+- **Insight**: Multi-line faces: still 11-char face values (WWBWWBWWYYY vs 9). Analysis: model computes r0=WWB r1=WWB r2=YYY (9 chars) in face step, but then in new faces outputs 11 chars — inconsistency between computation and assembly. The `U: WWBWWBWWYYY` format includes 2 extra chars ("WW") of unknown origin; possibly reading from adjacent row context. Fix: use inline assembly `face U: r0=[WWB]+r1=[WWB]+r2=[YYY]=[WWBWWBYYY]` format so concatenation happens IMMEDIATELY after row computation on same line, preventing re-computation errors. Also model rotation computation wrong (identity copy of old rows).

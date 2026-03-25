@@ -42,3 +42,6 @@ ecc4241	0.611000	0	1	discard	rubiks_cube run3-iter10 devstral_face_v1 — all 15
 395736c	0.611000	0	1	discard	rubiks_cube run3-iter12 devstral_face_v3 — formula wrong (U/D/R/L CW/CCW labels swapped): all 15 agents fail check_next_state
 371f84f	0.611000	0	1	discard	run3 iter13 devstral_face_v4 — corrected U/D/R/L vs F/B face rotation formulas — model skips computation, copies input as next_state; all 15 agents fail check_next_state
 de10aca	0.611000	0	1	discard	rubiks_cube iter14b devstral_face_v5 — model now computes (not copying), but face assembly wrong: row copies off, color counts violated, SR=61.1de10aca	0.611000	0	1	discard	rubiks_cube iter14b devstral_face_v5 — compute: trace unlocks computation but face assembly errors cause color-count violations
+4263a6b	0.611000	0	1	discard	run3 iter15 devstral_face_v6 — verbose preamble fills 750 tokens before move=/next_state=; all 15 agents fail parse SR=61.1%
+daf6bf0	0.611000	0	1	discard	run3 iter16 devstral_face_v7 — no-preamble fixed (model generates move=/next_state=) but next_state=55chars: face label R included in concat; one-line new: format loses labels
+2bd652b	0.611000	0	1	discard	run3 iter16b devstral_face_v8 — model generates move=/next_state= but face values=11chars (face label R included in concat) + wrong color counts
