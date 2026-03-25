@@ -303,3 +303,10 @@ Each entry: what was tried, what was learned, and what to try next.
 - **What changed**: scramble [U] (inverse=U'), added candidate: reasoning line + MOVE SELECTION guidance, kept ns[] format from v24
 - **What happened**: candidate: line caused model to reason "F-face (F_r0=OOO vs solved=WWW) → F'" — model confused F's solved target (GGG) with U's target (WWW). F' move then had computation errors (ns[0..8]=WWWWWGGOWW=10c, space in next_state). All 3 agents failed parse.
 - **Insight**: The candidate: reasoning step HURTS by giving the model room to reason incorrectly about the solved state. Model confuses which face corresponds to which solved color. Without candidate: (pure v24 format), the model defaults to U' for the [U]-scramble state (natural tendency for top-row mismatches in R/F/L/B). Fix: remove candidate: line, keep [U] scramble. v24's natural U' selection WAS correct for scramble=[U,R',U',F2] but INCORRECT for that scramble — with scramble=[U], U' IS correct and the model will compute it right (proven in v24 with identical ns[] format).
+
+## Iteration 32 — devstral_face_v26 remove candidate: line
+- **Config**: devstral T=0.1, devstral_face_v26, scramble=[U], max_agents=3
+- **Result**: SR=77.8%, 0 steps — DISCARD
+- **Insight**: Removing `candidate:` from format broke ALL 15 agents (0 parseable outputs). Root cause: v26 added MOVE SELECTION section (absent in v24) which triggers model to write score analysis preamble BEFORE the structured format, overflowing the 750-token budget before `move =` and `next_state =` are reached. v24 had no MOVE SELECTION and produced 2 valid steps. Fix: go back to v24 format exactly with [U] scramble. Model's natural U' tendency = correct first move for [U] scramble.
+
+## Iteration 33 — devstral_face_v24 (exact reuse) + [U] scramble
