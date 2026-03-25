@@ -31,3 +31,5 @@ ab0c0c0	1.000000	40	20	keep	rubiks_cube iter24 lookup_v26 40-move scramble step-
 119e663	1.000000	44	22	keep	rubiks_cube iter26 lookup_v28 44-move scramble step-indexed FSM — 100% SR 44 steps optimal
 d99083d	0.000000	0	1	crash	run3 iter1 setup — model load timeout qwen3-32b no GPU available
 00195cd	0.000000	0	1	crash	run3 iter2 setup — Lustre PFS severely degraded python3.13 cannot start (timeout >30s even for trivial scripts)
+030ca8e	0.000000	0	1	discard	rubiks_cube run3-iter3 qwen3_think_v1 — all 15 agents fail parse: 750-token limit cuts trace before move=/next_state= lines
+f8529e8	0.611000	0	1	discard	rubiks_cube run3-iter5 qwen3_think_v3 /no_think — model outputs empty <think> then copies current_state as next_state; 15 inconsistent predictions

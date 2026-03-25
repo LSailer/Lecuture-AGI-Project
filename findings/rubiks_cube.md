@@ -169,3 +169,13 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: qwen3-32b, T=0.1, qwen3_permutation prompt, 5-move scramble [R,U,R',U',F2], max_agents=3
 - **Result**: crash — run.log empty after 20+ min; Python 3.13 (uv-managed, on PFS) cannot execute even trivial scripts within 30s
 - **Insight**: Root cause is Lustre filesystem degradation: `/home/ul/ul_student/ul_hfj15/.local/share/uv/python/cpython-3.13.3.../python3.13` is on PFS, which today is so slow that even `python -c "print()"` times out (exit 124 at 30s). System Python 3.9 works immediately (local filesystem). Two consecutive crashes (iter1: GPU cold start, iter2: PFS I/O stall). Config is correct — retry next iteration when PFS recovers. Diagnosis: check `ptlrpc_set_wait` in `/proc/PID/wchan` to detect Lustre stalls early.
+
+## Iteration run3-3 — qwen3_think_v1 verbose permutation trace, 5-move scramble
+- **Config**: qwen3-32b, T=0.1, qwen3_think_v1 (thinking + full verbose trace), 5-move scramble [R,U,R',U',F2], max_agents=3
+- **Result**: SR=61.1% (initial state score, no progress) — DISCARD. All 15 agents fail parse.
+- **Insight**: Root cause: max_new_tokens=750 hardcoded in src/utils/llm.py. The qwen3_think_v1 system prompt requires tracing ALL 20 permutation entries one-by-one (~300+ tokens for trace alone), causing truncation before the required `move=` and `next_state=` output lines. The MOVE_PATTERN and STATE_PATTERN regex search the entire response (including inside `<think>`), so the fix is NOT to suppress thinking but to use a COMPACT trace format that fits in 750 tokens. Next: create qwen3_think_v2 with compact one-line trace format (e.g., "0→6=W, 1→3=W, ...") and instruct the model to output move= and next_state= immediately after </think>.
+
+## Iteration run3-5 — qwen3_think_v3 /no_think, permutation tables
+- **Config**: qwen3-32b, T=0.1, qwen3_think_v3 (/no_think + permutation tables + one worked example), 5-move scramble, max_agents=3
+- **Result**: SR=61.1% (initial state, no progress), 15 inconsistent predictions — DISCARD
+- **Insight**: `/no_think` fix worked — model now outputs `move=` and `next_state=` lines (parse errors gone). But model outputs empty `<think></think>` then copies current_state verbatim as next_state (no permutation applied). Root cause: with no thinking workspace, qwen3 defaults to "copy input = safe guess" and does not compute the permutation. Fix: add a required `T:` trace line to the output format (BEFORE move= and next_state=). This forces the model to write out the permutation lookups as plain text outside `<think>`, giving it a computational workspace (~150 tokens), while remaining well within 750-token output limit.
