@@ -234,3 +234,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral-24b, T=0.1, devstral_direct_v1 (no scratchpad, only move+next_state output), 5-move scramble
 - **Result**: SR=61.1%, 0 valid steps — DISCARD
 - **Insight**: Removing the scratchpad FIXED the 11-char face assembly bug — model now outputs valid 54-char states (passing STATE_PATTERN). But copy bug appeared: all 15 agents output `next_state = current_state` (move=F but state unchanged). Without computation guidance, devstral defaults to copying. Fundamental tension confirmed: WITH scratchpad → 11-char assembly bug; WITHOUT scratchpad → copy bug. Fix: add anti-copy instruction + compact example to direct_v2 to force actual computation while keeping minimal output format.
+
+## Iteration run3-18 — devstral_direct_v2 anti-copy + example
+- **Config**: devstral-24b, T=0.1, devstral_direct_v2 (add WARNING "must differ" + compact R-on-solved example), 5-move scramble
+- **Result**: SR=61.1%, 0 valid steps — DISCARD
+- **Insight**: Anti-copy WARNING fixed the state-copy bug from direct_v1, but introduced "example-copy" bug: model now picks move=R (matching example) and outputs the example result state (WWBWWBWWBRRRRRRRRRGGWGGWGGWYYGYYGYYGOOOOOOOOOYBBYBBYBB) verbatim instead of computing. The example acted as an implicit lookup table: model pattern-matched "R → example_result". Fix: do NOT show the final 54-char result in the example — show only the intermediate computation steps. Use face-based computation format (face_v9-style) but fix the 11-char assembly bug with a cleaner output label: `U: XXXXXXXXX` (colon-separated, no bracketed concat) avoids label inclusion in face value.
