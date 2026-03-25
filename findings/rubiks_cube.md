@@ -229,3 +229,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral T=0.1, devstral_face_v8, 5-move scramble
 - **Result**: SR=61.1%, 0 valid steps — DISCARD
 - **Insight**: Multi-line faces: still 11-char face values (WWBWWBWWYYY vs 9). Analysis: model computes r0=WWB r1=WWB r2=YYY (9 chars) in face step, but then in new faces outputs 11 chars — inconsistency between computation and assembly. The `U: WWBWWBWWYYY` format includes 2 extra chars ("WW") of unknown origin; possibly reading from adjacent row context. Fix: use inline assembly `face U: r0=[WWB]+r1=[WWB]+r2=[YYY]=[WWBWWBYYY]` format so concatenation happens IMMEDIATELY after row computation on same line, preventing re-computation errors. Also model rotation computation wrong (identity copy of old rows).
+
+## Iteration run3-17 — devstral_direct_v1 no-scratchpad
+- **Config**: devstral-24b, T=0.1, devstral_direct_v1 (no scratchpad, only move+next_state output), 5-move scramble
+- **Result**: SR=61.1%, 0 valid steps — DISCARD
+- **Insight**: Removing the scratchpad FIXED the 11-char face assembly bug — model now outputs valid 54-char states (passing STATE_PATTERN). But copy bug appeared: all 15 agents output `next_state = current_state` (move=F but state unchanged). Without computation guidance, devstral defaults to copying. Fundamental tension confirmed: WITH scratchpad → 11-char assembly bug; WITHOUT scratchpad → copy bug. Fix: add anti-copy instruction + compact example to direct_v2 to force actual computation while keeping minimal output format.
