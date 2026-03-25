@@ -202,3 +202,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral-24b, T=0.1, reasoning_v27 (v3+step2 verbose anchor), easy (stage 1), max_agents=3, max_agents_total=15
 - **Result**: 20.9% SR (9 cells), no consensus at step 10 — DISCARD (same SR/steps as v3)
 - **Insight**: v27 anchor ("Read current_state[R] from the Current state array above (step N: state already includes ALL fills from previous steps)") DID change the failure mode: step 10 now fails with ALL-15-parse-failures (truncation) vs v3's stale-row-invalid-move (parseable but wrong value). This confirms v27 prevents stale-row reads, but adds ~30 extra response tokens (the verbose template is echoed), consistently pushing step 10 over the 750-token limit. The anchor works conceptually but is too verbose. Next: v28 = v3 + minimal step-number hint only: change "Copy row R from current_state[R]: ___" to "Copy row R from current_state[R] (step {step}): ___" — adds only ~4 response tokens but still embeds the step-number as a temporal disambiguator to prevent stale-row.
+
+## Iteration 27 — reasoning_v28 minimal-step-anchor (same as v3, no improvement)
+- **Config**: devstral-24b, T=0.1, reasoning_v28, easy, stage 1
+- **Result**: 20.9% SR, 9 steps — DISCARD (same as v3)
+- **Insight**: Minimal "(step N)" anchor in step2 preserves v3 response format (no truncation) and prevents stale-row placement (same as v27), but step10 scatter persists: rows 2 and 4 both have 7 NZ, agents split between them without a tiebreaker (some agents pick row 2, others row 4, others row 0/6). No consensus after 15 agents. Fix: add explicit max-NZ row selection with lowest-R tiebreaker in step1 (v29).
