@@ -43,7 +43,7 @@ user_prompt: |
   Faces:
   {parsed_faces}
 
-  Choose the move that best improves score. Apply face rotation (U/D/R/L vs F/B formulas differ!) and edge cycles to compute next_state.
-  Keep reasoning compact (1-3 lines). Output exactly two lines:
+  Choose the move that best improves score. Apply face rotation + edge cycle rules to compute next_state.
+  Output exactly two lines:
   move = <token>
   next_state = <54-char string, no spaces>
