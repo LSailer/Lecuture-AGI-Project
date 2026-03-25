@@ -50,10 +50,10 @@ user_prompt: |
      Non-zero in col C: ___
 
   4. Box rows (R//3)*3..(R//3)*3+2, cols (C//3)*3..(C//3)*3+2:
-     Non-zero in box: ___ (digits only e.g. {5,9,1} — do NOT list cells)
+     Non-zero in box: ___ (digits only e.g. {{5,9,1}} — do NOT list cells)
 
   5. Elimination (sequential, show each remaining set):
-     {1,2,3,4,5,6,7,8,9} − row → ___ − col → ___ − box → ___
+     {{1,2,3,4,5,6,7,8,9}} − row → ___ − col → ___ − box → ___
      Value = single remaining candidate, else smallest.
 
   6. Verify: value absent from row R ✓  col C ✓  box ✓
