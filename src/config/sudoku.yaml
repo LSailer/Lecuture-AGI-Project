@@ -1,13 +1,13 @@
 game: sudoku
 model_path: LLM/models/devstral-24b
-prompt_variant: reasoning_v28
+prompt_variant: reasoning_v3
 
 # Voting config
 voting_temperature: 0.1
 voting_top_p: 0.95
 max_agents_per_step: 3
 max_agents_total: 15
-margin_k: 2
+margin_k: 1
 
 # Solver config
 max_steps: 200
