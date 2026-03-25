@@ -254,3 +254,13 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral-24b, T=0.1, devstral_face_v15, 5-move scramble
 - **Result**: SR=61.1%, 0 valid steps — DISCARD
 - **Insight**: All 6 expand lines now correct (progress!). But assembly still fails: model writes [3:R] when expand_R clearly shows F[3]=O. Root cause: model reads off-by-one from 9-position expand table (confuses F[3]=O with adjacent F[4]=R in the sequence). The 9-pos position-by-position lookup is too fragile. **Fix**: switch to row-based 3-char assembly (r0=[3c] r1=[3c] r2=[3c]). Reading expand[3:6] (3 consecutive chars) avoids per-position indexing errors. → devstral_face_v16.
+
+## Iteration 25 — devstral_face_v17: format barrier broken, length error remains
+- **Config**: devstral T=0.1, devstral_face_v17, 5-move scramble, max_agents=3
+- **Result**: SR=61.1% (0 valid steps), discard
+- **Insight**: Pre-populating expand tables via {current_state[N]} Python format indexing eliminated the 750-token truncation problem. Model now correctly generates edge cycle, face rotation, and all new_X=r0|r1|r2 lines, and outputs move= and next_state= (format barrier broken after 22 failed iterations). Remaining bug: next_state is 59 chars instead of 54 — model miscounts when concatenating r0|r1|r2 blocks without pipes. Fix: add explicit "strip pipes, each new_X contributes exactly 9 chars" instruction and a per-face char-count check before next_state assembly.
+
+## Iteration 27 — devstral_face_v19: concat format fixes string length, expand table lookups still wrong
+- **Config**: devstral T=0.1, devstral_face_v19, 5-move scramble [R,U,R',U',F2]
+- **Result**: SR=61.1% (0 valid steps) — DISCARD
+- **Insight**: FORMAT BREAKTHROUGH (but not yet SR). Replacing `strip |: U=[9c] ...` with `concat U=A+B+C=[9c]` (one line per face) FIXES the 10-char miscounting bug. Agents 2,3 now produce parseable 9-char faces. BUT: new failure is wrong COLOR VALUES — model computes `F[6]=B` instead of `F[6]=Y` for CCW rotation, causing color-count violations. Root cause: flat expand table `F[0]=W...F[8]=Y` makes out-of-order index lookups error-prone (F[5]=B vs F[6]=Y confusion). Fix: reformat expand table into row-groups: `U r0:[F[0]=W F[1]=W F[2]=B]  r1:[F[3]=W F[4]=W F[5]=B]  r2:[F[6]=Y F[7]=Y F[8]=Y]` so each row-group's boundary is visually clear. Keep concat format from v19.
