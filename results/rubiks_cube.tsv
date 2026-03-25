@@ -35,3 +35,4 @@ d99083d	0.000000	0	1	crash	run3 iter1 setup — model load timeout qwen3-32b no 
 f8529e8	0.611000	0	1	discard	rubiks_cube run3-iter5 qwen3_think_v3 /no_think — model outputs empty <think> then copies current_state as next_state; 15 inconsistent predictions
 599ccbc	0.611000	0	1	discard	rubiks_cube run3-iter6 qwen3_think_v4 T:-trace+/no_think — model ignores T: line, still copies current_state as next_state; all 15 agents inconsistent
 fba0126	0.611000	0	1	discard	rubiks_cube run3-iter7 qwen3_think_v2 thinking-enabled — thinking overflows 750 tokens with cube analysis before trace; parse error
+cdeee1e	0.611000	0	1	discard	rubiks_cube run3-iter8 devstral_perm_v1 — all agents inconsistent, devstral also cannot apply permutation tables
