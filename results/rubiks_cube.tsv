@@ -57,3 +57,6 @@ aae210e	0.611000	0	1	discard	rubiks_cube run3-iter25 devstral_face_v17 — FORMA
 2c0c19c	0.611000	0	1	discard	rubiks_cube iter27 devstral_face_v19 — concat format WORKS (agents 2,3 produce 9c faces), but expand table lookup errors: model reads F[6]=B instead of F[6]=Y for CCW rotation; fix: group expand table by row
 d21e092	0.611000	0	1	discard	rubiks_cube iter28 devstral_face_v20 — row-grouped expand (r0:/r1:/r2: labels) fixes F[6] misread but now F[2],F[5] (last-in-group) misread as W instead of B; concat R 10c bug persists (YBBOGRWGRW vs YBBORGGRW)
 92ee86c	0.611000	0	1	discard	rubiks_cube iter29 devstral_face_v21 — col-based rotation WORKS (rev(c0) correct), all new_X face values correct; ONLY failure is concat transposition error: model writes ORG→OGR in concat result line; fix: inline face→9c format
+176635c	0.611000	0	1	discard	rubiks_cube iter29b devstral_face_v22 — inline r0|r1|r2→[9c] format: 0 valid steps, concat transposition bug persists in new format
+46badbc	0.611000	0	1	discard	rubiks_cube iter30 devstral_face_v23 — eliminate concat entirely: 0 valid steps, model fails to produce parseable next_state without concat guidance
+3a6c6a2	0.481000	2	1	discard	rubiks_cube iter30b devstral_face_v24 — ns[N..M]=<9c> intermediate BREAKTHROUGH: 2 valid steps! but wrong moves (U' U') reduce SR; move selection needs improvement

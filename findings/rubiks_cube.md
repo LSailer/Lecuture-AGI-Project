@@ -278,3 +278,21 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral T=0.1, devstral_face_v21, 5-move scramble (R,U,R',U',F2), max_agents=3
 - **Result**: SR=61.1%, 0 valid steps — DISCARD (same as before)
 - **Insight**: BREAKTHROUGH in face computation. v21's pre-computed c0/c1/c2 in expand table + rotation formula `new_r0=rev(c0)` etc. works perfectly — all 6 new_X face values are correct in ALL agents' outputs. The ONLY remaining failure is the concat step: model writes `concat R=YBB+ORG+GRW=YBBOGRGRW` (transposing ORG→OGR in result) and `concat L=GGG+OOR+OOW=GGGOOROOOW` (10c insertion). Root cause: `A+B+C=result` format triggers computation rather than literal copying, causing transposition errors. Fix for v22: replace concat with inline `R=r0|r1|r2→[9c]` format where model copies the piped value immediately on the same line, making `→` an explicit copy-with-pipe-removal operation.
+
+## Iteration 29b — devstral_face_v22: inline pipe format for concat
+- **Config**: devstral T=0.1, devstral_face_v22, 5-move scramble [R,U,R',U',F2], max_agents=3
+- **Result**: SR=61.1%, 0 valid steps — DISCARD
+- **What changed**: Replaced `concat R=YBB+ORG+GRW=[9c]` with `R=r0|r1|r2→[9c]` inline pipe format where → means "copy left-to-right skipping |"
+- **Insight**: Even with the → copy instruction, model still fails to produce parseable next_state. Root cause: the `→[9c]` arrow format still triggers computation rather than pure copying, same underlying issue as A+B+C. Fix for v23: eliminate the concat step entirely — derive next_state directly from `new_X=r0|r1|r2` lines by skipping | chars in each face in sequence.
+
+## Iteration 30 — devstral_face_v23: no concat, direct next_state from new_X lines
+- **Config**: devstral T=0.1, devstral_face_v23, 5-move scramble [R,U,R',U',F2], max_agents=3
+- **Result**: SR=61.1%, 0 valid steps — DISCARD
+- **What changed**: Removed all concat lines; instruction to derive next_state by reading new_X=r0|r1|r2 lines and skipping | chars in order
+- **Insight**: Without an intermediate step, model cannot reliably read 6 pipe-separated face values and produce a correct 54-char string. The | removal with no intermediate anchor causes length errors. Fix for v24: add per-face ns[N..M]=<9c> intermediate lines that anchor each face's 9-char contribution before the final next_state assembly.
+
+## Iteration 30b — devstral_face_v24: ns[N..M]=<9c> intermediates — BREAKTHROUGH
+- **Config**: devstral T=0.1, devstral_face_v24, 5-move scramble [R,U,R',U',F2], max_agents=3
+- **Result**: SR=48.1%, 2 valid steps — DISCARD (metric worse, but qualitative breakthrough)
+- **What changed**: Added ns[0..8]/ns[9..17]/.../ns[45..53]=<9c> lines; boundary note (GGG|GRR→GGGGR R=6c not 7c); next_state copies ns values in order
+- **Insight**: MAJOR BREAKTHROUGH — model now makes 2 valid steps (check_next_state passes!). State computation is finally working. BUT: model picks U' at both step 1 and step 2 (wrong moves for this scramble), reducing SR from 61.1% to 48.1%. Step 3 fails with undo-prevention. Root cause of wrong moves: the prompt has no move-selection reasoning — model commits to a move on line 1 with no strategic guidance, defaulting to U' based on U-face appearance. Fix: (1) change scramble so U' is the CORRECT first move (scramble=[U]), validating the full pipeline; (2) add a `candidate:` reasoning line to help model pick better moves. Next: iter31 with scramble=[U] to align model's U' tendency with correct first move.
