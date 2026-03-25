@@ -55,8 +55,7 @@ cover/
 *.mo
 *.pot
 
-# Django stuff:
-*.log
+
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
@@ -210,7 +209,7 @@ LLM/model/
 LLM/model*
 LLM/static/
 
-logs
+
 output/log.csv
 *.png
 *.out
@@ -231,3 +230,4 @@ GEMINI.md
 CLAUDE.md
 LLM/.DS_Store
 
+output/parameter_sweep_nonogram/runs/

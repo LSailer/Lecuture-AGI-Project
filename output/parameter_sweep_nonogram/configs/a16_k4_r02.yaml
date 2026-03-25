@@ -1,0 +1,24 @@
+game: nonogram
+margin_k: 4
+max_steps: 500
+max_agents_per_step: 16
+output_dir: /pfs/data6/home/ul/ul_student/ul_raf24/github/Lecuture-AGI-Project/Lecuture-AGI-Project/output/sweeps/nonogram_5x5_diamond_devstral/runs/a16_k4_r02
+temperature: 0.5
+model_path: LLM/models/devstral-24b
+prompt_variant: overlap_v16
+max_fallback_retries: 0
+fallback_api: gemini
+gemini_model: gemini-2.5-flash
+max_state_revisits: 3
+row_hints:
+- - 1
+- - 3
+- - 5
+- - 3
+- - 1
+col_hints:
+- - 1
+- - 3
+- - 5
+- - 3
+- - 1
