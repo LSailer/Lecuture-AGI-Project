@@ -8,7 +8,7 @@ voting_temperature: 0.1
 voting_top_p: 0.95
 temp_escalation: false
 model_path: LLM/models/devstral-24b
-prompt_variant: devstral_face_v19
+prompt_variant: devstral_face_v22
 
 # Game-specific — 5-move scramble
 scramble:
