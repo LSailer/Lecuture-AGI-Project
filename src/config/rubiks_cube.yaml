@@ -7,8 +7,8 @@ temperature: 0.1
 voting_temperature: 0.1
 voting_top_p: 0.95
 temp_escalation: false
-model_path: LLM/models/deepseek-r1-32b
-prompt_variant: deepseek_perm_v1
+model_path: LLM/models/devstral-24b
+prompt_variant: devstral_face_v1
 
 # Game-specific — 5-move scramble
 scramble:

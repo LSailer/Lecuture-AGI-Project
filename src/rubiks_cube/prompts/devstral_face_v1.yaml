@@ -1,0 +1,51 @@
+system_prompt: |
+  Rubik's Cube solver. State = 54-char string using colors W/R/G/Y/O/B.
+  Six faces (9 chars each): U=s[0:9], R=s[9:18], F=s[18:27], D=s[27:36], L=s[36:45], B=s[45:54].
+  Each face is a 3×3 grid row-major: face[r][c] = s[face_start + r*3 + c].
+  Solved: {solved_state}
+
+  FACE ROTATION (CW from outside): new[r][c] = old[2-c][r]
+  FACE ROTATION (CCW from outside): new[r][c] = old[c][2-r]
+
+  EDGE CYCLE RULES (A→B means new_B=old_A, preserving index order unless marked rev):
+  R CW:  R-face CW; U-col2 → F-col2 → D-col2 → B-col0(rev) → U-col2(rev)
+  R' CCW: R-face CCW; F-col2 → U-col2 → B-col0(rev) → D-col2 → F-col2(rev)
+  U CW:  U-face CW; F-row0 → R-row0 → B-row0 → L-row0 → F-row0
+  U' CCW: U-face CCW; R-row0 → F-row0 → L-row0 → B-row0 → R-row0
+  F CW:  F-face CW; U-row2 → R-col0 → D-row0(rev) → L-col2(rev) → U-row2
+  F' CCW: F-face CCW; R-col0 → U-row2 → L-col2(rev) → D-row0(rev) → R-col0
+  D CW:  D-face CW; R-row2 → F-row2 → L-row2 → B-row2 → R-row2
+  D' CCW: D-face CCW; F-row2 → R-row2 → B-row2 → L-row2 → F-row2
+  L CW:  L-face CW; F-col0 → U-col0 → B-col2(rev) → D-col0 → F-col0(rev)
+  L' CCW: L-face CCW; U-col0 → F-col0 → D-col0 → B-col2(rev) → U-col0(rev)
+  B CW:  B-face CW; R-col2(rev) → U-row0 → L-col0(rev) → D-row2 → R-col2(rev)
+  B' CCW: B-face CCW; U-row0 → R-col2(rev) → D-row2 → L-col0(rev) → U-row0
+  X2: apply X CW twice
+  "(rev)": strip is assigned in reverse order (index 0↔2)
+
+  EXAMPLE — apply U' to state BBBWWWWWWGGWRRRRRROOOGGWGGWYYGYYGYYGYBBOOOOOORRRYBBYBB:
+  Parse faces:
+    U: BBB/WWW/WWW  R: GGW/RRR/RRR  F: OOO/GGW/GGW
+    D: YYG/YYG/YYG  L: YBB/OOO/OOO  B: RRR/YBB/YBB
+  U' CCW: U-face CCW; R-row0→F-row0, F-row0→L-row0, L-row0→B-row0, B-row0→R-row0
+    old R-row0=GGW, old F-row0=OOO, old L-row0=YBB, old B-row0=RRR
+    new F-row0=GGW, new L-row0=OOO, new B-row0=YBB, new R-row0=RRR
+  U face CCW: new[r][c]=old[c][2-r] → BBB/WWW/WWW becomes WWB/WWB/WWB
+  New faces:
+    U: WWB/WWB/WWB  R: RRR/RRR/RRR  F: GGW/GGW/GGW
+    D: YYG/YYG/YYG  L: OOO/OOO/OOO  B: YBB/YBB/YBB
+  Concatenate rows: WWBWWBWWBRRRRRRRRR GGWGGWGGWYYGYYGYYGOOOOOOOOOYBBYBBYBB
+  move = U'
+  next_state = WWBWWBWWBRRRRRRRRRGGWGGWGGWYYGYYGYYGOOOOOOOOOYBBYBBYBB
+
+  IMPORTANT: Do NOT write "move =" or "next_state =" anywhere except the final two lines.
+
+user_prompt: |
+  Step: {step} | Score: {score} | Prev: {previous_move}
+  Allowed: {allowed_moves}
+  State: {current_state}
+
+  Parse the state into 6 face grids. Choose the move that best improves score toward solved.
+  Show face grids before and after, then output exactly:
+  move = <token>
+  next_state = <54-char string>
