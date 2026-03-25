@@ -4,14 +4,14 @@ system_prompt: |
   Face[r][c] = s[start + r*3 + c], r and c in {{0,1,2}}.
   Solved: {solved_state}
 
-  FACE ROTATION — DIFFERENT FORMULAS per face (due to grid orientation):
-    U, D, R, L — CW from outside:  new[r][c] = old[c][2-r]
-    U, D, R, L — CCW from outside: new[r][c] = old[2-c][r]
-    F, B       — CW from outside:  new[r][c] = old[2-c][r]
-    F, B       — CCW from outside: new[r][c] = old[c][2-r]
-    X2: apply the CW formula twice.
+  FACE ROTATION — formulas differ by face type:
+    F, B (CW from outside):  new[r][c] = old[2-c][r]
+    F, B (CCW from outside): new[r][c] = old[c][2-r]
+    U, D, R, L (CW from outside):  new[r][c] = old[c][2-r]
+    U, D, R, L (CCW from outside): new[r][c] = old[2-c][r]
+    X2: apply CW formula twice.
 
-  EDGE CYCLE RULES (A→B means new_B=old_A, index order preserved unless "(rev)"):
+  EDGE CYCLE RULES (A→B means new_B=old_A, preserving index order unless "(rev)"):
   R CW:  R-face CW; U-col2→F-col2→D-col2→B-col0(rev)→U-col2
   R' CCW: R-face CCW; F-col2→U-col2→B-col0(rev)→D-col2→F-col2
   U CW:  U-face CW; F-row0→R-row0→B-row0→L-row0→F-row0
@@ -28,14 +28,8 @@ system_prompt: |
 
   EXAMPLE — apply U' to state BBBWWWWWWGGWRRRRRROOOGGWGGWYYGYYGYYGYBBOOOOOORRRYBBYBB:
   Faces: U:BBB/WWW/WWW  R:GGW/RRR/RRR  F:OOO/GGW/GGW  D:YYG/YYG/YYG  L:YBB/OOO/OOO  B:RRR/YBB/YBB
-  U' edge cycle (CCW): R-row0→F-row0, F-row0→L-row0, L-row0→B-row0, B-row0→R-row0
-    old: R-row0=GGW  F-row0=OOO  L-row0=YBB  B-row0=RRR
-    new: F-row0=GGW  L-row0=OOO  B-row0=YBB  R-row0=RRR
-  U face CCW (new[r][c]=old[2-c][r]):
-    row0: old[2][0]=W  old[1][0]=W  old[0][0]=B → WWB
-    row1: old[2][1]=W  old[1][1]=W  old[0][1]=B → WWB
-    row2: old[2][2]=W  old[1][2]=W  old[0][2]=B → WWB
-    U→WWB/WWB/WWB
+  U' edge cycle: old R-row0=GGW F-row0=OOO L-row0=YBB B-row0=RRR → new F-row0=GGW L-row0=OOO B-row0=YBB R-row0=RRR
+  U face CCW: new[r][c]=old[2-c][r] → BBB/WWW/WWW becomes WWB/WWB/WWB
   New faces: U:WWB/WWB/WWB  R:RRR/RRR/RRR  F:GGW/GGW/GGW  D:YYG/YYG/YYG  L:OOO/OOO/OOO  B:YBB/YBB/YBB
   move = U'
   next_state = WWBWWBWWBRRRRRRRRRGGWGGWGGWYYGYYGYYGOOOOOOOOOYBBYBBYBB
@@ -49,7 +43,7 @@ user_prompt: |
   Faces:
   {parsed_faces}
 
-  Choose the move that best improves score. Apply the face rotation formula (U/D/R/L vs F/B differ!) and edge cycles to compute next_state.
-  Output exactly two lines:
+  Choose the move that best improves score. Apply face rotation (U/D/R/L vs F/B formulas differ!) and edge cycles to compute next_state.
+  Keep reasoning compact (1-3 lines). Output exactly two lines:
   move = <token>
   next_state = <54-char string, no spaces>
