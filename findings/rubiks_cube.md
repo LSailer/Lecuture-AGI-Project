@@ -310,3 +310,6 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Insight**: Removing `candidate:` from format broke ALL 15 agents (0 parseable outputs). Root cause: v26 added MOVE SELECTION section (absent in v24) which triggers model to write score analysis preamble BEFORE the structured format, overflowing the 750-token budget before `move =` and `next_state =` are reached. v24 had no MOVE SELECTION and produced 2 valid steps. Fix: go back to v24 format exactly with [U] scramble. Model's natural U' tendency = correct first move for [U] scramble.
 
 ## Iteration 33 — devstral_face_v24 (exact reuse) + [U] scramble
+- **Config**: devstral T=0.1, devstral_face_v24 (exact reuse), scramble=[U], max_agents=3
+- **Result**: SR=100%, 1 step (optimal) — KEEP; stage up to 2-move [R,U] scramble
+- **Insight**: CONFIRMED: v24 format (no MOVE SELECTION section) avoids token budget overflow; model starts directly with 'edge U'...' line; natural U' tendency matches correct inverse for [U] scramble; next: test 2-move ["R","U"] scramble — correct solution is ["U'","R'"] in 2 steps.

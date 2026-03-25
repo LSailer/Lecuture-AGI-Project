@@ -10,8 +10,9 @@ temp_escalation: false
 model_path: LLM/models/devstral-24b
 prompt_variant: devstral_face_v24
 
-# Game-specific — 1-move scramble (aligns model's U' tendency with correct inverse)
+# Game-specific — 2-move scramble [R,U]; correct solution = [U',R'] in 2 steps
 scramble:
+  - R
   - U
 
 forbid_undo: true
