@@ -328,8 +328,3 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral T=0.1, devstral_face_v24, scramble=[U,U], max_agents=3
 - **Result**: SR=100%, 2 steps — KEEP; U'-bias = correct solution for U2 scramble
 - **Insight**: Model applies U' twice, solving [U,U] scramble (41 voting rounds, 36 failed). The ns[] format works for multi-step solving but is slow/fragile — many agent attempts needed per step. Key: [U,U] scrambled state has U-face fully solved (WWWWWWWWW), making U' non-obvious (doesn't improve U-face), yet model still picks U' from template bias. Next: test R' with [R] scramble + v28 (replace U' example with R' example). If [R] state = exact v28 example state, step2 of [R,U] also matches → direct solve without R' generalization needed.
-
-## Iteration 37 — devstral_face_v28 scramble=[R] (R' example, identical state)
-- **Config**: devstral T=0.1, devstral_face_v28 (U' example replaced by R' example), scramble=[R], max_agents=3
-- **Result**: SR=77.8%, 0 valid steps — DISCARD; all 15 agents fail parse ("Could not find move or next_state")
-- **Insight**: ROOT CAUSE: v28 example input state (WWBWWBWWB...) is IDENTICAL to the [R]-scrambled test state. When example state = current state, devstral outputs verbose explanation/preamble that overflows 750-token budget before reaching `move=`/`next_state=` lines. This is distinct from iter34 step2 failure (parseable but wrong) — v28 produces NO output at all. Also: v24's U' example OUTPUT = v28's R' example INPUT, creating a confusing chain. Next: v29 — keep v24 U' example, use a DIFFERENT state for R' example (not [R]-scrambled), add face-status hint in user prompt to guide move selection toward R' when R-face columns are displaced.
