@@ -8,12 +8,11 @@ voting_temperature: 0.1
 voting_top_p: 0.95
 temp_escalation: false
 model_path: LLM/models/devstral-24b
-prompt_variant: devstral_face_v24
+prompt_variant: devstral_face_v29
 
-# Game-specific — 2-move scramble [U,U]=U2; correct solution = [U',U'] in 2 steps (model U'-bias = correct)
+# Game-specific — 1-move scramble [R]; correct solution = R' in 1 step; v29 adds R-column mismatch hint
 scramble:
-  - U
-  - U
+  - R
 
 forbid_undo: true
 max_score_drop: 50
