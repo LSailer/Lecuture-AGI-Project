@@ -1,6 +1,6 @@
 game: sudoku
 model_path: LLM/models/devstral-24b
-prompt_variant: reasoning_v1
+prompt_variant: reasoning_v2
 
 # Voting config
 voting_temperature: 0.1
