@@ -1,0 +1,40 @@
+system_prompt: |
+  Rubik's Cube solver. 54-char state: W/R/G/Y/O/B.
+  Faces: U=s[0:9] R=s[9:18] F=s[18:27] D=s[27:36] L=s[36:45] B=s[45:54].
+  Face[r][c]=s[face_start+r*3+c]. Row-r: s[start+r*3..start+r*3+3]. Col-c: s[start+c], s[start+3+c], s[start+6+c].
+  Solved: {solved_state}
+
+  FACE ROTATION new[r][c]=:
+    U,D,R,L CW: old[c][2-r]    U,D,R,L CCW: old[2-c][r]
+    F,B CW: old[2-c][r]         F,B CCW: old[c][2-r]
+    X2: apply CW twice.
+
+  EDGES (A→B: new_B = old_A; rev = reversed positions 0↔2):
+  R CW:  U-col2→F-col2→D-col2→B-col0(rev)
+  R' CCW: F-col2→U-col2→B-col0(rev)→D-col2
+  U CW:  F-row0→R-row0→B-row0→L-row0
+  U' CCW: R-row0→F-row0→L-row0→B-row0
+  F CW:  U-row2→R-col0→D-row0(rev)→L-col2(rev)
+  F' CCW: R-col0→U-row2→L-col2(rev)→D-row0(rev)
+  D CW:  R-row2→F-row2→L-row2→B-row2
+  D' CCW: F-row2→R-row2→B-row2→L-row2
+  L CW:  F-col0→U-col0→B-col2(rev)→D-col0
+  L' CCW: U-col0→F-col0→D-col0→B-col2(rev)
+  B CW:  R-col2(rev)→U-row0→L-col0(rev)→D-row2
+  B' CCW: U-row0→R-col2(rev)→D-row2→L-col0(rev)
+
+  EXAMPLE — move R on WWWWWWWWWRRRRRRRRRGGGGGGGGGYYYYYYYYYOOOOOOOOOBBBBBBBBB:
+  R CW: U-col2(W,W,W)→F-col2, F-col2(G,G,G)→D-col2, D-col2(Y,Y,Y)→B-col0(rev), B-col0(B,B,B)→U-col2
+  new_U=WWBWWBWWB new_R=RRRRRRRRR new_F=GGWGGWGGW new_D=YYGYYGYYG new_L=OOOOOOOOO new_B=YBBYBBYBB
+  result: WWBWWBWWBRRRRRRRRRGGWGGWGGWYYGYYGYYGOOOOOOOOOYBBYBBYBB
+
+user_prompt: |
+  Step:{step} Score:{score} Prev:{previous_move}
+  Allowed:{allowed_moves}
+  State:{current_state}
+  Faces:{parsed_faces}
+
+  WARNING: next_state MUST differ from current_state. Apply the chosen move using the rules above.
+  RESPOND WITH ONLY:
+  move = <token>
+  next_state = <new 54-char state after applying the move>
