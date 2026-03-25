@@ -207,3 +207,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral-24b, T=0.1, reasoning_v28, easy, stage 1
 - **Result**: 20.9% SR, 9 steps — DISCARD (same as v3)
 - **Insight**: Minimal "(step N)" anchor in step2 preserves v3 response format (no truncation) and prevents stale-row placement (same as v27), but step10 scatter persists: rows 2 and 4 both have 7 NZ, agents split between them without a tiebreaker (some agents pick row 2, others row 4, others row 0/6). No consensus after 15 agents. Fix: add explicit max-NZ row selection with lowest-R tiebreaker in step1 (v29).
+
+## Iteration 27b — reasoning_v29 max-NZ-row-tiebreaker (regression, DISCARD)
+- **Config**: devstral-24b, T=0.1, reasoning_v29, easy, stage 1
+- **Result**: 9.3% SR, 4 steps — DISCARD (regression from v3 20.9%)
+- **Insight**: Explicit counting instruction "count non-zeros in current_state[R] for each unique R in empty_cells" caused arithmetic errors — model miscounted and anchored on row 4 (5 NZ, not the max). All 4 fills targeted row 4 then dead-end. Counting = hard; comparison = easier. Next: v30 = v3 prompt (no counting) + margin_k=1 (reduces scatter threshold from 2→1, allowing step10 to reach consensus when 12 valid-response agents split 5-4).
