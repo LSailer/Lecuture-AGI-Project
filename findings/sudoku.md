@@ -78,3 +78,12 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral-24b, T=0.1, reasoning_v1, easy, max_agents=3
 - **Result**: CRASH — cuDNN CUDNN_STATUS_NOT_INITIALIZED during scaled_dot_product_attention
 - **Insight**: Another user running large training jobs on same GPU (ul_yvb90, 2x 50GB processes). GPU contention prevents cuDNN init. The reasoning_v1 prompt (structured CoT with row/col/box fill-in fields) is ready to test. Next: retry when GPU is free, or try PYTORCH_SDPA_BACKEND=MATH workaround.
+
+## Iteration run3-iter3 — reasoning_v2 easy: 0% SR, no consensus at step 1
+- **Config**: devstral-24b, T=0.1, reasoning_v2, easy, max_agents_per_step=3, max_agents_total=15
+- **Result**: 0% SR, 0 steps — no consensus reached at step 1 after 15 agents
+- **Insight**: Three failure modes identified from failures.csv:
+  1. **Cell-switching stale column bug**: Step 6 tells the model to "scan empty_cells for a cell with exactly 1 candidate." When it switches from initial cell (0,0) to e.g. (0,8), it mentally estimates column 8's values without the structured template — misses value 3 already at row 5. Move rejected as invalid.
+  2. **Response truncation**: max_new_tokens=750 is too small for verbose 7-step reasoning + 81-value next_state. Agents 1:2 and 1:3 truncated mid-next_state → parse failure. Shorter template needed.
+  3. **Wrong cell in next_state**: Agent 1:1 placed value at [0][0] instead of [0][8] after switching target cells.
+  - **Root cause**: All three bugs stem from step 6's cell-switching logic. Fix: remove cell-switching, anchor to one cell, use only the structured scan. Next: reasoning_v3 without cell-switch and shorter template.
