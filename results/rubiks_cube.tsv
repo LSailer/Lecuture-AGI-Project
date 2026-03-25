@@ -48,3 +48,4 @@ daf6bf0	0.611000	0	1	discard	run3 iter16 devstral_face_v7 — no-preamble fixed 
 134c1b6	0.611000	0	1	discard	rubiks_cube run3-iter17 devstral_direct_v1 — no-scratchpad fixed 11-char bug but copy bug: next_state=current_state for all 15 agents
 3dcd1b0	0.611000	0	1	discard	rubiks_cube run3-iter18 devstral_direct_v2 — anti-copy fixed state-copy but example-copy bug: model picks move=R and copies example result WWBWWB...YBB not actual state
 30b50d5	0.611000	0	1	discard	rubiks_cube run3-iter19 devstral_face_v9 — inline [r0]+[r1]+[r2]=[9c] ok but face rotation wrong color counts: model swaps indices old[0][2] vs old[2][0] in 2D formula
+2755c6a	0.611000	0	1	discard	rubiks_cube run3-iter19b devstral_face_v10 — 1D perm F[6]F[3]F[0]... still fails: model writes F[0] but reads B=F[2]; character-reading confusion persists; need explicit expand step
