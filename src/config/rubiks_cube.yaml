@@ -1,5 +1,5 @@
 game: rubiks_cube
-margin_k: 3
+margin_k: 1
 max_steps: 2000
 max_agents_per_step: 3
 output_dir: output
@@ -8,7 +8,7 @@ voting_temperature: 0.1
 voting_top_p: 0.95
 temp_escalation: false
 model_path: LLM/models/devstral-24b
-prompt_variant: devstral_face_v1
+prompt_variant: devstral_face_v4
 
 # Game-specific — 5-move scramble
 scramble:

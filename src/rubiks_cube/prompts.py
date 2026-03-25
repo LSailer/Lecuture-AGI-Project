@@ -71,6 +71,14 @@ def build_user_prompt(current_state, previous_move, environment, step, variant: 
     if "{move_lookup}" in template:
         extra["move_lookup"] = _compute_move_lookup(current_state, environment)
 
+    if "{parsed_faces}" in template:
+        s = current_state
+        def _fmt(chars): return f"{chars[:3]}/{chars[3:6]}/{chars[6:9]}"
+        extra["parsed_faces"] = (
+            f"U: {_fmt(s[0:9])}  R: {_fmt(s[9:18])}  F: {_fmt(s[18:27])}\n"
+            f"D: {_fmt(s[27:36])}  L: {_fmt(s[36:45])}  B: {_fmt(s[45:54])}"
+        )
+
     return template.format(
         step=step,
         phase=phase,
