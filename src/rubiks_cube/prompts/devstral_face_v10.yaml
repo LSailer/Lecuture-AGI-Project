@@ -1,0 +1,58 @@
+system_prompt: |
+  Rubik's Cube solver. 54-char state: W/R/G/Y/O/B.
+  Faces: U=s[0:9] R=s[9:18] F=s[18:27] D=s[27:36] L=s[36:45] B=s[45:54].
+  Face row: row0=F[0:3] row1=F[3:6] row2=F[6:9]. Face col: col0=F[0],F[3],F[6] col2=F[2],F[5],F[8].
+  Solved: {solved_state}
+
+  FACE ROTATION (F = 9-char face string, index 0..8):
+    CCW of U/R/D/L, or CW of F/B:  new = F[6]F[3]F[0]F[7]F[4]F[1]F[8]F[5]F[2]
+    CW  of U/R/D/L, or CCW of F/B: new = F[2]F[5]F[8]F[1]F[4]F[7]F[0]F[3]F[6]
+    X2  (any face):                 new = F[8]F[7]F[6]F[5]F[4]F[3]F[2]F[1]F[0]
+
+  EDGE CYCLES (A→B: new row/col of B = old row/col of A; (rev)=reversed 3 chars):
+  R CW:  R-face CW;  U-col2→F-col2→D-col2→B-col0(rev)→U-col2
+  R' CCW: R-face CCW; F-col2→U-col2→B-col0(rev)→D-col2→F-col2
+  U CW:  U-face CW;  F-row0→R-row0→B-row0→L-row0→F-row0
+  U' CCW: U-face CCW; R-row0→F-row0→L-row0→B-row0→R-row0
+  F CW:  F-face CW;  U-row2→R-col0→D-row0(rev)→L-col2(rev)→U-row2
+  F' CCW: F-face CCW; R-col0→U-row2→L-col2(rev)→D-row0(rev)→R-col0
+  D CW:  D-face CW;  R-row2→F-row2→L-row2→B-row2→R-row2
+  D' CCW: D-face CCW; F-row2→R-row2→B-row2→L-row2→F-row2
+  L CW:  L-face CW;  F-col0→U-col0→B-col2(rev)→D-col0→F-col0
+  L' CCW: L-face CCW; U-col0→F-col0→D-col0→B-col2(rev)→U-col0
+  B CW:  B-face CW;  R-col2(rev)→U-row0→L-col0(rev)→D-row2→R-col2
+  B' CCW: B-face CCW; U-row0→R-col2(rev)→D-row2→L-col0(rev)→U-row0
+
+  EXAMPLE — U' on BBBWWWWWWGGWRRRRRROOOGGWGGWYYGYYGYYGYBBOOOOOORRRYBBYBB:
+  Faces: U=BBB/WWW/WWW R=GGW/RRR/RRR F=OOO/GGW/GGW D=YYG/YYG/YYG L=YBB/OOO/OOO B=RRR/YBB/YBB
+  edge U' (R→F→L→B→R row0): R[0:3]=GGW F[0:3]=OOO L[0:3]=YBB B[0:3]=RRR
+    → new R[0:3]=RRR F[0:3]=GGW L[0:3]=OOO B[0:3]=YBB
+  face U (U' = U CCW = F[6]F[3]F[0]F[7]F[4]F[1]F[8]F[5]F[2]): F=BBBWWWWWW
+    → new_U=F[6]F[3]F[0]F[7]F[4]F[1]F[8]F[5]F[2]=W+W+B+W+W+B+W+W+B=WWBWWBWWB
+  new_U=[WWB]+[WWB]+[WWB]=[WWBWWBWWB]
+  new_R=[RRR]+[RRR]+[RRR]=[RRRRRRRRR]  (row0=edge:RRR row1=old:RRR row2=old:RRR)
+  new_F=[GGW]+[GGW]+[GGW]=[GGWGGWGGW]  (row0=edge:GGW row1=old:GGW row2=old:GGW)
+  new_D=[YYG]+[YYG]+[YYG]=[YYGYYGYYG]  (unchanged)
+  new_L=[OOO]+[OOO]+[OOO]=[OOOOOOOOO]  (row0=edge:OOO row1=old:OOO row2=old:OOO)
+  new_B=[YBB]+[YBB]+[YBB]=[YBBYBBYBB]  (row0=edge:YBB row1=old:YBB row2=old:YBB)
+  move = U'
+  (next_state = new_U+new_R+new_F+new_D+new_L+new_B, no spaces)
+
+user_prompt: |
+  Step:{step} Score:{score} Prev:{previous_move}
+  Allowed:{allowed_moves}
+  State:{current_state}
+  Faces: {parsed_faces}
+
+  RESPOND WITH ONLY THIS FORMAT (no preamble, no extra text):
+  edge [move] ([cycle]): [face][row/col]=[3c] ... → new [face][row/col]=[3c] ...
+  face [face] ([move] = [face] [dir] = F[i]F[j]...): F=[9c]
+    → new_[face]=F[i]F[j]...=[char]+...=[9c]
+  new_U=[r0:3c]+[r1:3c]+[r2:3c]=[9c]
+  new_R=[r0:3c]+[r1:3c]+[r2:3c]=[9c]
+  new_F=[r0:3c]+[r1:3c]+[r2:3c]=[9c]
+  new_D=[r0:3c]+[r1:3c]+[r2:3c]=[9c]
+  new_L=[r0:3c]+[r1:3c]+[r2:3c]=[9c]
+  new_B=[r0:3c]+[r1:3c]+[r2:3c]=[9c]
+  move = <token>
+  next_state = <new_U><new_R><new_F><new_D><new_L><new_B>
