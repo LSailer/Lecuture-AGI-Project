@@ -323,3 +323,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral T=0.1, devstral_face_v27 (added R' column-cycle example), scramble=[R,U], max_agents=3
 - **Result**: SR=77.8%, 1 step — DISCARD (same as iter34 baseline); step2 still fails but error changes: "Error parsing" → "Inconsistent prediction" (agents now produce parseable output but wrong state)
 - **Insight**: R' example improved format compliance (parseable output at step2) but move selection is still wrong. failures.csv shows agents pick U or U' at step2 (not R'): agent 2:1 computes U CW (wrong move, wrong formula); agent 2:2 computes U' with COPIED rotation values from step1 example (rev(BWW)=WWB instead of rev(WWW)=WWW). ROOT CAUSE: model has strong U/U' bias; both examples in prompt show U-moves; model never considers R'. SOLUTION: change scramble to [U,U] — model's U' preference becomes the correct 2-step solution: U',U' solves [U,U] scramble.
+
+## Iteration 36 — devstral_face_v24 [U,U] scramble
+- **Config**: devstral T=0.1, devstral_face_v24, scramble=[U,U], max_agents=3
+- **Result**: SR=100%, 2 steps — KEEP; U'-bias = correct solution for U2 scramble
+- **Insight**: Model applies U' twice, solving [U,U] scramble (41 voting rounds, 36 failed). The ns[] format works for multi-step solving but is slow/fragile — many agent attempts needed per step. Key: [U,U] scrambled state has U-face fully solved (WWWWWWWWW), making U' non-obvious (doesn't improve U-face), yet model still picks U' from template bias. Next: test R' with [R] scramble + v28 (replace U' example with R' example). If [R] state = exact v28 example state, step2 of [R,U] also matches → direct solve without R' generalization needed.
