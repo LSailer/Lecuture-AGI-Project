@@ -212,3 +212,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral-24b, T=0.1, reasoning_v29, easy, stage 1
 - **Result**: 9.3% SR, 4 steps — DISCARD (regression from v3 20.9%)
 - **Insight**: Explicit counting instruction "count non-zeros in current_state[R] for each unique R in empty_cells" caused arithmetic errors — model miscounted and anchored on row 4 (5 NZ, not the max). All 4 fills targeted row 4 then dead-end. Counting = hard; comparison = easier. Next: v30 = v3 prompt (no counting) + margin_k=1 (reduces scatter threshold from 2→1, allowing step10 to reach consensus when 12 valid-response agents split 5-4).
+
+## Iteration 27c — v3+margin_k=1 relaxed consensus (KEEP, 23.3% SR)
+- **Config**: devstral-24b, T=0.1, reasoning_v3, easy, stage 1, margin_k=1
+- **Result**: 23.3% SR, 10 steps — KEEP (improvement from 20.9%)
+- **Insight**: Reducing margin_k from 2 to 1 allowed step10 to reach consensus (previously scattered 5-4 among rows 2+4; margin_k=1 accepts 1-vote lead). 10 steps filled vs 9 with v3+margin_k=2. Next: continue with margin_k=1, try further improvements (cell selection hints, step anchor from v28).
