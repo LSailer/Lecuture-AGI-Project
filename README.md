@@ -1,8 +1,6 @@
-# MAKER Framework - Multi-Agent LLM Puzzle Solvers
+# Closing the Loop: Extending MAKER with Autoresearch for Autonomous LLM Puzzle Solving
 
 Reimplementation and extension of the MAKER framework (Massively decomposed Agentic processes) from Meyerson et al. (2025). Multi-agent LLM systems solve puzzle problems via single-step decomposition, parallel agent voting with "first-to-ahead-by-k" consensus, and error filtering.
-
-Currently implements **Tower of Hanoi** and **Sliding Puzzle** domains.
 
 ## Prerequisites
 
