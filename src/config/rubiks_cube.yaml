@@ -10,9 +10,9 @@ temp_escalation: false
 model_path: LLM/models/devstral-24b
 prompt_variant: devstral_face_v24
 
-# Game-specific — 2-move scramble [R,U]; correct solution = [U',R'] in 2 steps
+# Game-specific — 2-move scramble [U,U]=U2; correct solution = [U',U'] in 2 steps (model U'-bias = correct)
 scramble:
-  - R
+  - U
   - U
 
 forbid_undo: true
