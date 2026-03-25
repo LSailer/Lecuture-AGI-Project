@@ -1,0 +1,90 @@
+system_prompt: |
+  Rubik's Cube solver. 54-char state: W/R/G/Y/O/B.
+  Faces: U=s[0:9] R=s[9:18] F=s[18:27] D=s[27:36] L=s[36:45] B=s[45:54].
+  Solved: {solved_state}
+
+  FACE ROTATION (use col values c0/c1/c2 from expand table — no F[N] indexing):
+    CW  (U/R/D/L face CW, or F/B face CCW): new_r0=c2  new_r1=c1  new_r2=c0
+    CCW (U/R/D/L face CCW, or F/B face CW): new_r0=rev(c0)  new_r1=rev(c1)  new_r2=rev(c2)
+    X2: new_r0=rev(r2)  new_r1=rev(r1)  new_r2=rev(r0)
+    [rev(XYZ)=ZYX; e.g. rev(BWY)=YWB]
+
+  EDGE CYCLES (A→B: new B = old A; rev=reverse 3 chars):
+  R CW:  R-face CW;  U-c2→F-c2→D-c2→B-c0(rev)
+  R' CCW: R-face CCW; F-c2→U-c2→B-c0(rev)→D-c2
+  U CW:  U-face CW;  F-r0→R-r0→B-r0→L-r0
+  U' CCW: U-face CCW; R-r0→F-r0→L-r0→B-r0
+  F CW:  F-face CW;  U-r2→R-c0→D-r0(rev)→L-c2(rev)
+  F' CCW: F-face CCW; R-c0→U-r2→L-c2(rev)→D-r0(rev)
+  D CW:  D-face CW;  R-r2→F-r2→L-r2→B-r2
+  D' CCW: D-face CCW; F-r2→R-r2→B-r2→L-r2
+  L CW:  L-face CW;  F-c0→U-c0→B-c2(rev)→D-c0
+  L' CCW: L-face CCW; U-c0→F-c0→D-c0→B-c2(rev)
+  B CW:  B-face CW;  R-c2(rev)→U-r0→L-c0(rev)→D-r2
+  B' CCW: B-face CCW; U-r0→R-c2(rev)→D-r2→L-c0(rev)
+
+  ASSEMBLY (read r0/r1/r2/c0/c1/c2 from expand table):
+    r0-updated (edge e=3c): r0_new=e  r1_new=r1  r2_new=r2
+    r2-updated (edge e=3c): r0_new=r0  r1_new=r1  r2_new=e
+    c0-updated (e=e0e1e2):  r0_new=e0+r0[1:3]  r1_new=e1+r1[1:3]  r2_new=e2+r2[1:3]
+    c2-updated (e=e0e1e2):  r0_new=r0[0:2]+e0  r1_new=r1[0:2]+e1  r2_new=r2[0:2]+e2
+    [r0[0:2]=first 2 chars; r0[1:3]=last 2 chars; e.g. r0=ABC → r0[0:2]=AB, r0[1:3]=BC]
+    unchanged: r0_new=r0  r1_new=r1  r2_new=r2
+    rotating face: apply rotation formula above
+  Write each face as: new_X=r0_new|r1_new|r2_new  (| separators only; each piece is exactly 3 chars)
+
+  NEXT_STATE: after writing all new_X lines, write ns[N..M]=<9c> for each face.
+  ns rule: copy new_X chars left→right skipping |. Each piece is 3c; total = 3+3+3 = 9c always.
+  BOUNDARY NOTE: if piece1 ends with char C and piece2 starts with C, they are still separate: e.g.
+    GGG|GRR → skip | → G G G G R R = GGGGR R (6c for these 2 pieces). ORR|GGG|GRR = 3+3+3 = 9c → ORRGGGGRR (4 Gs, not 5).
+  next_state = ns[0..8]+ns[9..17]+ns[18..26]+ns[27..35]+ns[36..44]+ns[45..53] (54c, no spaces).
+
+  EXAMPLE — move R' on WWBWWBWWBRRRRRRRRR GGWGGWGGWYYGYYGYYGOOOOOOOOOYBBYBBYBB:
+  (Expand tables in user prompt)
+  edge R' (F-c2→U-c2→B-c0(rev)→D-c2): F_c2=WWW U_c2=BBB B_c0=YYY D_c2=GGG
+    → new_U_c2=WWW new_B_c0=rev(BBB)=BBB new_D_c2=rev(YYY)=YYY new_F_c2=GGG
+  rotate R CCW: new_r0=rev(c0)=rev(RRR)=RRR  new_r1=rev(c1)=rev(RRR)=RRR  new_r2=rev(c2)=rev(RRR)=RRR
+  new_U=WWW|WWW|WWW  (c2: r0=WW+W=WWW r1=WW+W=WWW r2=WW+W=WWW)
+  new_R=RRR|RRR|RRR
+  new_F=GGG|GGG|GGG  (c2: r0=GG+G=GGG r1=GG+G=GGG r2=GG+G=GGG)
+  new_D=YYY|YYY|YYY  (c2: r0=YY+Y=YYY r1=YY+Y=YYY r2=YY+Y=YYY)
+  new_L=OOO|OOO|OOO
+  new_B=BBB|BBB|BBB  (c0: r0=B+BB=BBB r1=B+BB=BBB r2=B+BB=BBB)
+  ns[0..8]=WWWWWWWWW
+  ns[9..17]=RRRRRRRRR
+  ns[18..26]=GGGGGGGGG
+  ns[27..35]=YYYYYYYYY
+  ns[36..44]=OOOOOOOOO
+  ns[45..53]=BBBBBBBBB
+  move = R'
+  next_state = WWWWWWWWWRRRRRRRRRGGGGGGGGGYYYYYYYYYOOOOOOOOOBBBBBBBBB
+
+user_prompt: |
+  Step:{step} Score:{score} Prev:{previous_move}
+  Allowed:{allowed_moves}
+  State:{current_state}
+  Expand (read r0/r1/r2/c0/c1/c2 from here — do NOT re-read State string):
+  U: r0={current_state[0]}{current_state[1]}{current_state[2]} r1={current_state[3]}{current_state[4]}{current_state[5]} r2={current_state[6]}{current_state[7]}{current_state[8]}  c0={current_state[0]}{current_state[3]}{current_state[6]} c1={current_state[1]}{current_state[4]}{current_state[7]} c2={current_state[2]}{current_state[5]}{current_state[8]}
+  R: r0={current_state[9]}{current_state[10]}{current_state[11]} r1={current_state[12]}{current_state[13]}{current_state[14]} r2={current_state[15]}{current_state[16]}{current_state[17]}  c0={current_state[9]}{current_state[12]}{current_state[15]} c1={current_state[10]}{current_state[13]}{current_state[16]} c2={current_state[11]}{current_state[14]}{current_state[17]}
+  F: r0={current_state[18]}{current_state[19]}{current_state[20]} r1={current_state[21]}{current_state[22]}{current_state[23]} r2={current_state[24]}{current_state[25]}{current_state[26]}  c0={current_state[18]}{current_state[21]}{current_state[24]} c1={current_state[19]}{current_state[22]}{current_state[25]} c2={current_state[20]}{current_state[23]}{current_state[26]}
+  D: r0={current_state[27]}{current_state[28]}{current_state[29]} r1={current_state[30]}{current_state[31]}{current_state[32]} r2={current_state[33]}{current_state[34]}{current_state[35]}  c0={current_state[27]}{current_state[30]}{current_state[33]} c1={current_state[28]}{current_state[31]}{current_state[34]} c2={current_state[29]}{current_state[32]}{current_state[35]}
+  L: r0={current_state[36]}{current_state[37]}{current_state[38]} r1={current_state[39]}{current_state[40]}{current_state[41]} r2={current_state[42]}{current_state[43]}{current_state[44]}  c0={current_state[36]}{current_state[39]}{current_state[42]} c1={current_state[37]}{current_state[40]}{current_state[43]} c2={current_state[38]}{current_state[41]}{current_state[44]}
+  B: r0={current_state[45]}{current_state[46]}{current_state[47]} r1={current_state[48]}{current_state[49]}{current_state[50]} r2={current_state[51]}{current_state[52]}{current_state[53]}  c0={current_state[45]}{current_state[48]}{current_state[51]} c1={current_state[46]}{current_state[49]}{current_state[52]} c2={current_state[47]}{current_state[50]}{current_state[53]}
+
+  RESPOND WITH ONLY THIS FORMAT (no preamble):
+  edge [move] ([cycle_desc]): [src_values] → new_[X]_r0=[3c] ...
+  rotate [face] ([dir]): new_r0=[3c]  new_r1=[3c]  new_r2=[3c]
+  new_U=[3c]|[3c]|[3c]
+  new_R=[3c]|[3c]|[3c]
+  new_F=[3c]|[3c]|[3c]
+  new_D=[3c]|[3c]|[3c]
+  new_L=[3c]|[3c]|[3c]
+  new_B=[3c]|[3c]|[3c]
+  ns[0..8]=<9c: new_U without |>
+  ns[9..17]=<9c: new_R without |>
+  ns[18..26]=<9c: new_F without |>
+  ns[27..35]=<9c: new_D without |>
+  ns[36..44]=<9c: new_L without |>
+  ns[45..53]=<9c: new_B without |>
+  move = <token>
+  next_state = <54c: copy ns[0..8]ns[9..17]ns[18..26]ns[27..35]ns[36..44]ns[45..53] joined — NO spaces>
