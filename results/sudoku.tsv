@@ -18,3 +18,4 @@ cf41f7e	0.325581	200	3	discard	sudoku iter9 lookup_v13 hard — reverse table or
 8e0f956	0.000000	0	1	crash	sudoku run3-iter1 reasoning_v1 easy T=0.1 — cuDNN CUDNN_STATUS_NOT_INITIALIZED crash, GPU contention from another user's training job
 e687e88	0.000000	0	1	keep	sudoku run3-iter3 reasoning_v2 easy T=0.1 — 0% SR no consensus at step 1: cell-switch in step6 bypasses col scan (stale col bug), response truncation at 750 tokens
 b159b9d	0.209302	9	1	keep	sudoku run3-iter3b reasoning_v3 easy T=0.1 — 20.9% SR 9 steps (matches run2 baseline), fails step10 stale row bug (model re-places value already in row)
+c1efffbf017dcd632bd49e948ba753c4d50aeaf0	0.093023	4	1	discard	sudoku run3-iter4 reasoning_v4 easy T=0.1 — explicit row scan echoed unfilled by model, stale row bug persists, regression 9.3% (was 20.9%)
