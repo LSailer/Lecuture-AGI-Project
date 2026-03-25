@@ -264,3 +264,12 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral T=0.1, devstral_face_v19, 5-move scramble [R,U,R',U',F2]
 - **Result**: SR=61.1% (0 valid steps) — DISCARD
 - **Insight**: FORMAT BREAKTHROUGH (but not yet SR). Replacing `strip |: U=[9c] ...` with `concat U=A+B+C=[9c]` (one line per face) FIXES the 10-char miscounting bug. Agents 2,3 now produce parseable 9-char faces. BUT: new failure is wrong COLOR VALUES — model computes `F[6]=B` instead of `F[6]=Y` for CCW rotation, causing color-count violations. Root cause: flat expand table `F[0]=W...F[8]=Y` makes out-of-order index lookups error-prone (F[5]=B vs F[6]=Y confusion). Fix: reformat expand table into row-groups: `U r0:[F[0]=W F[1]=W F[2]=B]  r1:[F[3]=W F[4]=W F[5]=B]  r2:[F[6]=Y F[7]=Y F[8]=Y]` so each row-group's boundary is visually clear. Keep concat format from v19.
+
+## Iteration 28 — devstral_face_v20 row-grouped expand table
+- **Config**: devstral T=0.1, devstral_face_v20, 5-move scramble [R,U,R',U',F2]
+- **Result**: SR=61.1%, 0 valid steps — DISCARD
+- **What changed**: Grouped flat F[0..8] list into r0:/r1:/r2: labeled groups of 3 to fix F[6] positional-counting error from v19
+- **What happened**: F[6] reading FIXED (all agents now read Y correctly). BUT new bugs: F[2] and F[5] (last value in each row group, e.g., r0: F[0]=W F[1]=W **F[2]=B**) are now misread as W (majority value); model treats the last-in-group value as same as its neighbors. Also concat R still 10c: YBBOGRWGRW (10c) vs correct YBBORGGRW (9c).
+- **Root cause analysis**: The "last-in-group" misread suggests model applies a local-smoothing bias — when 2 of 3 values in a group are W, it reads the 3rd as W too. The concat bug: model writes A+C+C (skips B, repeats C) specifically when B and C have overlapping char patterns.
+- **Insight**: Two complementary bugs — reading specific chars by F[N] index is inherently unreliable when face contains repeated chars. Fix: pre-compute COLUMNS in expand table (col0,col1,col2) so face rotation becomes rev(col) instead of F[N] lookup. CCW r2=rev(col2)=rev(BBY)=YBB avoids all char-by-char indexing.
+- **Next**: v21 — compact expand with rows AND columns: `U: r0=WWB r1=WWB r2=YYY col0=WWY col1=WWY col2=BBY`. Update rotation formula: CW=read cols (col2→r0,col1→r1,col0→r2), CCW=reverse cols (rev(col0)→r0, rev(col1)→r1, rev(col2)→r2). No F[N] indexing needed for rotation.
