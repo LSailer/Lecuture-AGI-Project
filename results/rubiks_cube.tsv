@@ -49,3 +49,6 @@ daf6bf0	0.611000	0	1	discard	run3 iter16 devstral_face_v7 — no-preamble fixed 
 3dcd1b0	0.611000	0	1	discard	rubiks_cube run3-iter18 devstral_direct_v2 — anti-copy fixed state-copy but example-copy bug: model picks move=R and copies example result WWBWWB...YBB not actual state
 30b50d5	0.611000	0	1	discard	rubiks_cube run3-iter19 devstral_face_v9 — inline [r0]+[r1]+[r2]=[9c] ok but face rotation wrong color counts: model swaps indices old[0][2] vs old[2][0] in 2D formula
 2755c6a	0.611000	0	1	discard	rubiks_cube run3-iter19b devstral_face_v10 — 1D perm F[6]F[3]F[0]... still fails: model writes F[0] but reads B=F[2]; character-reading confusion persists; need explicit expand step
+7b673ce	0.611000	0	1	discard	rubiks_cube run3-iter20 devstral_face_v12 — no-spaces fixed, face rotation correct now, but row assembly 10-char (OWW+YYY+YYR=OWWYYYYYRR) counting error
+2a1d703	0.611000	0	1	discard	rubiks_cube run3-iter21 face_v13+v14 — v13: still 10-char bug (no improvement); v14: position format [i:c]+...=[9c] fixes length (new_F=9c) but model still makes value errors + re-derives next_state from scratch instead of copying intermediate; DISCARD both
+af24d96	0.611000	0	1	discard	rubiks_cube run3-iter22 devstral_face_v15 — all 6 faces expand correctly, but still [3:R] vs F[3]=O reading error: model reads off-by-one from expand table; 9-pos assembly too fragile

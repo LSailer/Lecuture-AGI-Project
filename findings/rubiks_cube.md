@@ -249,3 +249,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral-24b, T=0.1, devstral_face_v10, 5-move scramble
 - **Result**: SR=61.1%, 0 valid steps — DISCARD
 - **Insight**: 1D permutation `F[6]F[3]F[0]...` format did NOT fix the character reading error. Model writes the correct index (e.g., F[0]) but reads the wrong character (e.g., B=F[2] instead of W=F[0]). Root cause: model confuses character positions within the 9-char face string even with explicit indices. **Fix**: Add an explicit "expand" step before applying the permutation: force the model to write out each character with its index label first (`F[0]=W F[1]=W F[2]=B F[3]=W F[4]=W F[5]=B F[6]=Y F[7]=Y F[8]=Y`), then reference this expanded table when applying the permutation. This self-created lookup prevents character-reading errors. Next: devstral_face_v11 with explicit expand step before face rotation.
+
+## Iteration run3-22 — devstral_face_v15 all-6-expand + new_state_parts
+- **Config**: devstral-24b, T=0.1, devstral_face_v15, 5-move scramble
+- **Result**: SR=61.1%, 0 valid steps — DISCARD
+- **Insight**: All 6 expand lines now correct (progress!). But assembly still fails: model writes [3:R] when expand_R clearly shows F[3]=O. Root cause: model reads off-by-one from 9-position expand table (confuses F[3]=O with adjacent F[4]=R in the sequence). The 9-pos position-by-position lookup is too fragile. **Fix**: switch to row-based 3-char assembly (r0=[3c] r1=[3c] r2=[3c]). Reading expand[3:6] (3 consecutive chars) avoids per-position indexing errors. → devstral_face_v16.
