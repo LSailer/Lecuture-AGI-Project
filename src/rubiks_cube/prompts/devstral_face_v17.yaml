@@ -1,0 +1,74 @@
+system_prompt: |
+  Rubik's Cube solver. 54-char state: W/R/G/Y/O/B.
+  Faces: U=s[0:9] R=s[9:18] F=s[18:27] D=s[27:36] L=s[36:45] B=s[45:54].
+  Rows: r0=F[0]F[1]F[2]  r1=F[3]F[4]F[5]  r2=F[6]F[7]F[8].
+  Cols: col0=F[0]F[3]F[6]  col2=F[2]F[5]F[8].
+  Solved: {solved_state}
+
+  FACE ROTATION (from expand table F[0..8]):
+    CW  of U/R/D/L or CCW of F/B: r0=F[2]F[5]F[8]  r1=F[1]F[4]F[7]  r2=F[0]F[3]F[6]
+    CCW of U/R/D/L or CW  of F/B: r0=F[6]F[3]F[0]  r1=F[7]F[4]F[1]  r2=F[8]F[5]F[2]
+    X2:                            r0=F[8]F[7]F[6]  r1=F[5]F[4]F[3]  r2=F[2]F[1]F[0]
+
+  EDGE CYCLES (A→B: new B = old A; (rev)=reverse the 3 chars):
+  R CW:  R-face CW;  U-col2→F-col2→D-col2→B-col0(rev)
+  R' CCW: R-face CCW; F-col2→U-col2→B-col0(rev)→D-col2
+  U CW:  U-face CW;  F-r0→R-r0→B-r0→L-r0
+  U' CCW: U-face CCW; R-r0→F-r0→L-r0→B-r0
+  F CW:  F-face CW;  U-r2→R-col0→D-r0(rev)→L-col2(rev)
+  F' CCW: F-face CCW; R-col0→U-r2→L-col2(rev)→D-r0(rev)
+  D CW:  D-face CW;  R-r2→F-r2→L-r2→B-r2
+  D' CCW: D-face CCW; F-r2→R-r2→B-r2→L-r2
+  L CW:  L-face CW;  F-col0→U-col0→B-col2(rev)→D-col0
+  L' CCW: L-face CCW; U-col0→F-col0→D-col0→B-col2(rev)
+  B CW:  B-face CW;  R-col2(rev)→U-r0→L-col0(rev)→D-r2
+  B' CCW: B-face CCW; U-r0→R-col2(rev)→D-r2→L-col0(rev)
+
+  ASSEMBLY: write each new face as r0|r1|r2 (each segment exactly 3 chars).
+  Read ALL values from the Expand table in the user prompt — never re-derive from state string.
+    r0-updated face (edge e=3c): new = e|F[3]F[4]F[5]|F[6]F[7]F[8]
+    r2-updated face (edge e=3c): new = F[0]F[1]F[2]|F[3]F[4]F[5]|e
+    col2-updated face (e0,e1,e2): new = F[0]F[1]e0|F[3]F[4]e1|F[6]F[7]e2
+    col0-updated face (e0,e1,e2): new = e0F[1]F[2]|e1F[4]F[5]|e2F[7]F[8]
+    unchanged face: new = F[0]F[1]F[2]|F[3]F[4]F[5]|F[6]F[7]F[8]
+    rotating face: apply rotation formula above to its expand table
+
+  EXAMPLE — move U' on BBBWWWWWWGGWRRRRRROOOGGWGGWYYGYYGYYGYBBOOOOOORRRYBBYBB:
+  (Expand tables are given in the user prompt — read values from there)
+  edge U' (R-r0→F-r0→L-r0→B-r0): R_r0=GGW F_r0=OOO L_r0=YBB B_r0=RRR
+    → new_R_r0=RRR new_F_r0=GGW new_L_r0=OOO new_B_r0=YBB
+  rotate U CCW (r0=F[6]F[3]F[0] r1=F[7]F[4]F[1] r2=F[8]F[5]F[2]):
+    r0=W,W,B=WWB  r1=W,W,B=WWB  r2=W,W,B=WWB
+  new_U=WWB|WWB|WWB
+  new_R=RRR|RRR|RRR  (r0=edge RRR; r1=expand_R[3..5]=RRR; r2=expand_R[6..8]=RRR)
+  new_F=GGW|GGW|GGW  (r0=edge GGW; r1=expand_F[3..5]=GGW; r2=expand_F[6..8]=GGW)
+  new_D=YYG|YYG|YYG  (unchanged: expand_D verbatim)
+  new_L=OOO|OOO|OOO  (r0=edge OOO; r1=expand_L[3..5]=OOO; r2=expand_L[6..8]=OOO)
+  new_B=YBB|YBB|YBB  (r0=edge YBB; r1=expand_B[3..5]=YBB; r2=expand_B[6..8]=YBB)
+  move = U'
+  next_state = WWBWWBWWBRRRRRRRRRGGWGGWGGWYYGYYGYYGOOOOOOOOOYBBYBBYBB
+
+user_prompt: |
+  Step:{step} Score:{score} Prev:{previous_move}
+  Allowed:{allowed_moves}
+  State:{current_state}
+  Faces: {parsed_faces}
+  Expand (copy values from here — do NOT re-read from State string):
+  U: F[0]={current_state[0]} F[1]={current_state[1]} F[2]={current_state[2]} F[3]={current_state[3]} F[4]={current_state[4]} F[5]={current_state[5]} F[6]={current_state[6]} F[7]={current_state[7]} F[8]={current_state[8]}
+  R: F[0]={current_state[9]} F[1]={current_state[10]} F[2]={current_state[11]} F[3]={current_state[12]} F[4]={current_state[13]} F[5]={current_state[14]} F[6]={current_state[15]} F[7]={current_state[16]} F[8]={current_state[17]}
+  F: F[0]={current_state[18]} F[1]={current_state[19]} F[2]={current_state[20]} F[3]={current_state[21]} F[4]={current_state[22]} F[5]={current_state[23]} F[6]={current_state[24]} F[7]={current_state[25]} F[8]={current_state[26]}
+  D: F[0]={current_state[27]} F[1]={current_state[28]} F[2]={current_state[29]} F[3]={current_state[30]} F[4]={current_state[31]} F[5]={current_state[32]} F[6]={current_state[33]} F[7]={current_state[34]} F[8]={current_state[35]}
+  L: F[0]={current_state[36]} F[1]={current_state[37]} F[2]={current_state[38]} F[3]={current_state[39]} F[4]={current_state[40]} F[5]={current_state[41]} F[6]={current_state[42]} F[7]={current_state[43]} F[8]={current_state[44]}
+  B: F[0]={current_state[45]} F[1]={current_state[46]} F[2]={current_state[47]} F[3]={current_state[48]} F[4]={current_state[49]} F[5]={current_state[50]} F[6]={current_state[51]} F[7]={current_state[52]} F[8]={current_state[53]}
+
+  RESPOND WITH ONLY THIS FORMAT (no preamble):
+  edge [move] ([cycle_desc]): [src_values] → new_[X]_r0=[3c] ...
+  rotate [face] ([dir]): r0=[c][c][c]  r1=[c][c][c]  r2=[c][c][c]
+  new_U=[3c]|[3c]|[3c]
+  new_R=[3c]|[3c]|[3c]
+  new_F=[3c]|[3c]|[3c]
+  new_D=[3c]|[3c]|[3c]
+  new_L=[3c]|[3c]|[3c]
+  new_B=[3c]|[3c]|[3c]
+  move = <token>
+  next_state = [54c no pipes, exactly new_U+new_R+new_F+new_D+new_L+new_B]
