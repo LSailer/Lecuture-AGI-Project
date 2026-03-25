@@ -9,7 +9,7 @@ Currently implements **Tower of Hanoi** and **Sliding Puzzle** domains.
 - **Python** >= 3.13
 - **Package manager**: `uv`
 - **Hugging Face Account**: A valid token to download the LLM model (only needed for HuggingFace backend)
-- **Ollama** (recommended for Apple Silicon): [ollama.com](https://ollama.com)
+
 
 ## Installation
 
@@ -67,7 +67,7 @@ Submits to `gpu_h100_il` partition with 1x H100 GPU, 127 GB RAM.
 
 ### 4. Autoresearch (Autonomous Experiment Loop)
 
-Autoresearch runs Claude Code in a loop on the cluster. Each iteration, Claude reads prior results (`results.tsv`), designs and runs an experiment, evaluates the outcome, and commits findings. See [docs/AUTORESEARCH.md](docs/AUTORESEARCH.md) for full details.
+Inspired by [karpathy/autoresearch](https://github.com/karpathy/autoresearch). Autoresearch runs Claude Code in a loop on the cluster. Each iteration, Claude reads prior results (`results.tsv`), designs and runs an experiment, evaluates the outcome, and commits findings. See [docs/AUTORESEARCH.md](docs/AUTORESEARCH.md) for full details.
 
 **Dev (smoke test):**
 
@@ -96,7 +96,7 @@ MAX_ITER=20 GAME=sliding_puzzle sbatch scripts/run_autoresearch.sh
 - Timeout: 24 hours
 - Iterations: 50 (default, configurable via `MAX_ITER`)
 - Config: `src/config/<game>.yaml`
-- Claude budget: $2/iteration
+
 
 **Monitor a running job:**
 
@@ -110,41 +110,7 @@ Both scripts automatically commit results, run the analysis notebook, push to th
 
 
 
-## Project Structure
 
-```
-Lecuture-AGI-Project/
-├── LLM/
-│   ├── download_all.py           # Downloads all models (Qwen3, Devstral, DeepSeek)
-│   └── models/                   # Downloaded model weights
-├── src/
-│   ├── main.py                   # Unified orchestration + voting loop
-│   ├── config/
-│   │   ├── tower_of_hanoi.yaml   # ToH config (num_disks, voting params)
-│   │   └── sliding_puzzle.yaml   # SP config (initial_state, voting params)
-│   ├── utils/
-│   │   ├── llm.py                # Shared LLM interface (HuggingFace pipeline)
-│   │   ├── decomposer.py         # Unified Agent class
-│   │   └── parser.py             # Unified Parser class
-│   ├── tower_of_hanoi/
-│   │   ├── enviroment.py         # Game state, move validation, goal checking
-│   │   └── prompts.py            # System/user prompts, regex patterns, parse fns
-│   └── sliding_puzzle/
-│       ├── enviroment.py         # Game state, move validation, goal checking
-│       ├── prompts.py            # System/user prompts, regex patterns, parse fns
-│       ├── test_simple.py        # Basic environment tests
-│       └── test_generic.py       # Generic NxN tests
-├── program.md                    # Autoresearch prompt (prod — GPU node)
-├── program_fallback.md           # Autoresearch prompt (fallback — login node)
-├── results.tsv                   # Autoresearch experiment log
-├── findings.md                   # Autoresearch qualitative notes
-├── output/                       # Generated logs and plots
-├── scripts/
-│   ├── run.sh                    # SLURM job script (single experiment)
-│   ├── run_autoresearch.sh       # Prod autoresearch loop (24h, 50 iterations)
-│   └── run_autoresearch_dev.sh   # Dev autoresearch smoke test (30min, 2 iterations)
-└── .env                          # HF_TOKEN (not committed)
-```
 
 ## Architecture
 

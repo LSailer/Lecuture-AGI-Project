@@ -1,7 +1,0 @@
-Per-game results are maintained in separate files:
-
-results/tower_of_hanoi.tsv
-results/sliding_puzzle.tsv
-results/rubiks_cube.tsv
-results/nonogram.tsv
-results/sudoku.tsv
