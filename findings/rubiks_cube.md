@@ -328,3 +328,8 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral T=0.1, devstral_face_v24, scramble=[U,U], max_agents=3
 - **Result**: SR=100%, 2 steps — KEEP; U'-bias = correct solution for U2 scramble
 - **Insight**: Model applies U' twice, solving [U,U] scramble (41 voting rounds, 36 failed). The ns[] format works for multi-step solving but is slow/fragile — many agent attempts needed per step. Key: [U,U] scrambled state has U-face fully solved (WWWWWWWWW), making U' non-obvious (doesn't improve U-face), yet model still picks U' from template bias. Next: test R' with [R] scramble + v28 (replace U' example with R' example). If [R] state = exact v28 example state, step2 of [R,U] also matches → direct solve without R' generalization needed.
+
+## Iteration 38 — devstral_face_v29 scramble=[R] (R-column mismatch hint)
+- **Config**: devstral T=0.1, devstral_face_v29 (v24 + Mismatched edges + Hint line in user prompt), scramble=[R], max_agents=3
+- **Result**: SR=77.8%, 0 valid steps — DISCARD; agents produce parseable output (improvement over iter37 parse failure) but all pick U' (Inconsistent prediction)
+- **Insight**: Mismatch hint is VISIBLE to the model (user prompt shows U-c2=BBB≠WWW → R-column displaced) but U-bias overrides it. The U' example pattern is too strongly primed: model starts with "edge U'..." format without reading the hint. ROOT CAUSE: the U' example dominates move selection regardless of hints. FIX: replace U' example with R' example using a DIFFERENT state (not the [R]-scrambled test state). Use [R,R]-scrambled state → [R]-scrambled as R' example: teaches R' column cycle on different colors; breaks U'-priming without creating example=input overlap.
