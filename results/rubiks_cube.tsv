@@ -40,3 +40,5 @@ cdeee1e	0.611000	0	1	discard	rubiks_cube run3-iter8 devstral_perm_v1 — all age
 ecc4241	0.611000	0	1	discard	rubiks_cube run3-iter10 devstral_face_v1 — all 15 agents fail parse: face grid display overflows 750 tokens before move=/next_state= lines
 352986c	0.611000	0	1	discard	rubiks_cube run3-iter11 devstral_face_v2 — outputs move=/next_state= in budget but wrong face parse (hallucinated values) and 55-char state (vs 54)
 395736c	0.611000	0	1	discard	rubiks_cube run3-iter12 devstral_face_v3 — formula wrong (U/D/R/L CW/CCW labels swapped): all 15 agents fail check_next_state
+371f84f	0.611000	0	1	discard	run3 iter13 devstral_face_v4 — corrected U/D/R/L vs F/B face rotation formulas — model skips computation, copies input as next_state; all 15 agents fail check_next_state
+de10aca	0.611000	0	1	discard	rubiks_cube iter14b devstral_face_v5 — model now computes (not copying), but face assembly wrong: row copies off, color counts violated, SR=61.1de10aca	0.611000	0	1	discard	rubiks_cube iter14b devstral_face_v5 — compute: trace unlocks computation but face assembly errors cause color-count violations
