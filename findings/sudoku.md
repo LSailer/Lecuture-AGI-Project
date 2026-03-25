@@ -87,3 +87,8 @@ Each entry: what was tried, what was learned, and what to try next.
   2. **Response truncation**: max_new_tokens=750 is too small for verbose 7-step reasoning + 81-value next_state. Agents 1:2 and 1:3 truncated mid-next_state → parse failure. Shorter template needed.
   3. **Wrong cell in next_state**: Agent 1:1 placed value at [0][0] instead of [0][8] after switching target cells.
   - **Root cause**: All three bugs stem from step 6's cell-switching logic. Fix: remove cell-switching, anchor to one cell, use only the structured scan. Next: reasoning_v3 without cell-switch and shorter template.
+
+## Iteration run3-iter3b — reasoning_v3 easy: 20.9% SR, 9 steps
+- **Config**: devstral-24b, T=0.1, reasoning_v3, easy, max_agents_per_step=3, max_agents_total=15
+- **Result**: 20.9% SR (9/43 cells filled), fails at step 10 — KEEP (matches run2 baseline without lookup tables)
+- **Insight**: Removing cell-switching from reasoning_v2 fixed the 0% SR (no consensus at step 1). The compact template + single-cell anchor produced valid, parseable outputs for steps 1-9. Failure at step 10: all agents propose "value 3" for a cell in row 0, but row 0 already has 3 (placed at step 2). The structured column scan (step 3, explicit [row][C] template) correctly prevents stale-column errors — but step 2's row read ("Copy row R from current_state[R]: ___") is still a free-form fill-in, so the model misreads updated row 0 as still missing 3. Next: reasoning_v4 with explicit per-cell row indexing ([R][0]=___ [R][1]=___ ...) to force full row re-read, mirroring the column scan approach.
