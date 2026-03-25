@@ -313,3 +313,13 @@ Each entry: what was tried, what was learned, and what to try next.
 - **Config**: devstral T=0.1, devstral_face_v24 (exact reuse), scramble=[U], max_agents=3
 - **Result**: SR=100%, 1 step (optimal) — KEEP; stage up to 2-move [R,U] scramble
 - **Insight**: CONFIRMED: v24 format (no MOVE SELECTION section) avoids token budget overflow; model starts directly with 'edge U'...' line; natural U' tendency matches correct inverse for [U] scramble; next: test 2-move ["R","U"] scramble — correct solution is ["U'","R'"] in 2 steps.
+
+## Iteration 34 — devstral_face_v24 [R,U] baseline
+- **Config**: devstral T=0.1, devstral_face_v24, scramble=[R,U], max_agents=3
+- **Result**: SR=77.8%, 1 step — KEEP (stage-2 baseline); step1 U' succeeded (3/3 agents); step2 R' failed (all 15 agents: 1="no output", 2-3="Error parsing next_state")
+- **Insight**: Row-cycle U' works perfectly; column-cycle R' fails completely with no output. Root cause: v24 has only a U' example; model has no pattern for c2/c0 column assembly. Next: add explicit R' example (v27).
+
+## Iteration 35 — devstral_face_v27 (R' example added) [R,U]
+- **Config**: devstral T=0.1, devstral_face_v27 (added R' column-cycle example), scramble=[R,U], max_agents=3
+- **Result**: SR=77.8%, 1 step — DISCARD (same as iter34 baseline); step2 still fails but error changes: "Error parsing" → "Inconsistent prediction" (agents now produce parseable output but wrong state)
+- **Insight**: R' example improved format compliance (parseable output at step2) but move selection is still wrong. failures.csv shows agents pick U or U' at step2 (not R'): agent 2:1 computes U CW (wrong move, wrong formula); agent 2:2 computes U' with COPIED rotation values from step1 example (rev(BWW)=WWB instead of rev(WWW)=WWW). ROOT CAUSE: model has strong U/U' bias; both examples in prompt show U-moves; model never considers R'. SOLUTION: change scramble to [U,U] — model's U' preference becomes the correct 2-step solution: U',U' solves [U,U] scramble.
