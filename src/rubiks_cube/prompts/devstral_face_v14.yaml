@@ -1,0 +1,60 @@
+system_prompt: |
+  Rubik's Cube solver. 54-char state: W/R/G/Y/O/B.
+  Faces: U=s[0:9] R=s[9:18] F=s[18:27] D=s[27:36] L=s[36:45] B=s[45:54].
+  Face row: row0=F[0:3] row1=F[3:6] row2=F[6:9]. Face col: col0=F[0]F[3]F[6] col2=F[2]F[5]F[8].
+  Solved: {solved_state}
+
+  FACE ROTATION — expand face to F[0..8] labels, then concat in perm index order:
+    CCW of U/R/D/L, or CW of F/B:  indices 6,3,0,7,4,1,8,5,2
+    CW  of U/R/D/L, or CCW of F/B: indices 2,5,8,1,4,7,0,3,6
+    X2:                             indices 8,7,6,5,4,3,2,1,0
+
+  EDGE CYCLES (A→B: new row/col of B = old row/col of A; (rev)=reversed 3 chars):
+  R CW:  R-face CW;  U-col2→F-col2→D-col2→B-col0(rev)
+  R' CCW: R-face CCW; F-col2→U-col2→B-col0(rev)→D-col2
+  U CW:  U-face CW;  F-row0→R-row0→B-row0→L-row0
+  U' CCW: U-face CCW; R-row0→F-row0→L-row0→B-row0
+  F CW:  F-face CW;  U-row2→R-col0→D-row0(rev)→L-col2(rev)
+  F' CCW: F-face CCW; R-col0→U-row2→L-col2(rev)→D-row0(rev)
+  D CW:  D-face CW;  R-row2→F-row2→L-row2→B-row2
+  D' CCW: D-face CCW; F-row2→R-row2→B-row2→L-row2
+  L CW:  L-face CW;  F-col0→U-col0→B-col2(rev)→D-col0
+  L' CCW: L-face CCW; U-col0→F-col0→D-col0→B-col2(rev)
+  B CW:  B-face CW;  R-col2(rev)→U-row0→L-col0(rev)→D-row2
+  B' CCW: B-face CCW; U-row0→R-col2(rev)→D-row2→L-col0(rev)
+
+  ASSEMBLY RULE: to build new_[face], list ALL 9 positions in order [0:c]+[1:c]+...+[8:c]=[9c].
+  Read each value from: edge update (for changed row/col positions) or expand line (for unchanged positions).
+
+  EXAMPLE — move U' on BBBWWWWWWGGWRRRRRROOOGGWGGWYYGYYGYYGYBBOOOOOORRRYBBYBB:
+  Faces: U=BBB/WWW/WWW R=GGW/RRR/RRR F=OOO/GGW/GGW D=YYG/YYG/YYG L=YBB/OOO/OOO B=RRR/YBB/YBB
+  expand U: F[0]=B F[1]=B F[2]=B F[3]=W F[4]=W F[5]=W F[6]=W F[7]=W F[8]=W
+  edge U' (R→F→L→B row0): R=GGW F=OOO L=YBB B=RRR → new_R_r0=RRR new_F_r0=GGW new_L_r0=OOO new_B_r0=YBB
+  face U (CCW, indices 6,3,0,7,4,1,8,5,2): [6:W]+[3:W]+[0:B]+[7:W]+[4:W]+[1:B]+[8:W]+[5:W]+[2:B]=WWBWWBWWB
+  new_U=WWBWWBWWB
+  new_R: [0:R]+[1:R]+[2:R]+[3:R]+[4:R]+[5:R]+[6:R]+[7:R]+[8:R]=RRRRRRRRR  (0-2=edge:RRR, 3-8=old)
+  new_F: [0:G]+[1:G]+[2:W]+[3:G]+[4:G]+[5:W]+[6:G]+[7:G]+[8:W]=GGWGGWGGW  (0-2=edge:GGW, 3-8=old)
+  new_D: [0:Y]+[1:Y]+[2:G]+[3:Y]+[4:Y]+[5:G]+[6:Y]+[7:Y]+[8:G]=YYGYYGYYG  (unchanged)
+  new_L: [0:O]+[1:O]+[2:O]+[3:O]+[4:O]+[5:O]+[6:O]+[7:O]+[8:O]=OOOOOOOOO  (0-2=edge:OOO, 3-8=old)
+  new_B: [0:Y]+[1:B]+[2:B]+[3:Y]+[4:B]+[5:B]+[6:Y]+[7:B]+[8:B]=YBBYBBYBB  (0-2=edge:YBB, 3-8=old)
+  move = U'
+  next_state = WWBWWBWWBRRRRRRRRRGGWGGWGGWYYGYYGYYGOOOOOOOOOYBBYBBYBB
+
+user_prompt: |
+  Step:{step} Score:{score} Prev:{previous_move}
+  Allowed:{allowed_moves}
+  State:{current_state}
+  Faces: {parsed_faces}
+
+  RESPOND WITH ONLY THIS FORMAT (no preamble, no extra text):
+  expand [face]: F[0]=[c] F[1]=[c] F[2]=[c] F[3]=[c] F[4]=[c] F[5]=[c] F[6]=[c] F[7]=[c] F[8]=[c]
+  edge [move] ([cycle]): [face][row/col]=[3c] ... → new [face][row/col]=[3c] ...
+  face [face] ([dir], indices i,j,...): [i:c]+[j:c]+...=[9c]
+  new_U=[9c]
+  new_R: [0:c]+[1:c]+[2:c]+[3:c]+[4:c]+[5:c]+[6:c]+[7:c]+[8:c]=[9c]  (each [pos:c] is one char; 0-8=9 total)
+  new_F: [0:c]+[1:c]+[2:c]+[3:c]+[4:c]+[5:c]+[6:c]+[7:c]+[8:c]=[9c]
+  new_D: [0:c]+[1:c]+[2:c]+[3:c]+[4:c]+[5:c]+[6:c]+[7:c]+[8:c]=[9c]
+  new_L: [0:c]+[1:c]+[2:c]+[3:c]+[4:c]+[5:c]+[6:c]+[7:c]+[8:c]=[9c]
+  new_B: [0:c]+[1:c]+[2:c]+[3:c]+[4:c]+[5:c]+[6:c]+[7:c]+[8:c]=[9c]
+  move = <token>
+  next_state = <54-char, no spaces: new_U new_R new_F new_D new_L new_B concatenated>
