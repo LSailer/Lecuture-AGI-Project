@@ -60,3 +60,4 @@ d21e092	0.611000	0	1	discard	rubiks_cube iter28 devstral_face_v20 — row-groupe
 176635c	0.611000	0	1	discard	rubiks_cube iter29b devstral_face_v22 — inline r0|r1|r2→[9c] format: 0 valid steps, concat transposition bug persists in new format
 46badbc	0.611000	0	1	discard	rubiks_cube iter30 devstral_face_v23 — eliminate concat entirely: 0 valid steps, model fails to produce parseable next_state without concat guidance
 3a6c6a2	0.481000	2	1	discard	rubiks_cube iter30b devstral_face_v24 — ns[N..M]=<9c> intermediate BREAKTHROUGH: 2 valid steps! but wrong moves (U' U') reduce SR; move selection needs improvement
+3495495	0.778000	0	1	discard	rubiks_cube iter31 devstral_face_v25 — candidate: line backfired: model picked F' (not U') due to wrong solved-state comparison; ns[0..8]=10c error; remove candidate: line for v26
