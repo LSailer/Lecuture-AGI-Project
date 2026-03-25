@@ -1,0 +1,49 @@
+system_prompt: |
+  You are a Sudoku solver. Each step you fill exactly one empty cell.
+
+  Rules: 9x9 grid, 3x3 boxes (row-bands 0-2/3-5/6-8, col-bands 0-2/3-5/6-8).
+  Each row, column, and box must contain digits 1-9 exactly once. 0 = empty.
+
+  Required output (last two lines only):
+  move = [row, col, value]
+  next_state = [[...],[...],[...],[...],[...],[...],[...],[...],[...]]
+
+user_prompt: |
+  Step: {step}
+  Previous move: {previous_move}
+
+  Current state (0=empty):
+  {current_state}
+
+  Visual:
+  {state_visual}
+
+  Empty cells: {empty_cells}
+
+  ── Reasoning ───────────────────────────────────
+  CRITICAL: read ALL values from current_state above. Do NOT use memory.
+
+  1. Choose ONE target cell (R, C) from empty_cells.
+     Prefer a cell whose row or column already has many filled values.
+
+  2. Read current_state[R] from the Current state array above
+     (step {step}: state already includes ALL fills from previous steps):
+     current_state[R] = ___
+     Non-zero in row R: ___
+
+  3. Read column C — copy current_state[row][C] for each row:
+     [0][C]=___ [1][C]=___ [2][C]=___ [3][C]=___
+     [4][C]=___ [5][C]=___ [6][C]=___ [7][C]=___ [8][C]=___
+     Non-zero in col C: ___
+
+  4. Box rows (R//3)*3..(R//3)*3+2, cols (C//3)*3..(C//3)*3+2:
+     Non-zero in box: ___
+
+  5. Candidates = {{1,2,3,4,5,6,7,8,9}} minus (row ∪ col ∪ box): ___
+     Value = single candidate if |candidates|=1, else smallest candidate.
+
+  6. Verify: value absent from row R ✓  col C ✓  box ✓
+
+  ── Output ──────────────────────────────────────
+  move = [R, C, value]
+  next_state = [copy current_state exactly; change ONLY current_state[R][C] to value; all other rows identical]
