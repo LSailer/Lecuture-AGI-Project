@@ -43,7 +43,7 @@ user_prompt: |
      Box non-zero values from current_state: ___
 
   5. Union = row ∪ col ∪ box non-zeros: ___
-     Candidates = {1,2,3,4,5,6,7,8,9} minus union: ___
+     Candidates = {{1,2,3,4,5,6,7,8,9}} minus union: ___
 
   6. If |candidates| == 1 → forced move, use it.
      If |candidates| > 1 → scan empty_cells list for a cell with exactly 1 candidate instead.
